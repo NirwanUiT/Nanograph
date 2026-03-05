@@ -16,7 +16,7 @@ from skimage.metrics import peak_signal_noise_ratio as psnr, structural_similari
 
 from .config import NanographConfig, DEFAULT_CONFIG
 from .detect import detect_image_type
-from .preprocess import preprocess, upsample_bg_grid
+from .preprocess import preprocess
 from .segment import auto_segment
 from .skeleton import (skeletonize_and_classify, extract_nanograph_points,
                        compute_skeleton_orientations)
@@ -25,7 +25,6 @@ from .reconstruct import (reconstruct_width_aware, reconstruct_with_background,
                           topology_optimizer)
 from .compress import compress_nanograph, decompress_nanograph
 from .classify import classify_structures
-from .utils import safe_normalize
 
 
 @dataclass
@@ -59,7 +58,6 @@ class NanographResult:
     compression_stats: Optional[dict] = field(default=None, repr=False)
     opt_history: Optional[dict] = field(default=None, repr=False)
     bg_model: Optional[np.ndarray] = field(default=None, repr=False)
-    bg_grid: Optional[np.ndarray] = field(default=None, repr=False)  # v4
     config: Optional[object] = field(default=None, repr=False)
 
 
@@ -73,7 +71,7 @@ def nanograph_encode(image_path_or_array, sam_model=None,
     
     v4 additions:
       - Oriented PSF reconstruction
-      - Low-rank background grid
+      - Flat background fill (mean_bg byte)
       - Cascading segmentation (early-exit)
       - Formal graph construction
     
@@ -107,14 +105,13 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         print(f'  bg_kernel={det["bg_kernel_size"]}, spacing={det["spacing"]}, '
               f'width_cap={det["width_cap"]}')
 
-    # Preprocess (v4: returns bg_grid)
+    # Preprocess
     t0 = time.time()
-    img_enhanced, img_bg_sub, reflect_img, bg_model, bg_grid = preprocess(
+    img_enhanced, img_bg_sub, reflect_img, bg_model = preprocess(
         img_raw, bg_kernel_size=det['bg_kernel_size'], cfg=cfg)
     timing['preprocess'] = time.time() - t0
     if verbose:
-        print(f'Preprocessing: {timing["preprocess"]*1000:.0f} ms '
-              f'(bg_grid: {bg_grid.shape[0]}x{bg_grid.shape[1]})')
+        print(f'Preprocessing: {timing["preprocess"]*1000:.0f} ms')
 
     # Segment (v4: cascading early-exit)
     t0 = time.time()
@@ -151,6 +148,13 @@ def nanograph_encode(image_path_or_array, sam_model=None,
     # Topology optimisation
     _sigma_scale = sigma_scale if sigma_scale is not None else cfg.recon.sigma_scale
 
+    # Flat background fill: mean intensity of non-foreground pixels
+    if np.any(clean == 0):
+        mean_bg_val = float(np.mean(img_enhanced.astype(np.float64)[clean == 0])) / 255.0
+    else:
+        mean_bg_val = float(np.mean(img_enhanced.astype(np.float64))) / 255.0
+    bg_fill = np.full(img_raw.shape, mean_bg_val, dtype=np.float64)
+
     if optimize and len(pts) > 0:
         n_before = len(types)
         t0 = time.time()
@@ -159,7 +163,7 @@ def nanograph_encode(image_path_or_array, sam_model=None,
             img_enhanced, clean, dist_transform,
             sigma_scale=_sigma_scale, width_cap=det['width_cap'],
             max_iter=max_iter, pts_per_iter=pts_per_iter,
-            bg_model=bg_model, image_type=det['type'], cfg=cfg)
+            bg_model=bg_fill, image_type=det['type'], cfg=cfg)
         timing['optimize'] = time.time() - t0
 
         if len(pts) > n_before:
@@ -176,19 +180,20 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         graph = build_nanograph(
             pts, ints, widths, orientations, types,
             skel, dist_transform, img_enhanced, img_raw.shape,
-            image_type=det['type'], cfg=cfg)
+            image_type=det['type'], ep_mask=ep_mask, jn_mask=jn_mask, cfg=cfg)
         timing['graph'] = time.time() - t0
         if verbose:
             gs = graph.summary()
             print(f'Graph: {gs["n_nodes"]} nodes, {gs["n_edges"]} edges, '
                   f'{gs["n_components"]} components')
 
-    # Reconstruct (v4: with oriented PSF + bg grid)
+    # Reconstruct (v4: with oriented PSF + flat background fill)
     t0 = time.time()
     fg_recon = reconstruct_width_aware(
         pts, ints, widths, img_raw.shape, _sigma_scale,
         orientations=orientations, cfg=cfg)
-    recon = reconstruct_with_background(fg_recon, bg_model, clean, cfg=cfg)
+    recon = reconstruct_with_background(
+        fg_recon, bg_fill, clean, original_img=img_enhanced, cfg=cfg)
     timing['reconstruct'] = time.time() - t0
 
     # Metrics
@@ -202,12 +207,12 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         p_fg = p_full
     s_fg = ssim(orig_n * fg_mask, recon * fg_mask, data_range=1.0)
 
-    # Compress (v4: with orientations + bg_grid)
+    # Compress (v4: with orientations)
     t0 = time.time()
     compressed_data, comp_stats = compress_nanograph(
         pts, ints, widths, img_raw.shape, types,
-        orientations=orientations, bg_grid=bg_grid,
-        bg_model=bg_model, cfg=cfg)
+        orientations=orientations,
+        bg_model=bg_fill, cfg=cfg)
     timing['compress'] = time.time() - t0
 
     raw_bytes = len(pts) * cfg.compress.raw_bytes_per_point
@@ -222,8 +227,7 @@ def nanograph_encode(image_path_or_array, sam_model=None,
 
     if verbose:
         print(f'\n{"="*60}')
-        print(f'  RESULT: {len(pts)} pts, {compressed_bytes:,} bytes '
-              f'(+{comp_stats.get("bg_grid_bytes", 0)} bg grid)')
+        print(f'  RESULT: {len(pts)} pts, {compressed_bytes:,} bytes')
         _, png_buf = cv2.imencode('.png', img_raw,
                                    [cv2.IMWRITE_PNG_COMPRESSION, cfg.eval.png_compression])
         png_bytes = len(png_buf.tobytes())
@@ -257,15 +261,20 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         compression_stats=comp_stats,
         opt_history=opt_hist,
         bg_model=bg_model,
-        bg_grid=bg_grid,
         config=cfg,
     )
 
 
-def nanograph_decode(compressed_data, sigma_scale=None, cfg=None):
+def nanograph_decode(compressed_data, sigma_scale=None,
+                     original_img=None, mask=None, cfg=None):
     """
     Decode compressed nanograph bytes back to a reconstruction.
-    v4: Uses orientations and bg_grid for better reconstruction.
+
+    If *original_img* (uint8 grayscale) and *mask* (binary) are provided,
+    the foreground is intensity-matched to the original.  Otherwise
+    percentile normalization is used (decode-only path).
+
+    Background is reconstructed as a flat fill from the stored mean_bg byte.
     """
     if cfg is None:
         cfg = DEFAULT_CONFIG
@@ -274,23 +283,16 @@ def nanograph_decode(compressed_data, sigma_scale=None, cfg=None):
         sigma_scale = rc.sigma_scale
 
     (points, intensities, widths, types, orientations,
-     shape, mean_bg, bg_grid) = decompress_nanograph(compressed_data, cfg=cfg)
+     shape, mean_bg) = decompress_nanograph(compressed_data, cfg=cfg)
 
     fg_recon = reconstruct_width_aware(
         points, intensities, widths, shape, sigma_scale,
         orientations=orientations, cfg=cfg)
-    fg_norm = safe_normalize(fg_recon)
 
-    # v4: Use bg_grid if available, else fall back to mean_bg
-    if bg_grid is not None:
-        bg_upsampled = upsample_bg_grid(bg_grid, shape, sigma=rc.bg_grid_sigma)
-    else:
-        bg_upsampled = np.full(shape, mean_bg, dtype=np.float64)
+    # Flat background fill from mean_bg byte
+    bg_fill = np.full(shape, mean_bg, dtype=np.float64)
 
-    fg_presence = (fg_norm > rc.fg_presence_thresh).astype(np.float32)
-    fg_presence = cv2.GaussianBlur(fg_presence, (0, 0), sigmaX=rc.blend_sigma)
-    fg_presence = np.clip(fg_presence, 0, 1).astype(np.float64)
-    recon = fg_norm * fg_presence + bg_upsampled * (1.0 - fg_presence)
-    recon = np.clip(recon, 0, 1)
+    recon = reconstruct_with_background(
+        fg_recon, bg_fill, mask, original_img=original_img, cfg=rc)
 
     return recon, points, intensities, widths, types, orientations, shape

@@ -66,15 +66,12 @@ class ReconConfig:
     max_sigma: float = 30.0
     sigma_quantize: float = 0.5
     blend_sigma: float = 5.0
-    fg_presence_thresh: float = 0.01
+    fg_presence_thresh: float = 0.05
     psf_max_radius: int = 30
     # v4: Oriented elliptical PSF
     use_oriented_psf: bool = True
     orientation_aspect_ratio: float = 2.5   # major/minor axis ratio for filament PSF
     orientation_smooth_sigma: float = 3.0   # smoothing for tangent estimation
-    # v4: Low-rank background grid
-    bg_grid_size: int = 16   # NxN downsampled background grid (0 = use mean only)
-    bg_grid_sigma: float = 2.0  # smoothing when upsampling the grid
 
 
 @dataclass
@@ -101,7 +98,6 @@ class CompressConfig:
     raw_bytes_per_point: int = 16
     # v4: Graph-aware compression
     use_edge_delta: bool = True   # delta-encode along edges instead of row-sort
-    store_bg_grid: bool = True    # embed the low-rank background grid
     store_orientation: bool = True  # store per-point orientation angle (1 byte)
 
 
@@ -173,10 +169,12 @@ class NanographConfig:
             cfg.preprocess.bg_kernel_size = d.dense_bg_kernel
             cfg.segment.expected_fg_lo = 3.0
             cfg.segment.expected_fg_hi = 55.0
+            cfg.recon.use_oriented_psf = True   # filaments benefit from oriented PSF
         else:
             cfg.preprocess.bg_kernel_size = d.sparse_bg_kernel
             cfg.segment.expected_fg_lo = 0.5
             cfg.segment.expected_fg_hi = 35.0
+            cfg.recon.use_oriented_psf = False  # blobs: isotropic PSF is better
         return cfg
 
     def param_count(self) -> int:

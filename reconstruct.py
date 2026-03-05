@@ -1,11 +1,11 @@
-"""
-Nanograph v4 — Reconstruction with oriented PSF and low-rank background.
+"""Nanograph v4 — Reconstruction with oriented PSF and flat background fill.
 
 v4 improvements:
 1. Oriented elliptical PSF: Uses local skeleton tangent direction to create
    anisotropic kernels that better match filament geometry.
-2. Low-rank background grid: Instead of a single mean value, stores a 16x16
-   grid (256 bytes) that captures spatial background variation.
+2. Intensity-matched foreground scaling: scales PSF output so its mean
+   foreground intensity matches the original image.
+3. Flat background fill from mean_bg byte stored in the compressed header.
 """
 
 import numpy as np
@@ -15,7 +15,6 @@ from skimage.metrics import peak_signal_noise_ratio as psnr, structural_similari
 
 from .config import DEFAULT_CONFIG, NanographConfig, ReconConfig, OptimizerConfig
 from .utils import safe_normalize, create_psf_kernel, create_oriented_psf_kernel
-from .preprocess import upsample_bg_grid
 
 
 def reconstruct_width_aware(points, intensities, widths, shape,
@@ -74,11 +73,24 @@ def reconstruct_width_aware(points, intensities, widths, shape,
     return result
 
 
-def reconstruct_with_background(fg_recon, bg_model, mask, blend_sigma=None,
-                                 fg_presence_thresh=None, cfg=None):
+def reconstruct_with_background(fg_recon, bg_model, mask, original_img=None,
+                                 blend_sigma=None, fg_presence_thresh=None, cfg=None):
     """
     Composite foreground PSF reconstruction with the background.
-    v4: bg_model can be either a full-res array or will be upsampled from grid.
+
+    original_img: uint8 grayscale — used to match the fg mean intensity so the
+                  reconstruction isn't dim due to PSF energy spreading.
+    mask:         binary segmentation mask — used directly for blending so that
+                  PSF tails outside the mask don't bleed into the background.
+
+    Intensity scaling:
+      If *original_img* and *mask* are provided the raw PSF output is scaled
+      so that its mean intensity within the foreground mask matches the
+      original image's mean foreground intensity:
+          scale = mean(original[mask>0]) / mean(fg_recon[mask>0])
+          fg_scaled = clip(fg_recon * scale, 0, 1)
+      If *original_img* is not provided, falls back to 99.5th-percentile
+      normalization for backward compatibility.
     """
     rc = cfg if isinstance(cfg, ReconConfig) else (
          cfg.recon if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.recon)
@@ -87,29 +99,35 @@ def reconstruct_with_background(fg_recon, bg_model, mask, blend_sigma=None,
     if fg_presence_thresh is None:
         fg_presence_thresh = rc.fg_presence_thresh
 
-    fg_norm = safe_normalize(fg_recon)
-    fg_presence = (fg_norm > fg_presence_thresh).astype(np.float32)
+    # --- Intensity-matched scaling ---
+    if original_img is not None and mask is not None and np.any(mask > 0):
+        orig_f = original_img.astype(np.float64) / 255.0
+        orig_fg_mean = float(np.mean(orig_f[mask > 0]))
+        recon_fg_vals = fg_recon[mask > 0]
+        recon_fg_mean = float(np.mean(recon_fg_vals)) if recon_fg_vals.size > 0 else 0.0
+        if recon_fg_mean > 1e-9:
+            fg_scaled = np.clip(fg_recon * (orig_fg_mean / recon_fg_mean), 0, 1)
+        else:
+            fg_scaled = safe_normalize(fg_recon)
+    else:
+        # Fallback: percentile normalization
+        pos = fg_recon[fg_recon > 1e-9]
+        if len(pos) > 0:
+            scale = float(np.percentile(pos, 99.5))
+            fg_scaled = np.clip(fg_recon / max(scale, 1e-9), 0, 1)
+        else:
+            fg_scaled = np.zeros_like(fg_recon)
+
+    # --- Mask-based fg presence ---
+    if mask is not None:
+        fg_presence = (mask > 0).astype(np.float32)
+    else:
+        fg_presence = (fg_scaled > fg_presence_thresh).astype(np.float32)
     fg_presence = cv2.GaussianBlur(fg_presence, (0, 0), sigmaX=blend_sigma)
     fg_presence = np.clip(fg_presence, 0, 1).astype(np.float64)
-    
-    # Ensure bg_model matches shape
-    if bg_model.shape != fg_norm.shape:
-        bg_model = upsample_bg_grid(bg_model, fg_norm.shape, sigma=rc.bg_grid_sigma)
-    
-    combined = fg_norm * fg_presence + bg_model * (1.0 - fg_presence)
+
+    combined = fg_scaled * fg_presence + bg_model * (1.0 - fg_presence)
     return np.clip(combined, 0, 1)
-
-
-def reconstruct_with_bg_grid(fg_recon, bg_grid, shape, mask, cfg=None):
-    """
-    v4: Reconstruct using the low-rank background grid.
-    This replaces the single mean_bg value with a spatial background.
-    """
-    rc = cfg if isinstance(cfg, ReconConfig) else (
-         cfg.recon if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.recon)
-    
-    bg_upsampled = upsample_bg_grid(bg_grid, shape, sigma=rc.bg_grid_sigma)
-    return reconstruct_with_background(fg_recon, bg_upsampled, mask, cfg=cfg)
 
 
 def topology_optimizer(points, intensities, widths, orientations,
@@ -159,7 +177,8 @@ def topology_optimizer(points, intensities, widths, orientations,
                                             original.shape, sigma_scale,
                                             orientations=ori_arr, cfg=rc)
         if bg_model is not None:
-            recon_n = reconstruct_with_background(fg_recon, bg_model, mask, cfg=rc)
+            recon_n = reconstruct_with_background(
+                fg_recon, bg_model, mask, original_img=original, cfg=rc)
         else:
             recon_n = safe_normalize(fg_recon)
 
@@ -228,7 +247,8 @@ def topology_optimizer(points, intensities, widths, orientations,
                                         original.shape, sigma_scale,
                                         orientations=ori_arr, cfg=rc)
     if bg_model is not None:
-        recon_n = reconstruct_with_background(fg_recon, bg_model, mask, cfg=rc)
+        recon_n = reconstruct_with_background(
+            fg_recon, bg_model, mask, original_img=original, cfg=rc)
     else:
         recon_n = safe_normalize(fg_recon)
 

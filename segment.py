@@ -92,7 +92,8 @@ def segmentation_quality_score(mask, image_gray, expected_fg_range=None,
         else:
             shape_match = 1.0
     elif method_name == 'Otsu':
-        shape_match = 0.8
+        # Blobs are the expected structure for sparse organelles
+        shape_match = 1.0 if image_type == 'sparse' else 0.8
     else:
         shape_match = 1.0
 
@@ -270,6 +271,18 @@ def auto_segment(image_gray, img_bg_sub, img_enhanced, sam_model=None,
                                             method_name='microSAM',
                                             image_type=image_type, cfg=sc)
         candidates['microSAM'] = {'mask': sam_mask, 'time': t_sam, 'score': q_sam}
+
+    # --- Recall-against-union correction ---
+    # A method that detects only a tiny subset of what all methods collectively
+    # find should be penalised, regardless of how "clean" its detections are.
+    union_mask = np.zeros(image_gray.shape, dtype=np.uint8)
+    for c in candidates.values():
+        union_mask = np.maximum(union_mask, (c['mask'] > 0).astype(np.uint8))
+    union_area = max(int(np.count_nonzero(union_mask)), 1)
+    recall_weight = 0.25
+    for c in candidates.values():
+        recall = int(np.count_nonzero(c['mask'])) / union_area
+        c['score'] = c['score'] * (1.0 - recall_weight) + recall * recall_weight
 
     # Select best
     best_name = max(candidates, key=lambda k: candidates[k]['score'])

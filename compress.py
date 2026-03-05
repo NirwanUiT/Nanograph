@@ -3,8 +3,8 @@ Nanograph v4 — Compression with graph-aware encoding.
 
 v4 improvements:
 1. Store orientation per point (1 extra byte, quantized to 256 levels)
-2. Store low-rank background grid (NxN bytes) in the header
-3. Edge-aware delta encoding (delta along graph edges instead of row-sort)
+2. Edge-aware delta encoding (delta along graph edges instead of row-sort)
+3. Simplified header: H, W, n_points, flags, mean_bg (10 bytes)
 """
 
 import numpy as np
@@ -15,25 +15,24 @@ from .config import DEFAULT_CONFIG, NanographConfig, CompressConfig
 
 
 def compress_nanograph(points, intensities, widths, shape, types=None,
-                       orientations=None, bg_grid=None, bg_model=None, cfg=None):
+                       orientations=None, bg_model=None, cfg=None):
     """
     Quantise + delta-encode + zlib compress a nanograph.
-    
+
     v4 encoding per point (7 bytes with orientation):
       row:         uint16
       col:         uint16
       width:       uint8
       intensity:   uint8
       orientation: uint8  (angle * 256/pi, quantized)
-    
-    v4 header:
+
+    v4 header (10 bytes):
       H, W:        uint16 x 2
       n_points:    uint32
-      flags:       uint8 (bit 0: has_types, bit 1: has_orientation, bit 2: has_bg_grid)
+      flags:       uint8 (bit 0: has_types, bit 1: has_orientation)
       mean_bg:     uint8
-      bg_grid_size: uint8 (0 = no grid, else NxN)
-    
-    Then: bg_grid data (if present), point data, type data
+
+    Then: point data, orientation data, type data  (all zlib-compressed)
     """
     cc = cfg if isinstance(cfg, CompressConfig) else (
          cfg.compress if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.compress)
@@ -63,32 +62,20 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
 
     # Determine flags
     has_types = types is not None
-    has_orientation = (orientations is not None and cc.store_orientation 
+    has_orientation = (orientations is not None and cc.store_orientation
                        and len(orientations) == n)
-    has_bg_grid = (bg_grid is not None and cc.store_bg_grid 
-                   and bg_grid.size > 1)
 
-    flags = (int(has_types) | (int(has_orientation) << 1) | (int(has_bg_grid) << 2))
+    flags = (int(has_types) | (int(has_orientation) << 1))
 
-    # Mean background
+    # Mean background (single byte)
     mean_bg = 0
     if bg_model is not None:
         mean_bg = int(np.clip(np.mean(bg_model) * 255, 0, 255))
-    elif bg_grid is not None:
-        mean_bg = int(np.clip(np.mean(bg_grid) * 255, 0, 255))
-
-    # Background grid size
-    bg_grid_n = int(bg_grid.shape[0]) if has_bg_grid else 0
 
     # --- Build raw payload ---
     raw = bytearray()
 
-    # Background grid data (quantized to uint8)
-    if has_bg_grid:
-        bg_q = np.clip(np.round(bg_grid * 255), 0, 255).astype(np.uint8)
-        raw.extend(bg_q.flatten().tobytes())
-
-    # Point data: 6 bytes per point (same as v3 base)
+    # Point data: 6 bytes per point
     buf = np.empty(n * 6, dtype=np.uint8)
     rd_bytes = row_deltas.astype('<i2').view(np.uint8)
     buf[0::6] = rd_bytes[0::2]
@@ -123,10 +110,10 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     # zlib compress
     compressed = zlib.compress(bytes(raw), level=cc.zlib_level)
 
-    # v4 Header: 12 bytes
-    #   H (uint16) + W (uint16) + n (uint32) + flags (uint8) + mean_bg (uint8) + bg_grid_n (uint8) + reserved (uint8)
-    header = struct.pack('<HHIBBBB', shape[0], shape[1], n, flags, mean_bg, bg_grid_n, 0)
-    header_size = len(header)  # 12 bytes
+    # v4 Header: 10 bytes
+    #   H (uint16) + W (uint16) + n (uint32) + flags (uint8) + mean_bg (uint8)
+    header = struct.pack('<HHIBB', shape[0], shape[1], n, flags, mean_bg)
+    header_size = len(header)  # 10 bytes
 
     total_bytes = header_size + len(compressed)
     return header + compressed, {
@@ -136,9 +123,6 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
         'zlib_bytes': len(compressed),
         'n_points': n,
         'has_orientation': has_orientation,
-        'has_bg_grid': has_bg_grid,
-        'bg_grid_size': bg_grid_n,
-        'bg_grid_bytes': bg_grid_n * bg_grid_n if has_bg_grid else 0,
         'bytes_per_point_raw': 7 if has_orientation else 6,
         'bytes_per_point_effective': total_bytes / max(n, 1),
         'compression_vs_float32': n * cc.raw_bytes_per_point / max(total_bytes, 1),
@@ -149,34 +133,23 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
 def decompress_nanograph(data, cfg=None):
     """
     Decompress a nanograph from compressed bytes.
-    
-    v4: Also returns orientations and bg_grid.
-    Returns: points, intensities, widths, types, orientations, shape, mean_bg, bg_grid
+
+    Returns: points, intensities, widths, types, orientations, shape, mean_bg
     """
     cc = cfg if isinstance(cfg, CompressConfig) else (
          cfg.compress if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.compress)
 
-    # Parse v4 header (12 bytes)
-    header_size = 12
-    H, W, n, flags, mean_bg_byte, bg_grid_n, _ = struct.unpack(
-        '<HHIBBBB', data[:header_size])
-    
+    # Parse v4 header (10 bytes)
+    header_size = 10
+    H, W, n, flags, mean_bg_byte = struct.unpack('<HHIBB', data[:header_size])
+
     has_types = bool(flags & 1)
     has_orientation = bool(flags & 2)
-    has_bg_grid = bool(flags & 4)
-    
+
     mean_bg = mean_bg_byte / 255.0
     compressed = data[header_size:]
     raw = zlib.decompress(compressed)
     offset = 0
-
-    # Background grid
-    bg_grid = None
-    if has_bg_grid and bg_grid_n > 0:
-        grid_bytes = bg_grid_n * bg_grid_n
-        bg_q = np.frombuffer(raw[offset:offset + grid_bytes], dtype=np.uint8)
-        bg_grid = bg_q.reshape(bg_grid_n, bg_grid_n).astype(np.float64) / 255.0
-        offset += grid_bytes
 
     # Point data
     point_data = np.frombuffer(raw[offset:offset + n * 6], dtype=np.uint8).reshape(n, 6)
@@ -223,4 +196,4 @@ def decompress_nanograph(data, cfg=None):
     else:
         types_arr = np.array(['sampled'] * n)
 
-    return points, intensities, widths, types_arr, orientations, (H, W), mean_bg, bg_grid
+    return points, intensities, widths, types_arr, orientations, (H, W), mean_bg

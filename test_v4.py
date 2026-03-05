@@ -11,6 +11,7 @@ the expected behavior with cascade early-exit — SAM is the fallback).
 """
 
 import argparse
+import csv
 import sys
 import os
 import time
@@ -20,8 +21,8 @@ import matplotlib
 matplotlib.use('Agg')  # non-interactive backend
 import matplotlib.pyplot as plt
 
-# Add parent dir to path so nanograph_v4 can be imported
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Add grandparent dir to path so nanograph_v4 can be imported
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from nanograph_v4 import (nanograph_encode, nanograph_decode, NanographConfig,
                            nanograph_morphometry, print_comparison)
@@ -96,18 +97,27 @@ def plot_results(result, img_raw, title, save_path):
     axes[1, 1].imshow(pt_img)
     axes[1, 1].axis('off')
 
-    # Orientation visualization
+    # Orientation visualization — quiver arrows on original image
+    axes[1, 2].imshow(img_raw, cmap='gray')
     if result.orientations is not None:
-        ori_img = np.zeros(img_raw.shape, dtype=np.float64)
-        for pt, ori in zip(result.points.astype(int), result.orientations):
-            y, x = pt
-            if 0 <= y < img_raw.shape[0] and 0 <= x < img_raw.shape[1]:
-                ori_img[y, x] = ori
-        axes[1, 2].set_title('Point Orientations')
-        axes[1, 2].imshow(ori_img, cmap='hsv', vmin=0, vmax=np.pi)
-        axes[1, 2].axis('off')
+        pts_int = result.points.astype(int)
+        valid = (
+            (pts_int[:, 0] >= 0) & (pts_int[:, 0] < img_raw.shape[0]) &
+            (pts_int[:, 1] >= 0) & (pts_int[:, 1] < img_raw.shape[1])
+        )
+        ys = pts_int[valid, 0]
+        xs = pts_int[valid, 1]
+        oris = result.orientations[valid]
+        # orientation is the tangent angle; u=cos, v=-sin (image y-axis flipped)
+        u = np.cos(oris)
+        v = -np.sin(oris)
+        axes[1, 2].quiver(xs, ys, u, v, color='yellow',
+                          scale=30, headwidth=2, headlength=2,
+                          width=0.003, alpha=0.85)
+        axes[1, 2].set_title(f'Orientations ({valid.sum():,} pts)')
     else:
-        axes[1, 2].axis('off')
+        axes[1, 2].set_title('Orientations (none)')
+    axes[1, 2].axis('off')
 
     # Graph visualization
     if result.graph is not None:
@@ -161,7 +171,6 @@ def main():
     cfg = NanographConfig()
     print(f'Nanograph v4 — {cfg.param_count()} configurable parameters')
     print(f'Features: oriented_psf={cfg.recon.use_oriented_psf}, '
-          f'bg_grid={cfg.recon.bg_grid_size}x{cfg.recon.bg_grid_size}, '
           f'cascade={cfg.segment.cascade_enable}')
 
     # --- Test 1: Sparse ---
@@ -180,6 +189,7 @@ def main():
     t_sparse = time.time() - t0
 
     row_sp = print_comparison(result_sparse, img_sp, label='Sparse')
+    row_sp['filename'] = os.path.basename(args.sparse)
     plot_results(result_sparse, img_sp, 'Nanograph v4 — Sparse Organelles',
                  os.path.join(args.outdir, 'sparse_result.png'))
 
@@ -217,6 +227,7 @@ def main():
     t_dense = time.time() - t0
 
     row_dn = print_comparison(result_dense, img_dn, label='Dense')
+    row_dn['filename'] = os.path.basename(args.dense)
     plot_results(result_dense, img_dn, 'Nanograph v4 — Dense Network',
                  os.path.join(args.outdir, 'dense_result.png'))
 
@@ -263,7 +274,46 @@ def main():
             else:
                 print(f'  {key:<25} {v1:>12} {v2:>12}')
 
-    print(f'\nDone. Results saved to {args.outdir}/')
+    # --- Save per-image metrics CSV ---
+    metrics_rows = [row_sp, row_dn]
+    metrics_path = os.path.join(args.outdir, 'metrics.csv')
+    all_keys = list(metrics_rows[0].keys())
+    for k in metrics_rows[1].keys():
+        if k not in all_keys:
+            all_keys.append(k)
+    # Primary metrics first
+    primary_cols = ['filename', 'ng_fg_ssim', 'ng_fg_psnr', 'ng_iou', 'ng_topo_q']
+    ordered_keys = [k for k in primary_cols if k in all_keys]
+    ordered_keys += [k for k in all_keys if k not in ordered_keys]
+    with open(metrics_path, 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=ordered_keys, extrasaction='ignore')
+        writer.writeheader()
+        writer.writerows(metrics_rows)
+
+    # --- Save per-image graph_summary CSV ---
+    graph_rows = []
+    for result, fname in [(result_sparse, os.path.basename(args.sparse)),
+                           (result_dense, os.path.basename(args.dense))]:
+        if result.graph:
+            gs = result.graph.summary()
+            gs['filename'] = fname
+            gs['image_type'] = result.image_type
+            graph_rows.append(gs)
+
+    graph_path = None
+    if graph_rows:
+        graph_path = os.path.join(args.outdir, 'graph_summary.csv')
+        gs_keys = ['filename', 'image_type'] + [
+            k for k in graph_rows[0].keys() if k not in ('filename', 'image_type')]
+        with open(graph_path, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=gs_keys, extrasaction='ignore')
+            writer.writeheader()
+            writer.writerows(graph_rows)
+
+    print(f'\nMetrics CSV:          {metrics_path}')
+    if graph_path:
+        print(f'Graph summary CSV:    {graph_path}')
+    print(f'Done. Results saved to {args.outdir}/')
 
 
 if __name__ == '__main__':

@@ -1,10 +1,10 @@
 """
-Nanograph v4 — Preprocessing with low-rank background grid.
+Nanograph v4 — Preprocessing with background subtraction and reflectivity.
 
-v4 improvement: Instead of storing just mean background (1 byte),
-we compute a low-rank NxN grid (default 16x16 = 256 bytes) that
-captures spatial variation in the background. This dramatically
-improves full-image PSNR at negligible cost.
+Computes CLAHE enhancement, morphological-opening background model,
+background-subtracted image, and a fast reflectivity estimate.
+The full-resolution bg_model is used during encoding for intensity-matched
+reconstruction; only a single mean_bg byte is stored in the compressed output.
 """
 
 import numpy as np
@@ -16,13 +16,10 @@ from .config import DEFAULT_CONFIG, NanographConfig, PreprocessConfig
 def preprocess(image_gray, bg_kernel_size=None, cfg=None):
     """
     CLAHE, BG subtraction, fast reflectivity estimation.
-    Returns: img_enhanced, img_bg_sub, reflect_img, background_model, bg_grid
-    
-    v4: Also returns bg_grid (NxN downsampled background) for compression.
+    Returns: img_enhanced, img_bg_sub, reflect_img, bg_model
     """
     pc = cfg if isinstance(cfg, PreprocessConfig) else (
          cfg.preprocess if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.preprocess)
-    rc = cfg.recon if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.recon
 
     if bg_kernel_size is None:
         bg_kernel_size = pc.bg_kernel_size
@@ -61,25 +58,4 @@ def preprocess(image_gray, bg_kernel_size=None, cfg=None):
     # Full background model (float, for reconstruction)
     bg_model = background.astype(np.float64) / 255.0
 
-    # v4: Low-rank background grid
-    grid_size = rc.bg_grid_size
-    if grid_size > 0:
-        bg_grid = cv2.resize(bg_model, (grid_size, grid_size),
-                              interpolation=cv2.INTER_AREA)
-    else:
-        bg_grid = np.array([[np.mean(bg_model)]])  # fallback: single value
-
-    return img, img_bg_sub, reflect_img, bg_model, bg_grid
-
-
-def upsample_bg_grid(bg_grid, target_shape, sigma=2.0):
-    """
-    v4: Upsample a low-rank background grid to full image size.
-    Uses bicubic interpolation + Gaussian smoothing for smooth transitions.
-    """
-    upsampled = cv2.resize(bg_grid.astype(np.float64), 
-                            (target_shape[1], target_shape[0]),
-                            interpolation=cv2.INTER_CUBIC)
-    if sigma > 0:
-        upsampled = cv2.GaussianBlur(upsampled, (0, 0), sigmaX=sigma)
-    return np.clip(upsampled, 0, 1)
+    return img, img_bg_sub, reflect_img, bg_model

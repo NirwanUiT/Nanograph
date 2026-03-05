@@ -87,39 +87,45 @@ def evaluate_result(result, img_raw, cfg=None):
     total_time = sum(result.timing.values()) if result.timing else 0
 
     row = {
+        # --- Primary (structural fidelity) ---
+        'ng_fg_ssim': result.ssim_fg,
+        'ng_fg_psnr': result.psnr_fg,
+        'ng_iou': ng_iou,
+        'ng_topo_q': ng_topo_q,
+        # --- Graph stats ---
+        **graph_metrics,
+        # --- Secondary (full-image) ---
+        'ng_psnr': result.psnr_full,
+        'ng_ssim': result.ssim_full,
+        'ng_bytes': ng_bytes,
+        'png_bytes': png_bytes,
+        'ng_vs_png': png_bytes / max(ng_bytes, 1),
+        'ng_vs_raw': img_raw.size / max(ng_bytes, 1),
+        # --- Metadata ---
         'image_shape': f'{img_raw.shape[0]}x{img_raw.shape[1]}',
         'image_pixels': img_raw.size,
         'image_type': result.image_type,
         'segmenter': result.segmenter,
         'n_points': result.n_points,
         'n_structures': len(result.structures) if result.structures else 0,
-        'ng_bytes': ng_bytes,
-        'png_bytes': png_bytes,
-        'ng_vs_png': png_bytes / max(ng_bytes, 1),
-        'ng_vs_raw': img_raw.size / max(ng_bytes, 1),
-        'ng_psnr': result.psnr_full,
-        'ng_ssim': result.ssim_full,
-        'ng_fg_psnr': result.psnr_fg,
-        'ng_fg_ssim': result.ssim_fg,
-        'ng_iou': ng_iou,
-        'ng_topo_q': ng_topo_q,
         'total_time_ms': total_time * 1000,
         **jpeg_metrics,
-        **graph_metrics,
     }
 
     # Delta columns (nanograph - jpeg)
     if jpeg_metrics:
+        row['delta_fg_ssim'] = result.ssim_fg - jpeg_metrics.get('jpeg_fg_ssim', 0)
+        row['delta_fg_psnr'] = result.psnr_fg - jpeg_metrics.get('jpeg_fg_psnr', 0)
+        row['delta_iou'] = ng_iou - jpeg_metrics.get('jpeg_iou', 0)
+        row['delta_topo_q'] = ng_topo_q - jpeg_metrics.get('jpeg_topo_q', 0)
         row['delta_psnr'] = result.psnr_full - jpeg_metrics.get('jpeg_psnr', 0)
         row['delta_ssim'] = result.ssim_full - jpeg_metrics.get('jpeg_ssim', 0)
-        row['delta_fg_psnr'] = result.psnr_fg - jpeg_metrics.get('jpeg_fg_psnr', 0)
-        row['delta_fg_ssim'] = result.ssim_fg - jpeg_metrics.get('jpeg_fg_ssim', 0)
 
     return row
 
 
 def print_comparison(result, img_raw, label='', cfg=None):
-    """Print a formatted comparison table."""
+    """Print a formatted comparison table with PRIMARY / SECONDARY sections."""
     row = evaluate_result(result, img_raw, cfg)
 
     print(f"\n{'='*65}")
@@ -131,24 +137,26 @@ def print_comparison(result, img_raw, label='', cfg=None):
     print(f"  {'─'*55}")
     print(f"  {'Metric':<22} {'Nanograph':>12} {'JPEG':>12} {'Delta':>10}")
     print(f"  {'-'*56}")
-    
-    metrics = [
-        ('Bytes',        row['ng_bytes'],     row.get('jpeg_bytes', 0), False),
-        ('Full PSNR',    row['ng_psnr'],      row.get('jpeg_psnr', 0), True),
-        ('Full SSIM',    row['ng_ssim'],      row.get('jpeg_ssim', 0), True),
-        ('FG-PSNR',      row['ng_fg_psnr'],   row.get('jpeg_fg_psnr', 0), True),
+
+    def _fmt(val):
+        if isinstance(val, float) and val < 1000:
+            return f'{val:,.4f}'
+        return f'{val:,}'
+
+    # --- PRIMARY (structural fidelity) ---
+    print(f"  {'PRIMARY (structural fidelity)':}")
+    primary_metrics = [
         ('FG-SSIM',      row['ng_fg_ssim'],   row.get('jpeg_fg_ssim', 0), True),
+        ('FG-PSNR',      row['ng_fg_psnr'],   row.get('jpeg_fg_psnr', 0), True),
         ('IoU',          row['ng_iou'],        row.get('jpeg_iou', 0), True),
         ('Topology Q',   row['ng_topo_q'],     row.get('jpeg_topo_q', 0), True),
     ]
-    
-    for name, ng_val, j_val, higher_better in metrics:
+    for name, ng_val, j_val, _ in primary_metrics:
         delta = ng_val - j_val
         sign = '+' if delta >= 0 else ''
-        nf = f'{ng_val:,.4f}' if isinstance(ng_val, float) and ng_val < 1000 else f'{ng_val:,}'
-        jf = f'{j_val:,.4f}' if isinstance(j_val, float) and j_val < 1000 else f'{j_val:,}'
-        print(f"  {name:<22} {nf:>12} {jf:>12} {sign}{delta:>9.4f}")
+        print(f"  {name:<22} {_fmt(ng_val):>12} {_fmt(j_val):>12} {sign}{delta:>9.4f}")
 
+    # --- Graph summary (if available) ---
     if result.graph:
         gs = result.graph.summary()
         print(f"  {'─'*55}")
@@ -157,6 +165,19 @@ def print_comparison(result, img_raw, label='', cfg=None):
         print(f"  Mean degree: {gs['mean_degree']:.1f}  "
               f"Mean edge length: {gs['mean_edge_length']:.1f}px  "
               f"Mean curvature: {gs['mean_curvature']:.3f}")
+
+    # --- SECONDARY (full-image) ---
+    print(f"  {'─'*55}")
+    print(f"  {'SECONDARY (full-image)':}")
+    secondary_metrics = [
+        ('Full PSNR',    row['ng_psnr'],      row.get('jpeg_psnr', 0), True),
+        ('Full SSIM',    row['ng_ssim'],      row.get('jpeg_ssim', 0), True),
+        ('Bytes',        row['ng_bytes'],     row.get('jpeg_bytes', 0), False),
+    ]
+    for name, ng_val, j_val, _ in secondary_metrics:
+        delta = ng_val - j_val
+        sign = '+' if delta >= 0 else ''
+        print(f"  {name:<22} {_fmt(ng_val):>12} {_fmt(j_val):>12} {sign}{delta:>9.4f}")
 
     print(f"  {'─'*55}")
     print(f"  Time: {row['total_time_ms']:.0f} ms")
@@ -208,11 +229,16 @@ def batch_evaluate(image_paths, sam_model=None, output_csv=None,
             print(f'  ERROR: {e}')
             continue
 
-    # Save CSV
+    # Save CSV (reordered columns: primary first)
     if output_csv and results:
-        keys = results[0].keys()
+        # Determine column order: primary metrics first
+        primary_cols = ['filename', 'ng_fg_ssim', 'ng_fg_psnr', 'ng_iou', 'ng_topo_q']
+        # Then graph metrics, secondary, metadata, deltas — keep rest in original order
+        all_keys = list(results[0].keys())
+        ordered = [k for k in primary_cols if k in all_keys]
+        ordered += [k for k in all_keys if k not in ordered]
         with open(output_csv, 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=keys)
+            writer = csv.DictWriter(f, fieldnames=ordered)
             writer.writeheader()
             writer.writerows(results)
         if verbose:
@@ -223,12 +249,25 @@ def batch_evaluate(image_paths, sam_model=None, output_csv=None,
         print(f'\n{"="*60}')
         print(f'  BATCH SUMMARY ({len(results)} images)')
         print(f'{"="*60}')
-        for key in ['ng_psnr', 'ng_ssim', 'ng_fg_psnr', 'ng_fg_ssim',
-                     'ng_bytes', 'total_time_ms']:
+        for key in ['ng_fg_ssim', 'ng_fg_psnr', 'ng_iou', 'ng_topo_q',
+                     'ng_psnr', 'ng_ssim', 'ng_bytes', 'total_time_ms']:
             vals = [r[key] for r in results if key in r]
             if vals:
                 print(f'  {key:<20}: mean={np.mean(vals):.4f}  '
                       f'std={np.std(vals):.4f}  '
                       f'min={np.min(vals):.4f}  max={np.max(vals):.4f}')
+
+        # Wins count: for each primary metric, count how many images
+        # nanograph beats byte-matched JPEG
+        n_total = len(results)
+        wins = {}
+        for delta_key, label in [('delta_fg_ssim', 'FG-SSIM'),
+                                  ('delta_fg_psnr', 'FG-PSNR'),
+                                  ('delta_iou', 'IoU'),
+                                  ('delta_topo_q', 'TopoQ')]:
+            w = sum(1 for r in results if r.get(delta_key, 0) > 0)
+            wins[label] = w
+        win_strs = [f'{lbl} {cnt}/{n_total}' for lbl, cnt in wins.items()]
+        print(f'  Wins vs JPEG: {"  ".join(win_strs)}')
 
     return results
