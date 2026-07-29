@@ -8,6 +8,40 @@ import cv2
 from .config import DEFAULT_CONFIG, NanographConfig, DetectConfig
 
 
+def detect_polarity(image_gray, cfg=None):
+    """Decide whether the structures of interest are dark-on-light (=> invert).
+
+    Returns True if the image should be inverted (dark structures become the
+    bright foreground), False otherwise.
+
+    Uses the ratio of black-top-hat to white-top-hat energy. Thin bright
+    structures (fluorescence) yield a large white top-hat; thin dark structures
+    (brightfield/absorption, e.g. retinal vessels) yield a large black top-hat.
+    This is robust to large flat regions such as a black circular field-of-view
+    border, which contribute little top-hat response.
+    """
+    if cfg is None:
+        pc = DEFAULT_CONFIG.preprocess
+    elif isinstance(cfg, NanographConfig):
+        pc = cfg.preprocess
+    else:
+        pc = getattr(cfg, 'preprocess', DEFAULT_CONFIG.preprocess)
+
+    mode = getattr(pc, 'polarity', 'auto')
+    if mode == 'bright':
+        return False
+    if mode == 'dark':
+        return True
+
+    size = max(3, int(getattr(pc, 'polarity_tophat_size', 15)))
+    thresh = float(getattr(pc, 'polarity_tophat_thresh', 1.3))
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (size, size))
+    wth = float(cv2.morphologyEx(image_gray, cv2.MORPH_TOPHAT, k).sum())
+    bth = float(cv2.morphologyEx(image_gray, cv2.MORPH_BLACKHAT, k).sum())
+    return bth > thresh * (wth + 1e-9)
+
+
+
 def detect_image_type(image_gray, cfg=None):
     """
     Classify a microscopy image as 'sparse' or 'dense'.

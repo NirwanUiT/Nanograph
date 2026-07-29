@@ -153,6 +153,20 @@ def otsu_segment(image):
     return binary
 
 
+def learned_segment(model, image_gray, cfg=None, device=None):
+    """U-Net learned foreground mask (uint8 {0,255}), morphologically cleaned."""
+    from .unet_seg import unet_predict
+    sc = cfg if isinstance(cfg, SegmentConfig) else (
+         cfg.segment if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.segment)
+    if device is None:
+        import torch
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    mask = unet_predict(model, image_gray, device=device, thresh=sc.learned_thresh)
+    if getattr(sc, 'learned_light_clean', True):
+        return light_clean_mask(mask, cfg=sc)
+    return morphological_clean(mask, cfg=sc)
+
+
 def frangi_segment(image, cfg=None):
     """Frangi vesselness filter."""
     sc = cfg if isinstance(cfg, SegmentConfig) else (
@@ -186,16 +200,36 @@ def meijering_segment(image, cfg=None):
     return mask
 
 
+def light_clean_mask(mask, cfg=None):
+    """Remove tiny connected components only, WITHOUT morphological open/close.
+
+    Used for learned (U-Net) masks, which are already coherent: the erosive OPEN
+    in morphological_clean removes thin structure (recall collapse). This keeps
+    the learned mask intact while dropping speckle below morph_min_area_frac.
+    """
+    sc = cfg if isinstance(cfg, SegmentConfig) else (
+         cfg.segment if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.segment)
+    out = mask.copy()
+    min_area = int(sc.morph_min_area_frac * mask.size)
+    n_cc, labels, stats, _ = cv2.connectedComponentsWithStats(
+        (mask > 0).astype(np.uint8), 8)
+    for i in range(1, n_cc):
+        if stats[i, cv2.CC_STAT_AREA] < min_area:
+            out[labels == i] = 0
+    return out
+
+
 def morphological_clean(mask, min_area_frac=None, cfg=None):
     """Close, open, remove small components."""
     sc = cfg if isinstance(cfg, SegmentConfig) else (
          cfg.segment if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.segment)
     if min_area_frac is None:
         min_area_frac = sc.morph_min_area_frac
-    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,
-                                   (sc.morph_kernel_size, sc.morph_kernel_size))
-    out = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, k, iterations=1)
-    out = cv2.morphologyEx(out, cv2.MORPH_OPEN, k, iterations=1)
+    ks = sc.morph_kernel_size
+    iters = getattr(sc, 'morph_iterations', 1)
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (ks, ks))
+    out = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, k, iterations=iters)
+    out = cv2.morphologyEx(out, cv2.MORPH_OPEN, k, iterations=iters)
     min_area = int(min_area_frac * mask.size)
     n_cc, labels, stats, _ = cv2.connectedComponentsWithStats(out, 8)
     for i in range(1, n_cc):
@@ -205,7 +239,7 @@ def morphological_clean(mask, min_area_frac=None, cfg=None):
 
 
 def auto_segment(image_gray, img_bg_sub, img_enhanced, sam_model=None,
-                 image_type='sparse', verbose=True, cfg=None):
+                 image_type='sparse', verbose=True, cfg=None, learned_model=None):
     """
     v4: Cascading segmentation with early-exit.
     
@@ -272,18 +306,45 @@ def auto_segment(image_gray, img_bg_sub, img_enhanced, sam_model=None,
                                             image_type=image_type, cfg=sc)
         candidates['microSAM'] = {'mask': sam_mask, 'time': t_sam, 'score': q_sam}
 
-    # --- Recall-against-union correction ---
-    # A method that detects only a tiny subset of what all methods collectively
-    # find should be penalised, regardless of how "clean" its detections are.
-    union_mask = np.zeros(image_gray.shape, dtype=np.uint8)
-    for c in candidates.values():
-        union_mask = np.maximum(union_mask, (c['mask'] > 0).astype(np.uint8))
-    union_area = max(int(np.count_nonzero(union_mask)), 1)
-    recall_weight = 0.25
-    for c in candidates.values():
-        recall = int(np.count_nonzero(c['mask'])) / union_area
-        c['score'] = c['score'] * (1.0 - recall_weight) + recall * recall_weight
+    # --- Learned U-Net foreground prior (optional) ---
+    if getattr(sc, 'use_learned', False) and learned_model is not None:
+        t0 = time.time()
+        lmask = learned_segment(learned_model, image_gray, cfg=sc)
+        mode = getattr(sc, 'learned_mode', 'union')
+        if mode in ('union', 'replace'):
+            if mode == 'union':
+                if getattr(sc, 'learned_union_with', 'best') == 'otsu':
+                    base_mask = candidates['Otsu']['mask']
+                else:
+                    base_mask = max(candidates.values(),
+                                    key=lambda c: c['score'])['mask']
+                lmask = np.maximum(lmask, base_mask)
+            t_l = time.time() - t0
+            q_l = segmentation_quality_score(lmask, image_gray, expected_fg,
+                                             method_name='Learned',
+                                             image_type=image_type, cfg=sc)
+            # force-select learned in union/replace modes
+            candidates['Learned'] = {'mask': lmask, 'time': t_l, 'score': 1e9}
+        else:  # 'candidate': compete by quality score
+            t_l = time.time() - t0
+            # Plausibility gate: a single-domain learned net can produce garbage
+            # out-of-domain (empty or flood masks). Only let it compete when its
+            # foreground fraction is plausible for this image type; otherwise the
+            # classical cascade is kept. (Gate applies to candidate mode only.)
+            fg_pct_l = np.count_nonzero(lmask) / lmask.size * 100.0
+            lo_gate = sc.expected_fg_lo * getattr(sc, 'learned_gate_lo_mult', 0.25)
+            hi_gate = sc.expected_fg_hi * getattr(sc, 'learned_gate_hi_mult', 1.75)
+            if lo_gate <= fg_pct_l <= hi_gate:
+                q_l = segmentation_quality_score(lmask, image_gray, expected_fg,
+                                                 method_name='Learned',
+                                                 image_type=image_type, cfg=sc)
+                candidates['Learned'] = {'mask': lmask, 'time': t_l, 'score': q_l}
+            elif verbose:
+                print(f'  [LEARNED] rejected: fg={fg_pct_l:.1f}% outside '
+                      f'plausible [{lo_gate:.1f}, {hi_gate:.1f}]% -> classical')
 
+
+    # --- Select best method (no recall-against-union bias) ---
     # Select best
     best_name = max(candidates, key=lambda k: candidates[k]['score'])
 

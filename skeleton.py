@@ -8,11 +8,90 @@ from scipy.spatial import KDTree
 from skimage.morphology import skeletonize
 
 
-def skeletonize_and_classify(mask):
-    """Skeleton + classify pixels by 8-connected degree."""
-    skel = skeletonize(mask > 0).astype(np.uint8)
+def _degree_map(skel):
     conn_kernel = np.array([[1, 1, 1], [1, 0, 1], [1, 1, 1]], dtype=np.uint8)
-    deg = cv2.filter2D(skel, -1, conn_kernel) * skel
+    return cv2.filter2D(skel.astype(np.uint8), -1, conn_kernel) * (skel > 0)
+
+
+def prune_skeleton_spurs(skel, min_length=5, max_iter=10):
+    """Remove short spur branches from a skeleton.
+
+    Skeletonising thick, rounded structures (e.g. mitochondria) produces short
+    barb branches hanging off the medial axis near blobby regions and tips.
+    These spurs spawn spurious endpoint nodes and edges that splay off the true
+    centreline. This routine walks inward from every endpoint; if the branch
+    reaches a junction within ``min_length`` pixels it is deleted. Isolated short
+    components (endpoint-to-endpoint, no junction) are preserved.
+
+    Args:
+        skel: binary skeleton (uint8/bool).
+        min_length: branches shorter than this that terminate at a junction are
+            pruned. Set <= 0 to disable.
+        max_iter: pruning passes (pruning can expose new spurs).
+
+    Returns:
+        cleaned binary skeleton (uint8).
+    """
+    skel = (np.asarray(skel) > 0).astype(np.uint8).copy()
+    if min_length is None or min_length <= 0:
+        return skel
+    H, W = skel.shape
+
+    def neighbours(p, exclude):
+        y, x = p
+        out = []
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1):
+                if dy == 0 and dx == 0:
+                    continue
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < H and 0 <= nx < W and skel[ny, nx] and (ny, nx) not in exclude:
+                    out.append((ny, nx))
+        return out
+
+    for _ in range(max_iter):
+        deg = _degree_map(skel)
+        endpoints = [tuple(p) for p in np.argwhere((deg == 1) & (skel > 0))]
+        if not endpoints:
+            break
+        to_remove = []
+        for ep in endpoints:
+            path = [ep]
+            prev = None
+            cur = ep
+            is_spur = False
+            while len(path) < min_length:
+                nbrs = neighbours(cur, exclude={prev} if prev is not None else set())
+                nbrs = [n for n in nbrs if n not in path]
+                if not nbrs:
+                    break  # isolated short segment — keep it
+                jn = [n for n in nbrs if deg[n] >= 3]
+                if jn or len(nbrs) > 1:
+                    is_spur = True  # branch meets a junction => spur off main axis
+                    break
+                prev, cur = cur, nbrs[0]
+                path.append(cur)
+            if is_spur and len(path) < min_length:
+                to_remove.extend(path)
+        if not to_remove:
+            break
+        for (y, x) in to_remove:
+            skel[y, x] = 0
+    return skel
+
+
+def skeletonize_and_classify(mask, prune_len=0):
+    """Skeleton + classify pixels by 8-connected degree.
+
+    Args:
+        mask: binary foreground mask.
+        prune_len: if > 0, remove spur branches shorter than this many pixels
+            before classification (reduces off-centreline noise).
+    """
+    skel = skeletonize(mask > 0).astype(np.uint8)
+    if prune_len and prune_len > 0:
+        skel = prune_skeleton_spurs(skel, min_length=prune_len)
+    deg = _degree_map(skel)
     ep_mask = (deg == 1) & (skel > 0)
     jn_mask = (deg >= 3) & (skel > 0)
     return skel, ep_mask, jn_mask

@@ -1,14 +1,14 @@
 Metric                 Sparse                              Dense
 ----------------------------------------------------------------
+filename             7249.png  yfpyhq-mitochondria-cv1-cells.jpg
 n_nodes                   352                               8489
-n_edges                    56                               5173
+n_edges                   307                               6854
 n_endpoints                21                                307
 n_junctions                45                               1788
 n_sampled                 286                               6394
-n_components              296                               3316
-mean_degree            0.3182                             1.2188
-mean_edge_length       3.7037                             2.4704
-mean_width             4.0395                             4.0398
-total_edge_length      207.41                           12779.62
-mean_curvature         0.1997                             0.1542
-filename             7249.png  yfpyhq-mitochondria-cv1-cells.jpg
+n_components               45                               1635
+mean_degree            1.7443                             1.6148
+mean_edge_length       1.9400                             2.0548
+mean_width             4.0960                             4.0359
+total_edge_length      595.57                           14083.87
+mean_curvature         0.0329                             0.1039

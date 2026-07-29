@@ -1,11 +1,12 @@
-"""Nanograph v4 — Reconstruction with oriented PSF and flat background fill.
+"""Nanograph v5 — Reconstruction with oriented PSF, spatial background grid, and residual coding.
 
-v4 improvements:
-1. Oriented elliptical PSF: Uses local skeleton tangent direction to create
-   anisotropic kernels that better match filament geometry.
-2. Intensity-matched foreground scaling: scales PSF output so its mean
-   foreground intensity matches the original image.
-3. Flat background fill from mean_bg byte stored in the compressed header.
+v5 improvements over v4:
+1. Spatial background grid: 16×16 bilinearly interpolated grid instead of flat mean_bg.
+   Captures non-uniform illumination, dramatically improving full-image PSNR/SSIM.
+2. Foreground residual coding: optional DCT-encoded residual captures high-frequency
+   detail the PSF model misses.
+3. Oriented elliptical PSF: (inherited from v4) filament-aligned anisotropic kernels.
+4. Intensity-matched foreground scaling.
 """
 
 import numpy as np
@@ -74,30 +75,45 @@ def reconstruct_width_aware(points, intensities, widths, shape,
 
 
 def reconstruct_with_background(fg_recon, bg_model, mask, original_img=None,
-                                 blend_sigma=None, fg_presence_thresh=None, cfg=None):
+                                 blend_sigma=None, fg_presence_thresh=None,
+                                 fg_residual=None, cfg=None):
     """
     Composite foreground PSF reconstruction with the background.
+
+    v5: bg_model can be either:
+      - A full-resolution float64 array (same as v4)
+      - A small grid (e.g. 16×16) that will be bilinearly interpolated
+
+    fg_residual: optional float64 residual image to add to the foreground
+                 (from DCT residual decoding).
 
     original_img: uint8 grayscale — used to match the fg mean intensity so the
                   reconstruction isn't dim due to PSF energy spreading.
     mask:         binary segmentation mask — used directly for blending so that
                   PSF tails outside the mask don't bleed into the background.
-
-    Intensity scaling:
-      If *original_img* and *mask* are provided the raw PSF output is scaled
-      so that its mean intensity within the foreground mask matches the
-      original image's mean foreground intensity:
-          scale = mean(original[mask>0]) / mean(fg_recon[mask>0])
-          fg_scaled = clip(fg_recon * scale, 0, 1)
-      If *original_img* is not provided, falls back to 99.5th-percentile
-      normalization for backward compatibility.
     """
+    from .utils import interpolate_bg_grid
+
     rc = cfg if isinstance(cfg, ReconConfig) else (
          cfg.recon if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.recon)
     if blend_sigma is None:
         blend_sigma = rc.blend_sigma
     if fg_presence_thresh is None:
         fg_presence_thresh = rc.fg_presence_thresh
+
+    target_shape = fg_recon.shape
+
+    # v5: Handle bg_model as grid or full-resolution
+    if bg_model is not None and bg_model.ndim == 2:
+        if bg_model.shape[0] < target_shape[0] or bg_model.shape[1] < target_shape[1]:
+            # It's a grid — interpolate to full resolution
+            bg_full = interpolate_bg_grid(bg_model, target_shape)
+        else:
+            bg_full = bg_model
+    elif bg_model is not None:
+        bg_full = bg_model
+    else:
+        bg_full = np.zeros(target_shape, dtype=np.float64)
 
     # --- Intensity-matched scaling ---
     if original_img is not None and mask is not None and np.any(mask > 0):
@@ -118,6 +134,10 @@ def reconstruct_with_background(fg_recon, bg_model, mask, original_img=None,
         else:
             fg_scaled = np.zeros_like(fg_recon)
 
+    # v5: Add foreground residual if provided
+    if fg_residual is not None:
+        fg_scaled = np.clip(fg_scaled + fg_residual, 0, 1)
+
     # --- Mask-based fg presence ---
     if mask is not None:
         fg_presence = (mask > 0).astype(np.float32)
@@ -126,7 +146,7 @@ def reconstruct_with_background(fg_recon, bg_model, mask, original_img=None,
     fg_presence = cv2.GaussianBlur(fg_presence, (0, 0), sigmaX=blend_sigma)
     fg_presence = np.clip(fg_presence, 0, 1).astype(np.float64)
 
-    combined = fg_scaled * fg_presence + bg_model * (1.0 - fg_presence)
+    combined = fg_scaled * fg_presence + bg_full * (1.0 - fg_presence)
     return np.clip(combined, 0, 1)
 
 
