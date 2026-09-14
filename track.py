@@ -1,18 +1,19 @@
 """
 Nanograph v5 — 4D deformable centreline tracking (`track.py`).
 
-Motivation (proven empirically on the Aaron clip):
-  Single-frame skeletonisation is *degenerate* at sub-PSF self-contacts: when a
-  tortuous filament folds back on itself within the point-spread function, the
-  two arms fuse into one blob and the medial axis collapses to a single short
-  line (geodesic error ~ -50%, a clean factor-2). 100% of the high-tortuosity
-  failures are this fusion (experiments/classify_failures.py), and orientation
-  junction resolution cannot help (0% are crossings).
+Status: implemented but UNVALIDATED engineering. No quantitative evaluation of
+this module is part of the repository; treat every design choice below as a
+hypothesis, not an established result.
 
-  BUT the degeneracy is never simultaneous across the live clip: every folded
-  material pair that collapses in its worst frame is faithfully resolved in at
-  least one other frame (experiments/temporal_gonogo.py: 100% rescued). The
-  information to recover the fold is present in the video.
+Motivating hypothesis:
+  Single-frame skeletonisation is expected to be degenerate at sub-PSF
+  self-contacts: when a tortuous filament folds back on itself within the
+  point-spread function, the two arms fuse into one blob and the medial axis
+  collapses to a single short line, roughly halving the measured geodesic.
+  Because a fold that is unresolvable in one frame may be resolved in another,
+  temporal propagation should in principle recover geometry that any
+  single-frame method loses. Systematic measurement of how often this failure
+  occurs and how often propagation rescues it remains future work.
 
 Idea:
   Replace per-frame skeletonisation with a single arc-length-parameterised 1D
