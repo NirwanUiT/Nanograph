@@ -91,6 +91,9 @@ Committed result CSVs backing the paper's tables:
 `dataset_results/` (726-image organelle run), `dataset_results_learned_replace/`,
 `cross_dataset_results/` (four sample-data modalities, no GT),
 `cross_gt_results/` (four annotated out-of-domain datasets),
+`mito_aaron_results/` (temporal clip), `sted_results/` (public STED mitochondria,
+Zenodo 14215838), `mito_zenodo*/`/`mito_mip_results/` (public MITO dataset,
+Zenodo 7724799, three preparations),
 `ablation_bg_residual.csv`, `seg_perturbation_ablation.csv`.
 
 ## Package layout
