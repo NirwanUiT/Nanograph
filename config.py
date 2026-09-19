@@ -159,6 +159,7 @@ class CompressConfig:
     format_version: int = 5       # bitstream format version
     store_bg_grid: bool = True    # store spatial background grid
     store_fg_residual: bool = True  # store DCT foreground residual
+    store_edges: bool = True      # v6: store graph edge connectivity
     graph_predictive: bool = True   # predict from graph neighbors, encode residuals
 
 

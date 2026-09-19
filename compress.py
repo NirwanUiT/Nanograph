@@ -17,6 +17,70 @@ import struct
 from .config import DEFAULT_CONFIG, NanographConfig, CompressConfig
 
 
+def _zigzag_encode(v):
+    return (v << 1) ^ (v >> 63) if v < 0 else (v << 1)
+
+
+def _zigzag_decode(u):
+    return (u >> 1) ^ -(u & 1)
+
+
+def _write_varint(buf, u):
+    while u >= 0x80:
+        buf.append((u & 0x7F) | 0x80)
+        u >>= 7
+    buf.append(u)
+
+
+def _read_varint(data, off):
+    u = 0
+    shift = 0
+    while True:
+        b = data[off]
+        off += 1
+        u |= (b & 0x7F) << shift
+        if not (b & 0x80):
+            return u, off
+        shift += 7
+
+
+def _encode_edge_section(edges, inv_order):
+    """Edge list -> varint bytes. Edges are (u, v) in original node ids;
+    stored as sorted-position pairs (pu < pv), sorted by (pu, pv),
+    delta-coded as zigzag varints (pu - prev_pu, pv - pu)."""
+    pairs = []
+    for u, v in edges:
+        pu, pv = int(inv_order[u]), int(inv_order[v])
+        if pu > pv:
+            pu, pv = pv, pu
+        pairs.append((pu, pv))
+    pairs.sort()
+    buf = bytearray()
+    _write_varint(buf, len(pairs))
+    prev_pu = 0
+    for pu, pv in pairs:
+        _write_varint(buf, _zigzag_encode(pu - prev_pu))
+        _write_varint(buf, _zigzag_encode(pv - pu))
+        prev_pu = pu
+    return bytes(buf)
+
+
+def _decode_edge_section(data, off):
+    """Inverse of _encode_edge_section. Returns (edges, new_offset); edges are
+    (pu, pv) pairs in sorted-position (= decoded node) indices."""
+    n_edges, off = _read_varint(data, off)
+    edges = []
+    prev_pu = 0
+    for _ in range(n_edges):
+        d, off = _read_varint(data, off)
+        pu = prev_pu + _zigzag_decode(d)
+        d, off = _read_varint(data, off)
+        pv = pu + _zigzag_decode(d)
+        edges.append((pu, pv))
+        prev_pu = pu
+    return edges, off
+
+
 def _graph_predictive_encode(i_q, w_q, graph, order):
     """
     Graph-predictive encoding: for each node (in sorted order),
@@ -151,8 +215,10 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     w_q = w_q[order]
     i_q = i_q[order]
 
-    # Delta-encode rows
-    row_deltas = np.diff(rows, prepend=rows[0]).astype(np.int16)
+    # Delta-encode rows. v6: first delta is the absolute row (prepend=0) so the
+    # decoder's cumsum recovers absolute positions; v4/v5 used prepend=rows[0],
+    # which lost the offset at decode time.
+    row_deltas = np.diff(rows, prepend=0).astype(np.int16)
 
     # Determine flags
     has_types = types is not None
@@ -185,11 +251,16 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     # v5: graph-predictive encoding
     use_graph_pred = (cc.graph_predictive and graph is not None)
 
+    # v6: stored edge connectivity
+    has_edges = (getattr(cc, 'store_edges', True) and graph is not None
+                 and len(graph.edges) > 0)
+
     flags = (int(has_types)
              | (int(has_orientation) << 1)
              | (int(has_bg_grid) << 2)
              | (int(has_fg_residual) << 3)
-             | (int(use_graph_pred) << 4))
+             | (int(use_graph_pred) << 4)
+             | (int(has_edges) << 5))
 
     # --- Build raw payload ---
     raw = bytearray()
@@ -244,12 +315,22 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     if has_bg_grid and bg_grid_u8 is not None:
         raw.extend(bg_grid_u8.tobytes())
 
+    # v6: Edge connectivity section
+    edge_section_bytes = 0
+    if has_edges:
+        inv_order = np.empty(n, dtype=np.int64)
+        inv_order[order] = np.arange(n)
+        edge_sec = _encode_edge_section(
+            [(e.source, e.target) for e in graph.edges], inv_order)
+        raw.extend(edge_sec)
+        edge_section_bytes = len(edge_sec)
+
     # zlib compress main payload
     compressed = zlib.compress(bytes(raw), level=cc.zlib_level)
 
-    # v5 Header: 13 bytes
+    # v6 Header: 13 bytes (same layout as v5, version byte = 6)
     #   version(u8) + H(u16) + W(u16) + n(u32) + flags(u16) + grid_size(u8) + reserved(u8)
-    header = struct.pack('<BHHIHBB', 5, shape[0], shape[1], n, flags,
+    header = struct.pack('<BHHIHBB', 6, shape[0], shape[1], n, flags,
                          grid_size if has_bg_grid else 0, 0)
     header_size = len(header)  # 13 bytes
 
@@ -274,12 +355,15 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
         'has_bg_grid': has_bg_grid,
         'has_fg_residual': has_fg_residual,
         'graph_predictive': use_graph_pred,
+        'has_edges': has_edges,
+        'edge_section_bytes': edge_section_bytes,
+        'n_edges': len(graph.edges) if has_edges else 0,
         'bg_grid_bytes': grid_size * grid_size if has_bg_grid else 0,
         'fg_residual_bytes': len(fg_residual) if has_fg_residual else 0,
         'bytes_per_point_raw': 7 if has_orientation else 6,
         'bytes_per_point_effective': total_bytes / max(n, 1),
         'compression_vs_float32': n * cc.raw_bytes_per_point / max(total_bytes, 1),
-        'format_version': 5,
+        'format_version': 6,
     }
 
 
@@ -287,24 +371,28 @@ def decompress_nanograph(data, cfg=None):
     """
     Decompress a nanograph from compressed bytes.
 
-    Auto-detects v4 vs v5 format from the first byte.
+    Auto-detects v4 / v5 / v6 format from the first byte.
 
-    Returns: points, intensities, widths, types, orientations, shape, bg_info
-             where bg_info is either a float (mean_bg for v4) or a dict for v5.
+    Returns: points, intensities, widths, types, orientations, shape, bg_info,
+             edges, adjacency
+             where edges is a list of (u, v) decoded-node-index pairs (empty
+             for v4/v5 streams) and adjacency maps node index -> neighbour
+             indices; bg_info is a float (mean_bg, v4) or a dict (v5/v6).
     """
     cc = cfg if isinstance(cfg, CompressConfig) else (
          cfg.compress if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.compress)
 
     # Detect format version
     version = data[0]
-    if version == 5:
+    if version in (5, 6):
         return _decompress_v5(data, cc)
     else:
-        return _decompress_v4(data, cc)
+        out = _decompress_v4(data, cc)
+        return out + ([], {})
 
 
 def _decompress_v4(data, cc):
-    """Decompress v4 format (backward compatibility)."""
+    """Decompress v4 format (backward compatibility). Returns 7-tuple."""
     header_size = 10
     H, W, n, flags, mean_bg_byte = struct.unpack('<HHIBB', data[:header_size])
 
@@ -363,7 +451,7 @@ def _decompress_v4(data, cc):
 
 
 def _decompress_v5(data, cc):
-    """Decompress v5 format with bg grid, graph-predictive, and residual."""
+    """Decompress v5/v6 format (bg grid, graph-predictive, residual, edges)."""
     from .utils import dequantize_bg_grid
 
     header_size = 13
@@ -375,6 +463,7 @@ def _decompress_v5(data, cc):
     has_bg_grid = bool(flags & 4)
     has_fg_residual = bool(flags & 8)
     graph_predictive = bool(flags & 16)
+    has_edges = bool(flags & 32) and version >= 6
 
     # Find the boundary between main payload and residual
     # Main payload starts after header; residual (if present) is appended after
@@ -458,6 +547,15 @@ def _decompress_v5(data, cc):
         bg_grid = dequantize_bg_grid(bg_grid_u8)
         offset += grid_bytes
 
+    # v6: Edge connectivity section
+    edges = []
+    adjacency = {}
+    if has_edges:
+        edges, offset = _decode_edge_section(raw, offset)
+        for u, v in edges:
+            adjacency.setdefault(u, []).append(v)
+            adjacency.setdefault(v, []).append(u)
+
     # FG residual
     fg_residual_data = None
     if has_fg_residual and main_end < len(data):
@@ -469,7 +567,7 @@ def _decompress_v5(data, cc):
     bg_info = {
         'bg_grid': bg_grid,
         'fg_residual_data': fg_residual_data,
-        'format_version': 5,
+        'format_version': version,
     }
     # Fallback mean_bg for compatibility
     if bg_grid is not None:
@@ -477,4 +575,5 @@ def _decompress_v5(data, cc):
     else:
         bg_info['mean_bg'] = 0.0
 
-    return points, intensities, widths, types_arr, orientations, (H, W), bg_info
+    return (points, intensities, widths, types_arr, orientations, (H, W),
+            bg_info, edges, adjacency)

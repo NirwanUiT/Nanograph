@@ -425,7 +425,7 @@ def nanograph_decode(compressed_data, sigma_scale=None,
         sigma_scale = rc.sigma_scale
 
     (points, intensities, widths, types, orientations,
-     shape, bg_info) = decompress_nanograph(compressed_data, cfg=cfg)
+     shape, bg_info, _edges, _adjacency) = decompress_nanograph(compressed_data, cfg=cfg)
 
     fg_recon = reconstruct_width_aware(
         points, intensities, widths, shape, sigma_scale,
@@ -459,3 +459,43 @@ def nanograph_decode(compressed_data, sigma_scale=None,
         fg_residual=fg_residual, cfg=rc)
 
     return recon, points, intensities, widths, types, orientations, shape
+
+
+def decode_graph(compressed_data, cfg=None):
+    """Rebuild the Nanograph object from a v6 payload (stored nodes + edges).
+
+    Edge attributes that are functions of node attributes (length as the
+    Euclidean distance between endpoints, mean width/intensity as the endpoint
+    means) are recomputed from the decoded nodes; curvature is a path
+    property and is set to 0 (not recoverable from two endpoints).
+    """
+    from .graph import Nanograph, GraphNode, GraphEdge
+
+    if cfg is None:
+        cfg = DEFAULT_CONFIG
+    (points, intensities, widths, types, orientations,
+     shape, bg_info, edges, adjacency) = decompress_nanograph(compressed_data, cfg=cfg)
+
+    nodes = []
+    for i in range(len(points)):
+        nodes.append(GraphNode(
+            id=i, position=(int(points[i, 0]), int(points[i, 1])),
+            width=float(widths[i]), intensity=float(intensities[i]),
+            orientation=float(orientations[i]), node_type=str(types[i]),
+            degree=len(adjacency.get(i, []))))
+
+    graph_edges = []
+    for eid, (u, v) in enumerate(edges):
+        du = np.array(nodes[u].position, dtype=float)
+        dv = np.array(nodes[v].position, dtype=float)
+        length = float(np.hypot(*(du - dv)))
+        graph_edges.append(GraphEdge(
+            id=eid, source=u, target=v, length=length,
+            pixel_count=int(round(length)) + 1,
+            mean_width=(nodes[u].width + nodes[v].width) / 2.0,
+            mean_intensity=(nodes[u].intensity + nodes[v].intensity) / 2.0,
+            curvature=0.0))
+
+    return Nanograph(nodes=nodes, edges=graph_edges,
+                     adjacency={k: list(v) for k, v in adjacency.items()},
+                     shape=shape, image_type='decoded')

@@ -16,7 +16,7 @@ Usage:
 """
 
 from .config import NanographConfig, DEFAULT_CONFIG
-from .api import nanograph_encode, nanograph_decode, NanographResult
+from .api import nanograph_encode, nanograph_decode, decode_graph, NanographResult
 from .graph import Nanograph, nanograph_morphometry, build_nanograph
 from .track import (track_mitochondria, MitoTrack, CurveTrack,
                     propagate_curve, seed_curve_from_graph)
@@ -28,7 +28,7 @@ from .utils import (compute_betti_numbers, betti_error,
 __version__ = '5.0.0'
 
 __all__ = [
-    'nanograph_encode', 'nanograph_decode', 'NanographResult',
+    'nanograph_encode', 'nanograph_decode', 'decode_graph', 'NanographResult',
     'NanographConfig', 'DEFAULT_CONFIG',
     'Nanograph', 'nanograph_morphometry', 'build_nanograph',
     'track_mitochondria', 'MitoTrack', 'CurveTrack',

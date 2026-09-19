@@ -575,5 +575,98 @@ def _plot_rd_curve(rd_points, label, save_path):
     print(f'  R-D curve saved: {save_path}')
 
 
+# ---------------------------------------------------------------------------
+# pytest acceptance tests (T1: stored edges / decode_graph round trip)
+# ---------------------------------------------------------------------------
+_ORG_IMAGES = '/mnt/nas1/nba055-2/idea_1/nmi_data/org'
+_CROSS_IMAGES = {
+    'cells3d_membrane': '/mnt/nas1/nba055-2/idea_1/datasets/cells3d_membrane/images',
+    'cells3d_nuclei': '/mnt/nas1/nba055-2/idea_1/datasets/cells3d_nuclei/images',
+    'retina': '/mnt/nas1/nba055-2/idea_1/datasets/retina/images',
+    'cell': '/mnt/nas1/nba055-2/idea_1/datasets/cell/images',
+}
+
+
+def _beta0(n_nodes, adjacency):
+    seen = set()
+    comps = 0
+    for start in range(n_nodes):
+        if start in seen:
+            continue
+        comps += 1
+        stack = [start]
+        while stack:
+            u = stack.pop()
+            if u in seen:
+                continue
+            seen.add(u)
+            stack.extend(adjacency.get(u, []))
+    return comps
+
+
+def _graph_invariants(n_nodes, edge_pairs, positions):
+    adj = {}
+    for u, v in edge_pairs:
+        adj.setdefault(u, []).append(v)
+        adj.setdefault(v, []).append(u)
+    b0 = _beta0(n_nodes, adj)
+    cycle_rank = len(edge_pairs) - n_nodes + b0
+    total_len = sum(float(np.hypot(*(positions[u] - positions[v])))
+                    for u, v in edge_pairs)
+    return b0, cycle_rank, total_len
+
+
+def _roundtrip_one(img_path):
+    from nanograph_v4 import nanograph_encode, decode_graph, NanographConfig
+    from collections import Counter
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    assert img is not None, img_path
+    r = nanograph_encode(img, sam_model=None, verbose=False, optimize=False,
+                         config=NanographConfig())
+    if r.graph is None or r.graph.n_nodes == 0:
+        return None
+    dec = decode_graph(r.compressed)
+
+    # Map encoder edges (original node ids) into decoded (row-sorted) indices.
+    rows = r.points[:, 0].astype(np.int32)
+    order = np.argsort(rows)
+    inv = np.empty(len(rows), dtype=np.int64)
+    inv[order] = np.arange(len(rows))
+    enc_pairs = Counter(tuple(sorted((int(inv[e.source]), int(inv[e.target]))))
+                        for e in r.graph.edges)
+    dec_pairs = Counter(tuple(sorted((u, v))) for u, v in
+                        [(e.source, e.target) for e in dec.edges])
+    assert enc_pairs == dec_pairs, f'edge set mismatch on {img_path}'
+
+    enc_pos = r.points[order].astype(float)
+    dec_pos = dec.node_positions.astype(float)
+    assert np.array_equal(enc_pos, dec_pos), f'position mismatch on {img_path}'
+
+    e_inv = _graph_invariants(len(rows), list(enc_pairs.elements()), enc_pos)
+    d_inv = _graph_invariants(dec.n_nodes,
+                              [(e.source, e.target) for e in dec.edges], dec_pos)
+    assert e_inv[0] == d_inv[0], 'beta0 mismatch'
+    assert e_inv[1] == d_inv[1], 'cycle rank mismatch'
+    assert abs(e_inv[2] - d_inv[2]) <= 1e-6 * max(1.0, e_inv[2]), 'edge length mismatch'
+    return True
+
+
+def test_edge_roundtrip_organelle():
+    import glob
+    paths = sorted(glob.glob(os.path.join(_ORG_IMAGES, '*.png')))[:20]
+    assert len(paths) == 20
+    for p in paths:
+        _roundtrip_one(p)
+
+
+def test_edge_roundtrip_cross_modality():
+    import glob
+    for name, root in _CROSS_IMAGES.items():
+        paths = sorted(glob.glob(os.path.join(root, '*.png')))[:5]
+        assert paths, f'no images for {name}'
+        for p in paths:
+            _roundtrip_one(p)
+
+
 if __name__ == '__main__':
     main()
