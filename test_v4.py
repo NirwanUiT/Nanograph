@@ -668,5 +668,67 @@ def test_edge_roundtrip_cross_modality():
             _roundtrip_one(p)
 
 
+# ---------------------------------------------------------------------------
+# pytest acceptance tests (T2: invertible predictive coding)
+# ---------------------------------------------------------------------------
+def _make_synthetic_graph(positions, edge_pairs, widths, intensities):
+    from nanograph_v4.graph import Nanograph, GraphNode, GraphEdge
+    nodes = [GraphNode(id=i, position=tuple(p), width=float(w),
+                       intensity=float(it), orientation=0.0, node_type='sampled')
+             for i, (p, w, it) in enumerate(zip(positions, widths, intensities))]
+    edges = [GraphEdge(id=k, source=u, target=v, length=1.0, pixel_count=2,
+                       mean_width=1.0, mean_intensity=0.5, curvature=0.0)
+             for k, (u, v) in enumerate(edge_pairs)]
+    adj = {}
+    for u, v in edge_pairs:
+        adj.setdefault(u, []).append(v)
+        adj.setdefault(v, []).append(u)
+    return Nanograph(nodes=nodes, edges=edges, adjacency=adj,
+                     shape=(64, 64), image_type='synthetic')
+
+
+def _predictive_roundtrip(positions, edge_pairs):
+    from nanograph_v4.compress import compress_nanograph, decompress_nanograph
+    from nanograph_v4.config import NanographConfig
+    rng = np.random.default_rng(7)
+    n = len(positions)
+    widths = rng.uniform(0.5, 12.0, n)
+    intensities = rng.uniform(0.0, 1.0, n)
+    graph = _make_synthetic_graph(positions, edge_pairs, widths, intensities)
+    pts = np.array(positions, dtype=float)
+    cfg = NanographConfig()
+    payload, stats = compress_nanograph(
+        pts, intensities, widths, (64, 64),
+        types=np.array(['sampled'] * n), orientations=np.zeros(n),
+        graph=graph, cfg=cfg)
+    (dpts, dints, dwidths, _t, _o, _s, _bg, dedges, _adj) = \
+        decompress_nanograph(payload, cfg=cfg)
+    # Compare quantised values in sorted order — must be EXACT.
+    order = np.argsort(pts[:, 0].astype(np.int32))
+    qs = cfg.compress.width_quant_scale
+    w_q_enc = np.clip(np.round(widths * qs), 0, 255).astype(np.uint8)[order]
+    i_q_enc = np.clip(np.round(intensities * 255), 0, 255).astype(np.uint8)[order]
+    w_q_dec = np.clip(np.round(dwidths * qs), 0, 255).astype(np.uint8)
+    i_q_dec = np.clip(np.round(dints * 255), 0, 255).astype(np.uint8)
+    assert np.array_equal(w_q_enc, w_q_dec), 'width mismatch'
+    assert np.array_equal(i_q_enc, i_q_dec), 'intensity mismatch'
+
+
+def test_predictive_roundtrip_path():
+    n = 200
+    positions = [(i, 5) for i in range(n)]
+    _predictive_roundtrip(positions, [(i, i + 1) for i in range(n - 1)])
+
+
+def test_predictive_roundtrip_tree():
+    positions = [(0, 10), (1, 9), (1, 11), (2, 8), (2, 12), (3, 7), (3, 13)]
+    _predictive_roundtrip(positions, [(0, 1), (0, 2), (1, 3), (2, 4), (3, 5), (4, 6)])
+
+
+def test_predictive_roundtrip_cycle():
+    positions = [(0, 5), (1, 4), (2, 5), (1, 6), (3, 5), (4, 5)]
+    _predictive_roundtrip(positions, [(0, 1), (1, 2), (2, 3), (3, 0), (2, 4), (4, 5)])
+
+
 if __name__ == '__main__':
     main()

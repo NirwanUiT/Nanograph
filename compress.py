@@ -81,6 +81,50 @@ def _decode_edge_section(data, off):
     return edges, off
 
 
+def _neighbour_predictor(vals, adj, p):
+    """Shared v6 predictor: mean of already-decoded neighbours (sorted position
+    < p); else previous node; else 128. Identical on encoder and decoder."""
+    prev_ns = [q for q in adj.get(p, []) if q < p]
+    if prev_ns:
+        return int(np.mean([int(vals[q]) for q in prev_ns]))
+    if p > 0:
+        return int(vals[p - 1])
+    return 128
+
+
+def _predictive_encode_v6(i_q, w_q, adj):
+    """Residuals along stored edges; exact ints, no clipping."""
+    n = len(i_q)
+    i_res, w_res = [], []
+    for p in range(n):
+        i_res.append(int(i_q[p]) - _neighbour_predictor(i_q, adj, p))
+        w_res.append(int(w_q[p]) - _neighbour_predictor(w_q, adj, p))
+    return i_res, w_res
+
+
+def _predictive_decode_v6(i_res, w_res, adj):
+    n = len(i_res)
+    i_q = np.zeros(n, dtype=np.int64)
+    w_q = np.zeros(n, dtype=np.int64)
+    for p in range(n):
+        i_q[p] = _neighbour_predictor(i_q, adj, p) + i_res[p]
+        w_q[p] = _neighbour_predictor(w_q, adj, p) + w_res[p]
+    return i_q.astype(np.uint8), w_q.astype(np.uint8)
+
+
+def _write_signed_varints(buf, values):
+    for v in values:
+        _write_varint(buf, _zigzag_encode(int(v)))
+
+
+def _read_signed_varints(data, off, n):
+    out = np.empty(n, dtype=np.int64)
+    for i in range(n):
+        u, off = _read_varint(data, off)
+        out[i] = _zigzag_decode(u)
+    return out, off
+
+
 def _graph_predictive_encode(i_q, w_q, graph, order):
     """
     Graph-predictive encoding: for each node (in sorted order),
@@ -262,34 +306,38 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
              | (int(use_graph_pred) << 4)
              | (int(has_edges) << 5))
 
-    # --- Build raw payload ---
+    # --- Build raw payload (v6 layout) ---
     raw = bytearray()
 
+    # Section 0a: positions (row_delta i16 + col u16, 4 bytes/point)
+    pos_buf = np.empty(n * 4, dtype=np.uint8)
+    rd_bytes = row_deltas.astype('<i2').view(np.uint8)
+    pos_buf[0::4] = rd_bytes[0::2]
+    pos_buf[1::4] = rd_bytes[1::2]
+    col_bytes = cols.astype('<u2').view(np.uint8)
+    pos_buf[2::4] = col_bytes[0::2]
+    pos_buf[3::4] = col_bytes[1::2]
+    raw.extend(pos_buf.tobytes())
+
+    # Sorted-position adjacency for the shared predictor (empty if no edges).
+    adj_sorted = {}
+    inv_order = np.empty(n, dtype=np.int64)
+    inv_order[order] = np.arange(n)
+    if has_edges:
+        for e in graph.edges:
+            pu, pv = int(inv_order[e.source]), int(inv_order[e.target])
+            adj_sorted.setdefault(pu, []).append(pv)
+            adj_sorted.setdefault(pv, []).append(pu)
+
+    # Sections 0b/0c: intensity and width — varint residuals (predictive) or
+    # raw u8 arrays.
     if use_graph_pred:
-        # Graph-predictive: encode residuals for intensity and width
-        i_resid, w_resid = _graph_predictive_encode(i_q, w_q, graph, order)
-        # Point data: row_delta(2) + col(2) + i_resid(1) + w_resid(1) = 6 bytes
-        buf = np.empty(n * 6, dtype=np.uint8)
-        rd_bytes = row_deltas.astype('<i2').view(np.uint8)
-        buf[0::6] = rd_bytes[0::2]
-        buf[1::6] = rd_bytes[1::2]
-        col_bytes = cols.astype('<u2').view(np.uint8)
-        buf[2::6] = col_bytes[0::2]
-        buf[3::6] = col_bytes[1::2]
-        buf[4::6] = i_resid.view(np.uint8)
-        buf[5::6] = w_resid.view(np.uint8)
+        i_res, w_res = _predictive_encode_v6(i_q, w_q, adj_sorted)
+        _write_signed_varints(raw, i_res)
+        _write_signed_varints(raw, w_res)
     else:
-        # Standard encoding (same as v4)
-        buf = np.empty(n * 6, dtype=np.uint8)
-        rd_bytes = row_deltas.astype('<i2').view(np.uint8)
-        buf[0::6] = rd_bytes[0::2]
-        buf[1::6] = rd_bytes[1::2]
-        col_bytes = cols.astype('<u2').view(np.uint8)
-        buf[2::6] = col_bytes[0::2]
-        buf[3::6] = col_bytes[1::2]
-        buf[4::6] = w_q
-        buf[5::6] = i_q
-    raw.extend(buf.tobytes())
+        raw.extend(i_q.tobytes())
+        raw.extend(w_q.tobytes())
 
     # Orientation data
     if has_orientation:
@@ -318,8 +366,6 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     # v6: Edge connectivity section
     edge_section_bytes = 0
     if has_edges:
-        inv_order = np.empty(n, dtype=np.int64)
-        inv_order[order] = np.arange(n)
         edge_sec = _encode_edge_section(
             [(e.source, e.target) for e in graph.edges], inv_order)
         raw.extend(edge_sec)
@@ -486,33 +532,56 @@ def _decompress_v5(data, cc):
 
     offset = 0
 
-    # Point data (n × 6 bytes)
-    point_data = np.frombuffer(raw[offset:offset + n * 6], dtype=np.uint8).reshape(n, 6)
-    offset += n * 6
+    if version >= 6:
+        # v6 layout: positions (n*4) + attr sections (varint residuals or raw u8)
+        pos_data = np.frombuffer(raw[offset:offset + n * 4], dtype=np.uint8).reshape(n, 4)
+        offset += n * 4
+        row_delta_bytes = np.empty(n * 2, dtype=np.uint8)
+        row_delta_bytes[0::2] = pos_data[:, 0]
+        row_delta_bytes[1::2] = pos_data[:, 1]
+        row_deltas = row_delta_bytes.view('<i2')
+        col_bytes = np.empty(n * 2, dtype=np.uint8)
+        col_bytes[0::2] = pos_data[:, 2]
+        col_bytes[1::2] = pos_data[:, 3]
+        cols = col_bytes.view('<u2').astype(np.int32)
+        rows = np.cumsum(row_deltas.astype(np.int32))
+        points = np.column_stack((rows, cols)).astype(float)
 
-    row_delta_bytes = np.empty(n * 2, dtype=np.uint8)
-    row_delta_bytes[0::2] = point_data[:, 0]
-    row_delta_bytes[1::2] = point_data[:, 1]
-    row_deltas = row_delta_bytes.view('<i2')
-
-    col_bytes = np.empty(n * 2, dtype=np.uint8)
-    col_bytes[0::2] = point_data[:, 2]
-    col_bytes[1::2] = point_data[:, 3]
-    cols = col_bytes.view('<u2').astype(np.int32)
-
-    rows = np.cumsum(row_deltas.astype(np.int32))
-    points = np.column_stack((rows, cols)).astype(float)
-
-    if graph_predictive:
-        i_resid = point_data[:, 4].view(np.int8)
-        w_resid = point_data[:, 5].view(np.int8)
-        i_q, w_q = _graph_predictive_decode(i_resid, w_resid, rows, cols)
+        i_res = w_res = None
+        if graph_predictive:
+            i_res, offset = _read_signed_varints(raw, offset, n)
+            w_res, offset = _read_signed_varints(raw, offset, n)
+            i_q = w_q = None  # resolved after the edge section is parsed
+        else:
+            i_q = np.frombuffer(raw[offset:offset + n], dtype=np.uint8)
+            offset += n
+            w_q = np.frombuffer(raw[offset:offset + n], dtype=np.uint8)
+            offset += n
     else:
-        w_q = point_data[:, 4]
-        i_q = point_data[:, 5]
+        # v5 layout: interleaved point data (n × 6 bytes)
+        point_data = np.frombuffer(raw[offset:offset + n * 6], dtype=np.uint8).reshape(n, 6)
+        offset += n * 6
 
-    widths = w_q.astype(float) / cc.width_quant_scale
-    intensities = i_q.astype(float) / 255.0
+        row_delta_bytes = np.empty(n * 2, dtype=np.uint8)
+        row_delta_bytes[0::2] = point_data[:, 0]
+        row_delta_bytes[1::2] = point_data[:, 1]
+        row_deltas = row_delta_bytes.view('<i2')
+
+        col_bytes = np.empty(n * 2, dtype=np.uint8)
+        col_bytes[0::2] = point_data[:, 2]
+        col_bytes[1::2] = point_data[:, 3]
+        cols = col_bytes.view('<u2').astype(np.int32)
+
+        rows = np.cumsum(row_deltas.astype(np.int32))
+        points = np.column_stack((rows, cols)).astype(float)
+
+        if graph_predictive:
+            i_resid = point_data[:, 4].view(np.int8)
+            w_resid = point_data[:, 5].view(np.int8)
+            i_q, w_q = _graph_predictive_decode(i_resid, w_resid, rows, cols)
+        else:
+            w_q = point_data[:, 4]
+            i_q = point_data[:, 5]
 
     # Orientation
     if has_orientation:
@@ -555,6 +624,13 @@ def _decompress_v5(data, cc):
         for u, v in edges:
             adjacency.setdefault(u, []).append(v)
             adjacency.setdefault(v, []).append(u)
+
+    # v6 predictive attributes need the adjacency, so resolve them last.
+    if version >= 6 and graph_predictive:
+        i_q, w_q = _predictive_decode_v6(i_res, w_res, adjacency)
+
+    widths = w_q.astype(float) / cc.width_quant_scale
+    intensities = i_q.astype(float) / 255.0
 
     # FG residual
     fg_residual_data = None
