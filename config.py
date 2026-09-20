@@ -105,6 +105,7 @@ class SegmentConfig:
     # masks a single-domain net can emit out-of-domain.
     learned_gate_lo_mult: float = 0.25
     learned_gate_hi_mult: float = 1.75
+    force_segmenter: str = ''  # T4: restrict cascade to one candidate ('otsu', 'frangi', 'meijering', 'learned')
 
 
 @dataclass

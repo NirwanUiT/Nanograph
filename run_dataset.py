@@ -132,9 +132,14 @@ def main():
                         help='Number of random sample visualizations to save')
     parser.add_argument('--seed', type=int, default=42, help='Random seed for sampling')
     parser.add_argument('--sam', default=None, help='Path to SAM checkpoint (optional)')
-    parser.add_argument('--preset', default=None, choices=['curvilinear', 'learned-replace'],
+    parser.add_argument('--preset', default=None,
+                        choices=['curvilinear', 'learned-replace', 'classical'],
                         help="Optional config preset ('curvilinear' = multi-domain clDice U-Net in replace mode; "
-                             "'learned-replace' = default organelle U-Net in replace mode)")
+                             "'learned-replace' = default organelle U-Net in replace mode; "
+                             "'classical' = disable the learned candidate)")
+    parser.add_argument('--force-segmenter', default=None,
+                        choices=['otsu', 'frangi', 'meijering', 'learned'],
+                        help='Restrict the cascade to a single segmenter')
     args = parser.parse_args()
 
     os.makedirs(args.outdir, exist_ok=True)
@@ -170,6 +175,13 @@ def main():
         cfg = cfg.for_curvilinear()
     elif args.preset == 'learned-replace':
         cfg.segment.learned_mode = 'replace'
+    elif args.preset == 'classical':
+        cfg.segment.use_learned = False
+    if args.force_segmenter:
+        cfg.segment.force_segmenter = args.force_segmenter
+        if args.force_segmenter == 'learned':
+            cfg.segment.use_learned = True
+            cfg.segment.learned_mode = 'replace'
     print(f'\nNanograph v5 — {cfg.param_count()} params')
     print(f'='*70)
 

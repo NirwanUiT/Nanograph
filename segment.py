@@ -345,6 +345,14 @@ def auto_segment(image_gray, img_bg_sub, img_enhanced, sam_model=None,
 
 
     # --- Select best method (no recall-against-union bias) ---
+    # Optional override: restrict to a single named candidate (T4).
+    forced = getattr(sc, 'force_segmenter', '')
+    if forced:
+        forced_key = {'otsu': 'Otsu', 'frangi': 'Frangi',
+                      'meijering': 'Meijering', 'learned': 'Learned'}.get(
+            forced.lower(), forced)
+        if forced_key in candidates:
+            candidates = {forced_key: candidates[forced_key]}
     # Select best
     best_name = max(candidates, key=lambda k: candidates[k]['score'])
 
