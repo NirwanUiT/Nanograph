@@ -207,7 +207,7 @@ def _graph_predictive_decode(i_resid, w_resid, rows, cols):
 
 def compress_nanograph(points, intensities, widths, shape, types=None,
                        orientations=None, bg_model=None, graph=None,
-                       fg_residual=None, cfg=None):
+                       fg_residual=None, fg_residual_shape=None, cfg=None):
     """
     Quantise + delta-encode + zlib compress a nanograph (v5 format).
 
@@ -384,10 +384,15 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     stream = bytearray(header)
     stream.extend(compressed)
 
-    # v5: Append fg residual (already zlib'd) with length prefix
+    # v5: Append fg residual (already zlib'd) with length prefix.
+    # v6: a 12-byte shape_info header (y0,x0,rh,rw,bh,bw as u16) precedes the
+    # residual bytes so the payload is self-contained at decode time.
     if has_fg_residual:
         resid_data = fg_residual if isinstance(fg_residual, bytes) else bytes(fg_residual)
-        stream.extend(struct.pack('<I', len(resid_data)))
+        si = fg_residual_shape if fg_residual_shape is not None else (0, 0, 0, 0, 0, 0)
+        shape_hdr = struct.pack('<HHHHHH', *[int(x) for x in si])
+        stream.extend(struct.pack('<I', len(shape_hdr) + len(resid_data)))
+        stream.extend(shape_hdr)
         stream.extend(resid_data)
 
     total_bytes = len(stream)
@@ -634,15 +639,22 @@ def _decompress_v5(data, cc):
 
     # FG residual
     fg_residual_data = None
+    fg_residual_shape = None
     if has_fg_residual and main_end < len(data):
         resid_start = main_end
         resid_len = struct.unpack('<I', data[resid_start:resid_start + 4])[0]
-        fg_residual_data = data[resid_start + 4: resid_start + 4 + resid_len]
+        blob = data[resid_start + 4: resid_start + 4 + resid_len]
+        if version >= 6:
+            fg_residual_shape = struct.unpack('<HHHHHH', blob[:12])
+            fg_residual_data = blob[12:]
+        else:
+            fg_residual_data = blob
 
     # Build bg_info dict
     bg_info = {
         'bg_grid': bg_grid,
         'fg_residual_data': fg_residual_data,
+        'fg_residual_shape': fg_residual_shape,
         'format_version': version,
     }
     # Fallback mean_bg for compatibility

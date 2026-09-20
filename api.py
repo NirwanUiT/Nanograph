@@ -74,6 +74,10 @@ class NanographResult:
     ssim_full: float
     psnr_fg: float
     ssim_fg: float
+    pre_psnr_full: float = 0.0   # debug: metrics on the pre-compression render
+    pre_ssim_full: float = 0.0
+    pre_psnr_fg: float = 0.0
+    pre_ssim_fg: float = 0.0
     graph: Optional[Nanograph] = field(default=None, repr=False)  # v4: formal graph
     reconstruction: Optional[np.ndarray] = field(default=None, repr=False)
     mask: Optional[np.ndarray] = field(default=None, repr=False)
@@ -329,12 +333,29 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         bg_model=bg_grid,     # v5: pass the grid, not full-res bg
         graph=graph,          # v5: for graph-predictive encoding
         fg_residual=fg_residual_data if (fg_residual_data and len(fg_residual_data) > 0) else None,
+        fg_residual_shape=fg_residual_shape,
         cfg=cfg)
     timing['compress'] = time.time() - t0
 
     raw_bytes = len(pts) * cfg.compress.raw_bytes_per_point
     compressed_bytes = len(compressed_data)
     image_bytes = img_raw.size
+
+    # T3: every reported fidelity metric is computed on the render decoded
+    # from the actual payload; the pre-compression values become debug fields.
+    t0 = time.time()
+    recon_dec = nanograph_decode(compressed_data, original_img=img_raw,
+                                 mask=clean, cfg=cfg)[0]
+    timing['decode_render'] = time.time() - t0
+    p_full_pre, s_full_pre, p_fg_pre, s_fg_pre = p_full, s_full, p_fg, s_fg
+    p_full = psnr(orig_n, recon_dec)
+    s_full = ssim(orig_n, recon_dec, data_range=1.0)
+    try:
+        p_fg = psnr(orig_n[clean > 0], recon_dec[clean > 0])
+    except Exception:
+        p_fg = p_full
+    s_fg = ssim(orig_n * fg_mask, recon_dec * fg_mask, data_range=1.0)
+    recon = recon_dec
 
     # Classify structures
     t0 = time.time()
@@ -391,6 +412,8 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         bytes_per_point=comp_stats['bytes_per_point_effective'],
         psnr_full=p_full, ssim_full=s_full,
         psnr_fg=p_fg, ssim_fg=s_fg,
+        pre_psnr_full=p_full_pre, pre_ssim_full=s_full_pre,
+        pre_psnr_fg=p_fg_pre, pre_ssim_fg=s_fg_pre,
         graph=graph,
         reconstruction=recon, mask=clean, skeleton=skel,
         structures=structures, timing=timing,
@@ -445,18 +468,29 @@ def nanograph_decode(compressed_data, sigma_scale=None,
         bg_fill = np.full(shape, float(bg_info), dtype=np.float64)
         fg_residual_data = None
 
-    # Decode fg residual if present
+    # Decode fg residual if present (v6 stores shape_info in the stream, so
+    # the payload is self-contained).
     fg_residual = None
-    if fg_residual_data is not None:
-        from .utils import decode_fg_residual
-        # We need the shape_info which is encoded in the residual data
-        # For decode-only path, the residual is applied within reconstruct_with_background
-        # For now, we skip residual in decode-only (needs shape info stored separately)
-        pass
+    if fg_residual_data is not None and isinstance(bg_info, dict):
+        shape_info = bg_info.get('fg_residual_shape')
+        if shape_info is not None and any(shape_info):
+            from .utils import decode_fg_residual
+            fg_residual = decode_fg_residual(
+                fg_residual_data, shape_info, shape,
+                quality=rc.residual_quality,
+                block_size=rc.residual_block_size)
 
     recon = reconstruct_with_background(
         fg_recon, bg_fill, mask, original_img=original_img,
-        fg_residual=fg_residual, cfg=rc)
+        fg_residual=None, cfg=rc)
+
+    # Apply the residual exactly as the encoder does: inside the mask if one
+    # is available, else wherever the residual is nonzero.
+    if fg_residual is not None:
+        if mask is not None:
+            recon = np.clip(recon + fg_residual * (mask > 0).astype(np.float64), 0, 1)
+        else:
+            recon = np.clip(recon + fg_residual, 0, 1)
 
     return recon, points, intensities, widths, types, orientations, shape
 

@@ -274,22 +274,18 @@ def evaluate_result(result, img_raw, cfg=None):
         multi_codec = _multi_codec_compare(img_raw, ng_bytes, orig_n,
                                             fg_mask, result.mask)
 
-    # Nanograph structural metrics
-    # Key insight: Nanograph preserves the segmentation mask exactly in the compressed
-    # stream. JPEG does NOT — structure must be recovered via Otsu thresholding.
-    # For a fair comparison of "structural preservation through compression":
-    #   - ng_iou: IoU of the preserved mask (=1.0, since we encode it losslessly)
-    #   - jpeg_iou: IoU of Otsu-thresholded JPEG (lossy recovery, JPEG's disadvantage)
-    #   - ng_topo_q: topology of the preserved mask
-    #   - jpeg_topo_q: topology of Otsu-thresholded JPEG
+    # Nanograph structural metrics.
+    # T3: the mask is NOT stored in the payload, so nothing is "preserved
+    # exactly"; the self-referenced structural score is the IoU between an
+    # Otsu threshold of the DECODED reconstruction and the selected mask.
     seg_mask_u8 = (result.mask > 0).astype(np.uint8) * 255
-    ng_iou = 1.0  # mask is preserved exactly by design
     ng_topo_q = topology_quality_score(seg_mask_u8)
 
-    # Also compute Otsu-on-reconstruction metrics for pixel-level reconstruction quality
     recon_u8 = (result.reconstruction * 255).astype(np.uint8) if result.reconstruction is not None else np.zeros_like(img_raw)
     _, ng_otsu = cv2.threshold(recon_u8, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    ng_recon_iou = iou(result.mask, ng_otsu)  # how well does reconstruction recover mask
+    self_iou = iou(result.mask, ng_otsu)
+    ng_iou = self_iou
+    ng_recon_iou = self_iou  # alias kept for downstream compatibility
 
     # v5: Graph-based topology metrics (more meaningful than mask Betti comparison)
     from .utils import graph_topology_score
@@ -319,6 +315,7 @@ def evaluate_result(result, img_raw, cfg=None):
         'ng_fg_ssim': result.ssim_fg,
         'ng_fg_psnr': result.psnr_fg,
         'ng_iou': ng_iou,
+        'self_iou': self_iou,
         'ng_topo_q': ng_topo_q,
         'ng_recon_iou': ng_recon_iou,
         # --- v5: Topology ---
