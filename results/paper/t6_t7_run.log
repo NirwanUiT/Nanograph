@@ -1,0 +1,14 @@
+nohup: ignoring input
+=== [12:54:57] waiting for run_paper_t5.sh to finish
+=== [18:08:11] T5 finished; starting T6
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/eval_retrained.py", line 20, in <module>
+    from nanograph_v4.unet_seg import UNet, unet_predict
+ModuleNotFoundError: No module named 'nanograph_v4'
+=== [18:08:13] T6 done
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/mito_diagnostics.py", line 35, in <module>
+    from nanograph_v4 import nanograph_encode, NanographConfig
+ModuleNotFoundError: No module named 'nanograph_v4'
+=== [18:08:13] T7 done
+=== [18:08:13] T5-T7 ALL COMPLETE

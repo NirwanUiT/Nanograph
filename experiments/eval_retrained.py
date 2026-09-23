@@ -13,15 +13,23 @@ import os
 import sys
 import numpy as np
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# nanograph_v4 is a symlink in the repo parent dir (three levels up from experiments/)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import cv2
 import torch
 
 from nanograph_v4.unet_seg import UNet, unet_predict
 from train_unet_multidomain import build_splits, _norm
 
-CKPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'unet_multidomain.pt')
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'retrained_eval')
+_HERE = os.path.dirname(os.path.abspath(__file__))
+# checkpoint may live in this experiments/ or in the sibling repo-parent experiments/
+_CKPT_CANDIDATES = [
+    os.path.join(_HERE, 'unet_multidomain.pt'),
+    os.path.join(os.path.dirname(os.path.dirname(_HERE)), 'experiments', 'unet_multidomain.pt'),
+]
+CKPT = next((p for p in _CKPT_CANDIDATES if os.path.exists(p)), _CKPT_CANDIDATES[0])
+OUT = os.path.join(_HERE, 'retrained_eval')
+csv_path = None
 
 
 def iou_dice(pred, gt):
@@ -89,6 +97,19 @@ def main():
     for ds, ai, ad, bi, bd in rows:
         print(f'{ds:13s} {ai:>10.3f} {bi:>10.3f}')
 
+    if csv_path:
+        os.makedirs(os.path.dirname(os.path.abspath(csv_path)), exist_ok=True)
+        with open(csv_path, 'w') as f:
+            f.write('dataset,as_is,oracle\n')
+            for ds, ai, ad, bi, bd in rows:
+                f.write(f'{ds},{ai:.6f},{bi:.6f}\n')
+        print(f'wrote {csv_path}')
+
 
 if __name__ == '__main__':
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--csv', default=None, help='write dataset,as_is,oracle CSV')
+    args = ap.parse_args()
+    csv_path = args.csv
     main()
