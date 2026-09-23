@@ -40,9 +40,10 @@ image), (ii) directly \emph{analysable} (morphometry and $\beta_0/\beta_1$
 topology are read off the graph), and (iii) \emph{reconstructable} through
 orientation-aligned point-spread functions. On 726 fluorescence organelle
 images \method encodes each image in $\approx$\,2.5\,kB and reconstructs the
-foreground at 28.4\,dB FG-PSNR / 0.997 FG-SSIM, beating byte-matched JPEG on
-reconstruction IoU for 77\% of images. The representation transfers across five
-microscopy modalities. We further analyse the pipeline's dominant bottleneck,
+foreground at 28.4\,dB FG-PSNR / 0.997 FG-SSIM; at equal bytes it reproduces
+its own structural mask more faithfully than JPEG on 77\% of images (self-IoU)
+and matches JPEG on ground-truth foreground recovery. The representation
+transfers across five microscopy modalities. We further analyse the pipeline's dominant bottleneck,
 foreground segmentation: a centreline-aware (clDice) U-Net lifts held-out
 segmentation IoU from 0.38 to 0.88 in-domain, and a \emph{polarity-agnostic}
 multi-domain retraining restores segmentation on four out-of-domain curvilinear
@@ -82,15 +83,16 @@ low-rank background field.
 \noindent\textbf{Contributions.}
 (1) We formalise a compact, queryable graph representation for curvilinear
 microscopy and a full encode/decode pipeline (Sec.~\ref{sec:method}).
-(2) We show the representation is a competitive \emph{compressor}: on 726
-organelle images it uses $\approx$\,2.5\,kB/image and beats byte-matched JPEG on
-reconstruction IoU 77\% of the time, while exposing morphometry and topology for
-free (Sec.~\ref{sec:repr},~\ref{sec:cross}).
-(3) We identify segmentation as the accuracy bottleneck and quantify a
+(2) We identify segmentation as the accuracy bottleneck and quantify a
 centreline-aware learned front end (IoU $0.38\!\to\!0.88$ in-domain), then show
 a \emph{polarity-agnostic} multi-domain retraining that restores the
 representation on four out-of-domain curvilinear datasets where the classical
 front end and the in-domain network both fail (Sec.~\ref{sec:seg}).
+(3) We show the representation is a viable \emph{compressor}: on 726 organelle
+images it uses $\approx$\,2.5\,kB/image and is statistically at parity with
+byte-matched JPEG on ground-truth foreground recovery (GT-IoU wins 49\%, sign
+test $p=0.53$), while---unlike a codec---exposing morphometry and topology for
+free (Sec.~\ref{sec:repr},~\ref{sec:cross}).
 
 \noindent\textbf{Related work.}
 Curvilinear structures have long been enhanced by hand-designed filters
@@ -169,26 +171,30 @@ $\approx$\,7\,bytes/node.
 % =====================================================================
 \noindent\textbf{Data and metrics.} We evaluate on 726 fluorescence organelle
 images with foreground annotations. We report full-image PSNR/SSIM,
-foreground-restricted FG-PSNR/FG-SSIM, reconstruction IoU (thresholded recon vs.\
-ground-truth foreground), payload size in bytes, and graph statistics. As a
-compression baseline we encode each image with JPEG at the quality that matches
-\method's byte budget, and compare fidelity at equal bytes.
+foreground-restricted FG-PSNR/FG-SSIM, \emph{self-IoU} (thresholded
+reconstruction vs.\ the pipeline's \emph{own} foreground mask, i.e.\ how
+faithfully the codec reproduces the structure it chose to encode),
+\emph{GT-IoU} (thresholded reconstruction vs.\ ground-truth foreground),
+payload size in bytes, and graph statistics. As a compression baseline we
+encode each image with JPEG at the quality that matches \method's byte budget,
+and compare fidelity at equal bytes.
 
 \begin{table}[t]
 \centering
 \caption{\method on 726 organelle images (mean$\pm$std). Right: fraction of
-images where \method beats \emph{byte-matched} JPEG.}
+images where \method beats \emph{byte-matched} JPEG; two-sided sign tests give
+$p<10^{-48}$ for self-IoU and $p=0.53$ (parity) for GT-IoU.}
 \label{tab:nmi}
 \setlength{\tabcolsep}{5pt}
 \begin{tabular}{lccc}
 \toprule
 Metric & \method & & vs.\ byte-matched JPEG \\
 \midrule
-Payload (bytes)      & $2469\pm331$   & Recon IoU wins   & $557/726$ (77\%)\\
+Payload (bytes)      & $2469\pm331$   & Self-IoU wins    & $557/726$ (77\%)\\
 Full PSNR (dB)       & $30.74\pm0.53$ & GT-IoU wins      & $354/726$ (49\%)\\
 FG-PSNR (dB)         & $28.38\pm0.35$ & \multicolumn{2}{l}{}\\
 FG-SSIM              & $0.997\pm0.001$& \multicolumn{2}{l}{}\\
-Recon IoU            & $0.433\pm0.089$& \multicolumn{2}{l}{}\\
+Self-IoU             & $0.433\pm0.089$& \multicolumn{2}{l}{}\\
 Nodes / image        & $336\pm52$     & \multicolumn{2}{l}{}\\
 Encode time (ms)     & $625\pm43$     & \multicolumn{2}{l}{}\\
 \bottomrule
@@ -197,9 +203,13 @@ Encode time (ms)     & $625\pm43$     & \multicolumn{2}{l}{}\\
 
 \method encodes each image in $\approx$\,2.5\,kB and reconstructs foreground at
 28.4\,dB FG-PSNR and 0.997 FG-SSIM (Table~\ref{tab:nmi}). At an \emph{equal byte
-budget} it reconstructs the biological foreground more faithfully than JPEG on
-77\% of images by reconstruction IoU, because it spends its bits on structure
-rather than background texture. Unlike a codec, the same payload directly yields
+budget} it reproduces its own structural mask more faithfully than JPEG on 77\%
+of images (self-IoU; sign test $p<10^{-48}$, 95\% CI $[74\%,80\%]$), because it
+spends its bits on structure rather than background texture. Measured against
+\emph{ground-truth} foreground, however, the two codecs are statistically
+indistinguishable (GT-IoU wins $354/726$, $p=0.53$): \method's advantage is
+structure-targeted bit allocation, not higher absolute fidelity to the
+annotation. Unlike a codec, the same payload directly yields
 morphometry (mean width $4.3\pm0.5$\,px, total edge length, junction-degree
 statistics) and topology ($\beta_0$ components, $\beta_1$ cycles) without any
 re-processing.
@@ -211,23 +221,29 @@ We apply the \emph{same} encoder, unchanged, to four further modalities:
 Cells3D membrane and nuclei, retinal vessels, and fluorescence cells
 (Table~\ref{tab:cross}). Foreground fidelity remains high (FG-SSIM
 $0.97$--$0.99$, FG-PSNR $27$--$34$\,dB) and \method beats byte-matched JPEG on
-reconstruction IoU for 82--100\% of images across datasets, confirming that the
-graph representation is not specific to organelles.
+self-IoU for 82--100\% of images across datasets (two-sided sign test
+$p<10^{-3}$ for all but the five-image Cells set, $p=0.06$), suggesting the
+graph representation is not specific to organelles. These four datasets carry
+no ground-truth foreground annotations, so the GT-backed codec comparison that
+ends at parity on organelles (Sec.~\ref{sec:repr}) cannot be run here; the
+reported wins measure structural self-consistency only.
 
 \begin{table}[t]
 \centering
-\caption{Same encoder across five modalities. FG fidelity and IoU-wins vs.\
-byte-matched JPEG.}
+\caption{Same encoder across five modalities (mean$\pm$std). Self-IoU wins vs.\
+byte-matched JPEG; sign test $p<10^{-3}$ everywhere except Cells ($n{=}5$,
+$p=0.06$, not significant). Only organelles have ground-truth masks
+(Table~\ref{tab:nmi}).}
 \label{tab:cross}
-\setlength{\tabcolsep}{4pt}
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{lccccc}
 \toprule
  & Organelles & Cells3D mem. & Cells3D nuc. & Retina & Cells \\
 $N$ & 726 & 60 & 60 & 25 & 5\\
 \midrule
-FG-SSIM       & 0.997 & 0.982 & 0.967 & 0.985 & 0.984\\
-FG-PSNR (dB)  & 28.4  & 31.2  & 27.2  & 33.1  & 34.5\\
-IoU wins/JPEG & 77\%  & 82\%  & 83\%  & 88\%  & 100\%\\
+FG-SSIM       & $.997{\pm}.001$ & $.982{\pm}.012$ & $.966{\pm}.013$ & $.985{\pm}.006$ & $.984{\pm}.006$\\
+FG-PSNR (dB)  & $28.4{\pm}0.4$  & $31.2{\pm}1.9$  & $27.2{\pm}3.0$  & $33.1{\pm}0.6$ & $34.5{\pm}0.7$\\
+Self-IoU wins & 77\%  & 82\%  & 83\%  & 88\%  & 100\%\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -316,7 +332,10 @@ Ours (retrained)            & \textbf{0.643} & \textbf{0.564} & \textbf{0.599} &
 compression, morphometry and topology under one object and makes the geometry a
 first-class, queryable artefact. The representation is lossy by design: full-image
 SSIM is modest because texture and non-curvilinear content are not modelled, and
-reconstruction IoU is bounded by segmentation. The external datasets are small
+reconstruction fidelity (self- and GT-IoU alike) is bounded by segmentation.
+Against ground truth, compression is at parity with byte-matched JPEG rather
+than ahead of it; the case for the representation rests on the analysis it
+exposes, not on rate--distortion alone. The external datasets are small
 (16 training images for STARE/DRIVE), so their numbers, though leakage-free, are
 single-split estimates; the EM result is on correlated slices from one volume
 with a guard-gap split. The polarity-agnostic retraining is an input-representation
@@ -328,7 +347,7 @@ temporal graph tracking (already scaffolded), and graph-native downstream models
 % =====================================================================
 We presented \method, a structural graph representation for curvilinear
 microscopy that is compact, analysable and reconstructable in one object. It
-compresses competitively with JPEG at equal bytes while exposing morphometry and
+compresses at parity with JPEG at equal bytes while exposing morphometry and
 topology for free, transfers across modalities, and---with a polarity-agnostic
 multi-domain segmenter---restores fidelity on out-of-domain vessels, filaments
 and electron-microscopy mitochondria.

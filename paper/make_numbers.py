@@ -1,0 +1,310 @@
+#!/usr/bin/env python3
+"""Generate paper/numbers.tex and paper/tables/*.tex from evaluation outputs.
+
+Every number in the manuscript that depends on an evaluation run is a macro
+defined here; tables that depend on runs are generated as bodies. Re-running
+this script after new evaluations updates the paper with no hand edits.
+
+Usage (from repo root):
+    python paper/make_numbers.py --runs results/paper --out paper
+Expected layout under --runs (each dir holds run_dataset.py's metrics.csv):
+    org_default/  org_classical/  org_replace/
+    ablation_bg_residual.csv
+    heldout_organelle.txt             (one filename stem per line, 108 lines)
+    cross/{cells3d_membrane,cells3d_nuclei,retina,cell}/
+    cross_gt/{stare,drive,epfl_mito,microtubules}/
+    mito/{temporal_clip,temporal_clip_replace,sted,mito_mip}/
+    polarity.csv                       (dataset,as_is,oracle)
+    commit.txt                         (git hash the runs were made at)
+Missing inputs produce the macro value \\tbd, which renders visibly.
+"""
+import argparse
+import os
+
+import numpy as np
+import pandas as pd
+from scipy.stats import binomtest
+
+RAW_BYTES = 256 * 256  # organelle frames are 256x256 8-bit
+
+
+def load(path):
+    p = os.path.join(path, 'metrics.csv') if os.path.isdir(path) else path
+    if not os.path.exists(p):
+        return None
+    df = pd.read_csv(p)
+    df['stem'] = df['filename'].astype(str).map(lambda s: os.path.splitext(os.path.basename(s))[0])
+    return df
+
+
+def self_iou_col(df):
+    for c in ('self_iou', 'ng_recon_iou'):
+        if c in df:
+            return c
+    if 'ng_iou' in df and not np.allclose(df['ng_iou'], 1.0):
+        return 'ng_iou'
+    return None
+
+
+class Macros:
+    def __init__(self):
+        self.lines = []
+
+    def put(self, name, value):
+        self.lines.append(f'\\newcommand{{\\{name}}}{{{value}}}')
+
+    def pm(self, name, s, d):
+        if s is None or len(s.dropna()) == 0:
+            self.put(name, '\\tbd'); self.put(name + 'm', '\\tbd'); return
+        s = s.dropna()
+        self.put(name, f'{s.mean():.{d}f}\\pm{s.std():.{d}f}')
+        self.put(name + 'm', f'{s.mean():.{d}f}')
+
+    def wins(self, name, a, b, boot=True):
+        if a is None or b is None:
+            for k in ('', 'Pct', 'P', 'CI'):
+                self.put(name + k, '\\tbd')
+            return
+        m = a.notna() & b.notna()
+        a, b = a[m].to_numpy(), b[m].to_numpy()
+        w, n = int((a > b).sum()), len(a)
+        p = binomtest(w, n).pvalue if n else float('nan')
+        self.put(name, f'{w}/{n}')
+        self.put(name + 'Pct', f'{100 * w / n:.1f}' if n else '\\tbd')
+        self.put(name + 'P', fmt_p(p))
+        if boot and n:
+            rng = np.random.default_rng(0)
+            d = a - b
+            bs = [rng.choice(d, n).mean() for _ in range(10000)]
+            lo, hi = np.percentile(bs, [2.5, 97.5])
+            self.put(name + 'CI', f'[{lo:+.4f},{hi:+.4f}]')
+        else:
+            self.put(name + 'CI', '\\tbd')
+
+
+def fmt_p(p):
+    if p != p:
+        return '\\tbd'
+    if p < 1e-3:
+        e = int(np.floor(np.log10(p)))
+        return f'{p / 10 ** e:.1f}\\times10^{{{e}}}'
+    return f'{p:.2f}'
+
+
+ORG_METRICS = [  # macro suffix, column, decimals
+    ('Bytes', 'ng_bytes', 0), ('Nodes', 'n_nodes', 0), ('Edges', 'n_edges', 0),
+    ('Time', 'total_time_ms', 0), ('FGPSNR', 'ng_fg_psnr', 2), ('FGSSIM', 'ng_fg_ssim', 4),
+    ('GTFGPSNR', 'gt_fg_psnr', 2), ('GTFGSSIM', 'gt_fg_ssim', 4), ('FullPSNR', 'ng_psnr', 2),
+    ('FullSSIM', 'ng_ssim', 3), ('SegIoU', 'seg_iou', 3), ('SegPrec', 'seg_precision', 3),
+    ('SegRec', 'seg_recall', 3), ('GTIoU', 'gt_iou', 3), ('BetaZero', 'ng_seg_beta_0', 2),
+    ('BetaOne', 'ng_seg_beta_1', 2), ('Cycles', 'graph_n_cycles', 2), ('Width', 'mean_width_px', 2),
+    ('VsRaw', 'ng_vs_raw', 1), ('VsPNG', 'ng_vs_png', 1),
+    ('JpegBytes', 'jpeg_bytes', 0), ('JpegFullPSNR', 'jpeg_psnr', 2), ('JpegFullSSIM', 'jpeg_ssim', 3),
+    ('JpegFGPSNR', 'jpeg_fg_psnr', 2), ('JpegGTFGPSNR', 'jpeg_gt_fg_psnr', 2), ('JpegGTIoU', 'jpeg_gt_iou', 3),
+    ('JpegBetti', 'jpeg_betti_preservation', 3), ('JpegBetaZero', 'jpeg_beta_0', 2),
+    ('JpegBetaOne', 'jpeg_beta_1', 2),
+    ('WebpBytes', 'webp_bytes', 0), ('WebpFullPSNR', 'webp_psnr', 2), ('WebpFullSSIM', 'webp_ssim', 3),
+    ('WebpFGPSNR', 'webp_fg_psnr', 2),
+    ('JtwoBytes', 'jp2_bytes', 0), ('JtwoFullPSNR', 'jp2_psnr', 2), ('JtwoFullSSIM', 'jp2_ssim', 3),
+    ('JtwoFGPSNR', 'jp2_fg_psnr', 2),
+]
+
+
+def organelle(M, tag, df, heldout):
+    col = lambda c: df[c] if (df is not None and c in df) else None
+    for suf, c, d in ORG_METRICS:
+        M.pm(tag + suf, col(c), d)
+    si = self_iou_col(df) if df is not None else None
+    M.pm(tag + 'SelfIoU', col(si) if si else None, 3)
+    M.put(tag + 'N', str(len(df)) if df is not None else '\\tbd')
+    M.wins(tag + 'GTIoUWins', col('gt_iou'), col('jpeg_gt_iou'))
+    M.wins(tag + 'GTFGPSNRWins', col('gt_fg_psnr'), col('jpeg_gt_fg_psnr'), boot=False)
+    M.wins(tag + 'FGPSNRWins', col('ng_fg_psnr'), col('jpeg_fg_psnr'), boot=False)
+    for cod, cc in (('Jpeg', 'jpeg_iou'), ('Webp', 'webp_iou'), ('Jtwo', 'jp2_iou')):
+        M.wins(tag + 'SelfIoUWins' + cod, col(si) if si else None, col(cc), boot=(cod == 'Jpeg'))
+    # held-out subset (images the organelle U-Net did not train on)
+    if df is not None and heldout is not None:
+        h = df[df['stem'].isin(heldout)]
+        M.put(tag + 'HeldN', str(len(h)))
+        M.pm(tag + 'HeldSegIoU', h['seg_iou'], 3)
+        M.wins(tag + 'HeldGTIoUWins', h['gt_iou'], h['jpeg_gt_iou'], boot=False)
+    else:
+        for k in ('HeldN', 'HeldSegIoU', 'HeldSegIoUm', 'HeldGTIoUWins', 'HeldGTIoUWinsPct',
+                  'HeldGTIoUWinsP', 'HeldGTIoUWinsCI'):
+            M.put(tag + k, '\\tbd')
+    # storage budget (Eq. budget): APRR = nodes/pixel, BRR = bytes/raw byte
+    if df is not None:
+        aprr = (df['n_nodes'] / RAW_BYTES).mean()
+        brr = (df['ng_bytes'] / RAW_BYTES).mean()
+        bpp = brr / aprr
+        M.put(tag + 'APRR', f'{aprr:.5f}')
+        M.put(tag + 'BRR', f'{brr:.4f}')
+        M.put(tag + 'BPP', f'{bpp:.1f}')
+        M.put(tag + 'FewerX', f'{0.0183 / aprr:.1f}')   # vs GU-Net/GU-Net++ APRR
+        M.put(tag + 'RicherX', f'{bpp / 2.0:.1f}')       # vs their 2.0 bytes/primitive
+        M.put(tag + 'BRRvsGU', f'{100 * (brr / 0.0365 - 1):+.0f}')
+    else:
+        for k in ('APRR', 'BRR', 'BPP', 'FewerX', 'RicherX', 'BRRvsGU'):
+            M.put(tag + k, '\\tbd')
+
+
+def ablation(M, path):
+    keys = [('FGPSNR', 'fg_psnr', 2), ('FGSSIM', 'fg_ssim', 4), ('FullPSNR', 'full_psnr', 2),
+            ('Bytes', 'bytes', 0)]
+    if not os.path.exists(path):
+        for k, _, _ in keys:
+            for s in ('With', 'Without', 'Delta'):
+                M.put(f'Abl{k}{s}', '\\tbd'); M.put(f'Abl{k}{s}m', '\\tbd')
+        M.put('AblImproved', '\\tbd'); M.put('AblBytesRatio', '\\tbd'); return
+    a = pd.read_csv(path)
+    for k, c, d in keys:
+        M.pm(f'Abl{k}With', a[f'{c}_with'], d)
+        M.pm(f'Abl{k}Without', a[f'{c}_without'], d)
+        M.pm(f'Abl{k}Delta', a[f'{c}_with'] - a[f'{c}_without'], d)
+    r = a['bytes_with'] / a['bytes_without']
+    M.put('AblBytesRatio', f'{r.mean():.2f}\\pm{r.std():.2f}')
+    M.put('AblImproved', f"{int((a['fg_psnr_with'] > a['fg_psnr_without']).sum())}/{len(a)}")
+
+
+CROSS = [('cells3d_membrane', 'Cells3D mem.'), ('cells3d_nuclei', 'Cells3D nuc.'),
+         ('retina', 'Retina'), ('cell', 'Cells')]
+
+
+def pmstr(s, d):
+    s = s.dropna()
+    if not len(s):
+        return '\\tbd'
+    f = (lambda v: f'{v:,.0f}'.replace(',', '{,}')) if d == 0 else (lambda v: f'{v:.{d}f}')
+    return f'${f(s.mean())}\\pm{f(s.std())}$'
+
+
+def cross_table(runs, org, out):
+    dfs = [('Organelles', org)] + [(lab, load(os.path.join(runs, 'cross', k))) for k, lab in CROSS]
+    rows = [('FG-SSIM', 'ng_fg_ssim', 3), ('FG-PSNR (dB)', 'ng_fg_psnr', 2),
+            ('Full PSNR (dB)', 'ng_psnr', 2), ('Full SSIM', 'ng_ssim', 3),
+            ('Bytes', 'ng_bytes', 0), ('Graph $\\beta_0$ (components)', 'graph_n_components', 2),
+            ('Skeleton-graph cycles', 'graph_n_cycles', 1), ('Encode time (ms)', 'total_time_ms', 0)]
+    L = [' & ' + ' & '.join(l for l, _ in dfs) + ' \\\\',
+         '$N$ & ' + ' & '.join(str(len(d)) if d is not None else '\\tbd' for _, d in dfs) + ' \\\\',
+         '\\midrule']
+    for lab, c, d in rows:
+        L.append(lab + ' & ' + ' & '.join(pmstr(x[c], d) if (x is not None and c in x) else '\\tbd'
+                                           for _, x in dfs) + ' \\\\')
+    open(os.path.join(out, 'tables', 'tab_cross_body.tex'), 'w').write('\n'.join(L) + '\n')
+
+
+def topo_all_table(runs, org, out):
+    sets = [('Organelles', org)] + [(lab, load(os.path.join(runs, 'cross', k))) for k, lab in CROSS]
+    sets += [('STARE', load(os.path.join(runs, 'cross_gt', 'stare'))),
+             ('DRIVE', load(os.path.join(runs, 'cross_gt', 'drive'))),
+             ('EPFL mito (EM)', load(os.path.join(runs, 'cross_gt', 'epfl_mito'))),
+             ('Microtubules', load(os.path.join(runs, 'cross_gt', 'microtubules'))),
+             ('Temporal clip', load(os.path.join(runs, 'mito', 'temporal_clip'))),
+             ('STED TOM20', load(os.path.join(runs, 'mito', 'sted'))),
+             ('MITO (MIP tiles)', load(os.path.join(runs, 'mito', 'mito_mip')))]
+    L = []
+    for i, (lab, d) in enumerate(sets):
+        if i in (5, 9):
+            L.append('\\midrule')
+        if d is None or 'jpeg_betti_preservation' not in d:
+            L.append(f'{lab} & \\tbd & \\tbd & \\tbd & \\tbd \\\\'); continue
+        m = d['jpeg_bytes'].notna() if 'jpeg_bytes' in d else np.ones(len(d), bool)
+        d = d[m]
+        star = '' if m.all() else '$^{*}$'
+        b0 = 'ng_seg_beta_0' if 'ng_seg_beta_0' in d else 'graph_n_components'
+        b1 = 'ng_seg_beta_1' if 'ng_seg_beta_1' in d else 'graph_n_cycles'
+        L.append(f"{lab} & {len(d)}{star} & {pmstr(d['jpeg_betti_preservation'], 3)} & "
+                 f"{d['jpeg_beta_0'].mean():.1f} / {d[b0].mean():.1f} & "
+                 f"{d['jpeg_beta_1'].mean():.1f} / {d[b1].mean():.1f} \\\\")
+    open(os.path.join(out, 'tables', 'tab_topoall_body.tex'), 'w').write('\n'.join(L) + '\n')
+
+
+def crossgt(M, runs):
+    for k, tag in (('stare', 'Stare'), ('drive', 'Drive'), ('epfl_mito', 'Epfl'), ('microtubules', 'Mt')):
+        d = load(os.path.join(runs, 'cross_gt', k))
+        if d is None:
+            for s in ('N', 'SegIoUm', 'GTFGPSNRm', 'JpegGTFGPSNRm', 'Bytesm', 'NoJpeg', 'Timem'):
+                M.put('Cg' + tag + s, '\\tbd')
+            continue
+        M.put('Cg' + tag + 'N', str(len(d)))
+        M.put('Cg' + tag + 'SegIoUm', f"{d['seg_iou'].mean():.2f}")
+        m = d['jpeg_bytes'].notna()
+        M.put('Cg' + tag + 'GTFGPSNRm', f"{d.loc[m, 'gt_fg_psnr'].mean():.1f}")
+        M.put('Cg' + tag + 'JpegGTFGPSNRm', f"{d.loc[m, 'jpeg_gt_fg_psnr'].mean():.1f}")
+        M.put('Cg' + tag + 'Bytesm', f"{d['ng_bytes'].mean() / 1000:.1f}")
+        M.put('Cg' + tag + 'NoJpeg', f"{int((~m).sum())}/{len(d)}")
+        M.put('Cg' + tag + 'Timem', f"{d['total_time_ms'].mean() / 1000:.1f}")
+
+
+def mito(M, runs, out):
+    spec = [('temporal_clip', 'Temporal clip (same acq.), default', 'Clip'),
+            ('temporal_clip_replace', 'Temporal clip (same acq.), learned', 'ClipL'),
+            ('sted', 'STED TOM20~\\cite{balakrishnan2024sted}, learned', 'Sted'),
+            ('mito_mip', 'MITO confocal~\\cite{zhanghao2023mito}, default', 'Mito')]
+    L = []
+    for k, lab, tag in spec:
+        d = load(os.path.join(runs, 'mito', k))
+        if d is None:
+            L.append(f'{lab} & \\tbd & \\tbd & \\tbd & \\tbd \\\\')
+            for s in ('SegIoUm', 'GTIoUm', 'Nodesm', 'Bytesm', 'Timem', 'Prec', 'Rec'):
+                M.put(tag + s, '\\tbd')
+            continue
+        seg = pmstr(d['seg_iou'], 3) if 'seg_iou' in d else '--- (no GT)'
+        L.append(f"{lab} & {len(d)} & {seg} & {pmstr(d['ng_fg_psnr'], 1)} & {pmstr(d['ng_bytes'], 0)} \\\\")
+        M.put(tag + 'SegIoUm', f"{d['seg_iou'].mean():.3f}" if 'seg_iou' in d else '--')
+        M.put(tag + 'GTIoUm', f"{d['gt_iou'].mean():.3f}" if 'gt_iou' in d else '--')
+        M.put(tag + 'Prec', f"{d['seg_precision'].mean():.2f}" if 'seg_precision' in d else '--')
+        M.put(tag + 'Rec', f"{d['seg_recall'].mean():.2f}" if 'seg_recall' in d else '--')
+        M.put(tag + 'Nodesm', f"{d['n_nodes'].mean():,.0f}".replace(',', '{,}'))
+        M.put(tag + 'Bytesm', f"{d['ng_bytes'].mean() / 1000:.1f}")
+        M.put(tag + 'Timem', f"{d['total_time_ms'].mean() / 1000:.0f}")
+    open(os.path.join(out, 'tables', 'tab_mitogen_body.tex'), 'w').write('\n'.join(L) + '\n')
+
+
+def polarity(M, runs):
+    p = os.path.join(runs, 'polarity.csv')
+    df = pd.read_csv(p) if os.path.exists(p) else None
+    for k, tag in (('stare', 'Stare'), ('drive', 'Drive'), ('microtubules', 'Mt'), ('epfl', 'Epfl')):
+        r = df[df['dataset'] == k] if df is not None else []
+        if len(r):
+            M.put('Pol' + tag + 'AsIs', f"{r['as_is'].iloc[0]:.3f}")
+            M.put('Pol' + tag + 'Oracle', f"{r['oracle'].iloc[0]:.3f}")
+        else:
+            M.put('Pol' + tag + 'AsIs', '\\tbd'); M.put('Pol' + tag + 'Oracle', '\\tbd')
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--runs', default='results/paper')
+    ap.add_argument('--out', default='paper')
+    ap.add_argument('--org-default', default=None, help='override org_default dir')
+    ap.add_argument('--org-classical', default=None)
+    ap.add_argument('--org-replace', default=None)
+    ap.add_argument('--ablation', default=None)
+    a = ap.parse_args()
+    os.makedirs(os.path.join(a.out, 'tables'), exist_ok=True)
+    held_p = os.path.join(a.runs, 'heldout_organelle.txt')
+    held = set(open(held_p).read().split()) if os.path.exists(held_p) else None
+    M = Macros()
+    commit = os.path.join(a.runs, 'commit.txt')
+    M.put('RunCommit', open(commit).read().strip()[:7] if os.path.exists(commit) else '\\tbd')
+    D = load(a.org_default or os.path.join(a.runs, 'org_default'))
+    C = load(a.org_classical or os.path.join(a.runs, 'org_classical'))
+    Lr = load(a.org_replace or os.path.join(a.runs, 'org_replace'))
+    organelle(M, 'D', D, held)
+    organelle(M, 'C', C, held)
+    organelle(M, 'L', Lr, held)
+    ablation(M, a.ablation or os.path.join(a.runs, 'ablation_bg_residual.csv'))
+    crossgt(M, a.runs)
+    mito(M, a.runs, a.out)
+    polarity(M, a.runs)
+    cross_table(a.runs, D, a.out)
+    topo_all_table(a.runs, D, a.out)
+    hdr = ('% AUTO-GENERATED by paper/make_numbers.py -- do not edit by hand.\n'
+           '\\providecommand{\\tbd}{\\textcolor{red}{[TBD]}}\n')
+    open(os.path.join(a.out, 'numbers.tex'), 'w').write(hdr + '\n'.join(M.lines) + '\n')
+    print(f'wrote {a.out}/numbers.tex ({len(M.lines)} macros) and tables/')
+
+
+if __name__ == '__main__':
+    main()
