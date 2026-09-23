@@ -1,0 +1,919 @@
+nohup: ignoring input
+228 MIP tiles
+  [GRAPH] 116 branches traced, 543/543 nodes assigned, 0 orphans, 530 edges, 36 components
+  [GRAPH] 53 branches traced, 182/182 nodes assigned, 0 orphans, 155 edges, 33 components
+  [GRAPH] 182 branches traced, 722/722 nodes assigned, 0 orphans, 745 edges, 22 components
+  [GRAPH] 78 branches traced, 339/339 nodes assigned, 0 orphans, 328 edges, 25 components
+  [GRAPH] 200 branches traced, 722/722 nodes assigned, 0 orphans, 752 edges, 24 components
+  [GRAPH] 108 branches traced, 612/612 nodes assigned, 0 orphans, 624 edges, 11 components
+  [GRAPH] 221 branches traced, 897/897 nodes assigned, 0 orphans, 913 edges, 35 components
+  [GRAPH] 170 branches traced, 622/622 nodes assigned, 0 orphans, 659 edges, 10 components
+  [GRAPH] 157 branches traced, 622/622 nodes assigned, 0 orphans, 639 edges, 22 components
+  [GRAPH] 185 branches traced, 557/557 nodes assigned, 0 orphans, 592 edges, 24 components
+  [GRAPH] 96 branches traced, 293/294 nodes assigned, 1 orphans, 284 edges, 34 components
+  [GRAPH] 68 branches traced, 277/277 nodes assigned, 0 orphans, 287 edges, 7 components
+  [GRAPH] 158 branches traced, 645/645 nodes assigned, 0 orphans, 655 edges, 27 components
+  [GRAPH] 188 branches traced, 747/747 nodes assigned, 0 orphans, 779 edges, 17 components
+  [GRAPH] 259 branches traced, 1022/1022 nodes assigned, 0 orphans, 1081 edges, 8 components
+  [GRAPH] 86 branches traced, 540/540 nodes assigned, 0 orphans, 525 edges, 30 components
+  [GRAPH] 123 branches traced, 488/488 nodes assigned, 0 orphans, 497 edges, 27 components
+  [GRAPH] 243 branches traced, 996/996 nodes assigned, 0 orphans, 1071 edges, 3 components
+  [GRAPH] 207 branches traced, 828/828 nodes assigned, 0 orphans, 867 edges, 15 components
+  [GRAPH] 92 branches traced, 470/470 nodes assigned, 0 orphans, 483 edges, 10 components
+  [GRAPH] 207 branches traced, 812/812 nodes assigned, 0 orphans, 850 edges, 17 components
+  [GRAPH] 173 branches traced, 746/746 nodes assigned, 0 orphans, 774 edges, 15 components
+  [GRAPH] 279 branches traced, 907/907 nodes assigned, 0 orphans, 956 edges, 23 components
+  [GRAPH] 248 branches traced, 910/910 nodes assigned, 0 orphans, 965 edges, 12 components
+  [GRAPH] 191 branches traced, 626/626 nodes assigned, 0 orphans, 666 edges, 18 components
+  [GRAPH] 248 branches traced, 973/973 nodes assigned, 0 orphans, 1034 edges, 6 components
+  [GRAPH] 91 branches traced, 408/408 nodes assigned, 0 orphans, 417 edges, 12 components
+  [GRAPH] 198 branches traced, 740/740 nodes assigned, 0 orphans, 757 edges, 35 components
+  [GRAPH] 145 branches traced, 664/664 nodes assigned, 0 orphans, 665 edges, 39 components
+  [GRAPH] 179 branches traced, 798/798 nodes assigned, 0 orphans, 828 edges, 13 components
+  [GRAPH] 34 branches traced, 325/325 nodes assigned, 0 orphans, 334 edges, 1 components
+  [GRAPH] 84 branches traced, 414/414 nodes assigned, 0 orphans, 404 edges, 26 components
+  [GRAPH] 173 branches traced, 608/608 nodes assigned, 0 orphans, 622 edges, 32 components
+  [GRAPH] 205 branches traced, 800/800 nodes assigned, 0 orphans, 814 edges, 35 components
+  [GRAPH] 130 branches traced, 547/547 nodes assigned, 0 orphans, 558 edges, 17 components
+  [GRAPH] 149 branches traced, 725/725 nodes assigned, 0 orphans, 724 edges, 36 components
+  [GRAPH] 193 branches traced, 913/913 nodes assigned, 0 orphans, 948 edges, 10 components
+  [GRAPH] 211 branches traced, 809/809 nodes assigned, 0 orphans, 863 edges, 4 components
+  [GRAPH] 243 branches traced, 994/994 nodes assigned, 0 orphans, 1051 edges, 13 components
+  [GRAPH] 87 branches traced, 539/539 nodes assigned, 0 orphans, 552 edges, 8 components
+  [GRAPH] 212 branches traced, 820/820 nodes assigned, 0 orphans, 870 edges, 11 components
+  [GRAPH] 249 branches traced, 947/947 nodes assigned, 0 orphans, 1005 edges, 11 components
+  [GRAPH] 213 branches traced, 875/875 nodes assigned, 0 orphans, 907 edges, 21 components
+  [GRAPH] 117 branches traced, 621/621 nodes assigned, 0 orphans, 638 edges, 12 components
+  [GRAPH] 125 branches traced, 487/487 nodes assigned, 0 orphans, 489 edges, 24 components
+  [GRAPH] 153 branches traced, 773/773 nodes assigned, 0 orphans, 790 edges, 21 components
+  [GRAPH] 258 branches traced, 873/873 nodes assigned, 0 orphans, 901 edges, 36 components
+  [GRAPH] 106 branches traced, 551/551 nodes assigned, 0 orphans, 544 edges, 30 components
+  [GRAPH] 14 branches traced, 107/107 nodes assigned, 0 orphans, 101 edges, 7 components
+  [GRAPH] 171 branches traced, 1019/1019 nodes assigned, 0 orphans, 1005 edges, 48 components
+  [GRAPH] 161 branches traced, 826/826 nodes assigned, 0 orphans, 817 edges, 48 components
+  [GRAPH] 51 branches traced, 298/298 nodes assigned, 0 orphans, 307 edges, 3 components
+  [GRAPH] 62 branches traced, 327/327 nodes assigned, 0 orphans, 297 edges, 37 components
+  [GRAPH] 89 branches traced, 436/436 nodes assigned, 0 orphans, 435 edges, 19 components
+  [GRAPH] 60 branches traced, 272/272 nodes assigned, 0 orphans, 259 edges, 24 components
+  [GRAPH] 50 branches traced, 301/301 nodes assigned, 0 orphans, 261 edges, 42 components
+  [GRAPH] 72 branches traced, 249/249 nodes assigned, 0 orphans, 249 edges, 18 components
+  [GRAPH] 88 branches traced, 617/617 nodes assigned, 0 orphans, 614 edges, 23 components
+  [GRAPH] 59 branches traced, 408/408 nodes assigned, 0 orphans, 415 edges, 7 components
+  [GRAPH] 86 branches traced, 511/511 nodes assigned, 0 orphans, 526 edges, 5 components
+  [GRAPH] 247 branches traced, 846/846 nodes assigned, 0 orphans, 910 edges, 9 components
+  [GRAPH] 130 branches traced, 628/628 nodes assigned, 0 orphans, 651 edges, 8 components
+  [GRAPH] 186 branches traced, 789/789 nodes assigned, 0 orphans, 824 edges, 11 components
+  [GRAPH] 155 branches traced, 887/887 nodes assigned, 0 orphans, 905 edges, 19 components
+  [GRAPH] 67 branches traced, 353/353 nodes assigned, 0 orphans, 342 edges, 23 components
+  [GRAPH] 79 branches traced, 386/386 nodes assigned, 0 orphans, 375 edges, 24 components
+  [GRAPH] 88 branches traced, 427/427 nodes assigned, 0 orphans, 408 edges, 34 components
+  [GRAPH] 48 branches traced, 254/254 nodes assigned, 0 orphans, 241 edges, 22 components
+  [GRAPH] 172 branches traced, 622/622 nodes assigned, 0 orphans, 654 edges, 18 components
+  [GRAPH] 120 branches traced, 485/486 nodes assigned, 1 orphans, 501 edges, 14 components
+  [GRAPH] 141 branches traced, 779/779 nodes assigned, 0 orphans, 794 edges, 19 components
+  [GRAPH] 117 branches traced, 556/556 nodes assigned, 0 orphans, 548 edges, 32 components
+  [GRAPH] 169 branches traced, 762/762 nodes assigned, 0 orphans, 801 edges, 10 components
+  [GRAPH] 159 branches traced, 667/667 nodes assigned, 0 orphans, 707 edges, 11 components
+  [GRAPH] 158 branches traced, 794/794 nodes assigned, 0 orphans, 806 edges, 26 components
+  [GRAPH] 125 branches traced, 777/777 nodes assigned, 0 orphans, 781 edges, 23 components
+  [GRAPH] 161 branches traced, 891/891 nodes assigned, 0 orphans, 905 edges, 24 components
+  [GRAPH] 120 branches traced, 540/540 nodes assigned, 0 orphans, 558 edges, 15 components
+  [GRAPH] 44 branches traced, 174/174 nodes assigned, 0 orphans, 169 edges, 13 components
+  [GRAPH] 126 branches traced, 791/791 nodes assigned, 0 orphans, 803 edges, 19 components
+  [GRAPH] 51 branches traced, 388/388 nodes assigned, 0 orphans, 399 edges, 1 components
+  [GRAPH] 157 branches traced, 666/666 nodes assigned, 0 orphans, 680 edges, 23 components
+  [GRAPH] 208 branches traced, 962/962 nodes assigned, 0 orphans, 992 edges, 21 components
+  [GRAPH] 159 branches traced, 586/586 nodes assigned, 0 orphans, 618 edges, 14 components
+  [GRAPH] 138 branches traced, 646/646 nodes assigned, 0 orphans, 674 edges, 17 components
+  [GRAPH] 93 branches traced, 512/512 nodes assigned, 0 orphans, 527 edges, 8 components
+  [GRAPH] 64 branches traced, 410/410 nodes assigned, 0 orphans, 412 edges, 11 components
+  [GRAPH] 108 branches traced, 583/584 nodes assigned, 1 orphans, 580 edges, 27 components
+  [GRAPH] 102 branches traced, 493/493 nodes assigned, 0 orphans, 480 edges, 32 components
+  [GRAPH] 181 branches traced, 631/631 nodes assigned, 0 orphans, 651 edges, 27 components
+  [GRAPH] 91 branches traced, 433/433 nodes assigned, 0 orphans, 427 edges, 24 components
+  [GRAPH] 72 branches traced, 376/376 nodes assigned, 0 orphans, 388 edges, 6 components
+  [GRAPH] 105 branches traced, 449/449 nodes assigned, 0 orphans, 457 edges, 16 components
+  [GRAPH] 226 branches traced, 736/736 nodes assigned, 0 orphans, 776 edges, 21 components
+  [GRAPH] 169 branches traced, 736/736 nodes assigned, 0 orphans, 754 edges, 25 components
+  [GRAPH] 126 branches traced, 606/606 nodes assigned, 0 orphans, 617 edges, 20 components
+  [GRAPH] 107 branches traced, 550/550 nodes assigned, 0 orphans, 534 edges, 38 components
+  [GRAPH] 103 branches traced, 447/447 nodes assigned, 0 orphans, 455 edges, 16 components
+  [GRAPH] 208 branches traced, 754/754 nodes assigned, 0 orphans, 807 edges, 6 components
+  [GRAPH] 47 branches traced, 232/232 nodes assigned, 0 orphans, 240 edges, 5 components
+  [GRAPH] 151 branches traced, 696/696 nodes assigned, 0 orphans, 698 edges, 33 components
+  [GRAPH] 145 branches traced, 659/659 nodes assigned, 0 orphans, 681 edges, 13 components
+  [GRAPH] 124 branches traced, 817/817 nodes assigned, 0 orphans, 817 edges, 27 components
+  [GRAPH] 210 branches traced, 1009/1009 nodes assigned, 0 orphans, 1039 edges, 21 components
+  [GRAPH] 88 branches traced, 481/481 nodes assigned, 0 orphans, 475 edges, 26 components
+  [GRAPH] 157 branches traced, 794/794 nodes assigned, 0 orphans, 817 edges, 17 components
+  [GRAPH] 207 branches traced, 910/910 nodes assigned, 0 orphans, 951 edges, 11 components
+  [GRAPH] 64 branches traced, 330/330 nodes assigned, 0 orphans, 344 edges, 2 components
+  [GRAPH] 195 branches traced, 804/804 nodes assigned, 0 orphans, 835 edges, 18 components
+  [GRAPH] 72 branches traced, 431/431 nodes assigned, 0 orphans, 435 edges, 12 components
+  [GRAPH] 137 branches traced, 572/572 nodes assigned, 0 orphans, 572 edges, 32 components
+  [GRAPH] 135 branches traced, 626/626 nodes assigned, 0 orphans, 630 edges, 25 components
+  [GRAPH] 113 branches traced, 465/465 nodes assigned, 0 orphans, 470 edges, 22 components
+  [GRAPH] 185 branches traced, 796/796 nodes assigned, 0 orphans, 832 edges, 15 components
+  [GRAPH] 121 branches traced, 534/534 nodes assigned, 0 orphans, 535 edges, 24 components
+  [GRAPH] 132 branches traced, 452/452 nodes assigned, 0 orphans, 467 edges, 31 components
+  [GRAPH] 121 branches traced, 488/488 nodes assigned, 0 orphans, 509 edges, 10 components
+  [GRAPH] 21 branches traced, 140/140 nodes assigned, 0 orphans, 140 edges, 5 components
+  [GRAPH] 79 branches traced, 447/447 nodes assigned, 0 orphans, 461 edges, 5 components
+  [GRAPH] 245 branches traced, 845/845 nodes assigned, 0 orphans, 888 edges, 20 components
+  [GRAPH] 184 branches traced, 829/829 nodes assigned, 0 orphans, 848 edges, 29 components
+  [GRAPH] 212 branches traced, 789/789 nodes assigned, 0 orphans, 829 edges, 13 components
+  [GRAPH] 207 branches traced, 752/752 nodes assigned, 0 orphans, 789 edges, 14 components
+  [GRAPH] 187 branches traced, 833/833 nodes assigned, 0 orphans, 858 edges, 26 components
+  [GRAPH] 192 branches traced, 879/879 nodes assigned, 0 orphans, 909 edges, 22 components
+  [GRAPH] 145 branches traced, 734/734 nodes assigned, 0 orphans, 747 edges, 20 components
+  [GRAPH] 312 branches traced, 1119/1119 nodes assigned, 0 orphans, 1168 edges, 29 components
+  [GRAPH] 190 branches traced, 784/784 nodes assigned, 0 orphans, 823 edges, 8 components
+  [GRAPH] 172 branches traced, 606/606 nodes assigned, 0 orphans, 617 edges, 32 components
+  [GRAPH] 125 branches traced, 581/581 nodes assigned, 0 orphans, 599 edges, 14 components
+  [GRAPH] 129 branches traced, 676/677 nodes assigned, 1 orphans, 669 edges, 35 components
+  [GRAPH] 130 branches traced, 641/641 nodes assigned, 0 orphans, 647 edges, 21 components
+  [GRAPH] 145 branches traced, 663/664 nodes assigned, 1 orphans, 683 edges, 14 components
+  [GRAPH] 172 branches traced, 718/718 nodes assigned, 0 orphans, 729 edges, 29 components
+  [GRAPH] 129 branches traced, 570/570 nodes assigned, 0 orphans, 562 edges, 32 components
+  [GRAPH] 96 branches traced, 481/481 nodes assigned, 0 orphans, 492 edges, 13 components
+  [GRAPH] 137 branches traced, 533/533 nodes assigned, 0 orphans, 532 edges, 31 components
+  [GRAPH] 45 branches traced, 368/368 nodes assigned, 0 orphans, 357 edges, 18 components
+  [GRAPH] 26 branches traced, 323/323 nodes assigned, 0 orphans, 303 edges, 21 components
+  [GRAPH] 72 branches traced, 334/334 nodes assigned, 0 orphans, 319 edges, 29 components
+  [GRAPH] 63 branches traced, 358/358 nodes assigned, 0 orphans, 351 edges, 19 components
+  [GRAPH] 92 branches traced, 524/524 nodes assigned, 0 orphans, 540 edges, 7 components
+  [GRAPH] 138 branches traced, 443/443 nodes assigned, 0 orphans, 459 edges, 22 components
+  [GRAPH] 129 branches traced, 666/666 nodes assigned, 0 orphans, 667 edges, 27 components
+  [GRAPH] 72 branches traced, 416/416 nodes assigned, 0 orphans, 412 edges, 18 components
+  [GRAPH] 77 branches traced, 399/399 nodes assigned, 0 orphans, 376 edges, 34 components
+  [GRAPH] 49 branches traced, 300/300 nodes assigned, 0 orphans, 288 edges, 20 components
+  [GRAPH] 79 branches traced, 460/460 nodes assigned, 0 orphans, 455 edges, 22 components
+  [GRAPH] 40 branches traced, 300/300 nodes assigned, 0 orphans, 286 edges, 20 components
+  [GRAPH] 96 branches traced, 400/400 nodes assigned, 0 orphans, 394 edges, 25 components
+  [GRAPH] 57 branches traced, 254/254 nodes assigned, 0 orphans, 252 edges, 14 components
+  [GRAPH] 50 branches traced, 270/270 nodes assigned, 0 orphans, 274 edges, 7 components
+  [GRAPH] 32 branches traced, 121/121 nodes assigned, 0 orphans, 105 edges, 20 components
+  [GRAPH] 50 branches traced, 253/253 nodes assigned, 0 orphans, 243 edges, 19 components
+  [GRAPH] 67 branches traced, 270/270 nodes assigned, 0 orphans, 271 edges, 13 components
+  [GRAPH] 96 branches traced, 354/354 nodes assigned, 0 orphans, 358 edges, 24 components
+  [GRAPH] 105 branches traced, 581/581 nodes assigned, 0 orphans, 598 edges, 8 components
+  [GRAPH] 158 branches traced, 636/636 nodes assigned, 0 orphans, 654 edges, 26 components
+  [GRAPH] 139 branches traced, 858/858 nodes assigned, 0 orphans, 858 edges, 26 components
+  [GRAPH] 124 branches traced, 623/623 nodes assigned, 0 orphans, 636 edges, 15 components
+  [GRAPH] 25 branches traced, 185/185 nodes assigned, 0 orphans, 187 edges, 3 components
+  [GRAPH] 149 branches traced, 669/669 nodes assigned, 0 orphans, 691 edges, 15 components
+  [GRAPH] 70 branches traced, 432/432 nodes assigned, 0 orphans, 417 edges, 27 components
+  [GRAPH] 72 branches traced, 384/384 nodes assigned, 0 orphans, 390 edges, 10 components
+  [GRAPH] 74 branches traced, 280/281 nodes assigned, 1 orphans, 277 edges, 19 components
+  [GRAPH] 114 branches traced, 449/449 nodes assigned, 0 orphans, 458 edges, 24 components
+  [GRAPH] 71 branches traced, 417/417 nodes assigned, 0 orphans, 401 edges, 29 components
+  [GRAPH] 90 branches traced, 456/456 nodes assigned, 0 orphans, 438 edges, 34 components
+  [GRAPH] 52 branches traced, 249/249 nodes assigned, 0 orphans, 240 edges, 20 components
+  [GRAPH] 73 branches traced, 400/400 nodes assigned, 0 orphans, 395 edges, 20 components
+  [GRAPH] 51 branches traced, 299/299 nodes assigned, 0 orphans, 302 edges, 7 components
+  [GRAPH] 109 branches traced, 614/614 nodes assigned, 0 orphans, 619 edges, 20 components
+  [GRAPH] 126 branches traced, 686/686 nodes assigned, 0 orphans, 704 edges, 11 components
+  [GRAPH] 158 branches traced, 582/582 nodes assigned, 0 orphans, 613 edges, 11 components
+  [GRAPH] 73 branches traced, 417/418 nodes assigned, 1 orphans, 420 edges, 16 components
+  [GRAPH] 87 branches traced, 482/482 nodes assigned, 0 orphans, 467 edges, 33 components
+  [GRAPH] 88 branches traced, 493/493 nodes assigned, 0 orphans, 504 edges, 10 components
+  [GRAPH] 51 branches traced, 226/226 nodes assigned, 0 orphans, 214 edges, 21 components
+  [GRAPH] 54 branches traced, 301/302 nodes assigned, 1 orphans, 299 edges, 16 components
+  [GRAPH] 126 branches traced, 485/485 nodes assigned, 0 orphans, 500 edges, 15 components
+  [GRAPH] 79 branches traced, 393/393 nodes assigned, 0 orphans, 409 edges, 3 components
+  [GRAPH] 109 branches traced, 500/501 nodes assigned, 1 orphans, 484 edges, 37 components
+  [GRAPH] 59 branches traced, 304/304 nodes assigned, 0 orphans, 300 edges, 15 components
+  [GRAPH] 109 branches traced, 462/462 nodes assigned, 0 orphans, 446 edges, 36 components
+  [GRAPH] 47 branches traced, 204/204 nodes assigned, 0 orphans, 208 edges, 7 components
+  [GRAPH] 41 branches traced, 210/210 nodes assigned, 0 orphans, 196 edges, 20 components
+  [GRAPH] 58 branches traced, 370/370 nodes assigned, 0 orphans, 341 edges, 36 components
+  [GRAPH] 33 branches traced, 203/203 nodes assigned, 0 orphans, 180 edges, 25 components
+  [GRAPH] 96 branches traced, 553/553 nodes assigned, 0 orphans, 551 edges, 23 components
+  [GRAPH] 135 branches traced, 616/616 nodes assigned, 0 orphans, 642 edges, 6 components
+  [GRAPH] 101 branches traced, 474/474 nodes assigned, 0 orphans, 485 edges, 14 components
+  [GRAPH] 125 branches traced, 561/561 nodes assigned, 0 orphans, 573 edges, 17 components
+  [GRAPH] 207 branches traced, 755/755 nodes assigned, 0 orphans, 805 edges, 9 components
+  [GRAPH] 97 branches traced, 509/509 nodes assigned, 0 orphans, 515 edges, 18 components
+  [GRAPH] 69 branches traced, 268/268 nodes assigned, 0 orphans, 273 edges, 13 components
+  [GRAPH] 27 branches traced, 152/152 nodes assigned, 0 orphans, 140 edges, 16 components
+  [GRAPH] 62 branches traced, 347/348 nodes assigned, 1 orphans, 341 edges, 19 components
+  [GRAPH] 96 branches traced, 400/400 nodes assigned, 0 orphans, 396 edges, 24 components
+  [GRAPH] 62 branches traced, 294/294 nodes assigned, 0 orphans, 284 edges, 20 components
+  [GRAPH] 71 branches traced, 382/382 nodes assigned, 0 orphans, 389 edges, 9 components
+  [GRAPH] 79 branches traced, 341/341 nodes assigned, 0 orphans, 340 edges, 20 components
+  [GRAPH] 66 branches traced, 265/265 nodes assigned, 0 orphans, 259 edges, 20 components
+  [GRAPH] 41 branches traced, 220/220 nodes assigned, 0 orphans, 201 edges, 25 components
+  [GRAPH] 68 branches traced, 390/390 nodes assigned, 0 orphans, 375 edges, 28 components
+  [GRAPH] 100 branches traced, 410/410 nodes assigned, 0 orphans, 419 edges, 13 components
+  [GRAPH] 65 branches traced, 305/305 nodes assigned, 0 orphans, 306 edges, 14 components
+  [GRAPH] 27 branches traced, 151/151 nodes assigned, 0 orphans, 139 edges, 15 components
+  [GRAPH] 63 branches traced, 310/310 nodes assigned, 0 orphans, 287 edges, 32 components
+  [GRAPH] 64 branches traced, 419/419 nodes assigned, 0 orphans, 417 edges, 14 components
+  [GRAPH] 110 branches traced, 407/408 nodes assigned, 1 orphans, 394 edges, 36 components
+  [GRAPH] 53 branches traced, 292/292 nodes assigned, 0 orphans, 268 edges, 30 components
+  [GRAPH] 156 branches traced, 536/536 nodes assigned, 0 orphans, 543 edges, 34 components
+  [GRAPH] 117 branches traced, 470/470 nodes assigned, 0 orphans, 487 edges, 12 components
+  [GRAPH] 85 branches traced, 390/390 nodes assigned, 0 orphans, 380 edges, 31 components
+  [GRAPH] 48 branches traced, 243/243 nodes assigned, 0 orphans, 235 edges, 18 components
+  [GRAPH] 99 branches traced, 521/521 nodes assigned, 0 orphans, 546 edges, 2 components
+  [GRAPH] 36 branches traced, 350/350 nodes assigned, 0 orphans, 349 edges, 7 components
+  [GRAPH] 71 branches traced, 308/308 nodes assigned, 0 orphans, 291 edges, 31 components
+  [GRAPH] 66 branches traced, 397/397 nodes assigned, 0 orphans, 393 edges, 19 components
+  [GRAPH] 34 branches traced, 235/236 nodes assigned, 1 orphans, 205 edges, 32 components
+  [GRAPH] 26 branches traced, 118/118 nodes assigned, 0 orphans, 116 edges, 7 components
+  [GRAPH] 57 branches traced, 326/326 nodes assigned, 0 orphans, 330 edges, 10 components
+  [GRAPH] 65 branches traced, 360/360 nodes assigned, 0 orphans, 373 edges, 4 components
+  [GRAPH] 85 branches traced, 405/405 nodes assigned, 0 orphans, 418 edges, 8 components
+  [GRAPH] 50 branches traced, 308/308 nodes assigned, 0 orphans, 321 edges, 2 components
+  [GRAPH] 137 branches traced, 612/612 nodes assigned, 0 orphans, 637 edges, 10 components
+  [GRAPH] 151 branches traced, 690/690 nodes assigned, 0 orphans, 721 edges, 7 components
+  [GRAPH] 117 branches traced, 490/490 nodes assigned, 0 orphans, 516 edges, 5 components
+otsu       n=228 IoU=0.221 P=0.282 R=0.655 P@dil20=0.380
+  [GRAPH] 14 branches traced, 24/24 nodes assigned, 0 orphans, 24 edges, 4 components
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  [GRAPH] 2 branches traced, 4/4 nodes assigned, 0 orphans, 2 edges, 2 components
+  [GRAPH] 3 branches traced, 25/25 nodes assigned, 0 orphans, 22 edges, 3 components
+  [GRAPH] 1 branches traced, 9/9 nodes assigned, 0 orphans, 8 edges, 1 components
+  fail frangi M1_001_y256x768 index out of range
+  fail frangi M1_001_y512x512 index out of range
+  [GRAPH] 11 branches traced, 42/42 nodes assigned, 0 orphans, 39 edges, 5 components
+  [GRAPH] 3 branches traced, 28/28 nodes assigned, 0 orphans, 25 edges, 3 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 3 branches traced, 10/10 nodes assigned, 0 orphans, 7 edges, 3 components
+  [GRAPH] 1 branches traced, 11/11 nodes assigned, 0 orphans, 10 edges, 1 components
+  [GRAPH] 2 branches traced, 8/8 nodes assigned, 0 orphans, 6 edges, 2 components
+  [GRAPH] 3 branches traced, 21/21 nodes assigned, 0 orphans, 18 edges, 3 components
+  fail frangi M1_003_y512x768 index out of range
+  [GRAPH] 1 branches traced, 21/21 nodes assigned, 0 orphans, 20 edges, 1 components
+  fail frangi M1_003_y768x768 index out of range
+  [GRAPH] 2 branches traced, 2/2 nodes assigned, 0 orphans, 2 edges, 1 components
+  [GRAPH] 2 branches traced, 11/11 nodes assigned, 0 orphans, 9 edges, 2 components
+  [GRAPH] 1 branches traced, 11/11 nodes assigned, 0 orphans, 10 edges, 1 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 3 branches traced, 7/7 nodes assigned, 0 orphans, 4 edges, 3 components
+  [GRAPH] 1 branches traced, 3/3 nodes assigned, 0 orphans, 2 edges, 1 components
+  [GRAPH] 1 branches traced, 3/3 nodes assigned, 0 orphans, 2 edges, 1 components
+  fail frangi M1_005_y512x0 index out of range
+  fail frangi M1_005_y512x768 index out of range
+  fail frangi M1_005_y768x0 index out of range
+  fail frangi M1_005_y768x256 index out of range
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M1_006_y0x512 index out of range
+  [GRAPH] 1 branches traced, 8/8 nodes assigned, 0 orphans, 7 edges, 1 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 2 branches traced, 9/9 nodes assigned, 0 orphans, 7 edges, 2 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M1_006_y768x768 index out of range
+  [GRAPH] 2 branches traced, 6/6 nodes assigned, 0 orphans, 4 edges, 2 components
+  fail frangi M1_007_y512x256 index out of range
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M1_007_y768x0 index out of range
+  [GRAPH] 2 branches traced, 14/14 nodes assigned, 0 orphans, 12 edges, 2 components
+  fail frangi M1_007_y768x512 index out of range
+  fail frangi M1_008_y0x768 index out of range
+  fail frangi M1_008_y256x256 index out of range
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  [GRAPH] 2 branches traced, 2/2 nodes assigned, 0 orphans, 2 edges, 1 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  fail frangi M1_008_y512x768 index out of range
+  fail frangi M1_008_y768x0 index out of range
+  fail frangi M1_008_y768x256 index out of range
+  [GRAPH] 1 branches traced, 6/6 nodes assigned, 0 orphans, 5 edges, 1 components
+  [GRAPH] 5 branches traced, 33/34 nodes assigned, 1 orphans, 29 edges, 5 components
+  fail frangi M1_009_y256x512 index out of range
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M1_009_y512x768 index out of range
+  [GRAPH] 3 branches traced, 24/24 nodes assigned, 0 orphans, 21 edges, 3 components
+  fail frangi M1_010_y0x0 index out of range
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+  [GRAPH] 3 branches traced, 13/13 nodes assigned, 0 orphans, 10 edges, 3 components
+  [GRAPH] 2 branches traced, 5/5 nodes assigned, 0 orphans, 3 edges, 2 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M1_010_y768x768 index out of range
+  fail frangi M1_011_y0x768 index out of range
+  fail frangi M1_011_y256x512 index out of range
+  fail frangi M1_011_y256x768 index out of range
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+  fail frangi M1_011_y512x768 index out of range
+  fail frangi M1_011_y768x768 index out of range
+  [GRAPH] 2 branches traced, 16/16 nodes assigned, 0 orphans, 14 edges, 2 components
+  [GRAPH] 2 branches traced, 16/16 nodes assigned, 0 orphans, 14 edges, 2 components
+  fail frangi M1_012_y256x768 index out of range
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 2 branches traced, 16/16 nodes assigned, 0 orphans, 14 edges, 2 components
+  fail frangi M1_012_y768x256 index out of range
+  fail frangi M1_012_y768x512 index out of range
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  fail frangi M1_013_y0x768 index out of range
+  fail frangi M1_013_y256x256 index out of range
+  fail frangi M1_013_y256x768 index out of range
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M1_013_y512x768 index out of range
+  fail frangi M1_013_y768x768 index out of range
+  fail frangi M1_014_y256x768 index out of range
+  [GRAPH] 1 branches traced, 15/15 nodes assigned, 0 orphans, 14 edges, 1 components
+  fail frangi M1_014_y512x256 index out of range
+  [GRAPH] 2 branches traced, 6/6 nodes assigned, 0 orphans, 4 edges, 2 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  fail frangi M1_014_y768x768 index out of range
+  [GRAPH] 14 branches traced, 73/73 nodes assigned, 0 orphans, 72 edges, 4 components
+  fail frangi M1_015_y256x512 index out of range
+  [GRAPH] 2 branches traced, 5/5 nodes assigned, 0 orphans, 3 edges, 2 components
+  [GRAPH] 1 branches traced, 3/3 nodes assigned, 0 orphans, 2 edges, 1 components
+  [GRAPH] 4 branches traced, 12/12 nodes assigned, 0 orphans, 8 edges, 4 components
+  [GRAPH] 1 branches traced, 6/6 nodes assigned, 0 orphans, 5 edges, 1 components
+  [GRAPH] 1 branches traced, 6/6 nodes assigned, 0 orphans, 5 edges, 1 components
+  fail frangi M1_016_y0x512 index out of range
+  fail frangi M1_016_y256x256 index out of range
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+  fail frangi M1_016_y512x256 index out of range
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  fail frangi M1_016_y768x0 index out of range
+  fail frangi M1_016_y768x256 index out of range
+  fail frangi M1_016_y768x512 index out of range
+  fail frangi M1_017_y0x512 index out of range
+  fail frangi M1_017_y0x768 index out of range
+  [GRAPH] 2 branches traced, 11/11 nodes assigned, 0 orphans, 9 edges, 2 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  [GRAPH] 2 branches traced, 12/12 nodes assigned, 0 orphans, 10 edges, 2 components
+  [GRAPH] 2 branches traced, 4/4 nodes assigned, 0 orphans, 2 edges, 2 components
+  [GRAPH] 3 branches traced, 11/11 nodes assigned, 0 orphans, 8 edges, 3 components
+  fail frangi M1_018_y256x768 index out of range
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M1_018_y512x768 index out of range
+  fail frangi M1_018_y768x256 index out of range
+  fail frangi M1_018_y768x768 index out of range
+  fail frangi M1_019_y256x0 index out of range
+  fail frangi M1_019_y256x256 index out of range
+  fail frangi M1_019_y256x512 index out of range
+  fail frangi M1_019_y256x768 index out of range
+  fail frangi M1_019_y512x0 index out of range
+  [GRAPH] 2 branches traced, 14/14 nodes assigned, 0 orphans, 12 edges, 2 components
+  fail frangi M1_019_y512x768 index out of range
+  fail frangi M1_019_y768x512 index out of range
+  [GRAPH] 1 branches traced, 8/8 nodes assigned, 0 orphans, 7 edges, 1 components
+  fail frangi M1_020_y256x768 index out of range
+  [GRAPH] 5 branches traced, 45/45 nodes assigned, 0 orphans, 40 edges, 5 components
+  fail frangi M1_020_y768x256 index out of range
+  fail frangi M1_020_y768x512 index out of range
+  [GRAPH] 2 branches traced, 4/4 nodes assigned, 0 orphans, 2 edges, 2 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 5 branches traced, 17/17 nodes assigned, 0 orphans, 12 edges, 5 components
+  fail frangi M1_021_y512x512 index out of range
+  [GRAPH] 3 branches traced, 4/4 nodes assigned, 0 orphans, 2 edges, 2 components
+  [GRAPH] 5 branches traced, 16/16 nodes assigned, 0 orphans, 11 edges, 5 components
+  fail frangi M2_001_y256x0 index out of range
+  fail frangi M2_001_y256x256 index out of range
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M2_001_y512x0 index out of range
+  fail frangi M2_002_y0x0 index out of range
+  [GRAPH] 6 branches traced, 26/26 nodes assigned, 0 orphans, 20 edges, 6 components
+  [GRAPH] 11 branches traced, 77/77 nodes assigned, 0 orphans, 66 edges, 11 components
+  [GRAPH] 3 branches traced, 17/18 nodes assigned, 1 orphans, 15 edges, 3 components
+  [GRAPH] 6 branches traced, 49/49 nodes assigned, 0 orphans, 43 edges, 6 components
+  [GRAPH] 7 branches traced, 28/28 nodes assigned, 0 orphans, 27 edges, 3 components
+  fail frangi M2_003_y0x256 index out of range
+  [GRAPH] 1 branches traced, 17/17 nodes assigned, 0 orphans, 16 edges, 1 components
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M2_004_y0x0 index out of range
+  fail frangi M2_004_y0x512 index out of range
+  [GRAPH] 9 branches traced, 38/38 nodes assigned, 0 orphans, 35 edges, 4 components
+  [GRAPH] 6 branches traced, 15/15 nodes assigned, 0 orphans, 10 edges, 5 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  [GRAPH] 7 branches traced, 14/14 nodes assigned, 0 orphans, 12 edges, 3 components
+  [GRAPH] 7 branches traced, 13/13 nodes assigned, 0 orphans, 14 edges, 1 components
+  fail frangi M2_006_y0x256 index out of range
+  [GRAPH] 4 branches traced, 11/11 nodes assigned, 0 orphans, 7 edges, 4 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 2 branches traced, 11/11 nodes assigned, 0 orphans, 9 edges, 2 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  fail frangi M2_007_y512x0 index out of range
+  [GRAPH] 6 branches traced, 21/21 nodes assigned, 0 orphans, 21 edges, 2 components
+  [GRAPH] 6 branches traced, 36/36 nodes assigned, 0 orphans, 30 edges, 6 components
+  [GRAPH] 2 branches traced, 20/20 nodes assigned, 0 orphans, 18 edges, 2 components
+  [GRAPH] 7 branches traced, 20/20 nodes assigned, 0 orphans, 19 edges, 3 components
+  [GRAPH] 1 branches traced, 10/10 nodes assigned, 0 orphans, 9 edges, 1 components
+  fail frangi M2_008_y512x256 index out of range
+  [GRAPH] 2 branches traced, 16/16 nodes assigned, 0 orphans, 14 edges, 2 components
+  [GRAPH] 2 branches traced, 16/16 nodes assigned, 0 orphans, 14 edges, 2 components
+  [GRAPH] 2 branches traced, 8/8 nodes assigned, 0 orphans, 6 edges, 2 components
+  [GRAPH] 4 branches traced, 24/24 nodes assigned, 0 orphans, 20 edges, 4 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M2_010_y256x512 index out of range
+  fail frangi M2_010_y512x0 index out of range
+  fail frangi M2_010_y512x512 index out of range
+  fail frangi M2_011_y0x256 index out of range
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  fail frangi M2_011_y512x0 index out of range
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  fail frangi M2_012_y0x0 index out of range
+  [GRAPH] 2 branches traced, 3/3 nodes assigned, 0 orphans, 1 edges, 2 components
+  fail frangi M2_012_y256x0 index out of range
+  fail frangi M2_012_y256x256 index out of range
+  [GRAPH] 3 branches traced, 17/17 nodes assigned, 0 orphans, 14 edges, 3 components
+  fail frangi M2_012_y512x512 index out of range
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  fail frangi M2_013_y0x512 index out of range
+  [GRAPH] 2 branches traced, 11/11 nodes assigned, 0 orphans, 9 edges, 2 components
+  [GRAPH] 1 branches traced, 8/8 nodes assigned, 0 orphans, 7 edges, 1 components
+  [GRAPH] 4 branches traced, 20/20 nodes assigned, 0 orphans, 16 edges, 4 components
+  fail frangi M2_014_y0x0 index out of range
+  fail frangi M2_014_y0x256 index out of range
+  fail frangi M2_014_y0x512 index out of range
+  [GRAPH] 1 branches traced, 27/27 nodes assigned, 0 orphans, 26 edges, 1 components
+  [GRAPH] 10 branches traced, 39/39 nodes assigned, 0 orphans, 37 edges, 4 components
+  [GRAPH] 2 branches traced, 32/32 nodes assigned, 0 orphans, 30 edges, 2 components
+  fail frangi M2_014_y512x0 index out of range
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 2 branches traced, 10/10 nodes assigned, 0 orphans, 8 edges, 2 components
+  [GRAPH] 1 branches traced, 11/11 nodes assigned, 0 orphans, 10 edges, 1 components
+  fail frangi M2_015_y256x512 index out of range
+  [GRAPH] 1 branches traced, 6/6 nodes assigned, 0 orphans, 5 edges, 1 components
+  fail frangi M2_016_y0x256 index out of range
+  fail frangi M2_016_y0x512 index out of range
+  [GRAPH] 2 branches traced, 10/10 nodes assigned, 0 orphans, 8 edges, 2 components
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+  [GRAPH] 15 branches traced, 36/36 nodes assigned, 0 orphans, 36 edges, 4 components
+  [GRAPH] 9 branches traced, 84/84 nodes assigned, 0 orphans, 75 edges, 9 components
+  [GRAPH] 2 branches traced, 2/2 nodes assigned, 0 orphans, 2 edges, 1 components
+  [GRAPH] 4 branches traced, 32/32 nodes assigned, 0 orphans, 28 edges, 4 components
+  fail frangi M2_018_y0x0 index out of range
+  [GRAPH] 1 branches traced, 12/12 nodes assigned, 0 orphans, 11 edges, 1 components
+  fail frangi M2_018_y0x512 index out of range
+  fail frangi M2_018_y256x0 index out of range
+  fail frangi M2_018_y256x256 index out of range
+  fail frangi M2_018_y512x256 index out of range
+  fail frangi M2_018_y512x512 index out of range
+  [GRAPH] 2 branches traced, 10/10 nodes assigned, 0 orphans, 8 edges, 2 components
+  [GRAPH] 2 branches traced, 20/20 nodes assigned, 0 orphans, 18 edges, 2 components
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  fail frangi M2_019_y512x512 index out of range
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+frangi     n=132 IoU=0.006 P=0.182 R=0.007 P@dil20=0.236
+  [GRAPH] 44 branches traced, 233/233 nodes assigned, 0 orphans, 202 edges, 34 components
+  [GRAPH] 54 branches traced, 166/166 nodes assigned, 0 orphans, 136 edges, 36 components
+  [GRAPH] 68 branches traced, 312/312 nodes assigned, 0 orphans, 299 edges, 27 components
+  [GRAPH] 34 branches traced, 226/226 nodes assigned, 0 orphans, 204 edges, 25 components
+  [GRAPH] 81 branches traced, 413/413 nodes assigned, 0 orphans, 386 edges, 41 components
+  [GRAPH] 56 branches traced, 306/306 nodes assigned, 0 orphans, 286 edges, 30 components
+  [GRAPH] 59 branches traced, 310/310 nodes assigned, 0 orphans, 287 edges, 32 components
+  [GRAPH] 109 branches traced, 392/392 nodes assigned, 0 orphans, 399 edges, 20 components
+  [GRAPH] 105 branches traced, 381/381 nodes assigned, 0 orphans, 376 edges, 33 components
+  [GRAPH] 49 branches traced, 315/316 nodes assigned, 1 orphans, 292 edges, 31 components
+  [GRAPH] 84 branches traced, 198/199 nodes assigned, 1 orphans, 191 edges, 32 components
+  [GRAPH] 31 branches traced, 187/187 nodes assigned, 0 orphans, 184 edges, 9 components
+  [GRAPH] 89 branches traced, 377/377 nodes assigned, 0 orphans, 355 edges, 36 components
+  [GRAPH] 135 branches traced, 370/370 nodes assigned, 0 orphans, 378 edges, 30 components
+  [GRAPH] 80 branches traced, 356/356 nodes assigned, 0 orphans, 329 edges, 40 components
+  [GRAPH] 44 branches traced, 352/352 nodes assigned, 0 orphans, 329 edges, 27 components
+  [GRAPH] 40 branches traced, 331/331 nodes assigned, 0 orphans, 304 edges, 30 components
+  [GRAPH] 175 branches traced, 640/640 nodes assigned, 0 orphans, 666 edges, 23 components
+  [GRAPH] 124 branches traced, 459/459 nodes assigned, 0 orphans, 461 edges, 30 components
+  [GRAPH] 63 branches traced, 364/364 nodes assigned, 0 orphans, 362 edges, 17 components
+  [GRAPH] 91 branches traced, 386/386 nodes assigned, 0 orphans, 387 edges, 20 components
+  [GRAPH] 105 branches traced, 486/486 nodes assigned, 0 orphans, 483 edges, 31 components
+  [GRAPH] 104 branches traced, 444/444 nodes assigned, 0 orphans, 425 edges, 39 components
+  [GRAPH] 92 branches traced, 419/420 nodes assigned, 1 orphans, 415 edges, 26 components
+  [GRAPH] 76 branches traced, 434/435 nodes assigned, 1 orphans, 428 edges, 22 components
+  [GRAPH] 159 branches traced, 618/618 nodes assigned, 0 orphans, 637 edges, 28 components
+  [GRAPH] 82 branches traced, 245/245 nodes assigned, 0 orphans, 248 edges, 16 components
+  [GRAPH] 130 branches traced, 391/391 nodes assigned, 0 orphans, 387 edges, 38 components
+  [GRAPH] 55 branches traced, 401/401 nodes assigned, 0 orphans, 359 edges, 46 components
+  [GRAPH] 75 branches traced, 415/415 nodes assigned, 0 orphans, 403 edges, 27 components
+  [GRAPH] 28 branches traced, 188/188 nodes assigned, 0 orphans, 182 edges, 10 components
+  [GRAPH] 43 branches traced, 203/203 nodes assigned, 0 orphans, 182 edges, 26 components
+  [GRAPH] 79 branches traced, 417/417 nodes assigned, 0 orphans, 397 edges, 34 components
+  [GRAPH] 104 branches traced, 469/469 nodes assigned, 0 orphans, 438 edges, 49 components
+  [GRAPH] 81 branches traced, 314/314 nodes assigned, 0 orphans, 301 edges, 28 components
+  [GRAPH] 63 branches traced, 416/417 nodes assigned, 1 orphans, 386 edges, 40 components
+  [GRAPH] 95 branches traced, 474/474 nodes assigned, 0 orphans, 456 edges, 36 components
+  [GRAPH] 134 branches traced, 483/483 nodes assigned, 0 orphans, 487 edges, 27 components
+  [GRAPH] 219 branches traced, 691/692 nodes assigned, 1 orphans, 732 edges, 27 components
+  [GRAPH] 65 branches traced, 316/316 nodes assigned, 0 orphans, 315 edges, 17 components
+  [GRAPH] 122 branches traced, 536/536 nodes assigned, 0 orphans, 541 edges, 22 components
+  [GRAPH] 132 branches traced, 560/560 nodes assigned, 0 orphans, 563 edges, 26 components
+  [GRAPH] 122 branches traced, 566/566 nodes assigned, 0 orphans, 548 edges, 41 components
+  [GRAPH] 78 branches traced, 312/312 nodes assigned, 0 orphans, 316 edges, 14 components
+  [GRAPH] 42 branches traced, 329/330 nodes assigned, 1 orphans, 301 edges, 33 components
+  [GRAPH] 76 branches traced, 504/504 nodes assigned, 0 orphans, 491 edges, 27 components
+  [GRAPH] 139 branches traced, 541/542 nodes assigned, 1 orphans, 532 edges, 42 components
+  [GRAPH] 95 branches traced, 476/476 nodes assigned, 0 orphans, 470 edges, 32 components
+  [GRAPH] 25 branches traced, 82/82 nodes assigned, 0 orphans, 81 edges, 8 components
+  [GRAPH] 133 branches traced, 646/646 nodes assigned, 0 orphans, 619 edges, 56 components
+  [GRAPH] 115 branches traced, 600/600 nodes assigned, 0 orphans, 592 edges, 37 components
+  [GRAPH] 29 branches traced, 186/186 nodes assigned, 0 orphans, 186 edges, 7 components
+  [GRAPH] 95 branches traced, 332/332 nodes assigned, 0 orphans, 303 edges, 48 components
+  [GRAPH] 54 branches traced, 293/294 nodes assigned, 1 orphans, 281 edges, 23 components
+  [GRAPH] 37 branches traced, 186/186 nodes assigned, 0 orphans, 165 edges, 25 components
+  [GRAPH] 50 branches traced, 249/249 nodes assigned, 0 orphans, 210 edges, 42 components
+  [GRAPH] 55 branches traced, 229/229 nodes assigned, 0 orphans, 214 edges, 25 components
+  [GRAPH] 46 branches traced, 247/247 nodes assigned, 0 orphans, 225 edges, 28 components
+  [GRAPH] 31 branches traced, 288/288 nodes assigned, 0 orphans, 284 edges, 10 components
+  [GRAPH] 74 branches traced, 341/341 nodes assigned, 0 orphans, 345 edges, 15 components
+  [GRAPH] 88 branches traced, 510/510 nodes assigned, 0 orphans, 502 edges, 25 components
+  [GRAPH] 73 branches traced, 360/360 nodes assigned, 0 orphans, 363 edges, 12 components
+  [GRAPH] 101 branches traced, 417/417 nodes assigned, 0 orphans, 409 edges, 30 components
+  [GRAPH] 68 branches traced, 441/441 nodes assigned, 0 orphans, 419 edges, 32 components
+  [GRAPH] 54 branches traced, 288/288 nodes assigned, 0 orphans, 269 edges, 27 components
+  [GRAPH] 47 branches traced, 216/216 nodes assigned, 0 orphans, 182 edges, 38 components
+  [GRAPH] 35 branches traced, 210/210 nodes assigned, 0 orphans, 176 edges, 34 components
+  [GRAPH] 42 branches traced, 173/173 nodes assigned, 0 orphans, 144 edges, 32 components
+  [GRAPH] 81 branches traced, 268/268 nodes assigned, 0 orphans, 256 edges, 33 components
+  [GRAPH] 32 branches traced, 147/147 nodes assigned, 0 orphans, 126 edges, 24 components
+  [GRAPH] 165 branches traced, 650/650 nodes assigned, 0 orphans, 667 edges, 31 components
+  [GRAPH] 83 branches traced, 418/418 nodes assigned, 0 orphans, 399 edges, 34 components
+  [GRAPH] 99 branches traced, 548/548 nodes assigned, 0 orphans, 547 edges, 23 components
+  [GRAPH] 99 branches traced, 477/477 nodes assigned, 0 orphans, 490 edges, 17 components
+  [GRAPH] 156 branches traced, 664/664 nodes assigned, 0 orphans, 654 edges, 41 components
+  [GRAPH] 70 branches traced, 534/534 nodes assigned, 0 orphans, 507 edges, 38 components
+  [GRAPH] 153 branches traced, 706/706 nodes assigned, 0 orphans, 710 edges, 31 components
+  [GRAPH] 91 branches traced, 349/349 nodes assigned, 0 orphans, 352 edges, 20 components
+  [GRAPH] 40 branches traced, 172/172 nodes assigned, 0 orphans, 170 edges, 10 components
+  [GRAPH] 87 branches traced, 616/616 nodes assigned, 0 orphans, 602 edges, 30 components
+  [GRAPH] 40 branches traced, 176/176 nodes assigned, 0 orphans, 169 edges, 14 components
+  [GRAPH] 138 branches traced, 650/650 nodes assigned, 0 orphans, 647 edges, 37 components
+  [GRAPH] 167 branches traced, 687/687 nodes assigned, 0 orphans, 688 edges, 44 components
+  [GRAPH] 87 branches traced, 386/386 nodes assigned, 0 orphans, 376 edges, 28 components
+  [GRAPH] 48 branches traced, 486/486 nodes assigned, 0 orphans, 459 edges, 31 components
+  [GRAPH] 37 branches traced, 266/266 nodes assigned, 0 orphans, 263 edges, 10 components
+  [GRAPH] 45 branches traced, 299/299 nodes assigned, 0 orphans, 294 edges, 15 components
+  [GRAPH] 62 branches traced, 461/461 nodes assigned, 0 orphans, 435 edges, 35 components
+  [GRAPH] 79 branches traced, 324/324 nodes assigned, 0 orphans, 296 edges, 41 components
+  [GRAPH] 107 branches traced, 385/385 nodes assigned, 0 orphans, 371 edges, 37 components
+  [GRAPH] 47 branches traced, 230/230 nodes assigned, 0 orphans, 202 edges, 33 components
+  [GRAPH] 59 branches traced, 253/253 nodes assigned, 0 orphans, 255 edges, 11 components
+  [GRAPH] 91 branches traced, 274/274 nodes assigned, 0 orphans, 273 edges, 24 components
+  [GRAPH] 92 branches traced, 393/393 nodes assigned, 0 orphans, 371 edges, 36 components
+  [GRAPH] 136 branches traced, 535/535 nodes assigned, 0 orphans, 522 edges, 47 components
+  [GRAPH] 57 branches traced, 351/351 nodes assigned, 0 orphans, 333 edges, 26 components
+  [GRAPH] 80 branches traced, 363/363 nodes assigned, 0 orphans, 351 edges, 34 components
+  [GRAPH] 47 branches traced, 200/200 nodes assigned, 0 orphans, 189 edges, 20 components
+  [GRAPH] 99 branches traced, 375/375 nodes assigned, 0 orphans, 375 edges, 24 components
+  [GRAPH] 40 branches traced, 151/151 nodes assigned, 0 orphans, 151 edges, 8 components
+  [GRAPH] 65 branches traced, 414/414 nodes assigned, 0 orphans, 385 edges, 38 components
+  [GRAPH] 85 branches traced, 431/431 nodes assigned, 0 orphans, 421 edges, 26 components
+  [GRAPH] 59 branches traced, 473/473 nodes assigned, 0 orphans, 450 edges, 31 components
+  [GRAPH] 123 branches traced, 619/619 nodes assigned, 0 orphans, 616 edges, 31 components
+  [GRAPH] 55 branches traced, 324/324 nodes assigned, 0 orphans, 303 edges, 29 components
+  [GRAPH] 72 branches traced, 508/509 nodes assigned, 1 orphans, 487 edges, 35 components
+  [GRAPH] 138 branches traced, 567/567 nodes assigned, 0 orphans, 555 edges, 41 components
+  [GRAPH] 28 branches traced, 158/158 nodes assigned, 0 orphans, 154 edges, 11 components
+  [GRAPH] 122 branches traced, 550/550 nodes assigned, 0 orphans, 548 edges, 31 components
+  [GRAPH] 52 branches traced, 288/288 nodes assigned, 0 orphans, 283 edges, 17 components
+  [GRAPH] 86 branches traced, 415/415 nodes assigned, 0 orphans, 392 edges, 37 components
+  [GRAPH] 113 branches traced, 481/481 nodes assigned, 0 orphans, 456 edges, 47 components
+  [GRAPH] 65 branches traced, 279/279 nodes assigned, 0 orphans, 261 edges, 29 components
+  [GRAPH] 106 branches traced, 446/446 nodes assigned, 0 orphans, 446 edges, 23 components
+  [GRAPH] 72 branches traced, 360/360 nodes assigned, 0 orphans, 335 edges, 35 components
+  [GRAPH] 49 branches traced, 250/250 nodes assigned, 0 orphans, 225 edges, 31 components
+  [GRAPH] 54 branches traced, 318/318 nodes assigned, 0 orphans, 313 edges, 15 components
+  [GRAPH] 42 branches traced, 139/139 nodes assigned, 0 orphans, 143 edges, 8 components
+  [GRAPH] 54 branches traced, 209/209 nodes assigned, 0 orphans, 216 edges, 7 components
+  [GRAPH] 213 branches traced, 665/665 nodes assigned, 0 orphans, 689 edges, 36 components
+  [GRAPH] 156 branches traced, 615/616 nodes assigned, 1 orphans, 624 edges, 32 components
+  [GRAPH] 104 branches traced, 590/590 nodes assigned, 0 orphans, 573 edges, 35 components
+  [GRAPH] 175 branches traced, 617/618 nodes assigned, 1 orphans, 646 edges, 25 components
+  [GRAPH] 95 branches traced, 593/593 nodes assigned, 0 orphans, 579 edges, 35 components
+  [GRAPH] 118 branches traced, 654/654 nodes assigned, 0 orphans, 648 edges, 34 components
+  [GRAPH] 74 branches traced, 447/447 nodes assigned, 0 orphans, 425 edges, 34 components
+  [GRAPH] 133 branches traced, 573/573 nodes assigned, 0 orphans, 555 edges, 45 components
+  [GRAPH] 70 branches traced, 296/296 nodes assigned, 0 orphans, 281 edges, 29 components
+  [GRAPH] 89 branches traced, 381/381 nodes assigned, 0 orphans, 343 edges, 50 components
+  [GRAPH] 92 branches traced, 337/337 nodes assigned, 0 orphans, 332 edges, 25 components
+  [GRAPH] 75 branches traced, 354/354 nodes assigned, 0 orphans, 323 edges, 42 components
+  [GRAPH] 95 branches traced, 364/364 nodes assigned, 0 orphans, 357 edges, 29 components
+  [GRAPH] 67 branches traced, 400/400 nodes assigned, 0 orphans, 391 edges, 24 components
+  [GRAPH] 84 branches traced, 403/403 nodes assigned, 0 orphans, 377 edges, 41 components
+  [GRAPH] 66 branches traced, 299/299 nodes assigned, 0 orphans, 264 edges, 42 components
+  [GRAPH] 47 branches traced, 231/232 nodes assigned, 1 orphans, 221 edges, 20 components
+  [GRAPH] 52 branches traced, 330/330 nodes assigned, 0 orphans, 293 edges, 41 components
+  [GRAPH] 4 branches traced, 16/16 nodes assigned, 0 orphans, 12 edges, 4 components
+  [GRAPH] 15 branches traced, 98/98 nodes assigned, 0 orphans, 83 edges, 15 components
+  [GRAPH] 11 branches traced, 56/56 nodes assigned, 0 orphans, 45 edges, 11 components
+  [GRAPH] 6 branches traced, 28/28 nodes assigned, 0 orphans, 22 edges, 6 components
+  [GRAPH] 28 branches traced, 259/259 nodes assigned, 0 orphans, 243 edges, 19 components
+  [GRAPH] 72 branches traced, 345/345 nodes assigned, 0 orphans, 326 edges, 31 components
+  [GRAPH] 124 branches traced, 535/536 nodes assigned, 1 orphans, 534 edges, 35 components
+  [GRAPH] 18 branches traced, 106/106 nodes assigned, 0 orphans, 89 edges, 17 components
+  [GRAPH] 57 branches traced, 368/368 nodes assigned, 0 orphans, 331 edges, 42 components
+  [GRAPH] 35 branches traced, 215/215 nodes assigned, 0 orphans, 191 edges, 26 components
+  [GRAPH] 45 branches traced, 284/284 nodes assigned, 0 orphans, 269 edges, 23 components
+  [GRAPH] 20 branches traced, 156/156 nodes assigned, 0 orphans, 136 edges, 20 components
+  [GRAPH] 83 branches traced, 301/301 nodes assigned, 0 orphans, 292 edges, 32 components
+  [GRAPH] 12 branches traced, 41/41 nodes assigned, 0 orphans, 39 edges, 4 components
+  [GRAPH] 22 branches traced, 144/144 nodes assigned, 0 orphans, 142 edges, 7 components
+  [GRAPH] 39 branches traced, 202/202 nodes assigned, 0 orphans, 174 edges, 31 components
+  [GRAPH] 35 branches traced, 194/194 nodes assigned, 0 orphans, 186 edges, 16 components
+  [GRAPH] 42 branches traced, 180/180 nodes assigned, 0 orphans, 162 edges, 25 components
+  [GRAPH] 35 branches traced, 180/181 nodes assigned, 1 orphans, 159 edges, 24 components
+  [GRAPH] 55 branches traced, 403/403 nodes assigned, 0 orphans, 394 edges, 19 components
+  [GRAPH] 64 branches traced, 401/401 nodes assigned, 0 orphans, 377 edges, 35 components
+  [GRAPH] 64 branches traced, 544/544 nodes assigned, 0 orphans, 512 edges, 40 components
+  [GRAPH] 58 branches traced, 293/293 nodes assigned, 0 orphans, 270 edges, 32 components
+  [GRAPH] 11 branches traced, 131/131 nodes assigned, 0 orphans, 126 edges, 6 components
+  [GRAPH] 102 branches traced, 563/563 nodes assigned, 0 orphans, 554 edges, 30 components
+  [GRAPH] 58 branches traced, 412/412 nodes assigned, 0 orphans, 383 edges, 36 components
+  [GRAPH] 40 branches traced, 212/212 nodes assigned, 0 orphans, 212 edges, 9 components
+  [GRAPH] 43 branches traced, 170/170 nodes assigned, 0 orphans, 154 edges, 22 components
+  [GRAPH] 81 branches traced, 419/419 nodes assigned, 0 orphans, 392 edges, 42 components
+  [GRAPH] 91 branches traced, 371/371 nodes assigned, 0 orphans, 356 edges, 34 components
+  [GRAPH] 78 branches traced, 379/380 nodes assigned, 1 orphans, 355 edges, 38 components
+  [GRAPH] 32 branches traced, 210/210 nodes assigned, 0 orphans, 182 edges, 29 components
+  [GRAPH] 26 branches traced, 213/213 nodes assigned, 0 orphans, 188 edges, 26 components
+  [GRAPH] 46 branches traced, 208/208 nodes assigned, 0 orphans, 214 edges, 5 components
+  [GRAPH] 103 branches traced, 591/591 nodes assigned, 0 orphans, 591 edges, 21 components
+  [GRAPH] 77 branches traced, 391/392 nodes assigned, 1 orphans, 375 edges, 32 components
+  [GRAPH] 121 branches traced, 394/394 nodes assigned, 0 orphans, 400 edges, 25 components
+  [GRAPH] 37 branches traced, 205/205 nodes assigned, 0 orphans, 184 edges, 25 components
+  [GRAPH] 57 branches traced, 284/284 nodes assigned, 0 orphans, 255 edges, 37 components
+  [GRAPH] 54 branches traced, 245/245 nodes assigned, 0 orphans, 234 edges, 22 components
+  [GRAPH] 49 branches traced, 154/155 nodes assigned, 1 orphans, 137 edges, 26 components
+  [GRAPH] 39 branches traced, 230/230 nodes assigned, 0 orphans, 217 edges, 19 components
+  [GRAPH] 53 branches traced, 279/279 nodes assigned, 0 orphans, 270 edges, 19 components
+  [GRAPH] 39 branches traced, 262/262 nodes assigned, 0 orphans, 259 edges, 12 components
+  [GRAPH] 126 branches traced, 385/385 nodes assigned, 0 orphans, 370 edges, 45 components
+  [GRAPH] 37 branches traced, 127/127 nodes assigned, 0 orphans, 126 edges, 12 components
+  [GRAPH] 41 branches traced, 169/169 nodes assigned, 0 orphans, 149 edges, 26 components
+  [GRAPH] 14 branches traced, 119/119 nodes assigned, 0 orphans, 111 edges, 10 components
+  [GRAPH] 31 branches traced, 143/143 nodes assigned, 0 orphans, 127 edges, 20 components
+  [GRAPH] 59 branches traced, 316/316 nodes assigned, 0 orphans, 292 edges, 33 components
+  [GRAPH] 30 branches traced, 140/140 nodes assigned, 0 orphans, 111 edges, 29 components
+  [GRAPH] 56 branches traced, 420/420 nodes assigned, 0 orphans, 395 edges, 32 components
+  [GRAPH] 65 branches traced, 247/247 nodes assigned, 0 orphans, 239 edges, 22 components
+  [GRAPH] 60 branches traced, 352/352 nodes assigned, 0 orphans, 341 edges, 22 components
+  [GRAPH] 113 branches traced, 521/521 nodes assigned, 0 orphans, 509 edges, 37 components
+  [GRAPH] 72 branches traced, 367/367 nodes assigned, 0 orphans, 359 edges, 24 components
+  [GRAPH] 68 branches traced, 325/325 nodes assigned, 0 orphans, 313 edges, 26 components
+  [GRAPH] 21 branches traced, 100/100 nodes assigned, 0 orphans, 90 edges, 14 components
+  [GRAPH] 13 branches traced, 59/59 nodes assigned, 0 orphans, 46 edges, 13 components
+  [GRAPH] 43 branches traced, 232/232 nodes assigned, 0 orphans, 208 edges, 29 components
+  [GRAPH] 61 branches traced, 263/263 nodes assigned, 0 orphans, 237 edges, 36 components
+  [GRAPH] 55 branches traced, 310/310 nodes assigned, 0 orphans, 285 edges, 31 components
+  [GRAPH] 19 branches traced, 127/127 nodes assigned, 0 orphans, 117 edges, 13 components
+  [GRAPH] 51 branches traced, 237/237 nodes assigned, 0 orphans, 210 edges, 34 components
+  [GRAPH] 52 branches traced, 212/212 nodes assigned, 0 orphans, 200 edges, 22 components
+  [GRAPH] 29 branches traced, 202/202 nodes assigned, 0 orphans, 179 edges, 25 components
+  [GRAPH] 70 branches traced, 308/308 nodes assigned, 0 orphans, 293 edges, 33 components
+  [GRAPH] 38 branches traced, 150/151 nodes assigned, 1 orphans, 136 edges, 21 components
+  [GRAPH] 11 branches traced, 36/36 nodes assigned, 0 orphans, 27 edges, 10 components
+  [GRAPH] 12 branches traced, 76/76 nodes assigned, 0 orphans, 64 edges, 12 components
+  [GRAPH] 64 branches traced, 228/228 nodes assigned, 0 orphans, 194 edges, 42 components
+  [GRAPH] 28 branches traced, 207/207 nodes assigned, 0 orphans, 192 edges, 18 components
+  [GRAPH] 65 branches traced, 319/319 nodes assigned, 0 orphans, 289 edges, 39 components
+  [GRAPH] 54 branches traced, 230/231 nodes assigned, 1 orphans, 204 edges, 35 components
+  [GRAPH] 178 branches traced, 432/433 nodes assigned, 1 orphans, 453 edges, 34 components
+  [GRAPH] 57 branches traced, 237/238 nodes assigned, 1 orphans, 229 edges, 21 components
+  [GRAPH] 52 branches traced, 280/280 nodes assigned, 0 orphans, 264 edges, 24 components
+  [GRAPH] 30 branches traced, 152/152 nodes assigned, 0 orphans, 142 edges, 15 components
+  [GRAPH] 22 branches traced, 260/260 nodes assigned, 0 orphans, 240 edges, 20 components
+  [GRAPH] 20 branches traced, 178/178 nodes assigned, 0 orphans, 166 edges, 14 components
+  [GRAPH] 56 branches traced, 198/198 nodes assigned, 0 orphans, 167 edges, 38 components
+  [GRAPH] 45 branches traced, 276/276 nodes assigned, 0 orphans, 255 edges, 26 components
+  [GRAPH] 40 branches traced, 199/199 nodes assigned, 0 orphans, 169 edges, 33 components
+  [GRAPH] 12 branches traced, 53/53 nodes assigned, 0 orphans, 47 edges, 8 components
+  [GRAPH] 45 branches traced, 220/220 nodes assigned, 0 orphans, 218 edges, 13 components
+  [GRAPH] 38 branches traced, 189/189 nodes assigned, 0 orphans, 190 edges, 9 components
+  [GRAPH] 41 branches traced, 231/232 nodes assigned, 1 orphans, 226 edges, 13 components
+  [GRAPH] 48 branches traced, 207/207 nodes assigned, 0 orphans, 212 edges, 4 components
+  [GRAPH] 76 branches traced, 362/362 nodes assigned, 0 orphans, 353 edges, 24 components
+  [GRAPH] 80 branches traced, 452/452 nodes assigned, 0 orphans, 445 edges, 24 components
+  [GRAPH] 57 branches traced, 243/243 nodes assigned, 0 orphans, 244 edges, 13 components
+meijering  n=228 IoU=0.162 P=0.251 R=0.394 P@dil20=0.357
+  [GRAPH] 383 branches traced, 1207/1208 nodes assigned, 1 orphans, 1229 edges, 76 components
+  [GRAPH] 199 branches traced, 797/797 nodes assigned, 0 orphans, 753 edges, 79 components
+  [GRAPH] 576 branches traced, 1349/1349 nodes assigned, 0 orphans, 1488 edges, 36 components
+  [GRAPH] 356 branches traced, 976/978 nodes assigned, 2 orphans, 1019 edges, 49 components
+  [GRAPH] 775 branches traced, 1713/1713 nodes assigned, 0 orphans, 1904 edges, 36 components
+  [GRAPH] 399 branches traced, 1209/1209 nodes assigned, 0 orphans, 1279 edges, 39 components
+  [GRAPH] 648 branches traced, 1603/1603 nodes assigned, 0 orphans, 1735 edges, 47 components
+  [GRAPH] 349 branches traced, 960/960 nodes assigned, 0 orphans, 1029 edges, 34 components
+  [GRAPH] 255 branches traced, 1235/1236 nodes assigned, 1 orphans, 1228 edges, 67 components
+  [GRAPH] 460 branches traced, 1354/1354 nodes assigned, 0 orphans, 1454 edges, 30 components
+  [GRAPH] 532 branches traced, 1444/1446 nodes assigned, 2 orphans, 1525 edges, 60 components
+  [GRAPH] 156 branches traced, 554/554 nodes assigned, 0 orphans, 584 edges, 15 components
+  [GRAPH] 382 branches traced, 1154/1155 nodes assigned, 1 orphans, 1193 edges, 60 components
+  [GRAPH] 528 branches traced, 1456/1456 nodes assigned, 0 orphans, 1587 edges, 26 components
+  [GRAPH] 438 branches traced, 1330/1331 nodes assigned, 1 orphans, 1412 edges, 40 components
+  [GRAPH] 625 branches traced, 1809/1810 nodes assigned, 1 orphans, 1966 edges, 28 components
+  [GRAPH] 426 branches traced, 1427/1427 nodes assigned, 0 orphans, 1507 edges, 45 components
+  [GRAPH] 692 branches traced, 1518/1518 nodes assigned, 0 orphans, 1717 edges, 13 components
+  [GRAPH] 531 branches traced, 1438/1439 nodes assigned, 1 orphans, 1581 edges, 12 components
+  [GRAPH] 451 branches traced, 1157/1157 nodes assigned, 0 orphans, 1296 edges, 7 components
+  [GRAPH] 530 branches traced, 1415/1415 nodes assigned, 0 orphans, 1550 edges, 18 components
+  [GRAPH] 370 branches traced, 1282/1282 nodes assigned, 0 orphans, 1333 edges, 45 components
+  [GRAPH] 640 branches traced, 1738/1738 nodes assigned, 0 orphans, 1892 edges, 22 components
+  [GRAPH] 750 branches traced, 1626/1626 nodes assigned, 0 orphans, 1850 edges, 21 components
+  [GRAPH] 580 branches traced, 1484/1484 nodes assigned, 0 orphans, 1642 edges, 21 components
+  [GRAPH] 613 branches traced, 1565/1565 nodes assigned, 0 orphans, 1735 edges, 23 components
+  [GRAPH] 270 branches traced, 814/815 nodes assigned, 1 orphans, 861 edges, 28 components
+  [GRAPH] 656 branches traced, 1640/1640 nodes assigned, 0 orphans, 1753 edges, 64 components
+  [GRAPH] 475 branches traced, 1777/1779 nodes assigned, 2 orphans, 1819 edges, 73 components
+  [GRAPH] 546 branches traced, 1425/1426 nodes assigned, 1 orphans, 1566 edges, 26 components
+  [GRAPH] 177 branches traced, 516/516 nodes assigned, 0 orphans, 570 edges, 3 components
+  [GRAPH] 330 branches traced, 1053/1054 nodes assigned, 1 orphans, 1080 edges, 54 components
+  [GRAPH] 671 branches traced, 1672/1672 nodes assigned, 0 orphans, 1828 edges, 30 components
+  [GRAPH] 904 branches traced, 1965/1965 nodes assigned, 0 orphans, 2229 edges, 27 components
+  [GRAPH] 491 branches traced, 1247/1247 nodes assigned, 0 orphans, 1370 edges, 26 components
+  [GRAPH] 419 branches traced, 1559/1561 nodes assigned, 2 orphans, 1621 edges, 56 components
+  [GRAPH] 408 branches traced, 1126/1127 nodes assigned, 1 orphans, 1189 edges, 49 components
+  [GRAPH] 592 branches traced, 1393/1393 nodes assigned, 0 orphans, 1552 edges, 16 components
+  [GRAPH] 710 branches traced, 1668/1669 nodes assigned, 1 orphans, 1874 edges, 17 components
+  [GRAPH] 501 branches traced, 1079/1079 nodes assigned, 0 orphans, 1235 edges, 9 components
+  [GRAPH] 596 branches traced, 1380/1384 nodes assigned, 4 orphans, 1544 edges, 20 components
+  [GRAPH] 601 branches traced, 1510/1511 nodes assigned, 1 orphans, 1686 edges, 9 components
+  [GRAPH] 429 branches traced, 1263/1263 nodes assigned, 0 orphans, 1310 edges, 69 components
+  [GRAPH] 465 branches traced, 1238/1238 nodes assigned, 0 orphans, 1368 edges, 11 components
+  [GRAPH] 494 branches traced, 1420/1420 nodes assigned, 0 orphans, 1523 edges, 37 components
+  [GRAPH] 719 branches traced, 1898/1898 nodes assigned, 0 orphans, 2141 edges, 8 components
+  [GRAPH] 1026 branches traced, 2025/2025 nodes assigned, 0 orphans, 2327 edges, 26 components
+  [GRAPH] 272 branches traced, 1142/1142 nodes assigned, 0 orphans, 1155 edges, 55 components
+  [GRAPH] 141 branches traced, 337/337 nodes assigned, 0 orphans, 375 edges, 4 components
+  [GRAPH] 1026 branches traced, 2776/2776 nodes assigned, 0 orphans, 3051 edges, 35 components
+  [GRAPH] 886 branches traced, 2533/2534 nodes assigned, 1 orphans, 2772 edges, 31 components
+  [GRAPH] 306 branches traced, 751/751 nodes assigned, 0 orphans, 842 edges, 10 components
+  [GRAPH] 327 branches traced, 1061/1065 nodes assigned, 4 orphans, 1011 edges, 119 components
+  [GRAPH] 536 branches traced, 1250/1250 nodes assigned, 0 orphans, 1385 edges, 28 components
+  [GRAPH] 332 branches traced, 1037/1038 nodes assigned, 1 orphans, 1069 edges, 57 components
+  [GRAPH] 475 branches traced, 1374/1376 nodes assigned, 2 orphans, 1426 edges, 79 components
+  [GRAPH] 403 branches traced, 1188/1188 nodes assigned, 0 orphans, 1217 edges, 74 components
+  [GRAPH] 356 branches traced, 1215/1216 nodes assigned, 1 orphans, 1276 edges, 40 components
+  [GRAPH] 367 branches traced, 996/996 nodes assigned, 0 orphans, 1117 edges, 4 components
+  [GRAPH] 520 branches traced, 1099/1099 nodes assigned, 0 orphans, 1251 edges, 20 components
+  [GRAPH] 661 branches traced, 1439/1439 nodes assigned, 0 orphans, 1629 edges, 17 components
+  [GRAPH] 614 branches traced, 1270/1270 nodes assigned, 0 orphans, 1444 edges, 15 components
+  [GRAPH] 779 branches traced, 1570/1570 nodes assigned, 0 orphans, 1784 edges, 29 components
+  [GRAPH] 704 branches traced, 2111/2111 nodes assigned, 0 orphans, 2293 edges, 28 components
+  [GRAPH] 368 branches traced, 1554/1554 nodes assigned, 0 orphans, 1585 edges, 62 components
+  [GRAPH] 416 branches traced, 1124/1126 nodes assigned, 2 orphans, 1165 edges, 71 components
+  [GRAPH] 368 branches traced, 1136/1136 nodes assigned, 0 orphans, 1163 edges, 66 components
+  [GRAPH] 260 branches traced, 964/966 nodes assigned, 2 orphans, 933 edges, 86 components
+  [GRAPH] 409 branches traced, 1195/1195 nodes assigned, 0 orphans, 1263 edges, 43 components
+  [GRAPH] 210 branches traced, 787/787 nodes assigned, 0 orphans, 802 edges, 40 components
+  [GRAPH] 957 branches traced, 2481/2481 nodes assigned, 0 orphans, 2765 edges, 27 components
+  [GRAPH] 745 branches traced, 1726/1727 nodes assigned, 1 orphans, 1918 edges, 29 components
+  [GRAPH] 603 branches traced, 1604/1605 nodes assigned, 1 orphans, 1786 edges, 7 components
+  [GRAPH] 640 branches traced, 1319/1320 nodes assigned, 1 orphans, 1509 edges, 12 components
+  [GRAPH] 772 branches traced, 1645/1645 nodes assigned, 0 orphans, 1860 edges, 29 components
+  [GRAPH] 644 branches traced, 1999/2001 nodes assigned, 2 orphans, 2161 edges, 32 components
+  [GRAPH] 793 branches traced, 2137/2137 nodes assigned, 0 orphans, 2365 edges, 22 components
+  [GRAPH] 474 branches traced, 1310/1310 nodes assigned, 0 orphans, 1428 edges, 20 components
+  [GRAPH] 175 branches traced, 508/508 nodes assigned, 0 orphans, 543 edges, 15 components
+  [GRAPH] 460 branches traced, 1630/1632 nodes assigned, 2 orphans, 1727 edges, 35 components
+  [GRAPH] 264 branches traced, 653/653 nodes assigned, 0 orphans, 727 edges, 8 components
+  [GRAPH] 880 branches traced, 1898/1898 nodes assigned, 0 orphans, 2105 edges, 50 components
+  [GRAPH] 928 branches traced, 1989/1989 nodes assigned, 0 orphans, 2243 edges, 36 components
+  [GRAPH] 640 branches traced, 1404/1404 nodes assigned, 0 orphans, 1589 edges, 29 components
+  [GRAPH] 418 branches traced, 1449/1450 nodes assigned, 1 orphans, 1529 edges, 46 components
+  [GRAPH] 496 branches traced, 1517/1517 nodes assigned, 0 orphans, 1658 edges, 17 components
+  [GRAPH] 460 branches traced, 961/961 nodes assigned, 0 orphans, 1094 edges, 11 components
+  [GRAPH] 757 branches traced, 2150/2150 nodes assigned, 0 orphans, 2344 edges, 32 components
+  [GRAPH] 468 branches traced, 1246/1248 nodes assigned, 2 orphans, 1293 edges, 83 components
+  [GRAPH] 631 branches traced, 1442/1442 nodes assigned, 0 orphans, 1570 edges, 52 components
+  [GRAPH] 151 branches traced, 652/653 nodes assigned, 1 orphans, 643 edges, 46 components
+  [GRAPH] 177 branches traced, 579/579 nodes assigned, 0 orphans, 610 edges, 19 components
+  [GRAPH] 271 branches traced, 886/887 nodes assigned, 1 orphans, 917 edges, 39 components
+  [GRAPH] 497 branches traced, 1348/1348 nodes assigned, 0 orphans, 1445 edges, 41 components
+  [GRAPH] 806 branches traced, 1867/1867 nodes assigned, 0 orphans, 2051 edges, 47 components
+  [GRAPH] 383 branches traced, 1057/1057 nodes assigned, 0 orphans, 1108 edges, 55 components
+  [GRAPH] 478 branches traced, 1730/1734 nodes assigned, 4 orphans, 1805 edges, 54 components
+  [GRAPH] 155 branches traced, 613/614 nodes assigned, 1 orphans, 605 edges, 43 components
+  [GRAPH] 735 branches traced, 1417/1417 nodes assigned, 0 orphans, 1635 edges, 20 components
+  [GRAPH] 139 branches traced, 347/347 nodes assigned, 0 orphans, 383 edges, 9 components
+  [GRAPH] 567 branches traced, 1821/1822 nodes assigned, 1 orphans, 1928 edges, 59 components
+  [GRAPH] 518 branches traced, 1328/1329 nodes assigned, 1 orphans, 1440 edges, 43 components
+  [GRAPH] 641 branches traced, 1938/1938 nodes assigned, 0 orphans, 2097 edges, 34 components
+  [GRAPH] 781 branches traced, 2175/2175 nodes assigned, 0 orphans, 2388 edges, 30 components
+  [GRAPH] 738 branches traced, 1646/1647 nodes assigned, 1 orphans, 1812 edges, 42 components
+  [GRAPH] 637 branches traced, 1796/1796 nodes assigned, 0 orphans, 1970 edges, 26 components
+  [GRAPH] 639 branches traced, 1530/1531 nodes assigned, 1 orphans, 1689 edges, 27 components
+  [GRAPH] 256 branches traced, 608/608 nodes assigned, 0 orphans, 677 edges, 11 components
+  [GRAPH] 604 branches traced, 1544/1545 nodes assigned, 1 orphans, 1716 edges, 14 components
+  [GRAPH] 359 branches traced, 1192/1192 nodes assigned, 0 orphans, 1279 edges, 16 components
+  [GRAPH] 508 branches traced, 1357/1357 nodes assigned, 0 orphans, 1414 edges, 78 components
+  [GRAPH] 501 branches traced, 1456/1456 nodes assigned, 0 orphans, 1517 edges, 71 components
+  [GRAPH] 280 branches traced, 969/969 nodes assigned, 0 orphans, 968 edges, 64 components
+  [GRAPH] 570 branches traced, 1332/1332 nodes assigned, 0 orphans, 1480 edges, 19 components
+  [GRAPH] 626 branches traced, 1473/1474 nodes assigned, 1 orphans, 1589 edges, 55 components
+  [GRAPH] 422 branches traced, 1614/1615 nodes assigned, 1 orphans, 1675 edges, 56 components
+  [GRAPH] 398 branches traced, 1040/1040 nodes assigned, 0 orphans, 1133 edges, 23 components
+  [GRAPH] 66 branches traced, 331/331 nodes assigned, 0 orphans, 316 edges, 28 components
+  [GRAPH] 362 branches traced, 1237/1237 nodes assigned, 0 orphans, 1351 edges, 7 components
+  [GRAPH] 635 branches traced, 1599/1599 nodes assigned, 0 orphans, 1736 edges, 43 components
+  [GRAPH] 828 branches traced, 2240/2241 nodes assigned, 1 orphans, 2470 edges, 32 components
+  [GRAPH] 1028 branches traced, 2125/2125 nodes assigned, 0 orphans, 2440 edges, 20 components
+  [GRAPH] 730 branches traced, 1452/1453 nodes assigned, 1 orphans, 1676 edges, 7 components
+  [GRAPH] 756 branches traced, 2317/2317 nodes assigned, 0 orphans, 2489 edges, 52 components
+  [GRAPH] 774 branches traced, 2339/2340 nodes assigned, 1 orphans, 2540 edges, 33 components
+  [GRAPH] 697 branches traced, 1590/1590 nodes assigned, 0 orphans, 1786 edges, 15 components
+  [GRAPH] 883 branches traced, 1838/1839 nodes assigned, 1 orphans, 2071 edges, 42 components
+  [GRAPH] 332 branches traced, 1066/1066 nodes assigned, 0 orphans, 1121 edges, 33 components
+  [GRAPH] 363 branches traced, 1098/1101 nodes assigned, 3 orphans, 1114 edges, 75 components
+  [GRAPH] 695 branches traced, 1523/1523 nodes assigned, 0 orphans, 1732 edges, 16 components
+  [GRAPH] 699 branches traced, 1684/1684 nodes assigned, 0 orphans, 1841 edges, 43 components
+  [GRAPH] 298 branches traced, 1017/1017 nodes assigned, 0 orphans, 1050 edges, 44 components
+  [GRAPH] 675 branches traced, 1505/1505 nodes assigned, 0 orphans, 1692 edges, 15 components
+  [GRAPH] 682 branches traced, 1636/1636 nodes assigned, 0 orphans, 1776 edges, 50 components
+  [GRAPH] 450 branches traced, 1351/1351 nodes assigned, 0 orphans, 1425 edges, 48 components
+  [GRAPH] 401 branches traced, 1026/1027 nodes assigned, 1 orphans, 1118 edges, 30 components
+  [GRAPH] 479 branches traced, 1385/1385 nodes assigned, 0 orphans, 1441 edges, 70 components
+  [GRAPH] 364 branches traced, 1014/1014 nodes assigned, 0 orphans, 1113 edges, 10 components
+  [GRAPH] 249 branches traced, 1053/1053 nodes assigned, 0 orphans, 1057 edges, 56 components
+  [GRAPH] 418 branches traced, 1197/1199 nodes assigned, 2 orphans, 1241 edges, 69 components
+  [GRAPH] 176 branches traced, 1040/1041 nodes assigned, 1 orphans, 1056 edges, 31 components
+  [GRAPH] 299 branches traced, 891/891 nodes assigned, 0 orphans, 954 edges, 19 components
+  [GRAPH] 296 branches traced, 1025/1026 nodes assigned, 1 orphans, 1017 edges, 79 components
+  [GRAPH] 278 branches traced, 1087/1090 nodes assigned, 3 orphans, 1082 edges, 72 components
+  [GRAPH] 283 branches traced, 1074/1074 nodes assigned, 0 orphans, 1082 edges, 64 components
+  [GRAPH] 273 branches traced, 854/856 nodes assigned, 2 orphans, 806 edges, 103 components
+  [GRAPH] 158 branches traced, 796/798 nodes assigned, 2 orphans, 751 edges, 73 components
+  [GRAPH] 493 branches traced, 1733/1733 nodes assigned, 0 orphans, 1838 edges, 36 components
+  [GRAPH] 205 branches traced, 1029/1029 nodes assigned, 0 orphans, 1026 edges, 49 components
+  [GRAPH] 614 branches traced, 1516/1516 nodes assigned, 0 orphans, 1660 edges, 35 components
+  [GRAPH] 106 branches traced, 583/583 nodes assigned, 0 orphans, 584 edges, 21 components
+  [GRAPH] 359 branches traced, 1015/1015 nodes assigned, 0 orphans, 1114 edges, 14 components
+  [GRAPH] 262 branches traced, 1126/1128 nodes assigned, 2 orphans, 1090 edges, 91 components
+  [GRAPH] 130 branches traced, 780/781 nodes assigned, 1 orphans, 753 edges, 51 components
+  [GRAPH] 131 branches traced, 471/475 nodes assigned, 4 orphans, 425 edges, 69 components
+  [GRAPH] 375 branches traced, 1113/1113 nodes assigned, 0 orphans, 1162 edges, 50 components
+  [GRAPH] 347 branches traced, 977/977 nodes assigned, 0 orphans, 1057 edges, 22 components
+  [GRAPH] 494 branches traced, 1596/1596 nodes assigned, 0 orphans, 1689 edges, 41 components
+  [GRAPH] 483 branches traced, 1827/1827 nodes assigned, 0 orphans, 1925 edges, 38 components
+  [GRAPH] 327 branches traced, 1056/1056 nodes assigned, 0 orphans, 1105 edges, 34 components
+  [GRAPH] 190 branches traced, 445/445 nodes assigned, 0 orphans, 505 edges, 4 components
+  [GRAPH] 793 branches traced, 1652/1652 nodes assigned, 0 orphans, 1865 edges, 27 components
+  [GRAPH] 548 branches traced, 1868/1868 nodes assigned, 0 orphans, 1974 edges, 40 components
+  [GRAPH] 277 branches traced, 687/687 nodes assigned, 0 orphans, 780 edges, 4 components
+  [GRAPH] 210 branches traced, 831/831 nodes assigned, 0 orphans, 802 edges, 72 components
+  [GRAPH] 255 branches traced, 1076/1077 nodes assigned, 1 orphans, 1059 edges, 75 components
+  [GRAPH] 387 branches traced, 1218/1220 nodes assigned, 2 orphans, 1264 edges, 62 components
+  [GRAPH] 415 branches traced, 1557/1557 nodes assigned, 0 orphans, 1588 edges, 72 components
+  [GRAPH] 320 branches traced, 1192/1194 nodes assigned, 2 orphans, 1201 edges, 70 components
+  [GRAPH] 498 branches traced, 1726/1726 nodes assigned, 0 orphans, 1836 edges, 40 components
+  [GRAPH] 260 branches traced, 677/677 nodes assigned, 0 orphans, 741 edges, 15 components
+  [GRAPH] 512 branches traced, 1709/1710 nodes assigned, 1 orphans, 1834 edges, 23 components
+  [GRAPH] 320 branches traced, 1001/1001 nodes assigned, 0 orphans, 1043 edges, 44 components
+  [GRAPH] 348 branches traced, 983/983 nodes assigned, 0 orphans, 1036 edges, 43 components
+  [GRAPH] 311 branches traced, 968/969 nodes assigned, 1 orphans, 1015 edges, 33 components
+  [GRAPH] 306 branches traced, 1406/1406 nodes assigned, 0 orphans, 1421 edges, 59 components
+  [GRAPH] 474 branches traced, 1129/1129 nodes assigned, 0 orphans, 1258 edges, 13 components
+  [GRAPH] 271 branches traced, 824/827 nodes assigned, 3 orphans, 822 edges, 70 components
+  [GRAPH] 277 branches traced, 1096/1096 nodes assigned, 0 orphans, 1156 edges, 21 components
+  [GRAPH] 410 branches traced, 1053/1053 nodes assigned, 0 orphans, 1158 edges, 16 components
+  [GRAPH] 264 branches traced, 795/795 nodes assigned, 0 orphans, 858 edges, 11 components
+  [GRAPH] 532 branches traced, 1447/1447 nodes assigned, 0 orphans, 1515 edges, 74 components
+  [GRAPH] 317 branches traced, 857/857 nodes assigned, 0 orphans, 941 edges, 9 components
+  [GRAPH] 482 branches traced, 1305/1306 nodes assigned, 1 orphans, 1363 edges, 68 components
+  [GRAPH] 302 branches traced, 677/677 nodes assigned, 0 orphans, 768 edges, 7 components
+  [GRAPH] 230 branches traced, 721/722 nodes assigned, 1 orphans, 714 edges, 64 components
+  [GRAPH] 341 branches traced, 1030/1032 nodes assigned, 2 orphans, 1025 edges, 92 components
+  [GRAPH] 193 branches traced, 713/713 nodes assigned, 0 orphans, 689 edges, 69 components
+  [GRAPH] 213 branches traced, 1175/1176 nodes assigned, 1 orphans, 1185 edges, 40 components
+  [GRAPH] 315 branches traced, 967/967 nodes assigned, 0 orphans, 1022 edges, 31 components
+  [GRAPH] 267 branches traced, 958/958 nodes assigned, 0 orphans, 1000 edges, 28 components
+  [GRAPH] 371 branches traced, 1050/1050 nodes assigned, 0 orphans, 1085 edges, 65 components
+  [GRAPH] 312 branches traced, 1021/1023 nodes assigned, 2 orphans, 1060 edges, 45 components
+  [GRAPH] 542 branches traced, 1421/1421 nodes assigned, 0 orphans, 1537 edges, 43 components
+  [GRAPH] 378 branches traced, 1108/1108 nodes assigned, 0 orphans, 1187 edges, 29 components
+  [GRAPH] 146 branches traced, 627/627 nodes assigned, 0 orphans, 622 edges, 36 components
+  [GRAPH] 218 branches traced, 974/976 nodes assigned, 2 orphans, 982 edges, 47 components
+  [GRAPH] 228 branches traced, 695/698 nodes assigned, 3 orphans, 680 edges, 71 components
+  [GRAPH] 135 branches traced, 675/680 nodes assigned, 5 orphans, 615 edges, 83 components
+  [GRAPH] 291 branches traced, 849/849 nodes assigned, 0 orphans, 925 edges, 10 components
+  [GRAPH] 191 branches traced, 848/849 nodes assigned, 1 orphans, 833 edges, 58 components
+  [GRAPH] 165 branches traced, 583/584 nodes assigned, 1 orphans, 544 edges, 70 components
+  [GRAPH] 239 branches traced, 975/977 nodes assigned, 2 orphans, 988 edges, 52 components
+  [GRAPH] 346 branches traced, 1025/1026 nodes assigned, 1 orphans, 1057 edges, 56 components
+  [GRAPH] 204 branches traced, 722/724 nodes assigned, 2 orphans, 732 edges, 42 components
+  [GRAPH] 336 branches traced, 993/993 nodes assigned, 0 orphans, 1077 edges, 10 components
+  [GRAPH] 278 branches traced, 1156/1156 nodes assigned, 0 orphans, 1201 edges, 33 components
+  [GRAPH] 293 branches traced, 964/966 nodes assigned, 2 orphans, 949 edges, 87 components
+  [GRAPH] 368 branches traced, 955/955 nodes assigned, 0 orphans, 1028 edges, 36 components
+  [GRAPH] 436 branches traced, 1248/1250 nodes assigned, 2 orphans, 1270 edges, 86 components
+  [GRAPH] 143 branches traced, 650/653 nodes assigned, 3 orphans, 591 edges, 77 components
+  [GRAPH] 337 branches traced, 1150/1151 nodes assigned, 1 orphans, 1141 edges, 85 components
+  [GRAPH] 225 branches traced, 695/696 nodes assigned, 1 orphans, 710 edges, 42 components
+  [GRAPH] 379 branches traced, 1200/1201 nodes assigned, 1 orphans, 1242 edges, 62 components
+  [GRAPH] 273 branches traced, 1084/1084 nodes assigned, 0 orphans, 1132 edges, 26 components
+  [GRAPH] 243 branches traced, 761/762 nodes assigned, 1 orphans, 799 edges, 27 components
+  [GRAPH] 189 branches traced, 648/648 nodes assigned, 0 orphans, 685 edges, 16 components
+  [GRAPH] 245 branches traced, 983/985 nodes assigned, 2 orphans, 966 edges, 69 components
+  [GRAPH] 393 branches traced, 1192/1193 nodes assigned, 1 orphans, 1260 edges, 44 components
+  [GRAPH] 195 branches traced, 1062/1062 nodes assigned, 0 orphans, 1041 edges, 62 components
+  [GRAPH] 144 branches traced, 509/509 nodes assigned, 0 orphans, 540 edges, 8 components
+  [GRAPH] 358 branches traced, 1120/1120 nodes assigned, 0 orphans, 1215 edges, 16 components
+  [GRAPH] 180 branches traced, 638/639 nodes assigned, 1 orphans, 674 edges, 13 components
+  [GRAPH] 316 branches traced, 759/759 nodes assigned, 0 orphans, 836 edges, 20 components
+  [GRAPH] 181 branches traced, 640/640 nodes assigned, 0 orphans, 685 edges, 11 components
+  [GRAPH] 230 branches traced, 824/824 nodes assigned, 0 orphans, 858 edges, 24 components
+  [GRAPH] 426 branches traced, 1128/1129 nodes assigned, 1 orphans, 1225 edges, 19 components
+  [GRAPH] 167 branches traced, 674/674 nodes assigned, 0 orphans, 690 edges, 28 components
+learned    n=228 IoU=0.171 P=0.206 R=0.639 P@dil20=0.356
+wrote results/paper/mito_diag/summary.csv
