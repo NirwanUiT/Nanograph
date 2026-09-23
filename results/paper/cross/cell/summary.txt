@@ -1,0 +1,33 @@
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 5/5
+  Failures: 0
+  Total time: 18.6s  (3.71s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  FG-SSIM                         0.9999    0.0001    0.9996    1.0000    0.9999
+  FG-PSNR                        35.0949    2.9876   30.4719   39.0009   35.2486
+  IoU (recon)                     0.0213    0.0181    0.0062    0.0569    0.0133
+  Topology Q                      0.2144    0.0619    0.1703    0.3363    0.1813
+  Full PSNR                      33.9070    4.7181   28.0818   39.1415   36.8933
+  Full SSIM                       0.9325    0.0238    0.8910    0.9584    0.9435
+  Bytes                        1137.2000  304.5695  815.0000 1563.0000 1051.0000
+  Graph Components                3.8000    3.0594    1.0000    8.0000    2.0000
+  Graph Cycles                    0.6000    0.8000    0.0000    2.0000    0.0000
+  Graph Complexity                0.1571    0.2040    0.0000    0.5000    0.0000
+  Nodes                          34.2000   24.8306    8.0000   65.0000   23.0000
+  Edges                          31.0000   22.1901    7.0000   58.0000   22.0000
+  Total Edge Length              51.3990   36.2355   10.6569   95.6985   42.6274
+  Mean Width (px)                 3.8948    0.4988    3.2294    4.4054    4.1432
+  Mean Curvature                  0.0836    0.0236    0.0627    0.1259    0.0700
+  Time (ms)                    2089.1985 2402.1797  637.2814 6876.4486 1051.0733
+
+  WINS vs byte-matched JPEG (5 images):
+    GT-IoU          : 0/5 wins (0%)  mean Δ=+0.0000
+    GT-FG-SSIM      : 0/5 wins (0%)  mean Δ=+0.0000
+    GT-FG-PSNR      : 0/5 wins (0%)  mean Δ=+0.0000
+    FG-SSIM         : 0/5 wins (0%)  mean Δ=-0.0001
+    IoU             : 0/5 wins (0%)  mean Δ=-0.0021
+
+  No segmentation failures (all seg_iou >= 0.3)
