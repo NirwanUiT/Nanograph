@@ -503,6 +503,24 @@ def evaluate_result_with_gt(result, img_raw, gt_mask, cfg=None):
         row['gt_fg_psnr'] = row['ng_psnr']
     row['gt_fg_ssim'] = ssim(orig_n * gt_mask_f, recon_n * gt_mask_f, data_range=1.0)
 
+    # A2: same metrics on the pre-compression render (quantify what T3 cost).
+    pre_n = getattr(result, 'pre_reconstruction', None)
+    if pre_n is not None:
+        pre_u8 = (pre_n * 255).astype(np.uint8)
+        if pre_u8.max() > 0:
+            _, pre_otsu = cv2.threshold(pre_u8, 0, 255,
+                                        cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        else:
+            pre_otsu = np.zeros_like(pre_u8)
+        row['pre_gt_iou'] = iou(pre_otsu, gt_bin)
+        row['pre_ng_psnr'] = psnr(orig_n, pre_n)
+        row['pre_ng_ssim'] = ssim(orig_n, pre_n, data_range=1.0)
+        fg = (result.mask > 0) if result.mask is not None else gt_fg
+        try:
+            row['pre_ng_fg_psnr'] = psnr(orig_n[fg], pre_n[fg])
+        except Exception:
+            row['pre_ng_fg_psnr'] = row['pre_ng_psnr']
+
     # Segmentation vs GT
     seg_bin = (result.mask > 0).astype(np.uint8) * 255
     seg_fg = seg_bin > 0

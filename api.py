@@ -80,6 +80,7 @@ class NanographResult:
     pre_ssim_fg: float = 0.0
     graph: Optional[Nanograph] = field(default=None, repr=False)  # v4: formal graph
     reconstruction: Optional[np.ndarray] = field(default=None, repr=False)
+    pre_reconstruction: Optional[np.ndarray] = field(default=None, repr=False)  # render before compression
     mask: Optional[np.ndarray] = field(default=None, repr=False)
     skeleton: Optional[np.ndarray] = field(default=None, repr=False)
     structures: Optional[list] = field(default=None, repr=False)
@@ -355,6 +356,7 @@ def nanograph_encode(image_path_or_array, sam_model=None,
     except Exception:
         p_fg = p_full
     s_fg = ssim(orig_n * fg_mask, recon_dec * fg_mask, data_range=1.0)
+    pre_recon = recon              # pre-compression render (A2 reporting)
     recon = recon_dec
 
     # Classify structures
@@ -415,7 +417,7 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         pre_psnr_full=p_full_pre, pre_ssim_full=s_full_pre,
         pre_psnr_fg=p_fg_pre, pre_ssim_fg=s_fg_pre,
         graph=graph,
-        reconstruction=recon, mask=clean, skeleton=skel,
+        reconstruction=recon, pre_reconstruction=pre_recon, mask=clean, skeleton=skel,
         structures=structures, timing=timing,
         seg_candidates=seg_candidates,
         compression_stats=comp_stats,
