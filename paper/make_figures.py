@@ -194,6 +194,85 @@ def fig_perturb(runs, out):
     save(fig, out, 'fig_seg_perturb.png')
 
 
+DS_LABELS = [('n_components', 'components'), ('total_length_px', 'total length'),
+             ('mean_width_px', 'mean width'), ('n_branches', 'branches'),
+             ('n_junctions', 'junctions'), ('cycle_rank', 'cycle rank')]
+
+
+def fig_downstream(runs, out):
+    """T10: descriptors read from the stored graph vs pixels (REF) vs byte-matched JPEG."""
+    import json
+    d = os.path.join(runs, 'downstream')
+    p = os.path.join(d, 'per_image.csv')
+    if not os.path.exists(p):
+        print('skip fig_downstream (no downstream/per_image.csv)')
+        return
+    df = pd.read_csv(p, dtype={'stem': str})
+    S = pd.read_csv(os.path.join(d, 'summary.csv'))
+    W = {a: g.set_index('stem') for a, g in df.groupby('arm')}
+    stems = sorted(set(W['REF'].index) & set(W['GRAPH'].index) & set(W['JPEG'].index))
+    R, G, J = (W[a].loc[stems] for a in ('REF', 'GRAPH', 'JPEG'))
+    arms = [('GRAPH', G, BLUE, 'o'), ('JPEG', J, GOLD, '^')]
+
+    fig, ax = plt.subplots(1, 4, figsize=(15, 3.6))
+    a = ax[0]
+    for lab, X, c, m in arms:
+        a.scatter(R.total_length_px, X.total_length_px, s=8, c=c, marker=m, alpha=.55,
+                  lw=0, label=lab)
+    lo, hi = 20, np.nanmax([R.total_length_px.max(), G.total_length_px.max(),
+                            J.total_length_px.max()]) * 1.2
+    a.plot([lo, hi], [lo, hi], color='k', lw=.7)
+    a.set_xscale('log'); a.set_yscale('log')   # JPEG failures reach ~7x REF
+    a.set_xlim(lo, hi); a.set_ylim(lo, hi)
+    a.set_xlabel('REF total length (px)'); a.set_ylabel('arm total length (px)')
+    a.legend(frameon=False, markerscale=2)
+    a.set_title('(a) total length', loc='left')
+
+    a = ax[1]
+    for lab, X, c, m in arms:
+        ok = X.mean_width_px.notna() & R.mean_width_px.notna()
+        x, y = X.mean_width_px[ok], R.mean_width_px[ok]
+        dd = x - y
+        a.scatter((x + y) / 2, dd, s=8, c=c, marker=m, alpha=.55, lw=0, label=lab)
+        b, sd = dd.mean(), dd.std()
+        a.axhline(b, color=c, lw=1.2)
+        for s in (-1.96, 1.96):
+            a.axhline(b + s * sd, color=c, lw=.8, ls='--')
+    a.axhline(0, color='k', lw=.5)
+    a.set_xlabel('mean of arm and REF width (px)'); a.set_ylabel('arm − REF width (px)')
+    a.legend(frameon=False, markerscale=2)
+    a.set_title('(b) Bland–Altman, mean width', loc='left')
+
+    a = ax[2]
+    x = np.arange(len(DS_LABELS))
+    for k, (lab, _, c, _) in enumerate(arms):
+        v = [S[(S.descriptor == dk) & (S.arm == lab) & (S.ref == 'REF')].mdape.iloc[0]
+             for dk, _ in DS_LABELS]
+        bars = a.bar(x + (k - .5) * .38, v, .36, color=c, label=lab)
+        a.bar_label(bars, fmt='%.0f', fontsize=7, padding=1, color='#333333')
+    a.set_xticks(x); a.set_xticklabels([l for _, l in DS_LABELS], rotation=35, ha='right')
+    a.set_ylabel('median |arm − REF| / REF (%)')
+    a.legend(frameon=False)
+    a.set_title('(c) MdAPE vs REF', loc='left')
+
+    # (d) the image whose GRAPH-vs-REF Wasserstein distance is the median one
+    a = ax[3]
+    bd = pd.read_csv(os.path.join(d, 'branch_distances.csv'), dtype={'stem': str})
+    bd = bd.dropna(subset=['w1_GRAPH', 'w1_JPEG'])
+    stem = bd.iloc[(bd.w1_GRAPH - bd.w1_GRAPH.median()).abs().argsort().iloc[0]].stem
+    L = {}
+    for arm in ('REF', 'GRAPH', 'JPEG'):
+        with open(os.path.join(d, 'branch_lengths', f'{stem}_{arm}.json')) as f:
+            L[arm] = json.load(f)['branch_lengths']
+    bins = np.linspace(0, max(max(v) for v in L.values() if v), 16)
+    for arm, c in (('REF', GREY), ('GRAPH', BLUE), ('JPEG', GOLD)):
+        a.hist(L[arm], bins, histtype='step', lw=1.6, color=c, label=f'{arm} (n={len(L[arm])})')
+    a.set_xlabel('branch length (px)'); a.set_ylabel('branches')
+    a.legend(frameon=False)
+    a.set_title(f'(d) branch lengths, image {stem}', loc='left')
+    save(fig, out, 'fig_downstream.png')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--runs', default='results/paper')
@@ -207,6 +286,7 @@ def main():
     fig_cross(D, a.runs, a.out)
     fig_prior(D, a.out)
     fig_perturb(a.runs, a.out)
+    fig_downstream(a.runs, a.out)
 
 
 if __name__ == '__main__':

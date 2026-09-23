@@ -1,0 +1,28 @@
+,value
+n_images,726
+n_common,715
+payload_bytes_mean,2197.9820936639117
+payload_bytes_median,2217.0
+jpeg_bytes_mean,2147.7748251748253
+jpeg_bytes_median,2151.0
+raw_bytes_mean,65536.0
+raw_bytes_median,65536.0
+png_bytes_mean,45371.68319559229
+png_bytes_median,45398.0
+ref_s_median,0.0044296144042164
+graph_s_median,0.00489146501058705
+jpeg_s_median,0.2736756629310548
+ref_skeleton_skan_s_median,0.0034211579477414
+ref_descriptors_s_median,0.00099505356047295
+graph_decode_graph_s_median,0.0041043150122277005
+graph_descriptors_s_median,0.00078282400500025
+jpeg_decode_s_median,0.0001676680985838
+jpeg_segment_s_median,0.2683722800575197
+jpeg_skeleton_skan_s_median,0.0037263740086928
+jpeg_descriptors_s_median,0.0010927669936791
+ratio_jpeg_over_graph,55.94963111025291
+ratio_ref_over_graph,0.9055803107308293
+ratio_jpeg_nosegment_over_graph,1.034851912237396
+cpu,Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+python,3.11.3
+threads,"OMP/MKL/OPENBLAS_NUM_THREADS=1, torch.set_num_threads(1), cv2.setNumThreads(1), CPU only"

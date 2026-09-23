@@ -12,6 +12,8 @@ experiments/reach_data/
 experiments/reach_preview/
 experiments/bakeoff_data/
 experiments/sim_merge_data/
+results/paper/downstream/cache/
+results/paper/downstream/branch_lengths/
 
 # LaTeX build artifacts
 paper/*.aux
