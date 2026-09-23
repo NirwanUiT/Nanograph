@@ -338,6 +338,20 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         cfg=cfg)
     timing['compress'] = time.time() - t0
 
+    # T11.1: the stored edge list must decode to exactly the encoder graph's
+    # edges, checked by node coordinate (independent of how ids were mapped).
+    if comp_stats.get('has_edges'):
+        dec = decompress_nanograph(compressed_data, cfg=cfg)
+        dec_pts, dec_edges = dec[0], dec[7]
+        assert all(0 <= u < len(dec_pts) and 0 <= v < len(dec_pts)
+                   for u, v in dec_edges), 'stored edge index out of range'
+        pos = {nd.id: (int(nd.position[0]), int(nd.position[1])) for nd in graph.nodes}
+        enc_set = Counter(tuple(sorted((pos[e.source], pos[e.target]))) for e in graph.edges)
+        dec_set = Counter(tuple(sorted(((int(dec_pts[u][0]), int(dec_pts[u][1])),
+                                        (int(dec_pts[v][0]), int(dec_pts[v][1])))))
+                          for u, v in dec_edges)
+        assert enc_set == dec_set, 'decoded edges differ from encoder graph'
+
     raw_bytes = len(pts) * cfg.compress.raw_bytes_per_point
     compressed_bytes = len(compressed_data)
     image_bytes = img_raw.size

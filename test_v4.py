@@ -616,7 +616,10 @@ def _graph_invariants(n_nodes, edge_pairs, positions):
     return b0, cycle_rank, total_len
 
 
-def _roundtrip_one(img_path):
+def _roundtrip_one(img_path, expect_reindexed=False):
+    """Decoded edges must equal the encoder graph's edges, compared by node
+    COORDINATE: graph.nodes[i].position is matched to a stored point by its
+    coordinate, never by assuming node id == point index (T11.1)."""
     from nanograph_v4 import nanograph_encode, decode_graph, NanographConfig
     from collections import Counter
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
@@ -625,30 +628,46 @@ def _roundtrip_one(img_path):
                          config=NanographConfig())
     if r.graph is None or r.graph.n_nodes == 0:
         return None
+    if expect_reindexed:
+        # the image must actually exercise remove_small_components() re-indexing
+        assert any(tuple(r.points[nd.id]) != tuple(nd.position) for nd in r.graph.nodes), \
+            f'{img_path}: graph ids still equal point indices (test would not bite)'
     dec = decode_graph(r.compressed)
+    dec_pos = dec.node_positions.astype(np.int64)
+    assert all(0 <= e.source < dec.n_nodes and 0 <= e.target < dec.n_nodes
+               for e in dec.edges), f'edge index out of range on {img_path}'
 
-    # Map encoder edges (original node ids) into decoded (row-sorted) indices.
-    rows = r.points[:, 0].astype(np.int32)
-    order = np.argsort(rows)
-    inv = np.empty(len(rows), dtype=np.int64)
-    inv[order] = np.arange(len(rows))
-    enc_pairs = Counter(tuple(sorted((int(inv[e.source]), int(inv[e.target]))))
-                        for e in r.graph.edges)
-    dec_pairs = Counter(tuple(sorted((u, v))) for u, v in
-                        [(e.source, e.target) for e in dec.edges])
+    def key(a, b):
+        return tuple(sorted((tuple(int(c) for c in a), tuple(int(c) for c in b))))
+
+    pos = {nd.id: nd.position for nd in r.graph.nodes}
+    enc_pairs = Counter(key(pos[e.source], pos[e.target]) for e in r.graph.edges)
+    dec_pairs = Counter(key(dec_pos[e.source], dec_pos[e.target]) for e in dec.edges)
     assert enc_pairs == dec_pairs, f'edge set mismatch on {img_path}'
 
-    enc_pos = r.points[order].astype(float)
-    dec_pos = dec.node_positions.astype(float)
-    assert np.array_equal(enc_pos, dec_pos), f'position mismatch on {img_path}'
-
-    e_inv = _graph_invariants(len(rows), list(enc_pairs.elements()), enc_pos)
-    d_inv = _graph_invariants(dec.n_nodes,
-                              [(e.source, e.target) for e in dec.edges], dec_pos)
+    # invariants of the encoder graph vs the decoded graph (edge-bearing nodes)
+    enc_pos = np.array([pos[k] for k in sorted(pos)], dtype=float)
+    idx = {k: i for i, k in enumerate(sorted(pos))}
+    e_inv = _graph_invariants(len(enc_pos),
+                              [(idx[e.source], idx[e.target]) for e in r.graph.edges], enc_pos)
+    used = sorted({u for e in dec.edges for u in (e.source, e.target)})
+    didx = {k: i for i, k in enumerate(used)}
+    d_inv = _graph_invariants(len(used),
+                              [(didx[e.source], didx[e.target]) for e in dec.edges],
+                              dec_pos[used].astype(float))
     assert e_inv[0] == d_inv[0], 'beta0 mismatch'
     assert e_inv[1] == d_inv[1], 'cycle rank mismatch'
     assert abs(e_inv[2] - d_inv[2]) <= 1e-6 * max(1.0, e_inv[2]), 'edge length mismatch'
     return True
+
+
+# Organelle images on which remove_small_components() drops nodes (found in T10).
+_REINDEXED_STEMS = ['7260', '7262', '7292', '7346', '7431', '7614']
+
+
+def test_edge_roundtrip_small_components():
+    for s in _REINDEXED_STEMS:
+        _roundtrip_one(os.path.join(_ORG_IMAGES, s + '.png'), expect_reindexed=True)
 
 
 def test_edge_roundtrip_organelle():

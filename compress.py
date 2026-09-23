@@ -319,13 +319,26 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     pos_buf[3::4] = col_bytes[1::2]
     raw.extend(pos_buf.tobytes())
 
+    # Graph node ids are not point indices once remove_small_components()
+    # has re-indexed the graph, so map every edge to point indices by the
+    # node's coordinate (skeleton points precede optimizer points in `points`
+    # and are unique pixels, so the first index with that coordinate is it).
+    edge_pts = []
+    if has_edges:
+        first = {}
+        for i, (y, x) in enumerate(points.astype(np.int64)):
+            first.setdefault((int(y), int(x)), i)
+        node_pt = {nd.id: first[(int(nd.position[0]), int(nd.position[1]))]
+                   for nd in graph.nodes}
+        edge_pts = [(node_pt[e.source], node_pt[e.target]) for e in graph.edges]
+
     # Sorted-position adjacency for the shared predictor (empty if no edges).
     adj_sorted = {}
     inv_order = np.empty(n, dtype=np.int64)
     inv_order[order] = np.arange(n)
     if has_edges:
-        for e in graph.edges:
-            pu, pv = int(inv_order[e.source]), int(inv_order[e.target])
+        for u, v in edge_pts:
+            pu, pv = int(inv_order[u]), int(inv_order[v])
             adj_sorted.setdefault(pu, []).append(pv)
             adj_sorted.setdefault(pv, []).append(pu)
 
@@ -366,8 +379,7 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     # v6: Edge connectivity section
     edge_section_bytes = 0
     if has_edges:
-        edge_sec = _encode_edge_section(
-            [(e.source, e.target) for e in graph.edges], inv_order)
+        edge_sec = _encode_edge_section(edge_pts, inv_order)
         raw.extend(edge_sec)
         edge_section_bytes = len(edge_sec)
 
