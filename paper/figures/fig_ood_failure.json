@@ -1,0 +1,12 @@
+{
+  "image": "slice036",
+  "raw_bytes": 786432,
+  "payload": 127770,
+  "nodes": 8602,
+  "edges": 9295,
+  "components": 69,
+  "points": 8722,
+  "psnr": 23.127,
+  "fg_psnr": 28.94,
+  "seg_iou": 0.0016
+}

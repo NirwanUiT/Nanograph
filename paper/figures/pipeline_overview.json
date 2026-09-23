@@ -1,0 +1,12 @@
+{
+  "image": "7378",
+  "raw_bytes": 65536,
+  "payload": 2077,
+  "nodes": 144,
+  "edges": 141,
+  "components": 4,
+  "points": 264,
+  "psnr": 30.934,
+  "fg_psnr": 28.755,
+  "seg_iou": 0.902
+}

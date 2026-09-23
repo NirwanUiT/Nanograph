@@ -21,7 +21,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from nanograph_v4 import nanograph_encode, NanographConfig
 from nanograph_v4.detect import detect_image_type, detect_polarity
 from nanograph_v4.preprocess import preprocess
@@ -31,8 +31,9 @@ ORG = os.environ.get("ORG_DIR", "/mnt/nas1/nba055-2/idea_1/nmi_data/org")
 SEG = os.environ.get("SEG_DIR", "/mnt/nas1/nba055-2/idea_1/nmi_data/seg")
 IMG_ID = os.environ.get("IMG_ID", "7378")
 _TAG = os.environ.get("TAG", "")
-OUT = os.path.join(os.path.dirname(__file__),
-                   f"pipeline_diagram{('_' + _TAG) if _TAG else ''}.png")
+OUT = os.environ.get("OUT_PATH") or os.path.join(
+    os.path.dirname(__file__),
+    f"pipeline_diagram{('_' + _TAG) if _TAG else ''}.png")
 
 
 def iou(pred, gt):
@@ -188,6 +189,25 @@ def main():
 
     plt.savefig(OUT, dpi=120, bbox_inches="tight")
     print("saved:", OUT)
+
+    # JSON sidecar consumed by paper/make_fig_pipeline.py
+    import json
+    _, png = cv2.imencode(".png", raw, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+    sidecar = os.path.splitext(OUT)[0] + ".json"
+    with open(sidecar, "w") as f:
+        json.dump({
+            "image": IMG_ID,
+            "raw_bytes": int(raw.size),
+            "payload": int(r.compressed_bytes),
+            "nodes": int(gs["n_nodes"]),
+            "edges": int(gs["n_edges"]),
+            "components": int(gs["n_components"]),
+            "points": int(r.n_points),
+            "psnr": round(float(r.psnr_full), 3),
+            "fg_psnr": round(float(r.psnr_fg), 3),
+            "seg_iou": round(float(seg_iou), 4),
+        }, f, indent=2)
+    print("sidecar:", sidecar)
     print(f"{IMG_ID}: seg={r.segmenter} segIoU={seg_iou:.3f} "
           f"pts={r.n_points} bytes={r.compressed_bytes} "
           f"ratio={r.compression_ratio:.0f}x PSNR={r.psnr_full:.1f}")
