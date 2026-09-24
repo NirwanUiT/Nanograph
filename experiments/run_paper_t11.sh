@@ -26,13 +26,17 @@ lane_org_a () {
 }
 lane_org_b () {
   rd org_replace --images "$ORG" --masks "$SEG" --preset learned-replace --n-samples 6
-  log ablation_bg_residual
-  python experiments/ablation_bg_residual.py --images "$ORG" --out "$OUT/ablation_bg_residual.csv"
+  if [ "${SKIP_ABLATIONS:-0}" != 1 ]; then
+    log ablation_bg_residual
+    python experiments/ablation_bg_residual.py --images "$ORG" --out "$OUT/ablation_bg_residual.csv"
+  fi
 }
 lane_perturb_cross () {
-  log seg_perturbation_ablation
-  python experiments/seg_perturbation_ablation.py --images "$ORG" --masks "$SEG" \
-    --out "$OUT/seg_perturbation_ablation.csv"
+  if [ "${SKIP_ABLATIONS:-0}" != 1 ]; then
+    log seg_perturbation_ablation
+    python experiments/seg_perturbation_ablation.py --images "$ORG" --masks "$SEG" \
+      --out "$OUT/seg_perturbation_ablation.csv"
+  fi
   for ds in cells3d_membrane cells3d_nuclei retina cell; do
     rd cross/$ds --images "$ROOT/datasets/$ds/images" --n-samples 4
   done
@@ -52,8 +56,17 @@ lane_crossgt_mito () {
 }
 
 mkdir -p "$OUT/t11_logs"
-for lane in lane_sted lane_org_a lane_org_b lane_perturb_cross lane_crossgt_mito; do
-  $lane > "$OUT/t11_logs/$lane.log" 2>&1 &
-done
-wait
+if [ "${SEQUENTIAL:-0}" = 1 ]; then
+  # Timing re-run: one process at a time, no ablation/perturbation (no timing
+  # macros; their outputs were bit-identical in the concurrent run).
+  export SKIP_ABLATIONS=1
+  for lane in lane_org_a lane_org_b lane_perturb_cross lane_crossgt_mito lane_sted; do
+    $lane > "$OUT/t11_logs/seq_$lane.log" 2>&1
+  done
+else
+  for lane in lane_sted lane_org_a lane_org_b lane_perturb_cross lane_crossgt_mito; do
+    $lane > "$OUT/t11_logs/$lane.log" 2>&1 &
+  done
+  wait
+fi
 log "ALL T11.1 RUNS DONE"

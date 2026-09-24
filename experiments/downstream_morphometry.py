@@ -213,67 +213,100 @@ def spur_fraction(table, L):
             sum(b[2] for b, s_ in zip(br, spur) if s_) / tot if tot > 0 else np.nan)
 
 
-def descriptors_at(table, L=0.0, junction_def='degree'):
+def _prune_merge(br, L, guard=True):
+    """One pruning pass at L (terminal branches: free end of degree 1 at one
+    end, a vertex with >= 3 branches at the other, length < L; with `guard`,
+    a vertex never loses all its branches), then merge degree-2 vertices.
+    Returns (branches, incidence {vertex: [branch index]})."""
+    from collections import defaultdict
+    inc = defaultdict(list)
+    for k, (a, b, _, _) in enumerate(br):
+        inc[a].append(k)
+        inc[b].append(k)
+    deg = {v: len(ks) for v, ks in inc.items()}
+    drop = set()
+    for k, (a, b, ln, _) in enumerate(br if L > 0 else []):
+        if a != b and ln < L and min(deg[a], deg[b]) == 1 and max(deg[a], deg[b]) >= 3:
+            drop.add(k)
+    if guard:
+        for v, ks in inc.items():                    # keep the longest if all go
+            if deg[v] >= 3 and all(k in drop for k in ks):
+                drop.discard(max(ks, key=lambda k: br[k][2]))
+    alive = {k: br[k] for k in range(len(br)) if k not in drop}
+    inc = defaultdict(list)
+    for k, (a, b, _, _) in alive.items():
+        inc[a].append(k)
+        inc[b].append(k)
+    nxt = len(br)
+    for v in list(inc):
+        ks = inc.get(v, [])
+        if len(ks) != 2 or ks[0] == ks[1]:
+            continue
+        k1, k2 = ks
+        x = alive[k1][1] if alive[k1][0] == v else alive[k1][0]
+        y = alive[k2][1] if alive[k2][0] == v else alive[k2][0]
+        alive[nxt] = [x, y, alive[k1][2] + alive[k2][2], alive[k1][3] + alive[k2][3]]
+        for k, end in ((k1, x), (k2, y)):
+            inc[end].remove(k)
+            del alive[k]
+        inc[x].append(nxt)
+        inc[y].append(nxt)
+        del inc[v]
+        nxt += 1
+    keys = list(alive)
+    idx = {k: i for i, k in enumerate(keys)}
+    return [alive[k] for k in keys], {v: [idx[k] for k in ks] for v, ks in inc.items()}
+
+
+def _n_components(br):
+    parent = {}
+
+    def find(x):
+        while parent.setdefault(x, x) != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+    for a, b, _, _ in br:
+        parent[find(a)] = find(b)
+    return len({find(v) for b in br for v in b[:2]})
+
+
+def descriptors_at(table, L=0.0, junction_def='degree', prune='once'):
     """Descriptors after dropping terminal branches shorter than L px.
 
     junction_def='t10' (only with L = 0) is the T10 definition: a junction is
     any contracted cluster containing a degree>=3 node, even if only two
-    branches leave it. junction_def='degree' (T11.2): for L > 0, one pass
-    removes every terminal branch (one end a free end of degree 1, the other a
-    vertex of degree >= 3) shorter than L; if all branches at a vertex would
-    go, its longest is kept, so no component disappears. Then vertices with
-    two branches are merged into one branch, and a junction is a vertex with
-    >= 3 branches.
+    branches leave it. junction_def='degree' (T11.2): for L > 0, terminal
+    branches (one end a free end of degree 1, the other a vertex of degree
+    >= 3) shorter than L are removed, then vertices with two branches are
+    merged into one branch, and a junction is a vertex with >= 3 branches.
+    prune: 'once' (default; one pass, a vertex never loses all its branches,
+    so no component disappears), 'once_noguard' (one pass, no guard) or
+    'iterative' (repeat 'once' until nothing changes).
     Returns (dict of scalars, list of branch lengths, list of branch types).
     """
     from collections import defaultdict
     br = [list(b) for b in table['branches']]
     is_junc = list(table['vjunc'])
     assert junction_def in ('t10', 'degree') and not (junction_def == 't10' and L > 0)
+    n_comp = table['n_components']
     if junction_def == 'degree' and br:
-        inc = defaultdict(list)
-        for k, (a, b, _, _) in enumerate(br):
-            inc[a].append(k)
-            inc[b].append(k)
-        deg = {v: len(ks) for v, ks in inc.items()}
-        drop = set()
-        for k, (a, b, ln, _) in enumerate(br if L > 0 else []):
-            if a != b and ln < L and min(deg[a], deg[b]) == 1 and max(deg[a], deg[b]) >= 3:
-                drop.add(k)
-        for v, ks in inc.items():                    # keep the longest if all go
-            if deg[v] >= 3 and all(k in drop for k in ks):
-                drop.discard(max(ks, key=lambda k: br[k][2]))
-        alive = {k: br[k] for k in range(len(br)) if k not in drop}
-        inc = defaultdict(list)
-        for k, (a, b, _, _) in alive.items():
-            inc[a].append(k)
-            inc[b].append(k)
-        nxt = len(br)
-        for v in list(inc):
-            ks = inc.get(v, [])
-            if len(ks) != 2 or ks[0] == ks[1]:
-                continue
-            k1, k2 = ks
-            x = alive[k1][1] if alive[k1][0] == v else alive[k1][0]
-            y = alive[k2][1] if alive[k2][0] == v else alive[k2][0]
-            alive[nxt] = [x, y, alive[k1][2] + alive[k2][2], alive[k1][3] + alive[k2][3]]
-            for k, end in ((k1, x), (k2, y)):
-                inc[end].remove(k)
-                del alive[k]
-            inc[x].append(nxt)
-            inc[y].append(nxt)
-            del inc[v]
-            nxt += 1
-        br = list(alive.values())
+        br, inc = _prune_merge(br, L, guard=(prune != 'once_noguard'))
+        while prune == 'iterative' and L > 0:
+            nb = len(br)
+            br, inc = _prune_merge(br, L)
+            if len(br) == nb:
+                break
         n_vert = len(inc)
         is_junc = defaultdict(bool, {v: len(ks) >= 3 for v, ks in inc.items()})
         n_junc = sum(1 for ks in inc.values() if len(ks) >= 3)
+        if prune == 'once_noguard':
+            n_comp = _n_components(br)
     else:
         n_vert = len({v for b in br for v in b[:2]})
         n_junc = int(sum(table['vjunc']))
     lengths = [b[2] for b in br]
     total = float(np.sum(lengths)) if lengths else 0.0
-    n_comp = table['n_components']
     d = {
         'n_components': n_comp,
         'total_length_px': total,
