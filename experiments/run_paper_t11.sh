@@ -21,7 +21,7 @@ lane_sted () {
   rd mito/sted --images "$ROOT/public_mito/sted_prep/images" --preset learned-replace --n-samples 4
 }
 lane_org_a () {
-  rd org_default --images "$ORG" --masks "$SEG" --n-samples 6
+  [ "${SKIP_ORG_DEFAULT:-0}" = 1 ] || rd org_default --images "$ORG" --masks "$SEG" --n-samples 6
   rd org_classical --images "$ORG" --masks "$SEG" --preset classical --n-samples 6
 }
 lane_org_b () {
@@ -60,7 +60,7 @@ if [ "${SEQUENTIAL:-0}" = 1 ]; then
   # Timing re-run: one process at a time, no ablation/perturbation (no timing
   # macros; their outputs were bit-identical in the concurrent run).
   export SKIP_ABLATIONS=1
-  for lane in lane_org_a lane_org_b lane_perturb_cross lane_crossgt_mito lane_sted; do
+  for lane in ${LANES:-lane_org_a lane_org_b lane_perturb_cross lane_crossgt_mito lane_sted}; do
     $lane > "$OUT/t11_logs/seq_$lane.log" 2>&1
   done
 else

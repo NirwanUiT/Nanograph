@@ -2,7 +2,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
 ======================================================================
   Images processed: 726/726
   Failures: 0
-  Total time: 1054.9s  (1.45s/image)
+  Total time: 986.2s  (1.36s/image)
 
   Metric                            Mean       Std       Min       Max    Median
   --------------------------------------------------------------------------
@@ -29,7 +29,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Total Edge Length             243.0852   59.2167   23.8995  426.7178  244.4153
   Mean Width (px)                 2.9816    0.4368    2.1989    5.6453    2.9291
   Mean Curvature                  0.0371    0.0116    0.0098    0.1442    0.0361
-  Time (ms)                    1247.8723  256.7576  686.8994 4177.9785 1226.9275
+  Time (ms)                    1160.4589  211.1286  642.0288 3114.2466 1151.9333
 
   WINS vs byte-matched JPEG (726 images):
     GT-IoU          : 386/726 wins (53%)  mean Δ=-0.0007

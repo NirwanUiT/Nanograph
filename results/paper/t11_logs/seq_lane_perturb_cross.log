@@ -1,0 +1,492 @@
+=== [01:21:13] cross/cells3d_membrane
+Found 60 images in /mnt/nas1/nba055-2/idea_1/datasets/cells3d_membrane/images
+Masks directory: (none)
+Output: results/paper/cross/cells3d_membrane
+Sample visualizations: 4
+Sample indices: [1, 7, 40, 47]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/60] membrane_000  (0.0 img/s, ETA 0m)
+  [GRAPH] 177 branches traced, 788/788 nodes assigned, 0 orphans, 823 edges, 9 components
+
+[2/60] membrane_001  (0.1 img/s, ETA 10m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=0.6%, n_cc=8, mean_fg_int=0.64)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+  [LEARNED] rejected: fg=0.1% outside plausible [0.5, 35.0]% -> classical
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          34.1%   0.4391       1ms
+Frangi        27.6%   0.4591     134ms <<<
+Meijering     79.4%   0.2889     121ms
+
+Selected: Frangi
+Nanograph: 709 points (EP=54, JN=116, S=539)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 214 branches traced, 709/709 nodes assigned, 0 orphans, 747 edges, 19 components
+Graph: 703 nodes, 744 edges, 16 components
+FG residual: 3,836 bytes (23 ms)
+
+============================================================
+  RESULT (v5): 949 pts, 9,371 bytes
+  vs raw pixels: 7x  vs PNG: 4.7x
+  PSNR=26.19  SSIM=0.5517  FG-PSNR=30.25  FG-SSIM=0.9460
+  Graph topology: 16 components, 57 cycles, 116 junctions, 48 endpoints
+  Segmentation: β₀=19, β₁=2
+  Structures: 19 -- {'ring': 1, 'branched': 6, 'linear': 3, 'punctate': 9}
+  Total time: 7937 ms
+============================================================
+  Sample saved: results/paper/cross/cells3d_membrane/samples/membrane_001.png
+  Bytes: 9,371  |  FG-SSIM: 0.9460  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.7423
+  [GRAPH] 177 branches traced, 721/721 nodes assigned, 0 orphans, 757 edges, 9 components
+  [GRAPH] 189 branches traced, 776/776 nodes assigned, 0 orphans, 794 edges, 26 components
+  [GRAPH] 157 branches traced, 748/748 nodes assigned, 0 orphans, 774 edges, 11 components
+  [GRAPH] 173 branches traced, 847/847 nodes assigned, 0 orphans, 882 edges, 7 components
+  [GRAPH] 140 branches traced, 718/718 nodes assigned, 0 orphans, 745 edges, 10 components
+
+[8/60] membrane_007  (0.1 img/s, ETA 9m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=3.8%, n_cc=35, mean_fg_int=0.63)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          33.5%   0.4225       1ms
+Frangi        22.3%   0.4345     133ms
+Meijering     87.0%   0.2791     117ms
+Learned        2.6%   0.4534       6ms <<<
+
+Selected: Learned
+Nanograph: 147 points (EP=17, JN=23, S=107)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 44 branches traced, 147/147 nodes assigned, 0 orphans, 150 edges, 8 components
+Graph: 143 nodes, 148 edges, 6 components
+FG residual: 686 bytes (8 ms)
+
+============================================================
+  RESULT (v5): 267 pts, 2,357 bytes
+  vs raw pixels: 28x  vs PNG: 18.7x
+  PSNR=29.17  SSIM=0.6097  FG-PSNR=29.51  FG-SSIM=0.9991
+  Graph topology: 6 components, 11 cycles, 23 junctions, 13 endpoints
+  Segmentation: β₀=8, β₁=1
+  Structures: 8 -- {'branched': 4, 'ring': 1, 'punctate': 3}
+  Total time: 1536 ms
+============================================================
+  Sample saved: results/paper/cross/cells3d_membrane/samples/membrane_007.png
+  Bytes: 2,357  |  FG-SSIM: 0.9991  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.4701
+  [GRAPH] 37 branches traced, 150/150 nodes assigned, 0 orphans, 146 edges, 12 components
+  [GRAPH] 105 branches traced, 240/241 nodes assigned, 1 orphans, 253 edges, 17 components
+  [GRAPH] 89 branches traced, 303/303 nodes assigned, 0 orphans, 307 edges, 19 components
+  [GRAPH] 108 branches traced, 743/743 nodes assigned, 0 orphans, 755 edges, 12 components
+  [GRAPH] 181 branches traced, 711/711 nodes assigned, 0 orphans, 731 edges, 29 components
+  [GRAPH] 311 branches traced, 975/975 nodes assigned, 0 orphans, 1032 edges, 26 components
+  [GRAPH] 231 branches traced, 936/936 nodes assigned, 0 orphans, 980 edges, 20 components
+  [GRAPH] 738 branches traced, 2066/2066 nodes assigned, 0 orphans, 2270 edges, 15 components
+  [GRAPH] 954 branches traced, 2388/2388 nodes assigned, 0 orphans, 2674 edges, 12 components
+  [GRAPH] 1194 branches traced, 2705/2705 nodes assigned, 0 orphans, 3085 edges, 7 components
+  [GRAPH] 1314 branches traced, 2781/2781 nodes assigned, 0 orphans, 3213 edges, 7 components
+  [GRAPH] 1337 branches traced, 2774/2774 nodes assigned, 0 orphans, 3212 edges, 7 components
+  [GRAPH] 1275 branches traced, 2607/2607 nodes assigned, 0 orphans, 3036 edges, 10 components
+  [GRAPH] 828 branches traced, 2218/2218 nodes assigned, 0 orphans, 2467 edges, 14 components
+  [GRAPH] 675 branches traced, 2068/2068 nodes assigned, 0 orphans, 2270 edges, 14 components
+  [GRAPH] 612 branches traced, 1938/1938 nodes assigned, 0 orphans, 2122 edges, 14 components
+  [GRAPH] 585 branches traced, 1878/1878 nodes assigned, 0 orphans, 2049 edges, 14 components
+  [GRAPH] 509 branches traced, 1386/1386 nodes assigned, 0 orphans, 1545 edges, 10 components
+  [GRAPH] 481 branches traced, 1680/1680 nodes assigned, 0 orphans, 1823 edges, 12 components
+  [GRAPH] 478 branches traced, 1627/1627 nodes assigned, 0 orphans, 1773 edges, 10 components
+  [GRAPH] 463 branches traced, 1673/1673 nodes assigned, 0 orphans, 1809 edges, 15 components
+  [GRAPH] 456 branches traced, 1701/1701 nodes assigned, 0 orphans, 1833 edges, 17 components
+  [GRAPH] 429 branches traced, 1675/1675 nodes assigned, 0 orphans, 1796 edges, 14 components
+  [GRAPH] 453 branches traced, 1350/1350 nodes assigned, 0 orphans, 1481 edges, 12 components
+  [GRAPH] 528 branches traced, 1364/1364 nodes assigned, 0 orphans, 1525 edges, 14 components
+  [GRAPH] 459 branches traced, 1679/1679 nodes assigned, 0 orphans, 1811 edges, 15 components
+  [GRAPH] 433 branches traced, 1663/1663 nodes assigned, 0 orphans, 1785 edges, 16 components
+  [GRAPH] 417 branches traced, 1319/1319 nodes assigned, 0 orphans, 1428 edges, 21 components
+  [GRAPH] 408 branches traced, 1325/1326 nodes assigned, 1 orphans, 1423 edges, 26 components
+  [GRAPH] 432 branches traced, 1725/1725 nodes assigned, 0 orphans, 1817 edges, 27 components
+  [GRAPH] 452 branches traced, 1748/1748 nodes assigned, 0 orphans, 1838 edges, 36 components
+  [GRAPH] 549 branches traced, 1924/1924 nodes assigned, 0 orphans, 2040 edges, 41 components
+
+[41/60] membrane_040  (0.2 img/s, ETA 2m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=12.5%, n_cc=18, mean_fg_int=0.29)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           7.7%   0.3540       1ms
+Frangi         0.0%   0.0000     132ms
+Meijering     11.0%   0.3548     117ms
+Learned       25.0%   0.4316       8ms <<<
+
+Selected: Learned
+Nanograph: 1540 points (EP=125, JN=338, S=1077)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 611 branches traced, 1540/1540 nodes assigned, 0 orphans, 1680 edges, 44 components
+Graph: 1516 nodes, 1673 edges, 27 components
+FG residual: 3,206 bytes (24 ms)
+
+============================================================
+  RESULT (v5): 2020 pts, 14,291 bytes
+  vs raw pixels: 5x  vs PNG: 2.1x
+  PSNR=34.48  SSIM=0.9229  FG-PSNR=34.37  FG-SSIM=0.9829
+  Graph topology: 27 components, 184 cycles, 338 junctions, 101 endpoints
+  Segmentation: β₀=44, β₁=19
+  Structures: 44 -- {'linear': 11, 'ring': 2, 'punctate': 24, 'branched': 6, 'curved': 1}
+  Total time: 4886 ms
+============================================================
+  Sample saved: results/paper/cross/cells3d_membrane/samples/membrane_040.png
+  Bytes: 14,291  |  FG-SSIM: 0.9829  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.7623
+  [GRAPH] 607 branches traced, 2033/2034 nodes assigned, 1 orphans, 2159 edges, 43 components
+  [GRAPH] 762 branches traced, 1688/1688 nodes assigned, 0 orphans, 1879 edges, 41 components
+  [GRAPH] 666 branches traced, 1574/1574 nodes assigned, 0 orphans, 1737 edges, 37 components
+  [GRAPH] 581 branches traced, 1550/1550 nodes assigned, 0 orphans, 1695 edges, 29 components
+  [GRAPH] 613 branches traced, 1523/1523 nodes assigned, 0 orphans, 1682 edges, 29 components
+  [GRAPH] 653 branches traced, 1530/1531 nodes assigned, 1 orphans, 1693 edges, 33 components
+
+[48/60] membrane_047  (0.2 img/s, ETA 1m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=11.9%, n_cc=21, mean_fg_int=0.25)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           7.0%   0.3761       1ms
+Frangi         0.0%   0.0000     133ms
+Meijering      7.3%   0.3623     116ms
+Learned       25.6%   0.4225       8ms <<<
+
+Selected: Learned
+Nanograph: 1442 points (EP=110, JN=387, S=945)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 668 branches traced, 1442/1442 nodes assigned, 0 orphans, 1608 edges, 32 components
+Graph: 1430 nodes, 1606 edges, 22 components
+FG residual: 2,447 bytes (22 ms)
+
+============================================================
+  RESULT (v5): 2042 pts, 13,401 bytes
+  vs raw pixels: 5x  vs PNG: 2.1x
+  PSNR=34.62  SSIM=0.9150  FG-PSNR=35.44  FG-SSIM=0.9797
+  Graph topology: 22 components, 198 cycles, 387 junctions, 98 endpoints
+  Segmentation: β₀=32, β₁=24
+  Structures: 32 -- {'linear': 5, 'ring': 3, 'punctate': 18, 'branched': 6}
+  Total time: 6818 ms
+============================================================
+  Sample saved: results/paper/cross/cells3d_membrane/samples/membrane_047.png
+  Bytes: 13,401  |  FG-SSIM: 0.9797  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.8347
+  [GRAPH] 677 branches traced, 1778/1778 nodes assigned, 0 orphans, 1950 edges, 28 components
+  [GRAPH] 526 branches traced, 1592/1592 nodes assigned, 0 orphans, 1722 edges, 25 components
+
+[51/60] membrane_050  (0.2 img/s, ETA 1m)
+  [GRAPH] 430 branches traced, 1083/1083 nodes assigned, 0 orphans, 1181 edges, 25 components
+  [GRAPH] 358 branches traced, 1116/1116 nodes assigned, 0 orphans, 1203 edges, 17 components
+  [GRAPH] 427 branches traced, 1155/1155 nodes assigned, 0 orphans, 1275 edges, 19 components
+  [GRAPH] 343 branches traced, 1051/1052 nodes assigned, 1 orphans, 1133 edges, 17 components
+  [GRAPH] 277 branches traced, 875/875 nodes assigned, 0 orphans, 946 edges, 11 components
+  [GRAPH] 52 branches traced, 268/268 nodes assigned, 0 orphans, 276 edges, 6 components
+  [GRAPH] 34 branches traced, 133/133 nodes assigned, 0 orphans, 134 edges, 7 components
+  [GRAPH] 26 branches traced, 116/116 nodes assigned, 0 orphans, 114 edges, 7 components
+  [GRAPH] 156 branches traced, 550/550 nodes assigned, 0 orphans, 571 edges, 19 components
+  [GRAPH] 108 branches traced, 321/321 nodes assigned, 0 orphans, 336 edges, 13 components
+
+CSV saved: results/paper/cross/cells3d_membrane/metrics.csv
+TXT saved: results/paper/cross/cells3d_membrane/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 60/60
+  Failures: 0
+  Total time: 283.2s  (4.72s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  FG-SSIM                         0.9805    0.0205    0.9161    0.9991    0.9871
+  FG-PSNR                        32.5778    1.9032   29.0191   35.7054   32.4382
+  IoU (recon)                     0.3984    0.1350    0.0581    0.5773    0.4459
+  Topology Q                      0.8286    0.1819    0.3549    1.0000    0.8688
+  Full PSNR                      31.8904    3.8263   25.2100   39.5198   32.9259
+  Full SSIM                       0.8048    0.1536    0.5086    0.9582    0.8996
+  Bytes                        12177.9500 5156.9419 2299.0000 24658.0000 12547.5000
+  Graph Components               14.2000    7.2728    4.0000   35.0000   12.5000
+  Graph Cycles                  139.8500  104.8844    5.0000  445.0000  138.5000
+  Graph Complexity               13.9946   20.6365    0.7143  111.2500    7.3449
+  Nodes                        1322.8667  688.1722  116.0000 2781.0000 1403.0000
+  Edges                        1448.5167  785.5616  114.0000 3213.0000 1573.0000
+  Total Edge Length            2671.5433 1424.2789  159.1543 5707.0855 3150.8517
+  Mean Width (px)                 3.8642    2.2765    2.3001   11.1616    2.9608
+  Mean Curvature                  0.0736    0.0153    0.0316    0.0992    0.0766
+  Time (ms)                    4419.5134 2934.0390 1453.9478 13945.0746 3151.5290
+
+  WINS vs byte-matched JPEG (60 images):
+    GT-IoU          : 0/60 wins (0%)  mean Δ=+0.0000
+    GT-FG-SSIM      : 0/60 wins (0%)  mean Δ=+0.0000
+    GT-FG-PSNR      : 0/60 wins (0%)  mean Δ=+0.0000
+    FG-SSIM         : 0/60 wins (0%)  mean Δ=-0.0126
+    IoU             : 31/60 wins (52%)  mean Δ=+0.0048
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/cross/cells3d_membrane/summary.txt
+Aggregate plots saved: results/paper/cross/cells3d_membrane/aggregate_plots.png
+
+Done. All results in results/paper/cross/cells3d_membrane/
+=== [01:25:59] cross/cells3d_nuclei
+Found 60 images in /mnt/nas1/nba055-2/idea_1/datasets/cells3d_nuclei/images
+Masks directory: (none)
+Output: results/paper/cross/cells3d_nuclei
+Sample visualizations: 4
+Sample indices: [1, 7, 40, 47]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/60] nuclei_000  (0.0 img/s, ETA 0m)
+  [GRAPH] 320 branches traced, 1008/1008 nodes assigned, 0 orphans, 1065 edges, 32 components
+
+[2/60] nuclei_001  (0.1 img/s, ETA 8m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=0.5%, n_cc=7, mean_fg_int=0.69)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          27.5%   0.3788       1ms <<<
+Frangi        31.8%   0.3659     135ms
+Meijering     97.3%   0.2599     117ms
+Learned        0.5%   0.3728       8ms
+
+Selected: Otsu
+Nanograph: 826 points (EP=77, JN=107, S=642)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 213 branches traced, 826/826 nodes assigned, 0 orphans, 850 edges, 28 components
+Graph: 822 nodes, 851 edges, 23 components
+FG residual: 6,059 bytes (26 ms)
+
+============================================================
+  RESULT (v5): 1426 pts, 13,765 bytes
+  vs raw pixels: 5x  vs PNG: 4.0x
+  PSNR=20.92  SSIM=0.2609  FG-PSNR=23.66  FG-SSIM=0.9441
+  Graph topology: 23 components, 52 cycles, 107 junctions, 73 endpoints
+  Segmentation: β₀=28, β₁=0
+  Structures: 28 -- {'linear': 3, 'punctate': 14, 'branched': 10, 'curved': 1}
+  Total time: 11558 ms
+============================================================
+  Sample saved: results/paper/cross/cells3d_nuclei/samples/nuclei_001.png
+  Bytes: 13,765  |  FG-SSIM: 0.9441  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.6345
+  [GRAPH] 212 branches traced, 793/793 nodes assigned, 0 orphans, 825 edges, 19 components
+  [GRAPH] 246 branches traced, 896/896 nodes assigned, 0 orphans, 945 edges, 13 components
+  [GRAPH] 241 branches traced, 982/982 nodes assigned, 0 orphans, 1024 edges, 18 components
+  [GRAPH] 249 branches traced, 956/956 nodes assigned, 0 orphans, 996 edges, 19 components
+  [GRAPH] 6 branches traced, 61/61 nodes assigned, 0 orphans, 55 edges, 6 components
+
+[8/60] nuclei_007  (0.1 img/s, ETA 7m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=0.5%, n_cc=7, mean_fg_int=0.69)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          32.3%   0.3816       1ms <<<
+Frangi        30.5%   0.3695     133ms
+Meijering     98.6%   0.2692     117ms
+Learned        0.5%   0.3694       5ms
+
+Selected: Otsu
+Nanograph: 772 points (EP=57, JN=127, S=588)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 233 branches traced, 772/772 nodes assigned, 0 orphans, 819 edges, 16 components
+Graph: 770 nodes, 819 edges, 14 components
+FG residual: 5,958 bytes (28 ms)
+
+============================================================
+  RESULT (v5): 982 pts, 11,902 bytes
+  vs raw pixels: 6x  vs PNG: 4.6x
+  PSNR=22.04  SSIM=0.3026  FG-PSNR=24.18  FG-SSIM=0.9215
+  Graph topology: 14 components, 63 cycles, 127 junctions, 55 endpoints
+  Segmentation: β₀=16, β₁=3
+  Structures: 16 -- {'ring': 2, 'branched': 7, 'punctate': 7}
+  Total time: 7266 ms
+============================================================
+  Sample saved: results/paper/cross/cells3d_nuclei/samples/nuclei_007.png
+  Bytes: 11,902  |  FG-SSIM: 0.9215  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.8096
+  [GRAPH] 224 branches traced, 795/795 nodes assigned, 0 orphans, 836 edges, 14 components
+  [GRAPH] 52 branches traced, 172/173 nodes assigned, 1 orphans, 170 edges, 15 components
+  [GRAPH] 54 branches traced, 204/204 nodes assigned, 0 orphans, 204 edges, 13 components
+  [GRAPH] 88 branches traced, 269/269 nodes assigned, 0 orphans, 277 edges, 17 components
+  [GRAPH] 141 branches traced, 345/345 nodes assigned, 0 orphans, 361 edges, 24 components
+  [GRAPH] 186 branches traced, 473/473 nodes assigned, 0 orphans, 497 edges, 29 components
+  [GRAPH] 202 branches traced, 517/517 nodes assigned, 0 orphans, 547 edges, 27 components
+  [GRAPH] 297 branches traced, 578/578 nodes assigned, 0 orphans, 634 edges, 30 components
+  [GRAPH] 340 branches traced, 692/692 nodes assigned, 0 orphans, 766 edges, 32 components
+  [GRAPH] 333 branches traced, 764/764 nodes assigned, 0 orphans, 830 edges, 33 components
+  [GRAPH] 521 branches traced, 969/969 nodes assigned, 0 orphans, 1103 edges, 23 components
+  [GRAPH] 457 branches traced, 980/980 nodes assigned, 0 orphans, 1089 edges, 28 components
+  [GRAPH] 528 branches traced, 981/981 nodes assigned, 0 orphans, 1130 edges, 23 components
+  [GRAPH] 46 branches traced, 204/204 nodes assigned, 0 orphans, 191 edges, 21 components
+  [GRAPH] 4 branches traced, 42/42 nodes assigned, 0 orphans, 38 edges, 4 components
+  [GRAPH] 7 branches traced, 35/35 nodes assigned, 0 orphans, 32 edges, 4 components
+  [GRAPH] 7 branches traced, 50/50 nodes assigned, 0 orphans, 43 edges, 7 components
+  [GRAPH] 8 branches traced, 46/46 nodes assigned, 0 orphans, 38 edges, 8 components
+  [GRAPH] 847 branches traced, 1505/1505 nodes assigned, 0 orphans, 1800 edges, 23 components
+  [GRAPH] 967 branches traced, 1648/1648 nodes assigned, 0 orphans, 1992 edges, 25 components
+  [GRAPH] 103 branches traced, 753/753 nodes assigned, 0 orphans, 747 edges, 30 components
+  [GRAPH] 125 branches traced, 791/791 nodes assigned, 0 orphans, 792 edges, 30 components
+  [GRAPH] 120 branches traced, 711/711 nodes assigned, 0 orphans, 692 edges, 41 components
+  [GRAPH] 149 branches traced, 736/736 nodes assigned, 0 orphans, 733 edges, 35 components
+  [GRAPH] 153 branches traced, 726/726 nodes assigned, 0 orphans, 721 edges, 36 components
+  [GRAPH] 192 branches traced, 758/758 nodes assigned, 0 orphans, 773 edges, 31 components
+  [GRAPH] 232 branches traced, 791/791 nodes assigned, 0 orphans, 832 edges, 33 components
+  [GRAPH] 175 branches traced, 767/767 nodes assigned, 0 orphans, 779 edges, 31 components
+  [GRAPH] 151 branches traced, 733/734 nodes assigned, 1 orphans, 730 edges, 37 components
+  [GRAPH] 195 branches traced, 820/820 nodes assigned, 0 orphans, 844 edges, 30 components
+  [GRAPH] 150 branches traced, 802/802 nodes assigned, 0 orphans, 811 edges, 27 components
+  [GRAPH] 2 branches traced, 26/26 nodes assigned, 0 orphans, 24 edges, 2 components
+
+[41/60] nuclei_040  (0.2 img/s, ETA 2m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=24.9%, n_cc=40, mean_fg_int=0.53)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          40.9%   0.3808       1ms
+Frangi         0.2%   0.3968     132ms <<<
+Meijering     29.4%   0.3857     117ms
+Learned       34.5%   0.3811       5ms
+
+Selected: Frangi
+Nanograph: 11 points (EP=1, JN=3, S=7)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 6 branches traced, 11/11 nodes assigned, 0 orphans, 12 edges, 1 components
+Graph: 11 nodes, 12 edges, 1 components
+FG residual: 62 bytes (1 ms)
+
+============================================================
+  RESULT (v5): 127 pts, 858 bytes
+  vs raw pixels: 76x  vs PNG: 52.3x
+  PSNR=23.13  SSIM=0.4989  FG-PSNR=29.16  FG-SSIM=0.9999
+  Graph topology: 1 components, 2 cycles, 3 junctions, 1 endpoints
+  Segmentation: β₀=1, β₁=0
+  Structures: 1 -- {'branched': 1}
+  Total time: 658 ms
+============================================================
+  Sample saved: results/paper/cross/cells3d_nuclei/samples/nuclei_040.png
+  Bytes: 858  |  FG-SSIM: 0.9999  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.3297
+  [GRAPH] 123 branches traced, 711/711 nodes assigned, 0 orphans, 718 edges, 23 components
+  [GRAPH] 63 branches traced, 670/670 nodes assigned, 0 orphans, 651 edges, 28 components
+  [GRAPH] 66 branches traced, 542/542 nodes assigned, 0 orphans, 526 edges, 29 components
+  [GRAPH] 148 branches traced, 551/551 nodes assigned, 0 orphans, 578 edges, 25 components
+  [GRAPH] 40 branches traced, 354/354 nodes assigned, 0 orphans, 343 edges, 18 components
+  [GRAPH] 3 branches traced, 15/15 nodes assigned, 0 orphans, 12 edges, 3 components
+
+[48/60] nuclei_047  (0.2 img/s, ETA 1m)  ** SAMPLE **
+Image: (256, 256), type=dense (FG=17.1%, n_cc=18, mean_fg_int=0.45)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 19 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          12.1%   0.3496       1ms
+Frangi         0.1%   0.5440     133ms <<<
+Meijering     11.4%   0.3839     117ms
+Learned       19.6%   0.3779       6ms
+
+Selected: Frangi
+Nanograph: 5 points (EP=2, JN=0, S=3)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+Graph: 5 nodes, 4 edges, 1 components
+FG residual: 70 bytes (1 ms)
+
+============================================================
+  RESULT (v5): 65 pts, 583 bytes
+  vs raw pixels: 112x  vs PNG: 72.5x
+  PSNR=27.28  SSIM=0.6946  FG-PSNR=24.60  FG-SSIM=1.0000
+  Graph topology: 1 components, 0 cycles, 0 junctions, 2 endpoints
+  Segmentation: β₀=1, β₁=0
+  Structures: 1 -- {'punctate': 1}
+  Total time: 505 ms
+============================================================
+  Sample saved: results/paper/cross/cells3d_nuclei/samples/nuclei_047.png
+  Bytes: 583  |  FG-SSIM: 1.0000  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.1306
+  [GRAPH] 43 branches traced, 269/269 nodes assigned, 0 orphans, 260 edges, 16 components
+  [GRAPH] 30 branches traced, 215/215 nodes assigned, 0 orphans, 207 edges, 13 components
+
+[51/60] nuclei_050  (0.2 img/s, ETA 1m)
+  [GRAPH] 31 branches traced, 171/171 nodes assigned, 0 orphans, 167 edges, 10 components
+  [GRAPH] 18 branches traced, 127/127 nodes assigned, 0 orphans, 121 edges, 8 components
+  [GRAPH] 6 branches traced, 30/30 nodes assigned, 0 orphans, 30 edges, 1 components
+  [GRAPH] 2 branches traced, 19/19 nodes assigned, 0 orphans, 18 edges, 1 components
+  [GRAPH] 1 branches traced, 21/21 nodes assigned, 0 orphans, 20 edges, 1 components
+  [GRAPH] 1 branches traced, 21/21 nodes assigned, 0 orphans, 20 edges, 1 components
+  [GRAPH] 139 branches traced, 371/371 nodes assigned, 0 orphans, 389 edges, 22 components
+  [GRAPH] 107 branches traced, 314/314 nodes assigned, 0 orphans, 328 edges, 16 components
+  [GRAPH] 95 branches traced, 299/299 nodes assigned, 0 orphans, 306 edges, 17 components
+  [GRAPH] 71 branches traced, 267/267 nodes assigned, 0 orphans, 270 edges, 16 components
+
+CSV saved: results/paper/cross/cells3d_nuclei/metrics.csv
+TXT saved: results/paper/cross/cells3d_nuclei/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 60/60
+  Failures: 0
+  Total time: 270.0s  (4.50s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  FG-SSIM                         0.9796    0.0239    0.9125    1.0000    0.9896
+  FG-PSNR                        27.3009    2.6518   23.2687   30.9029   28.2541
+  IoU (recon)                     0.4602    0.2942    0.0040    0.8423    0.5796
+  Topology Q                      0.5145    0.1992    0.1306    0.9307    0.4956
+  Full PSNR                      26.3484    3.8771   20.9203   33.8229   26.5640
+  Full SSIM                       0.5473    0.2212    0.1392    0.8089    0.6708
+  Bytes                        7310.8500 4748.2421  583.0000 16846.0000 7812.0000
+  Graph Components               16.4500    9.1950    1.0000   32.0000   17.0000
+  Graph Cycles                   46.8833   67.4030    0.0000  369.0000   30.5000
+  Graph Complexity                2.2906    2.9147    0.0000   15.3750    1.4631
+  Nodes                         512.5500  385.5894    5.0000 1646.0000  546.5000
+  Edges                         542.9833  434.5364    4.0000 1991.0000  562.5000
+  Total Edge Length            1044.8851  882.5157    6.4142 4132.8086 1033.1775
+  Mean Width (px)                 5.1628    1.9449    2.5259    9.7677    5.7209
+  Mean Curvature                  0.0700    0.0193    0.0205    0.1197    0.0718
+  Time (ms)                    4209.8983 3391.6154  504.8132 12130.6050 2785.7029
+
+  WINS vs byte-matched JPEG (60 images):
+    GT-IoU          : 0/60 wins (0%)  mean Δ=+0.0000
+    GT-FG-SSIM      : 0/60 wins (0%)  mean Δ=+0.0000
+    GT-FG-PSNR      : 0/60 wins (0%)  mean Δ=+0.0000
+    FG-SSIM         : 15/60 wins (25%)  mean Δ=-0.0079
+    IoU             : 38/60 wins (63%)  mean Δ=+0.0774
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/cross/cells3d_nuclei/summary.txt
+Aggregate plots saved: results/paper/cross/cells3d_nuclei/aggregate_plots.png
+
+Done. All results in results/paper/cross/cells3d_nuclei/
+=== [01:30:31] cross/retina
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/run_dataset.py", line 220, in main
+    result = nanograph_encode(img, sam_model=sam_model,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/nanograph_v4/api.py", line 167, in nanograph_encode
+    clean, seg_name, seg_candidates = auto_segment(
+                                      ^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/nanograph_v4/segment.py", line 312, in auto_segment
+    lmask = learned_segment(learned_model, image_gray, cfg=sc)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/nanograph_v4/segment.py", line 164, in learned_segment
+    mask = unet_predict(model, image_gray, device=device, thresh=sc.learned_thresh)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/nanograph_v4/unet_seg.py", line 79, in unet_predict
+    prob = torch.sigmoid(model(t))[0, 0, :h, :w].cpu().numpy()
+                         ^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/nanograph_v4/unet_seg.py", line 55, in forward
+    d2 = self.d2(torch.cat([self.u2(d3), e2], 1))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 248.00 MiB. GPU 0 has a total capacty of 79.25 GiB of which 149.31 MiB is free. Process 266647 has 77.69 GiB memory in use. Including non-PyTorch memory, this process has 1.40 GiB memory in use. Of the allocated memory 734.51 MiB is allocated by PyTorch, and 197.49 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
