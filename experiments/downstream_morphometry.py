@@ -106,7 +106,7 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
     for k, (u, v) in enumerate(edges):       # intra-cluster links
         if vlabel[u] >= 0 and vlabel[u] == vlabel[v]:
             used[k] = True
-    lengths, types, wsum, wlist = [], [], 0.0, []
+    lengths, types, wsum, wlist, tang = [], [], 0.0, [], []
     ends = []                                # (vertex a, vertex b) per branch
 
     def walk(u, w, k):
@@ -114,6 +114,7 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
         L, W = edge_len[k], edge_len[k] * (width[u] + width[w]) / 2
         used[k] = True
         prev, cur = u, w
+        chain = [u, w]
         while vlabel[cur] < 0:               # degree-2 node: continue
             nxt = [(x, kk) for x, kk in adj[cur] if not used[kk]]
             if not nxt:                      # closed back onto start
@@ -123,7 +124,19 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
             L += edge_len[kk]
             W += edge_len[kk] * (width[cur] + width[x]) / 2
             prev, cur = cur, x
+            chain.append(cur)
+        tang.append(_tangent_points(chain))
         return cur, L, W
+
+    def _tangent_points(chain, reach=5.0):
+        """Positions ~reach px in from each end of a branch (end tangents)."""
+        c = pos[chain]
+        seg = np.hypot(*np.diff(c, axis=0).T) if len(c) > 1 else np.zeros(0)
+        cum = np.concatenate([[0.0], np.cumsum(seg)])
+        ia = int(np.searchsorted(cum, min(reach, cum[-1])))
+        ib = int(np.searchsorted(cum, max(cum[-1] - reach, 0.0)))
+        return [float(c[min(ia, len(c) - 1), 0]), float(c[min(ia, len(c) - 1), 1]),
+                float(c[ib, 0]), float(c[ib, 1])]
 
     for u in range(n):
         if vlabel[u] < 0:
@@ -141,11 +154,13 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
             ends.append((a, b))
     # isolated cycles: remaining edges lie on components with no vertex
     n_cyc_only = 0
+    cyc_pos = []
     for k in range(len(edges)):
         if used[k]:
             continue
         u, w = edges[k]
         start = u
+        cyc_pos.append(pos[u])
         L, W = edge_len[k], edge_len[k] * (width[u] + width[w]) / 2
         used[k] = True
         cur = w
@@ -162,6 +177,7 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
         types.append(3)
         wsum += W
         wlist.append(W)
+        tang.append([0.0, 0.0, 0.0, 0.0])
         ends.append((nv + n_cyc_only, nv + n_cyc_only))
         n_cyc_only += 1
 
@@ -181,7 +197,22 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
                     stack.append(w)
         n_comp += 1
 
+    # vertex positions: centroid of the nodes a vertex stands for (junction
+    # clusters), or the node itself; isolated cycles use their first node
+    vpos = np.zeros((nv + n_cyc_only, 2))
+    cnt = np.zeros(nv + n_cyc_only)
+    for u in range(n):
+        if vlabel[u] >= 0:
+            vpos[vlabel[u]] += pos[u]
+            cnt[vlabel[u]] += 1
+    for c, p0 in enumerate(cyc_pos):
+        vpos[nv + c] = p0
+        cnt[nv + c] = 1
+    cnt[cnt == 0] = 1
+    vpos /= cnt[:, None]
     return {
+        'vpos': vpos.round(2).tolist(),
+        'tang': np.round(tang, 2).tolist(),
         'branches': [[int(a), int(b), float(L), float(W)]
                      for (a, b), L, W in zip(ends, lengths, wlist)],
         'vjunc': [bool(v) for v in vjunc] + [False] * n_cyc_only,
@@ -193,8 +224,8 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
 
 
 def _branch_types(br, is_junc):
-    return [3 if a == b else 2 if (is_junc[a] and is_junc[b]) else
-            1 if (is_junc[a] or is_junc[b]) else 0 for a, b, _, _ in br]
+    return [3 if b[0] == b[1] else 2 if (is_junc[b[0]] and is_junc[b[1]]) else
+            1 if (is_junc[b[0]] or is_junc[b[1]]) else 0 for b in br]
 
 
 def spur_fraction(table, L):
@@ -213,6 +244,70 @@ def spur_fraction(table, L):
             sum(b[2] for b, s_ in zip(br, spur) if s_) / tot if tot > 0 else np.nan)
 
 
+def _end_tangent(b, v):
+    """Tangent reference point (y, x) of branch b at its end vertex v
+    (branch entries: a, b, length, width-sum, ta_y, ta_x, tb_y, tb_x)."""
+    if len(b) < 8:
+        return [np.nan, np.nan]
+    return list(b[4:6]) if b[0] == v else list(b[6:8])
+
+
+def _bridge(br, vpos, max_gap, min_align=0.6):
+    """Link free ends of different components that are within max_gap px and
+    continue each other's direction (cosine >= min_align at both ends; the
+    rule of Nanograph.bridge_gaps), best-scoring pairs first; then merge the
+    resulting degree-2 vertices. Returns (branches, incidence)."""
+    from collections import defaultdict
+    inc = defaultdict(list)
+    for k, b in enumerate(br):
+        inc[b[0]].append(k)
+        inc[b[1]].append(k)
+    parent = {}
+
+    def find(x):
+        while parent.setdefault(x, x) != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+    for b in br:
+        parent[find(b[0])] = find(b[1])
+    free = [v for v, ks in inc.items() if len(ks) == 1 and br[ks[0]][0] != br[ks[0]][1]]
+    dirs = {}
+    for v in free:
+        t = _end_tangent(br[inc[v][0]], v)
+        d = np.asarray(vpos[v], float) - np.asarray(t, float)
+        n = np.hypot(*d)
+        if np.isfinite(n) and n > 1e-6:
+            dirs[v] = d / n
+    cands = []
+    fv = [v for v in free if v in dirs]
+    for i, a in enumerate(fv):
+        for b in fv[i + 1:]:
+            if find(a) == find(b):
+                continue
+            g = np.asarray(vpos[b], float) - np.asarray(vpos[a], float)
+            dd = np.hypot(*g)
+            if dd < 1e-6 or dd > max_gap:
+                continue
+            g = g / dd
+            aa, ab = float(dirs[a] @ g), float(dirs[b] @ -g)
+            if aa >= min_align and ab >= min_align:
+                cands.append((aa + ab - dd / max_gap, dd, a, b))
+    cands.sort(reverse=True)
+    used = set()
+    out = [list(b) for b in br]
+    for _, dd, a, b in cands:
+        if a in used or b in used or find(a) == find(b):
+            continue
+        wa = out[inc[a][0]][3] / max(out[inc[a][0]][2], 1e-9)
+        wb = out[inc[b][0]][3] / max(out[inc[b][0]][2], 1e-9)
+        pa, pb = list(np.asarray(vpos[a], float)), list(np.asarray(vpos[b], float))
+        out.append([a, b, dd, dd * (wa + wb) / 2, *pb, *pa])
+        used |= {a, b}
+        parent[find(a)] = find(b)
+    return _prune_merge(out, 0.0)
+
+
 def _prune_merge(br, L, guard=True):
     """One pruning pass at L (terminal branches: free end of degree 1 at one
     end, a vertex with >= 3 branches at the other, length < L; with `guard`,
@@ -220,12 +315,14 @@ def _prune_merge(br, L, guard=True):
     Returns (branches, incidence {vertex: [branch index]})."""
     from collections import defaultdict
     inc = defaultdict(list)
-    for k, (a, b, _, _) in enumerate(br):
+    for k, bb in enumerate(br):
+        a, b = bb[0], bb[1]
         inc[a].append(k)
         inc[b].append(k)
     deg = {v: len(ks) for v, ks in inc.items()}
     drop = set()
-    for k, (a, b, ln, _) in enumerate(br if L > 0 else []):
+    for k, bb in enumerate(br if L > 0 else []):
+        a, b, ln = bb[0], bb[1], bb[2]
         if a != b and ln < L and min(deg[a], deg[b]) == 1 and max(deg[a], deg[b]) >= 3:
             drop.add(k)
     if guard:
@@ -234,7 +331,8 @@ def _prune_merge(br, L, guard=True):
                 drop.discard(max(ks, key=lambda k: br[k][2]))
     alive = {k: br[k] for k in range(len(br)) if k not in drop}
     inc = defaultdict(list)
-    for k, (a, b, _, _) in alive.items():
+    for k, bb in alive.items():
+        a, b = bb[0], bb[1]
         inc[a].append(k)
         inc[b].append(k)
     nxt = len(br)
@@ -245,7 +343,9 @@ def _prune_merge(br, L, guard=True):
         k1, k2 = ks
         x = alive[k1][1] if alive[k1][0] == v else alive[k1][0]
         y = alive[k2][1] if alive[k2][0] == v else alive[k2][0]
-        alive[nxt] = [x, y, alive[k1][2] + alive[k2][2], alive[k1][3] + alive[k2][3]]
+        tx = _end_tangent(alive[k1], x)
+        ty = _end_tangent(alive[k2], y)
+        alive[nxt] = [x, y, alive[k1][2] + alive[k2][2], alive[k1][3] + alive[k2][3], *tx, *ty]
         for k, end in ((k1, x), (k2, y)):
             inc[end].remove(k)
             del alive[k]
@@ -266,12 +366,30 @@ def _n_components(br):
             parent[x] = parent[parent[x]]
             x = parent[x]
         return x
-    for a, b, _, _ in br:
-        parent[find(a)] = find(b)
+    for b in br:
+        parent[find(b[0])] = find(b[1])
     return len({find(v) for b in br for v in b[:2]})
 
 
-def descriptors_at(table, L=0.0, junction_def='degree', prune='once'):
+def _drop_small(br, min_len):
+    """Remove every component whose total branch length is < min_len px."""
+    parent = {}
+
+    def find(x):
+        while parent.setdefault(x, x) != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+    for b in br:
+        parent[find(b[0])] = find(b[1])
+    tot = {}
+    for b in br:
+        tot[find(b[0])] = tot.get(find(b[0]), 0.0) + b[2]
+    keep = [b for b in br if tot[find(b[0])] >= min_len]
+    return _prune_merge(keep, 0.0)
+
+
+def descriptors_at(table, L=0.0, junction_def='degree', prune='once', bridge=0.0, min_len=0.0):
     """Descriptors after dropping terminal branches shorter than L px.
 
     junction_def='t10' (only with L = 0) is the T10 definition: a junction is
@@ -283,12 +401,26 @@ def descriptors_at(table, L=0.0, junction_def='degree', prune='once'):
     prune: 'once' (default; one pass, a vertex never loses all its branches,
     so no component disappears), 'once_noguard' (one pass, no guard) or
     'iterative' (repeat 'once' until nothing changes).
+    bridge: if > 0, after pruning link collinear free ends of different
+    components within `bridge` px (analysis-time gap bridging, _bridge).
+    min_len: if > 0, after pruning drop components whose total skeleton
+    length is < min_len px (analysis-time speck removal), before bridging.
     Returns (dict of scalars, list of branch lengths, list of branch types).
     """
     from collections import defaultdict
-    br = [list(b) for b in table['branches']]
+    if L == 'auto' or min_len == 'auto':
+        # one-diameter rule (T13): prune terminal branches and drop components
+        # shorter than the arm's own length-weighted mean diameter
+        tl = sum(b[2] for b in table['branches'])
+        diam = sum(b[3] for b in table['branches']) / tl if tl > 0 else 0.0
+        L = diam if L == 'auto' else L
+        min_len = diam if min_len == 'auto' else min_len
+    tg = table.get('tang')
+    br = [list(b) + (list(tg[k]) if tg else []) for k, b in enumerate(table['branches'])]
     is_junc = list(table['vjunc'])
     assert junction_def in ('t10', 'degree') and not (junction_def == 't10' and L > 0)
+    assert not (bridge > 0 and (junction_def != 'degree' or not tg)), 'bridging needs tangents'
+    assert not (min_len > 0 and junction_def != 'degree')
     n_comp = table['n_components']
     if junction_def == 'degree' and br:
         br, inc = _prune_merge(br, L, guard=(prune != 'once_noguard'))
@@ -297,10 +429,14 @@ def descriptors_at(table, L=0.0, junction_def='degree', prune='once'):
             br, inc = _prune_merge(br, L)
             if len(br) == nb:
                 break
+        if min_len > 0:
+            br, inc = _drop_small(br, min_len)
+        if bridge > 0:
+            br, inc = _bridge(br, table['vpos'], bridge)
         n_vert = len(inc)
         is_junc = defaultdict(bool, {v: len(ks) >= 3 for v, ks in inc.items()})
         n_junc = sum(1 for ks in inc.values() if len(ks) >= 3)
-        if prune == 'once_noguard':
+        if prune == 'once_noguard' or bridge > 0 or min_len > 0:
             n_comp = _n_components(br)
     else:
         n_vert = len({v for b in br for v in b[:2]})
@@ -320,6 +456,48 @@ def descriptors_at(table, L=0.0, junction_def='degree', prune='once'):
         'n_isolated_cycles': table['n_isolated_cycles'],
     }
     return d, [float(x) for x in lengths], _branch_types(br, is_junc)
+
+
+def vertex_positions(table, L=0.0, prune='once', min_len=0.0):
+    """(junction positions, endpoint positions) after degree-based pruning at
+    L (and removal of components shorter than min_len): vertices with >= 3
+    branches, and with exactly 1 branch. L / min_len may be 'auto' (the
+    one-diameter rule of descriptors_at)."""
+    if L == 'auto' or min_len == 'auto':
+        tl = sum(b[2] for b in table['branches'])
+        diam = sum(b[3] for b in table['branches']) / tl if tl > 0 else 0.0
+        L = diam if L == 'auto' else L
+        min_len = diam if min_len == 'auto' else min_len
+    br = [list(b) for b in table['branches']]
+    vp = np.asarray(table.get('vpos', []), float).reshape(-1, 2)
+    if not br:
+        return np.zeros((0, 2)), np.zeros((0, 2))
+    br, inc = _prune_merge(br, L, guard=(prune != 'once_noguard'))
+    while prune == 'iterative' and L > 0:
+        nb = len(br)
+        br, inc = _prune_merge(br, L)
+        if len(br) == nb:
+            break
+    if min_len > 0:
+        br, inc = _drop_small(br, min_len)
+    j = [v for v, ks in inc.items() if len(ks) >= 3]
+    e = [v for v, ks in inc.items() if len(ks) == 1]
+    return vp[j].reshape(-1, 2), vp[e].reshape(-1, 2)
+
+
+def point_f1(pred, ref, tol):
+    """Precision / recall / F1 of point sets under one-to-one matching within
+    `tol` px (Hungarian assignment on distances, pairs beyond tol rejected)."""
+    from scipy.optimize import linear_sum_assignment
+    if len(pred) == 0 or len(ref) == 0:
+        tp = 0
+    else:
+        d = np.hypot(pred[:, None, 0] - ref[None, :, 0], pred[:, None, 1] - ref[None, :, 1])
+        r, c = linear_sum_assignment(np.where(d <= tol, d, 1e6))
+        tp = int((d[r, c] <= tol).sum())
+    p = tp / len(pred) if len(pred) else (1.0 if len(ref) == 0 else 0.0)
+    rc = tp / len(ref) if len(ref) else (1.0 if len(pred) == 0 else 0.0)
+    return p, rc, (2 * p * rc / (p + rc) if p + rc > 0 else 0.0)
 
 
 def branch_descriptors(pos, width, edges, edge_len=None, contract=True, L=0.0):
@@ -409,6 +587,16 @@ def _encode_one(args):
     with contextlib.redirect_stdout(io.StringIO()):
         r = nanograph_encode(img, verbose=False, config=NanographConfig())
     g = r.graph
+    if r.structure is not None:          # v7: the stored graph is the structure layer
+        from nanograph_v4 import graph_branch as gb
+        pos, rad, edges, elen = gb.structure_to_arrays(r.structure, path_lengths=True)
+        np.savez_compressed(
+            out, payload_tagged=np.frombuffer(r.compressed, np.uint8),
+            payload_fixed=np.frombuffer(r.compressed, np.uint8),
+            pre_pos=pos, pre_rad=rad, pre_edges=edges, pre_elen=elen,
+            segmenter=np.array(r.segmenter), n_misaligned=np.int64(0),
+            n_points=np.int64(len(r.points)))
+        return stem, 'ok'
     g_fixed, n_mis = _remap_graph_to_points(g, r.points)
 
     def _recompress(graph):
@@ -490,7 +678,8 @@ def _decoded_graph_arrays(payload):
     pos = np.array([n.position for n in g.nodes], float).reshape(-1, 2)
     rad = np.array([n.width for n in g.nodes], float)
     edges = np.array([(e.source, e.target) for e in g.edges], np.int64).reshape(-1, 2)
-    return pos, rad, edges
+    elen = np.array([e.length for e in g.edges], float)   # v6: chord; v7: stored path length
+    return pos, rad, edges, elen
 
 
 def stage_measure(args):

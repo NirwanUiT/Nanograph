@@ -28,3 +28,14 @@ paper/*.synctex.gz
 # OS / editor cruft
 .DS_Store
 *.swp
+results/v7/cache/
+results/v7/tables/
+results/v7/unet/*.pt
+results/v7/per_image.csv
+results/real/*/per_image.csv
+results/real/unet/*.pt
+results/real/pipeline/*/*/samples/
+results/real/pipeline/*/*/aggregate_plots.png
+results/real/eval_per_tile.csv
+results/real/real_downstream/*.csv
+!results/real/real_downstream/summary.csv

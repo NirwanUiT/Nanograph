@@ -161,7 +161,7 @@ foreground mask, which we characterise below.
 \centering
 \includegraphics[width=0.92\textwidth]{figures/fig_pipeline.png}
 \caption{\textbf{\method reduces a curvilinear image once, then reads the
-result.} Top: the encode path, on a fluorescence organelle image. Middle:
+result.} Top: the encode path, on a simulated fluorescence mitochondria image. Middle:
 what is stored---per-node position, width, intensity and orientation, the
 edge list, a coarse background field and an optional foreground residual.
 Bottom left: topology and morphometry are properties of that stored object
@@ -245,7 +245,7 @@ $\DCycles$, mean width $\DWidth$\,px, total network length and
 junction-degree statistics (Fig.~\ref{fig:topology}), with no
 segmentation or tracing of pixels at analysis time. Inside the foreground
 the regenerated image is faithful (FG-SSIM $\DFGSSIM$; GT-FG-SSIM
-$\DGTFGSSIM$ inside the independent annotation). Full-image SSIM
+$\DGTFGSSIM$ inside the simulator's ground-truth mask). Full-image SSIM
 ($\DFullSSIMm$) reflects a deliberate design choice: the noisy background
 of these sparse fields is summarised by a 256-byte field rather than stored.
 Replacing the classical cascade by the learned front end (Methods) raises
@@ -301,7 +301,7 @@ against mean width, coloured by $\beta_0$.}
 \centering
 \includegraphics[width=0.92\textwidth]{figures/fig_qualitative_organelle.png}
 \caption{\textbf{End-to-end example} on a held-out organelle image. Top row: input,
-the segmentation mask selected by the cascade, and the independent
+the segmentation mask selected by the cascade, and the simulator's
 ground-truth mask. Middle row: oriented-PSF reconstruction from the graph,
 absolute error map, and segmentation-vs-ground-truth overlay (green true
 positive, red false negative, blue false positive). Bottom row: skeleton,
@@ -318,7 +318,7 @@ Fig.~\ref{fig:segbottleneck} (here precision 0.492 at recall 0.951).}
 \caption{\textbf{The same stages on three further mitochondrial
 acquisitions} (input, selected mask, skeleton, reconstruction, graph nodes),
 as a counterpart to Fig.~\ref{fig:qualitative}; the results are given in
-Table~\ref{tab:mitogen} and discussed in the transfer section. Top: temporal clip from the same acquisition as the main set.
+Table~\ref{tab:mitogen} and discussed in the transfer section. Top: simulated temporal clip (four unbranched mitochondria in elastic motion; a separate dynamic simulator).
 Middle: public live-cell STED (TOM20)~\cite{balakrishnan2024sted} with the
 learned mask forced (\texttt{learned\_mode='replace'}); the outer-membrane
 label makes tubes hollow, which the graph traces as parallel filaments.
@@ -626,7 +626,8 @@ leaving the other invariants intact.}
 \label{sec:mito-gen}
 We applied the pipeline to three further mitochondrial sources
 (Table~\ref{tab:mitogen}, Fig.~\ref{fig:mitogen}; Methods). On a 73-frame
-temporal clip from the main acquisition it transfers across time without
+simulated temporal clip (four unbranched mitochondria in elastic motion, from a
+separate dynamic simulator) it transfers across time without
 adjustment (Seg-IoU $\ClipSegIoUm$, GT-IoU $\ClipGTIoUm$; with the learned
 mask forced, Seg-IoU $\ClipLSegIoUm$). On an independent live-cell STED
 dataset~\cite{balakrishnan2024sted}, the organelle network, applied
@@ -645,8 +646,7 @@ retraining that carried the representation across modalities.
 \begin{table}[t]
 \centering
 \caption{\textbf{Further mitochondrial acquisitions} (mean$\pm$s.d.).
-Temporal clip: correlated frames of one field of view from the main
-acquisition. STED: no segmentation annotation is available. MITO:
+Temporal clip: 73 correlated frames of one simulated field of view. STED: no segmentation annotation is available. MITO:
 $256\times256$ tiles of per-slice max-intensity projections.}
 \label{tab:mitogen}
 \footnotesize
@@ -674,7 +674,7 @@ $\DGTIoUWinsCI$), and on \DHeldGTIoUWins{} ($\DHeldGTIoUWinsPct\%$,
 $p=\DHeldGTIoUWinsP$) of the images the segmenter never saw. With the classical
 cascade the two are at parity (\CGTIoUWins, $p=\CGTIoUWinsP$), so the
 advantage follows segmentation quality. Photometric fidelity against the
-independent annotation (GT-FG-PSNR $\DGTFGPSNRm$ vs.\ $\DJpegGTFGPSNRm$\,dB)
+simulator's ground-truth mask (GT-FG-PSNR $\DGTFGPSNRm$ vs.\ $\DJpegGTFGPSNRm$\,dB)
 and full-image fidelity favour the codecs, which spend their bits on
 texture that the representation deliberately summarises (Table~\ref{tab:codec}).
 
@@ -961,10 +961,18 @@ multi-domain segmenter in unconditional \texttt{replace} mode for dark-on-bright
 vessel/EM/filament imagery.
 
 \subsection{Datasets}
-The main evaluation set is 726 fluorescence organelle images with
-independent foreground annotations, from an in-house live-cell acquisition
-of labelled mitochondria (sparse $256\times256$ fields; distinct from the
-UiTMito dataset~\cite{sekh2021} used by our earlier systems). Four
+The main evaluation set is 726 \emph{simulated} fluorescence images of
+mitochondria generated with the physics-based simulator of Sekh et
+al.~\cite{sekh2021} (Airyscan variant). Each $256\times256$ image is a
+$2\times2$ mosaic of independent $128\times128$ simulations, each holding one
+or two unbranched tubular mitochondria (spline centrelines, 20--300\,nm
+diameter, 42\,nm pixels) rendered through a Gibson--Lanni point-spread
+function with Poisson noise. Its foreground masks are the simulator's
+ground truth (emitter positions on the pixel grid), not manual
+annotations; because the simulated structures are unbranched, junctions
+and cycles in these masks arise only where tubes overlap in projection.
+The set is distinct from the real UiTMito data~\cite{sekh2021} used by our
+earlier systems. Four
 unannotated cross-modality sets are encoded unchanged: Cells3D membrane
 ($N{=}60$), Cells3D nuclei ($N{=}60$), retinal vessels ($N{=}25$) and
 fluorescence cells ($N{=}5$). Four annotated out-of-domain curvilinear
@@ -972,7 +980,9 @@ datasets are used for retraining and ground-truth-referenced evaluation:
 STARE~\cite{stare} and DRIVE~\cite{drive} retinal vessels, EPFL/Lucchi EM
 mitochondria~\cite{lucchi} and IRM microtubules ($n=20/20/10/66$). Three
 further mitochondrial sources test transfer within the nominal domain: a
-73-frame temporal clip from the main acquisition ($285\times285$); a public
+simulated 73-frame temporal clip ($285\times285$) of four unbranched
+mitochondria in elastic motion, from a separate dynamic simulator whose
+per-frame ground-truth skeletons are available; a public
 live-cell STED dataset (U2-OS, TOM20 label, 345
 frames)~\cite{balakrishnan2024sted}; and a public confocal dataset with
 per-slice expert masks~\cite{zhanghao2023mito}, evaluated as
@@ -980,13 +990,14 @@ $256\times256$ tiles of max-intensity projections ($n=228$).
 
 \subsection{Metrics}\label{sec:metrics}
 \emph{Seg-IoU} is the IoU between the pipeline's selected foreground mask
-and the independent annotation. \emph{GT-IoU} is the IoU between an Otsu
-threshold of the reconstruction and the annotation; because the decoder
+and the reference mask (the simulator's ground truth on the simulated sets,
+the expert annotation elsewhere). \emph{GT-IoU} is the IoU between an Otsu
+threshold of the reconstruction and the reference mask; because the decoder
 imposes width-consistent shapes, it can exceed Seg-IoU. \emph{Self-IoU}
 compares the thresholded reconstruction with the pipeline's own mask and
 measures self-consistency. \emph{FG-PSNR/FG-SSIM} restrict PSNR/SSIM to the
 pipeline's own mask; \emph{GT-FG-PSNR/GT-FG-SSIM} restrict them to the
-annotation. \emph{Graph-exact $\beta_0$/$\beta_1$} are computed in two
+reference mask. \emph{Graph-exact $\beta_0$/$\beta_1$} are computed in two
 senses that we keep separate: on the mask, $\beta_1$ counts enclosed
 holes; on the traced skeleton graph, the cycle rank $|E|-|V|+\beta_0$
 counts path redundancy in the branching network. \emph{Betti agreement}
@@ -1023,8 +1034,11 @@ built from the unperturbed mask.
 \section*{Data availability}
 STARE~\cite{stare}, DRIVE~\cite{drive}, the EPFL/Lucchi EM
 volume~\cite{lucchi}, the STED dataset~\cite{balakrishnan2024sted} and the
-MITO dataset~\cite{zhanghao2023mito} are publicly available. The in-house
-organelle dataset is available from the authors on reasonable request.
+MITO dataset~\cite{zhanghao2023mito} are publicly available. The simulated
+organelle images and temporal clip were produced with the simulators described
+in Methods (the organelle simulator is public with Sekh et
+al.~\cite{sekh2021}); the images, their ground truth and our regeneration
+script are available from the authors and in the code repository.
 
 \section*{Code availability}
 The encoder/decoder, configuration presets, evaluation scripts, trained

@@ -1,0 +1,40 @@
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/downstream_morphometry.py:811: RuntimeWarning: invalid value encountered in scalar divide
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+TRUE per image: tubes 4.00, components 4.00, branches 4.27, junctions 0.15, cycle rank 0.08; pipeline Seg-IoU 0.750
+
+== L = 0
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                 87.329                     4.696                   25.389                   6.312               92.949               154.545              -50.000          -0.004      0.603     0.420
+    SEG      NaN                 57.877                    -9.750                   13.969                  21.600               72.756               254.545              -66.667          -0.041      0.479     0.465
+ GRAPH7 3842.712                 57.877                    -9.726                   13.885                  21.409               72.756               254.545              -66.667          -0.041      0.479     0.465
+GRAPH7p      NaN                 57.877                    -9.750                   15.796                  24.750               72.756               254.545              -66.667          -0.041      0.479     0.465
+ GRAPH6 3767.671                 35.274                   -12.919                    7.060                  21.224               33.013                -9.091             -100.000          -0.048      0.767     0.514
+   JPEG 3803.260                 58.562                    -9.988                   13.986                  21.837               75.962               290.909              -83.333          -0.027      0.452     0.470
+
+== L = 5
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                 87.329                     4.514                   24.682                   6.258               88.629                50.000              -50.000          -0.008      0.822     0.413
+    SEG      NaN                 57.877                    -9.964                   12.676                  21.453               62.207               116.667              -66.667          -0.011      0.767     0.467
+ GRAPH7 3842.712                 57.877                    -9.947                   12.610                  21.270               62.207               116.667              -66.667          -0.011      0.767     0.467
+GRAPH7p      NaN                 57.877                    -9.964                   14.154                  24.449               62.207               116.667              -66.667          -0.011      0.767     0.467
+ GRAPH6 3767.671                 35.274                   -12.825                    7.175                  21.225               38.796                66.667             -100.000          -0.024      0.795     0.509
+   JPEG 3803.260                 58.562                   -10.274                   12.562                  21.679               63.211               116.667              -83.333          -0.012      0.767     0.473
+
+== L = auto
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                  0.000                     2.457                   25.525                   7.014                1.003                   0.0                -50.0          -0.058      0.836     0.603
+    SEG      NaN                  9.247                   -14.877                   14.092                  21.711                6.689                -100.0               -100.0          -0.065      0.890     0.493
+ GRAPH7 3842.712                  9.589                   -14.823                   14.008                  21.585                7.023                -100.0               -100.0          -0.068      0.890     0.494
+GRAPH7p      NaN                  6.164                   -15.042                   15.921                  24.315                3.679                -100.0               -100.0          -0.087      0.890     0.501
+ GRAPH6 3767.671                  7.534                   -16.164                    7.175                  21.349                5.017                -100.0               -100.0          -0.094      0.890     0.509
+   JPEG 3803.260                 10.616                   -14.940                   14.109                  21.915                8.027                -100.0               -100.0          -0.079      0.890     0.509

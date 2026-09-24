@@ -1,0 +1,100 @@
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/skarifahmed-physeg-3875361/src/2. Mitochondria Simulation Airy/simulator/microscPSFmod.py:221: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  C, residuals, _, _ = numpy.linalg.lstsq(J.T, phase.T)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+[1/400]
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+[26/400]
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+[51/400]
+[76/400]
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in divide
+  d = (img / img.max() * 255).astype(np.uint16)
+/mnt/nas1/nba055-2/idea_1/Nanograph/v7wt/Nanograph/experiments/sim_mito.py:110: RuntimeWarning: invalid value encountered in cast
+  d = (img / img.max() * 255).astype(np.uint16)
+[101/400]
+[126/400]
+[151/400]
+[176/400]
+[201/400]
+[226/400]
+[251/400]
+[276/400]
+[301/400]
+[326/400]
+[351/400]
+[376/400]

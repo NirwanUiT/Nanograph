@@ -1,0 +1,42 @@
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3414: UserWarning: Exact p-value calculation does not work if there are zeros. Switching to normal approximation.
+  warnings.warn("Exact p-value calculation does not work if there are "
+
+== L = auto
+dataset    arm   n    bytes  structure_bytes  n_components_bias_pct  total_length_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  n_branches_ccc  total_length_px_ccc  junc_f1
+   CBMI GRAPH7  68 6536.706          563.603                -28.497                    -7.267              -34.487               -41.633           0.268                0.593    0.309
+   CBMI    SEG  68      NaN          563.603                -28.693                    -7.372              -34.518               -41.534           0.274                0.594    0.310
+   CBMI   JPEG  68 6421.838          563.603                -26.078                    -3.566              -29.923               -35.657           0.354                0.686    0.337
+  HUMAN GRAPH7  33 4962.909          460.818                -11.373                    15.907               -9.970               -12.264           0.813                0.870    0.233
+  HUMAN    SEG  33      NaN          460.818                -11.373                    15.867               -9.768               -12.028           0.813                0.870    0.232
+  HUMAN   JPEG  33 4875.061          460.818                -10.588                    16.548               -7.855                -9.434           0.820                0.877    0.250
+   MITO GRAPH7 129 3865.829          376.721                 -4.177                   -33.492              -40.924               -65.370           0.375                0.457    0.155
+   MITO    SEG 129      NaN          376.721                 -4.051                   -33.472              -40.673               -65.065           0.374                0.457    0.155
+   MITO   JPEG 129 3804.543          376.721                 12.532                   -24.525              -30.931               -59.878           0.372                0.483    0.136
+    UIT GRAPH7  43 6427.442          560.651                 -4.762                    -7.714              -13.583               -17.599           0.940                0.981    0.568
+    UIT    SEG  43      NaN          560.651                 -4.762                    -7.769              -13.583               -17.599           0.939                0.981    0.566
+    UIT   JPEG  43 6314.814          560.651                 -4.113                    -8.369              -12.937               -17.434           0.934                0.976    0.533
+dataset n_components_vs_jpeg total_length_px_vs_jpeg mean_width_px_vs_jpeg n_branches_vs_jpeg n_junctions_vs_jpeg cycle_rank_vs_jpeg
+   CBMI      16/26 p=7.3e-02         27/41 p=6.7e-02       24/44 p=3.8e-03    17/41 p=3.4e-04     12/34 p=1.9e-03    18/18 p=9.6e-01
+  HUMAN      11/10 p=4.4e-01         16/17 p=9.7e-01        9/24 p=1.1e-02    10/13 p=2.3e-01      9/14 p=4.1e-01      5/7 p=3.9e-01
+   MITO      57/47 p=2.1e-01         52/77 p=1.3e-02       53/75 p=7.3e-03    54/63 p=5.6e-01     43/43 p=8.0e-01    25/16 p=2.5e-01
+    UIT       13/9 p=1.3e-01         23/20 p=3.3e-01       20/23 p=1.0e-01    16/22 p=9.8e-01     12/16 p=6.1e-01     10/7 p=6.5e-01
+
+== L = 5
+dataset    arm   n    bytes  structure_bytes  n_components_bias_pct  total_length_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  n_branches_ccc  total_length_px_ccc  junc_f1
+   CBMI GRAPH7  68 6536.706          563.603                -30.155                    -6.429              -28.453               -30.249           0.325                0.596    0.333
+   CBMI    SEG  68      NaN          563.603                -30.155                    -6.486              -28.453               -30.249           0.325                0.595    0.333
+   CBMI   JPEG  68 6421.838          563.603                -28.130                    -3.026              -25.519               -26.368           0.396                0.686    0.355
+  HUMAN GRAPH7  33 4962.909          460.818                  2.083                    19.164                5.413                 1.831           0.836                0.863    0.248
+  HUMAN    SEG  33      NaN          460.818                  2.083                    19.075                5.413                 1.831           0.836                0.864    0.248
+  HUMAN   JPEG  33 4875.061          460.818                  0.000                    19.846                6.363                 4.348           0.863                0.875    0.268
+   MITO GRAPH7 129 3865.829          376.721                  6.555                   -31.574              -32.881               -59.660           0.447                0.472    0.165
+   MITO    SEG 129      NaN          376.721                  6.555                   -31.622              -32.881               -59.660           0.447                0.472    0.165
+   MITO   JPEG 129 3804.543          376.721                 23.831                   -22.651              -22.690               -54.185           0.438                0.497    0.141
+    UIT GRAPH7  43 6427.442          560.651                -12.521                    -7.441              -13.270               -14.347           0.935                0.982    0.584
+    UIT    SEG  43      NaN          560.651                -12.521                    -7.497              -13.270               -14.347           0.935                0.982    0.584
+    UIT   JPEG  43 6314.814          560.651                -11.203                    -8.212              -13.163               -15.199           0.921                0.976    0.548
+dataset n_components_vs_jpeg total_length_px_vs_jpeg mean_width_px_vs_jpeg n_branches_vs_jpeg n_junctions_vs_jpeg cycle_rank_vs_jpeg
+   CBMI      19/25 p=2.1e-01         28/40 p=4.2e-02       22/46 p=3.2e-04    26/35 p=3.3e-02     16/29 p=1.8e-02    19/18 p=8.7e-01
+  HUMAN      12/11 p=7.2e-01         15/18 p=5.2e-01        7/26 p=1.4e-03    11/15 p=3.4e-01     10/13 p=6.4e-01      5/7 p=3.9e-01
+   MITO      67/47 p=7.3e-03         51/78 p=2.8e-02       43/86 p=2.6e-04    62/58 p=3.9e-01     45/44 p=8.4e-01    23/21 p=7.3e-01
+    UIT      14/10 p=1.3e-01         27/16 p=2.8e-02       18/25 p=2.4e-02    18/19 p=4.3e-01     15/13 p=3.9e-01      9/8 p=8.4e-01

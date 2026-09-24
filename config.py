@@ -28,6 +28,11 @@ _CURVILINEAR_LEARNED_CKPT = os.path.join(_PKG_DIR, 'weights', 'unet_curvilinear_
 if not os.path.isfile(_CURVILINEAR_LEARNED_CKPT):
     _CURVILINEAR_LEARNED_CKPT = ''
 
+# Real-mitochondria weight (T13): the organelle U-Net trained on real annotated
+# fluorescence mitochondria (EP1-UiT-Rat, CBMI MITO, Zenodo MITO; see
+# experiments/train_real.py). Used by NanographConfig.for_real_mito().
+_REAL_MITO_CKPT = os.path.join(_PKG_DIR, 'weights', 'unet_mito_real.pt')
+
 
 @dataclass
 class PreprocessConfig:
@@ -225,6 +230,16 @@ class GraphConfig:
     bridge_gaps: bool = True          # reconnect filament fragments split by skeleton breaks
     bridge_max_gap: float = 12.0      # max endpoint distance (px) to bridge
     bridge_min_align: float = 0.6     # min collinearity cosine at both endpoints to bridge
+    # v7: graph builder. 'branch' builds the stored graph from the branch
+    # decomposition of the mask's full skeleton (one node per junction,
+    # Douglas-Peucker branch polylines) and writes a layered payload
+    # (structure layer + graph-free appearance layer); spur_min_length,
+    # bridge_* and min_component_nodes then affect only the render points.
+    # 'pixel' is the v6 builder (greedy skeleton-pixel nodes, v6 payload).
+    builder: str = 'branch'           # 'branch' (v7) | 'pixel' (v6)
+    simplify_eps: float = 0.75        # Douglas-Peucker tolerance for branch polylines (px)
+    max_segment: float = 8.0          # max chord between stored branch points (px)
+    width_mode: str = 'dt'            # 'dt' (mask distance transform) | 'profile' (image fit)
 
 
 @dataclass
@@ -277,6 +292,21 @@ class NanographConfig:
         cfg.segment.learned_mode = 'replace'
         cfg.segment.learned_light_clean = True
         cfg.recon.use_oriented_psf = True
+        return cfg
+
+    def for_real_mito(self) -> 'NanographConfig':
+        """Return a copy that segments with the U-Net trained on REAL annotated
+        mitochondria (instead of the simulation-trained default), used directly
+        (learned_mode='replace'): the simulation-calibrated quality score is not
+        a reliable judge on real acquisitions."""
+        cfg = deepcopy(self)
+        if not os.path.isfile(_REAL_MITO_CKPT):
+            raise FileNotFoundError('real-mitochondria weight not found: '
+                                    'Nanograph/weights/unet_mito_real.pt')
+        cfg.segment.use_learned = True
+        cfg.segment.learned_ckpt = _REAL_MITO_CKPT
+        cfg.segment.learned_mode = 'replace'
+        cfg.segment.learned_light_clean = True
         return cfg
 
     def param_count(self) -> int:
