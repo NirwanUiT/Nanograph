@@ -123,6 +123,9 @@ def extract_branches(skel, eps=0.75, max_seg=8.0):
             continue                      # link inside one junction cluster
         a, b = vkey(ids[0]), vkey(ids[-1])
         path = coords[ids].copy()
+        # branch length on the original pixel path (as skan measures it),
+        # before its junction-pixel ends move to the cluster representative
+        plen0 = float(np.hypot(*np.diff(path, axis=0).T.astype(float)).sum())
         # replace junction-pixel ends by the cluster representative
         if a[0] == 'J':
             path[0] = vertices[a][:2]
@@ -133,7 +136,7 @@ def extract_branches(skel, eps=0.75, max_seg=8.0):
             # two junction nodes must never be adjacent: a junction-to-junction
             # branch keeps its middle pixel, or it would read as one junction
             keep = [0, len(path) // 2, len(path) - 1]
-        branches.append({'a': a, 'b': b, 'path': path, 'keep': keep})
+        branches.append({'a': a, 'b': b, 'path': path, 'keep': keep, 'plen': plen0})
     # pure cycles have no end vertex of degree != 2: give them one
     for br in branches:
         for end in ('a', 'b'):
@@ -206,11 +209,12 @@ def branch_structure(skel, dist_transform, eps=0.75, max_seg=8.0,
                     pw = profile_width(img, path[k][0], path[k][1], tg / nrm, w[n])
                     if np.isfinite(pw):
                         w[n] = pw
+        seg = [float(np.hypot(*np.diff(path[i:j + 1], axis=0).T.astype(float)).sum())
+               for i, j in zip(keep[:-1], keep[1:])]
+        tot = sum(seg)
+        seg = [x * br['plen'] / tot for x in seg] if tot > 0 else seg   # sum = original length
         out_br.append({'a': vidx[br['a']], 'b': vidx[br['b']],
-                       'pts': path[keep], 'rad': w,
-                       'plen': np.hypot(*np.diff(path, axis=0).T.astype(float)).sum(),
-                       'seg_plen': [float(np.hypot(*np.diff(path[i:j + 1], axis=0).T.astype(float)).sum())
-                                    for i, j in zip(keep[:-1], keep[1:])]})
+                       'pts': path[keep], 'rad': w, 'plen': br['plen'], 'seg_plen': seg})
     # vertex width: mean of the adjacent branch-end widths (junction pixels'
     # own DT over-estimates at the crossing)
     acc = [[] for _ in vkeys]
@@ -256,7 +260,9 @@ def structure_to_arrays(st, path_lengths=False):
 
 
 def structure_to_nanograph(st, image_type='decoded'):
-    pos, rad, edges, _ = structure_to_arrays(st)
+    """Nanograph object; edge lengths are pixel-path lengths (exact on the
+    encoder side, the stored branch length shared by chord after decoding)."""
+    pos, rad, edges, elen = structure_to_arrays(st, path_lengths=True)
     kinds = list(st['vkind']) + ['sampled'] * (len(pos) - len(st['vkind']))
     adj = {}
     for u, v in edges:
@@ -268,7 +274,7 @@ def structure_to_nanograph(st, image_type='decoded'):
                        degree=len(adj.get(i, [])))
              for i, (p, r, k) in enumerate(zip(pos, rad, kinds))]
     E = [GraphEdge(id=k, source=int(u), target=int(v),
-                   length=float(np.hypot(*(pos[u] - pos[v]))), pixel_count=0,
+                   length=float(elen[k]), pixel_count=0,
                    mean_width=(rad[u] + rad[v]) / 2, mean_intensity=0.0, curvature=0.0)
          for k, (u, v) in enumerate(edges)]
     return Nanograph(nodes=nodes, edges=E, adjacency=adj, shape=st['shape'], image_type=image_type)

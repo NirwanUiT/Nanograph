@@ -458,6 +458,16 @@ def _encode_one(args):
     with contextlib.redirect_stdout(io.StringIO()):
         r = nanograph_encode(img, verbose=False, config=NanographConfig())
     g = r.graph
+    if r.structure is not None:          # v7: the stored graph is the structure layer
+        from nanograph_v4 import graph_branch as gb
+        pos, rad, edges, elen = gb.structure_to_arrays(r.structure, path_lengths=True)
+        np.savez_compressed(
+            out, payload_tagged=np.frombuffer(r.compressed, np.uint8),
+            payload_fixed=np.frombuffer(r.compressed, np.uint8),
+            pre_pos=pos, pre_rad=rad, pre_edges=edges, pre_elen=elen,
+            segmenter=np.array(r.segmenter), n_misaligned=np.int64(0),
+            n_points=np.int64(len(r.points)))
+        return stem, 'ok'
     g_fixed, n_mis = _remap_graph_to_points(g, r.points)
 
     def _recompress(graph):
@@ -539,7 +549,8 @@ def _decoded_graph_arrays(payload):
     pos = np.array([n.position for n in g.nodes], float).reshape(-1, 2)
     rad = np.array([n.width for n in g.nodes], float)
     edges = np.array([(e.source, e.target) for e in g.edges], np.int64).reshape(-1, 2)
-    return pos, rad, edges
+    elen = np.array([e.length for e in g.edges], float)   # v6: chord; v7: stored path length
+    return pos, rad, edges, elen
 
 
 def stage_measure(args):

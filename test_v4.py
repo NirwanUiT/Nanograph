@@ -616,7 +616,7 @@ def _graph_invariants(n_nodes, edge_pairs, positions):
     return b0, cycle_rank, total_len
 
 
-def _roundtrip_one(img_path, expect_reindexed=False):
+def _roundtrip_one(img_path, expect_reindexed=False, builder='branch'):
     """Decoded edges must equal the encoder graph's edges, compared by node
     COORDINATE: graph.nodes[i].position is matched to a stored point by its
     coordinate, never by assuming node id == point index (T11.1)."""
@@ -624,8 +624,9 @@ def _roundtrip_one(img_path, expect_reindexed=False):
     from collections import Counter
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     assert img is not None, img_path
-    r = nanograph_encode(img, sam_model=None, verbose=False, optimize=False,
-                         config=NanographConfig())
+    cfg = NanographConfig()
+    cfg.graph.builder = builder
+    r = nanograph_encode(img, sam_model=None, verbose=False, optimize=False, config=cfg)
     if r.graph is None or r.graph.n_nodes == 0:
         return None
     if expect_reindexed:
@@ -666,8 +667,38 @@ _REINDEXED_STEMS = ['7260', '7262', '7292', '7346', '7431', '7614']
 
 
 def test_edge_roundtrip_small_components():
+    # v6 (pixel) builder: the path on which graph ids and point indices diverge
     for s in _REINDEXED_STEMS:
-        _roundtrip_one(os.path.join(_ORG_IMAGES, s + '.png'), expect_reindexed=True)
+        _roundtrip_one(os.path.join(_ORG_IMAGES, s + '.png'), expect_reindexed=True,
+                       builder='pixel')
+
+
+def test_edge_roundtrip_organelle_v6():
+    import glob
+    for p in sorted(glob.glob(os.path.join(_ORG_IMAGES, '*.png')))[:10]:
+        _roundtrip_one(p, builder='pixel')
+
+
+def test_v7_structure_matches_skan_on_annotations():
+    """The v7 structure layer, built from an annotation's skeleton and passed
+    through encode/decode, has skan's branch/junction/component/cycle counts."""
+    import glob
+    import sys as _s
+    _s.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'experiments'))
+    import downstream_morphometry as dm
+    from nanograph_v4 import graph_branch as gb
+    from skimage.morphology import skeletonize
+    for p in sorted(glob.glob('/mnt/nas1/nba055-2/idea_1/nmi_data/seg/*.png'))[::25]:
+        m = (cv2.imread(p, cv2.IMREAD_GRAYSCALE) > 0).astype(np.uint8)
+        if skeletonize(m > 0).sum() < 2:
+            continue
+        dt = cv2.distanceTransform(m, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
+        st = gb.decode_structure(gb.encode_structure(gb.branch_structure(skeletonize(m > 0), dt)))
+        d7 = dm.descriptors_at(dm.graph_arm_table(*gb.structure_to_arrays(st, True)), 0)[0]
+        dr = dm.descriptors_at(dm.pixel_arm_table(m), 0)[0]
+        for k in ('n_components', 'n_branches', 'n_junctions', 'cycle_rank'):
+            assert d7[k] == dr[k], (p, k, d7[k], dr[k])
+        assert abs(d7['total_length_px'] / dr['total_length_px'] - 1) < 0.01, p
 
 
 def test_edge_roundtrip_organelle():

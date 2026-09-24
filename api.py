@@ -95,6 +95,7 @@ class NanographResult:
     fg_residual_bytes: Optional[bytes] = field(default=None, repr=False)
     fg_residual_shape_info: Optional[tuple] = field(default=None, repr=False)
     topology_metrics: Optional[Dict] = field(default=None, repr=False)
+    structure: Optional[dict] = field(default=None, repr=False)   # v7 structure layer (encoder side)
 
 
 def nanograph_encode(image_path_or_array, sam_model=None,
@@ -214,7 +215,25 @@ def nanograph_encode(image_path_or_array, sam_model=None,
     # v4: Build formal graph from skeleton-extracted points BEFORE optimizer.
     # These points are all on the skeleton so branch assignment is 100%.
     graph = None
-    if build_graph and len(pts) > 0:
+    structure = None
+    builder = getattr(cfg.graph, 'builder', 'pixel')
+    if build_graph and len(pts) > 0 and builder == 'branch':
+        # v7: stored graph from the branch decomposition of the full skeleton
+        from skimage.morphology import skeletonize
+        from .graph_branch import branch_structure, structure_to_nanograph
+        t0 = time.time()
+        structure = branch_structure(
+            skeletonize(clean > 0), dist_transform, eps=cfg.graph.simplify_eps,
+            max_seg=cfg.graph.max_segment, width_mode=cfg.graph.width_mode, img=img_raw)
+        graph = structure_to_nanograph(structure, image_type=det['type'])
+        for nd in graph.nodes:
+            nd.intensity = float(img_enhanced[nd.position]) / 255.0
+        timing['graph'] = time.time() - t0
+        if verbose:
+            gs = graph.summary()
+            print(f'Graph (branch): {gs["n_nodes"]} nodes, {gs["n_edges"]} edges, '
+                  f'{gs["n_components"]} components')
+    elif build_graph and len(pts) > 0:
         t0 = time.time()
         graph = build_nanograph(
             pts, ints, widths, orientations, types,
@@ -261,7 +280,7 @@ def nanograph_encode(image_path_or_array, sam_model=None,
             # the graph. By default we keep the graph a clean skeleton network
             # and use the extra points only for PSF reconstruction.
             # Build a KDTree over the n_before initial node positions (IDs 0..n_before-1).
-            if (graph is not None and n_before > 0
+            if (graph is not None and n_before > 0 and builder == 'pixel'
                     and getattr(cfg.graph, 'attach_optimizer_points', False)):
                 from scipy.spatial import KDTree
                 init_positions = np.array(
@@ -332,15 +351,33 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         pts, ints, widths, img_raw.shape, types,
         orientations=orientations,
         bg_model=bg_grid,     # v5: pass the grid, not full-res bg
-        graph=graph,          # v5: for graph-predictive encoding
+        graph=graph if structure is None else None,   # v7: appearance layer is graph-free
         fg_residual=fg_residual_data if (fg_residual_data and len(fg_residual_data) > 0) else None,
         fg_residual_shape=fg_residual_shape,
         cfg=cfg)
+    if structure is not None:
+        from .graph_branch import encode_structure
+        from .compress import pack_layers
+        s_bytes = encode_structure(structure)
+        comp_stats['structure_bytes'] = len(s_bytes)
+        comp_stats['appearance_bytes'] = len(compressed_data)
+        compressed_data = pack_layers(s_bytes, compressed_data)
+        comp_stats['compressed_bytes'] = len(compressed_data)
+        comp_stats['format_version'] = 7
     timing['compress'] = time.time() - t0
 
     # T11.1: the stored edge list must decode to exactly the encoder graph's
     # edges, checked by node coordinate (independent of how ids were mapped).
-    if comp_stats.get('has_edges'):
+    if structure is not None:
+        from .graph_branch import decode_structure
+        from .compress import split_layers
+        dst = decode_structure(split_layers(compressed_data)[0])
+        assert sorted(map(tuple, dst['vpos'].tolist())) == sorted(map(tuple, structure['vpos'].tolist())), \
+            'decoded structure vertices differ'
+        enc_b = sorted(tuple(map(tuple, np.asarray(b['pts'], int).tolist())) for b in structure['branches'])
+        dec_b = sorted(tuple(map(tuple, np.asarray(b['pts'], int).tolist())) for b in dst['branches'])
+        assert enc_b == dec_b, 'decoded structure branches differ'
+    elif comp_stats.get('has_edges'):
         dec = decompress_nanograph(compressed_data, cfg=cfg)
         dec_pts, dec_edges = dec[0], dec[7]
         assert all(0 <= u < len(dec_pts) and 0 <= v < len(dec_pts)
@@ -442,6 +479,7 @@ def nanograph_encode(image_path_or_array, sam_model=None,
         fg_residual_bytes=fg_residual_data,
         fg_residual_shape_info=fg_residual_shape,
         topology_metrics=topo_metrics,
+        structure=structure,
     )
 
 
@@ -523,6 +561,11 @@ def decode_graph(compressed_data, cfg=None):
 
     if cfg is None:
         cfg = DEFAULT_CONFIG
+    from .compress import split_layers
+    s_bytes, _ = split_layers(compressed_data)
+    if s_bytes is not None:            # v7: the stored graph is the structure layer
+        from .graph_branch import decode_structure, structure_to_nanograph
+        return structure_to_nanograph(decode_structure(s_bytes))
     (points, intensities, widths, types, orientations,
      shape, bg_info, edges, adjacency) = decompress_nanograph(compressed_data, cfg=cfg)
 

@@ -225,6 +225,16 @@ class GraphConfig:
     bridge_gaps: bool = True          # reconnect filament fragments split by skeleton breaks
     bridge_max_gap: float = 12.0      # max endpoint distance (px) to bridge
     bridge_min_align: float = 0.6     # min collinearity cosine at both endpoints to bridge
+    # v7: graph builder. 'branch' builds the stored graph from the branch
+    # decomposition of the mask's full skeleton (one node per junction,
+    # Douglas-Peucker branch polylines) and writes a layered payload
+    # (structure layer + graph-free appearance layer); spur_min_length,
+    # bridge_* and min_component_nodes then affect only the render points.
+    # 'pixel' is the v6 builder (greedy skeleton-pixel nodes, v6 payload).
+    builder: str = 'branch'           # 'branch' (v7) | 'pixel' (v6)
+    simplify_eps: float = 0.75        # Douglas-Peucker tolerance for branch polylines (px)
+    max_segment: float = 8.0          # max chord between stored branch points (px)
+    width_mode: str = 'dt'            # 'dt' (mask distance transform) | 'profile' (image fit)
 
 
 @dataclass

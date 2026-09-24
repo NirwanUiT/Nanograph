@@ -430,6 +430,21 @@ def compress_nanograph(points, intensities, widths, shape, types=None,
     }
 
 
+def pack_layers(structure, appearance):
+    """v7 layered payload: version byte 7, u32 structure length, the
+    structure layer (graph_branch.encode_structure), then the appearance
+    layer (a graph-free v6 stream: render points, background, residual)."""
+    return struct.pack('<BI', 7, len(structure)) + structure + appearance
+
+
+def split_layers(data):
+    """(structure, appearance) of a v7 payload; (None, data) otherwise."""
+    if data and data[0] == 7:
+        n = struct.unpack('<I', data[1:5])[0]
+        return data[5:5 + n], data[5 + n:]
+    return None, data
+
+
 def decompress_nanograph(data, cfg=None):
     """
     Decompress a nanograph from compressed bytes.
@@ -445,6 +460,8 @@ def decompress_nanograph(data, cfg=None):
     cc = cfg if isinstance(cfg, CompressConfig) else (
          cfg.compress if isinstance(cfg, NanographConfig) else DEFAULT_CONFIG.compress)
 
+    # v7: render from the appearance layer
+    data = split_layers(data)[1]
     # Detect format version
     version = data[0]
     if version in (5, 6):
