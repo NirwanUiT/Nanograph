@@ -180,3 +180,302 @@ Ratios: JPEG / GRAPH **56×**; REF / GRAPH **0.91×**; JPEG without segmentation
 - GRAPH worse than JPEG (per-image paired error): **total_length** (MdAPE 10.0 vs 5.0 %; 216 vs 499, p = 5e-9), **n_branches** (40.0 vs 27.3 %; 191 vs 434, p = 4e-6), **n_junctions** (50 vs 40 %; 177 vs 354, p = 5e-5), **branch-length distribution** (W1 10.8 vs 7.4 px).
 - GRAPH is not ≈ REF on topology counts: systematic under-count (branches −41 %, junctions −54 %, cycle rank −45 %). The cause is segmentation plus graph construction; storage adds nothing to it (table above). JPEG's median error is smaller but it has an unbounded failure tail (CCC ≈ 0 on every count).
 - Optional temporal-clip extension: **not run** (main result did not land cleanly).
+
+---
+
+## T11.1 — node-index bug fixed, re-tagged `paper-v2`, everything re-run
+
+**Fix (commit `35b90f6`, tag `paper-v2`).**
+- `compress_nanograph` maps each graph edge to point indices by node coordinate at serialisation time. Every call site is covered.
+- `nanograph_encode` asserts that every stored edge index is `< len(points)`. It also asserts that the decoded edge set equals the encoder graph's edge set, compared by node coordinate (index-identical, not just isomorphic).
+- `test_v4.py` round trip now derives expected edges from `graph.nodes[i].position` matched to stored points by coordinate. New `test_edge_roundtrip_small_components` covers 6 images that trigger `remove_small_components()` re-indexing, and asserts the re-indexing actually happens on them.
+- The new test **fails on the old codec** (verified) and passes on the fix. Suite: 6/6 pass (143 s).
+- Fixed payloads are byte-identical to the T10 remapped payloads (726/726).
+- Same latent assumption, not fixed: `api.py` `attach_optimizer_points` path indexes `graph.nodes[i]` by point index. It is off by default and never used in any run.
+
+**Re-run.** All T5 outputs (org ×3, ablation, perturbation, cross ×4, cross_gt ×4, mito ×4, held-out list) via `experiments/run_paper_t11.sh`: the same commands as T5, in 5 concurrent lanes (2:31 h instead of 5:22 h). Every `commit.txt` = `35b90f6`. Then `make_numbers.py`, `make_figures.py`, `render_pipeline_diagram.py` (7378: unchanged, 2077 B), `make_fig_pipeline.py`.
+- **Timing columns were measured under concurrent load.** 14 timing macros moved for that reason alone, e.g. `\DTimem` 1154 → 1248 ms. Re-time sequentially if the paper quotes run times.
+
+**Images changed beyond rounding** (any numeric column, |Δ| > 1e-6 relative, timing excluded; `experiments/diff_runs.py`):
+
+| run | images | changed | top changed columns (n images) |
+|---|---|---|---|
+| cross/cell | 5 | 3 | ng_bytes (3), ng_vs_raw (3), ng_vs_png (3), delta_iou (2), delta_fg_ssim (2), jpeg_quality (2) |
+| cross/cells3d_membrane | 60 | 46 | ng_bytes (46), ng_vs_png (46), ng_vs_raw (46), delta_fg_ssim (45), delta_iou (45), jpeg_quality (45) |
+| cross/cells3d_nuclei | 60 | 41 | ng_bytes (41), ng_vs_raw (41), ng_vs_png (41), delta_iou (37), delta_fg_ssim (37), jpeg_quality (37) |
+| cross/retina | 25 | 5 | ng_bytes (5), ng_vs_raw (5), ng_vs_png (5), delta_iou (2), delta_fg_ssim (2), jpeg_quality (2) |
+| cross_gt/drive | 20 | 0 | — |
+| cross_gt/epfl_mito | 10 | 2 | ng_bytes (2), ng_vs_png (2), ng_vs_raw (2) |
+| cross_gt/microtubules | 66 | 0 | — |
+| cross_gt/stare | 20 | 0 | — |
+| mito/mito_mip | 228 | 154 | ng_bytes (154), ng_vs_raw (154), ng_vs_png (154), delta_gt_fg_psnr (139), delta_fg_ssim (139), delta_iou (139) |
+| mito/sted | 345 | 1 | ng_bytes (1), delta_fg_ssim (1), delta_iou (1), ng_vs_png (1), ng_vs_raw (1), jpeg_quality (1) |
+| mito/temporal_clip | 73 | 57 | ng_bytes (57), delta_gt_fg_psnr (57), delta_gt_fg_ssim (57), delta_fg_ssim (57), ng_vs_png (57), jpeg_quality (57) |
+| mito/temporal_clip_replace | 73 | 68 | ng_bytes (68), delta_gt_iou (68), delta_gt_fg_psnr (68), delta_gt_fg_ssim (68), delta_fg_ssim (68), ng_vs_png (68) |
+| org_classical | 726 | 463 | ng_bytes (463), ng_vs_raw (463), ng_vs_png (463), delta_gt_fg_psnr (385), jpeg_quality (385), jpeg_fg_psnr (385) |
+| org_default | 726 | 15 | ng_bytes (15), ng_vs_raw (15), ng_vs_png (15), delta_gt_iou (9), delta_gt_fg_psnr (9), delta_fg_ssim (9) |
+| org_replace | 726 | 11 | ng_bytes (11), ng_vs_raw (11), ng_vs_png (11), delta_gt_iou (10), delta_gt_fg_psnr (10), delta_fg_ssim (10) |
+
+- **org_default: 15/726 images changed, exactly the 15 bug-affected ones; 711 are bit-identical.**
+  - Changed columns: only payload bytes and the byte-matched codec comparisons (9 of the 15 got a different JPEG quality).
+  - No segmentation, graph, fidelity or GT column changed. The graph descriptors in `metrics.csv` come from the encoder-side graph, which was always correct.
+- **T10 descriptors (GRAPH arm):** identical to the T10 remapped-payload GRAPH on 726/726. Against the as-tagged payload, 15 images change (geometry only).
+- **The bug was far more widespread outside `org_default`.** It fires whenever `remove_small_components()` drops a component.
+- Mean payload change:
+
+| run | payload change |
+|---|---|
+| org_classical | −3.45 % |
+| Cells3D membrane | −8.85 % |
+| Cells3D nuclei | −5.27 % |
+| retina | −2.33 % |
+| MITO MIP | −8.18 % |
+| temporal clip | −5.33 % |
+| temporal clip (learned-replace) | −10.92 % |
+| org_default / org_replace | −0.09 % |
+| STED | −0.03 % |
+| STARE / DRIVE / microtubules | 0 % |
+
+Maximum per-image reduction: 14.4 %.
+- **perturbation CSV:** bit-identical. **ablation CSV:** only `bytes_with/without` changed (15 images).
+
+**`numbers.tex`:** 138 of 533 existing macros changed (14 timing, `\RunCommit`, the rest bytes / codec comparisons); 77 added (T11.2 `\DsP*`). Largest substantive moves:
+- `\CBytesm` 2871 → 2772
+- `\CBRR` 0.0438 → 0.0423; `\CBRRvsGU` +20 → +16
+- `\CFGPSNRWinsP` 1.00 → 0.10
+- `\CSelfIoUWinsJtwoP` 0.27 → **0.01** (classical self-IoU vs JPEG 2000 becomes significant)
+- `\ClipLBytesm` 6.2 → 5.5 kB; `\MitoBytesm` 6.7 → 6.1 kB
+- Default arm: bytes 2200 → 2198, GT-IoU wins 385 → 386/715 (p still 0.04)
+
+**Claims: no verdict flips** (still 11 HOLD, 3 FAIL). Evaluated by `experiments/check_claims.py`, which reproduces the paper-v1 verdicts exactly on the old results:
+
+| # | verdict | evidence |
+|---|---|---|
+| 1 | **HOLDS** | Seg-IoU 0.870 (D) vs 0.366 (C); payload 2198 B (D) vs 2772 B (C) |
+| 2 | **HOLDS** | cycles 3.66 vs 7.65; width 2.98 vs 5.55 |
+| 3 | **FAILS** | GT-IoU vs JPEG wins 386/715, p = 0.04; held-out wins 51.4 % |
+| 4 | **FAILS** | classical GT-IoU vs JPEG wins 42/692, p = 4.0\times10^{-141} |
+| 5 | **HOLDS** | GT-FG-PSNR 27.30 (NG) vs 27.90 (JPEG) |
+| 6 | **HOLDS** | JPEG Betti 0.106; beta0 9.30 vs 4.41; beta1 3.97 vs 0.32 |
+| 7 | **HOLDS** | max JPEG Betti excl. clip 0.177 (DRIVE); clip 0.768 |
+| 8 | **HOLDS** | BRR 0.0335 (band 0.0274-0.0456); FewerX 7.6, RicherX 6.9 |
+| 9 | **HOLDS** | org_replace held-out Seg-IoU 0.886 |
+| 10 | **HOLDS** | max |as_is - oracle| 0.009 |
+| 11 | **HOLDS** | dilate 1 px: beta0 changed 8.3 %, width +31.2 %; boundary noise 1 px: beta0 changed 78.2 %, median |dbeta1| 281; baseline Seg-IoU median 0.890 |
+| 12 | **HOLDS** | no-JPEG microtubules 30/66, EPFL 2/10; STARE JPEG GT-FG-PSNR 42.9 vs 28.7 |
+| 13 | **FAILS** | clip Seg-IoU learned-replace 0.696 vs default 0.750 |
+| 14 | **HOLDS** | bg grid + residual improve FG-PSNR on 726/726 |
+
+## T11.2 — shared spur pruning (every arm), then T10 re-run at `paper-v2`
+
+Code: `experiments/downstream_morphometry.py` (`descriptors_at`, `SETTINGS`); outputs `results/paper/downstream/{per_image,summary,branch_distances,spur_fractions,timing,cost_summary}.csv` (columns `junction_def`, `L`). n = 715 (JPEG width 709). Cost unchanged: GRAPH 4.9 ms, JPEG 279 ms (57×), REF 4.4 ms.
+
+**Pruning rule (identical in REF, JPEG, SEG, PRE, GRAPH):** one pass over the branch graph removes every terminal branch (free end of degree 1 at one end, a vertex with ≥ 3 branches at the other) shorter than `L` px; if every branch at a vertex would go, its longest is kept (no component disappears); vertices left with two branches are merged; branches, junctions, cycle rank, length and width are recounted. Cycle rank and component count are invariant under this pruning by construction (verified on all 726 REF masks).
+
+**Second definitional mismatch found and fixed (junctions).** The T10 definition counts a junction-pixel cluster as a junction even when only two branches leave it (a pass-through), and splits the branch there. REF has no such clusters (4.53 → 4.53 junctions per image on 242 images checked); GRAPH has many (1.99 → 1.48 junctions, 7.73 → 7.32 branches): in the Nanograph, some junction-pixel nodes end up with two edges. The T10 definition therefore **flattered GRAPH**. From here on a junction is a vertex with ≥ 3 branches, and degree-2 vertices are merged (`junction_def = degree`), at every `L` including 0. The T10 numbers are kept as the first table.
+
+### Terminal branches shorter than L (share of each arm at L = 0; pooled over images)
+
+| L | REF branches | REF length | JPEG branches | SEG branches | PRE branches | GRAPH branches |
+|---|---|---|---|---|---|---|
+| 2 | 6.4 % | 0.4 % | 2.0 % | 1.4 % | 0.0 % | 0.0 % |
+| 5 | 25.8 % | 3.4 % | 14.6 % | 10.8 % | 0.1 % | 0.1 % |
+| 10 | 32.9 % | 6.0 % | 26.6 % | 19.3 % | 8.0 % | 8.5 % |
+
+### L = 0, T10 junction definition (= T10 report)
+
+| descriptor | CCC GRAPH / JPEG | bias % GRAPH / JPEG | 95 % LoA % GRAPH | MdAPE % GRAPH / JPEG | GRAPH closer / JPEG closer / tie | Wilcoxon p | better per image |
+|---|---|---|---|---|---|---|---|
+| n_components | 0.766 / -0.009 | -2.2 / +69.0 | -21 to +16 | 0.0 / 0.0 | 251 / 23 / 441 | 7.3e-41 | GRAPH |
+| total_length_px | 0.724 / -0.028 | -11.6 / +22.9 | -32 to +9 | 10.0 / 5.0 | 216 / 499 / 0 | 5.0e-09 | JPEG |
+| mean_width_px | 0.868 / 0.792 | +3.2 / +5.0 | -8 to +15 | 2.9 / 5.1 | 517 / 192 / 0 | 8.2e-43 | GRAPH |
+| n_branches | 0.292 / -0.017 | -41.0 / +37.3 | -98 to +16 | 40.0 / 27.3 | 191 / 434 / 90 | 4.3e-06 | JPEG |
+| n_junctions | 0.354 / 0.021 | -54.3 / +22.5 | -142 to +33 | 50.0 / 40.0 | 177 / 354 / 184 | 5.4e-05 | JPEG |
+| cycle_rank | 0.507 / 0.183 | -44.8 / +20.7 | -282 to +192 | 50.0 / 50.0 | 141 / 46 / 528 | 2.1e-12 | GRAPH |
+| branch-length distribution | W1 10.79 / 7.43 px; KS 0.416 / 0.333 | | | | 192 / 517 (W1) | 1.5e-43 | JPEG |
+
+Decomposition (bias %, CCC): segmentation = SEG vs REF · graph construction = PRE vs SEG · storage = GRAPH vs PRE
+
+| descriptor | segmentation | graph construction | storage |
+|---|---|---|---|
+| n_components | -1.4, 0.811 | -0.8, 0.956 | +0.00, 1.000 |
+| total_length_px | -6.0, 0.841 | -4.0, 0.965 | -1.97, 0.995 |
+| mean_width_px | +5.0, 0.829 | -1.2, 0.989 | -0.53, 0.999 |
+| n_branches | -27.6, 0.472 | -18.5, 0.711 | +0.00, 1.000 |
+| n_junctions | -39.5, 0.513 | -24.5, 0.801 | +0.00, 1.000 |
+| cycle_rank | -36.6, 0.514 | -12.9, 0.901 | +0.00, 1.000 |
+
+### L = 0 (no pruning), degree-based junctions
+
+| descriptor | CCC GRAPH / JPEG | bias % GRAPH / JPEG | 95 % LoA % GRAPH | MdAPE % GRAPH / JPEG | GRAPH closer / JPEG closer / tie | Wilcoxon p | better per image |
+|---|---|---|---|---|---|---|---|
+| n_components | 0.766 / -0.009 | -2.2 / +69.0 | -21 to +16 | 0.0 / 0.0 | 251 / 23 / 441 | 7.3e-41 | GRAPH |
+| total_length_px | 0.724 / -0.028 | -11.6 / +22.9 | -32 to +9 | 10.0 / 5.0 | 216 / 499 / 0 | 5.0e-09 | JPEG |
+| mean_width_px | 0.868 / 0.792 | +3.2 / +5.0 | -8 to +15 | 2.9 / 5.1 | 517 / 192 / 0 | 8.2e-43 | GRAPH |
+| n_branches | 0.249 / -0.017 | -44.3 / +37.3 | -104 to +15 | 42.9 / 27.3 | 179 / 450 / 86 | 2.9e-09 | JPEG |
+| n_junctions | 0.262 / 0.021 | -66.5 / +22.5 | -157 to +24 | 66.7 / 40.0 | 142 / 437 / 136 | 1.5e-16 | JPEG |
+| cycle_rank | 0.507 / 0.183 | -44.8 / +20.7 | -282 to +192 | 50.0 / 50.0 | 141 / 46 / 528 | 2.1e-12 | GRAPH |
+| branch-length distribution | W1 12.38 / 7.43 px; KS 0.436 / 0.333 | | | | 164 / 545 (W1) | 1.1e-56 | JPEG |
+
+Decomposition (bias %, CCC): segmentation = SEG vs REF · graph construction = PRE vs SEG · storage = GRAPH vs PRE
+
+| descriptor | segmentation | graph construction | storage |
+|---|---|---|---|
+| n_components | -1.4, 0.811 | -0.8, 0.956 | +0.00, 1.000 |
+| total_length_px | -6.0, 0.841 | -4.0, 0.965 | -1.97, 0.995 |
+| mean_width_px | +5.0, 0.829 | -1.2, 0.989 | -0.53, 0.999 |
+| n_branches | -27.6, 0.472 | -23.1, 0.598 | +0.00, 1.000 |
+| n_junctions | -39.5, 0.513 | -44.7, 0.578 | +0.00, 1.000 |
+| cycle_rank | -36.6, 0.514 | -12.9, 0.901 | +0.00, 1.000 |
+
+### L = 2
+
+| descriptor | CCC GRAPH / JPEG | bias % GRAPH / JPEG | 95 % LoA % GRAPH | MdAPE % GRAPH / JPEG | GRAPH closer / JPEG closer / tie | Wilcoxon p | better per image |
+|---|---|---|---|---|---|---|---|
+| n_components | 0.766 / -0.009 | -2.2 / +69.0 | -21 to +16 | 0.0 / 0.0 | 251 / 23 / 441 | 7.3e-41 | GRAPH |
+| total_length_px | 0.731 / -0.028 | -11.2 / +23.2 | -32 to +9 | 9.6 / 4.9 | 221 / 494 / 0 | 1.1e-07 | JPEG |
+| mean_width_px | 0.870 / 0.795 | +3.1 / +4.8 | -8 to +14 | 2.8 / 4.9 | 519 / 190 / 0 | 1.2e-42 | GRAPH |
+| n_branches | 0.326 / -0.018 | -37.3 / +49.1 | -93 to +18 | 33.3 / 25.0 | 219 / 388 / 108 | 2.9e-02 | JPEG |
+| n_junctions | 0.333 / 0.022 | -60.4 / +37.0 | -152 to +31 | 60.0 / 40.0 | 174 / 384 / 157 | 1.0e-06 | JPEG |
+| cycle_rank | 0.507 / 0.183 | -44.8 / +20.7 | -282 to +192 | 50.0 / 50.0 | 141 / 46 / 528 | 2.1e-12 | GRAPH |
+| branch-length distribution | W1 10.37 / 7.44 px; KS 0.388 / 0.327 | | | | 228 / 481 (W1) | 1.0e-26 | JPEG |
+
+Decomposition (bias %, CCC): segmentation = SEG vs REF · graph construction = PRE vs SEG · storage = GRAPH vs PRE
+
+| descriptor | segmentation | graph construction | storage |
+|---|---|---|---|
+| n_components | -1.4, 0.811 | -0.8, 0.956 | +0.00, 1.000 |
+| total_length_px | -5.7, 0.845 | -4.0, 0.966 | -1.97, 0.995 |
+| mean_width_px | +4.9, 0.832 | -1.2, 0.990 | -0.53, 0.999 |
+| n_branches | -20.5, 0.574 | -21.2, 0.647 | +0.00, 1.000 |
+| n_junctions | -31.4, 0.599 | -42.3, 0.619 | +0.00, 1.000 |
+| cycle_rank | -36.6, 0.514 | -12.9, 0.901 | +0.00, 1.000 |
+
+### L = 5 (recommended)
+
+| descriptor | CCC GRAPH / JPEG | bias % GRAPH / JPEG | 95 % LoA % GRAPH | MdAPE % GRAPH / JPEG | GRAPH closer / JPEG closer / tie | Wilcoxon p | better per image |
+|---|---|---|---|---|---|---|---|
+| n_components | 0.766 / -0.009 | -2.2 / +69.0 | -21 to +16 | 0.0 / 0.0 | 251 / 23 / 441 | 7.3e-41 | GRAPH |
+| total_length_px | 0.793 / -0.025 | -8.4 / +24.2 | -28 to +11 | 7.0 / 4.8 | 300 / 415 / 0 | 9.5e-01 | — |
+| mean_width_px | 0.882 / 0.809 | +2.6 / +4.3 | -9 to +14 | 2.6 / 4.6 | 505 / 204 / 0 | 3.2e-40 | GRAPH |
+| n_branches | 0.656 / -0.013 | -17.5 / +58.9 | -63 to +28 | 15.4 / 22.2 | 329 / 197 / 189 | 4.6e-16 | GRAPH |
+| n_junctions | 0.602 / 0.061 | -38.4 / +45.5 | -140 to +63 | 42.9 / 33.3 | 241 / 202 / 272 | 2.2e-04 | GRAPH |
+| cycle_rank | 0.507 / 0.183 | -44.8 / +20.7 | -282 to +192 | 50.0 / 50.0 | 141 / 46 / 528 | 2.1e-12 | GRAPH |
+| branch-length distribution | W1 6.19 / 7.83 px; KS 0.309 / 0.343 | | | | 421 / 288 (W1) | 1.1e-07 | GRAPH |
+
+Decomposition (bias %, CCC): segmentation = SEG vs REF · graph construction = PRE vs SEG · storage = GRAPH vs PRE
+
+| descriptor | segmentation | graph construction | storage |
+|---|---|---|---|
+| n_components | -1.4, 0.811 | -0.8, 0.956 | +0.00, 1.000 |
+| total_length_px | -3.9, 0.868 | -2.8, 0.979 | -1.98, 0.995 |
+| mean_width_px | +4.3, 0.851 | -1.1, 0.992 | -0.53, 0.999 |
+| n_branches | -10.0, 0.757 | -8.2, 0.899 | -0.11, 0.999 |
+| n_junctions | -19.8, 0.739 | -23.0, 0.836 | -0.28, 0.999 |
+| cycle_rank | -36.6, 0.514 | -12.9, 0.901 | +0.00, 1.000 |
+
+### L = 10
+
+| descriptor | CCC GRAPH / JPEG | bias % GRAPH / JPEG | 95 % LoA % GRAPH | MdAPE % GRAPH / JPEG | GRAPH closer / JPEG closer / tie | Wilcoxon p | better per image |
+|---|---|---|---|---|---|---|---|
+| n_components | 0.766 / -0.009 | -2.2 / +69.0 | -21 to +16 | 0.0 / 0.0 | 251 / 23 / 441 | 7.3e-41 | GRAPH |
+| total_length_px | 0.799 / -0.024 | -7.9 / +21.2 | -28 to +13 | 6.4 / 4.2 | 292 / 423 / 0 | 1.7e-01 | — |
+| mean_width_px | 0.884 / 0.811 | +2.5 / +4.5 | -9 to +14 | 2.7 / 4.7 | 504 / 205 / 0 | 1.7e-40 | GRAPH |
+| n_branches | 0.625 / -0.018 | -17.4 / +49.1 | -65 to +30 | 12.5 / 18.2 | 266 / 190 / 259 | 4.6e-11 | GRAPH |
+| n_junctions | 0.578 / 0.117 | -42.8 / +20.3 | -167 to +81 | 50.0 / 33.3 | 180 / 185 / 350 | 3.5e-01 | — |
+| cycle_rank | 0.507 / 0.183 | -44.8 / +20.7 | -282 to +192 | 50.0 / 50.0 | 141 / 46 / 528 | 2.1e-12 | GRAPH |
+| branch-length distribution | W1 6.58 / 8.08 px; KS 0.327 / 0.355 | | | | 395 / 314 (W1) | 5.5e-05 | GRAPH |
+
+Decomposition (bias %, CCC): segmentation = SEG vs REF · graph construction = PRE vs SEG · storage = GRAPH vs PRE
+
+| descriptor | segmentation | graph construction | storage |
+|---|---|---|---|
+| n_components | -1.4, 0.811 | -0.8, 0.956 | +0.00, 1.000 |
+| total_length_px | -3.7, 0.869 | -2.3, 0.981 | -2.09, 0.994 |
+| mean_width_px | +4.0, 0.861 | -0.9, 0.992 | -0.54, 0.999 |
+| n_branches | -11.0, 0.727 | -6.4, 0.902 | -0.85, 0.987 |
+| n_junctions | -25.8, 0.700 | -20.9, 0.853 | -2.50, 0.987 |
+| cycle_rank | -36.6, 0.514 | -12.9, 0.901 | +0.00, 1.000 |
+
+### CCC against REF, GRAPH vs JPEG side by side
+
+| descriptor | T10 (L = 0, T10 def) GRAPH / JPEG | L = 5 GRAPH / JPEG |
+|---|---|---|
+| n_components | 0.766 / -0.009 | 0.766 / -0.009 |
+| total_length_px | 0.724 / -0.028 | 0.793 / -0.025 |
+| mean_width_px | 0.868 / 0.792 | 0.882 / 0.809 |
+| n_branches | 0.292 / -0.017 | 0.656 / -0.013 |
+| n_junctions | 0.354 / 0.021 | 0.602 / 0.061 |
+| cycle_rank | 0.507 / 0.183 | 0.507 / 0.183 |
+
+GRAPH has the higher CCC on **all six descriptors at every L** (and every junction definition); JPEG CCC is ≤ 0.12 on every count. In T10, JPEG nevertheless had the smaller **median** error on length, branches and junctions: JPEG is right on the typical image and wildly wrong on a minority (78/715 images with > 2× REF components; 6 empty masks), GRAPH is biased but tightly concordant.
+
+### Recommended L: 5 px
+
+Rationale, fixed from REF's own statistics and the encoder's definition, not from GRAPH agreement:
+- `L = 5` is the encoder's own `spur_min_length`.
+- It is about one mean structure diameter (REF mean width 5.7 px). A terminal branch shorter than one diameter cannot be told apart from boundary roughness.
+- In REF it removes 25.8 % of branches but only 3.4 % of skeleton length.
+- `L = 2` leaves most roughness spurs (removes 6.4 %). At `L = 10`, pruning starts to cut GRAPH's own branches (8.5 %, spur pruning cannot explain those) and a third of REF's.
+
+**Caveat:** `L = 5` is also the most favourable `L` for GRAPH on paired wins. `L = 10` gives the same qualitative picture: GRAPH better on branches (266 vs 190, p = 5e-11), a tie on junctions (p = 0.35) and total length (p = 0.17).
+
+### Outcome of the fair comparison: **2** — GRAPH still under-counts; the deficit is segmentation plus graph construction, and GRAPH now beats JPEG
+
+At L = 5, against REF:
+
+| descriptor | GRAPH bias (CCC) | vs JPEG per image | segmentation / construction / storage |
+|---|---|---|---|
+| branches | −17.5 % (0.656) | **better**: 329 vs 197, p = 5e-16 | −10.0 / −8.2 / −0.1 % |
+| junctions | −38.4 % (0.602) | **better**: 241 vs 202, p = 2e-4 (JPEG has the lower MdAPE, 33 vs 43 %) | −19.8 / −23.0 / −0.3 % |
+| cycle rank | −44.8 % (0.507) | **better**: 141 vs 46, p = 2e-12 | −36.6 / −12.9 / 0 % |
+| total length | −8.4 % (0.793) | **no difference**: p = 0.95 (JPEG MdAPE 4.8 vs 7.0 %) | −3.9 / −2.8 / −2.0 % |
+| components | −2.2 % (0.766) | **better** | — |
+| mean width | +2.6 % (0.882) | **better** | — |
+| branch-length distribution | W1 6.19 vs 7.83 px | **better**: 421 vs 288, p = 1e-7 | — |
+
+(Pruning only removes terminal branches, so cycle rank does not depend on L; it is the same as in T10.)
+
+- Versus T10: the branch bias falls from −41 % to −17.5 %, and branches, junctions and branch-length distributions flip from JPEG to GRAPH.
+- GRAPH is **not ≈ REF on counts**. Segmentation is the larger share for cycle rank (74 %) and branches (55 %). For junctions, graph construction contributes as much as segmentation.
+- The junction-construction loss is not exposed as a parameter (T11.3). Evidence of where it comes from: 26 % of GRAPH's T10 "junctions" are junction-pixel nodes left with only two edges.
+- **Paper implication:** the downstream section can claim superiority over byte-matched JPEG on six of seven comparisons and equivalence on length. The branch/junction under-count must be stated as a limitation with the decomposition above.
+
+---
+
+## T11.3 — is the construction deficit tunable?
+
+`experiments/graph_param_sweep.py`: 150 organelle images (random, seed 0; `results/paper/graph_sweep/subset.txt`), default config otherwise, codec at `paper-v2`, U-Net on CPU for every setting. One parameter at a time. Descriptors from the **decoded payload** vs REF, both pruned at L = 5 with degree-based junctions. FG-PSNR on the decoded render. Shipped defaults unchanged.
+
+| setting | payload B (Δ) | FG-PSNR dB | branches bias % | junctions bias % | total length bias % | cycle rank bias % | components bias % | branches CCC |
+|---|---|---|---|---|---|---|---|---|
+| default | 2203 (+0) | 28.08 | -18.1 | -40.0 | -9.2 | -48.1 | -2.1 | 0.620 |
+| spur_min_length=0 | 2216 (+12) | 28.08 | -17.3 | -38.8 | -9.1 | -49.4 | -2.1 | 0.633 |
+| spur_min_length=2 | 2212 (+9) | 28.08 | -17.3 | -38.8 | -9.0 | -49.4 | -2.1 | 0.633 |
+| spur_min_length=10 | 2186 (-18) | 28.07 | -29.5 | -58.8 | -11.6 | -41.8 | -2.2 | 0.359 |
+| bridge=off | 2203 (-0) | 28.08 | -18.0 | -40.0 | -9.2 | -48.1 | -1.9 | 0.620 |
+| bridge_max_gap=6.0 | 2203 (-0) | 28.08 | -18.0 | -40.0 | -9.2 | -48.1 | -1.9 | 0.620 |
+| bridge_max_gap=20.0 | 2203 (+0) | 28.08 | -18.2 | -40.0 | -9.1 | -48.1 | -2.2 | 0.621 |
+| min_component_nodes=0 | 2203 (+0) | 28.08 | -17.9 | -40.0 | -9.2 | -48.1 | -1.6 | 0.634 |
+| min_component_nodes=6 | 2203 (-0) | 28.08 | -18.5 | -40.0 | -9.3 | -48.1 | -2.8 | 0.604 |
+| min_component_nodes=10 | 2202 (-1) | 28.08 | -19.5 | -40.0 | -9.9 | -48.1 | -4.9 | 0.597 |
+| spacing=2 | 2309 (+106) | 28.09 | -17.1 | -36.5 | -8.1 | -48.1 | -1.9 | 0.639 |
+| spacing=5 | 2060 (-144) | 28.07 | -19.8 | -43.8 | -10.7 | -49.4 | -3.1 | 0.583 |
+| spacing=8 | 1896 (-308) | 28.06 | -22.5 | -49.0 | -13.9 | -57.0 | -5.3 | 0.528 |
+
+Without shared pruning (L = 0, T10 definition) the encoder spur prune is visible: branch bias default -41.9 %, spur_min_length=0 -31.9 %, =2 -34.6 %, =10 -47.7 %.
+
+**Findings.** The under-count is a **defensible design choice, not an untuned default**, but the choice is not what causes it:
+- **Encoder spur pruning (5 px):** costs nothing once spurs are matched (−18.1 vs −17.3 % branches with pruning off) and saves 12 B. Its only visible effect is at L = 0, where it removes exactly the roughness spurs REF counts. `spur_min_length = 10` does hurt: −29.5 % branches, −58.8 % junctions.
+- **Gap bridging (off / 6 / 12 / 20 px) and minimum component size (0–6 nodes):** within ±0.5 pp on every count, and payload within ±1 B. `min_component_nodes = 10` starts dropping real components (−4.9 %).
+- **Node spacing is the only real storage trade-off:**
+
+| spacing | payload | branches | junctions | length |
+|---|---|---|---|---|
+| 2 | +106 B (+4.8 %) | +1.0 pp | +3.5 pp | +1.1 pp |
+| 5 | −144 B (−6.5 %) | −1.7 pp | −3.8 pp | −1.5 pp |
+| 8 | −308 B (−14 %) | −4.4 pp | −9.0 pp | −4.7 pp |
+
+(changes relative to the default spacing of 3.)
+- **FG-PSNR is flat across every setting** (28.06–28.09 dB).
+- **Where the construction loss lives:** none of the four knobs moves the junction deficit by more than 3.5 pp. The construction share (PRE vs SEG: −8 % branches, −23 % junctions at L = 5) sits in `build_nanograph`'s edge building at junction-pixel clusters, which has no parameter. This is inferred from the degree-2 junction evidence in T11.2, not tested directly.
