@@ -1,0 +1,28 @@
+TRUE per image: tubes 6.06, components 4.54, branches 12.67, junctions 4.19, cycle rank 0.98; pipeline Seg-IoU 0.854
+
+== L = 0
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                -18.490                   -24.363                  -16.327                  51.798               10.010                31.194               19.847           0.419      0.221     0.622
+    SEG      NaN                -18.601                   -29.480                  -21.334                  67.790              -34.121               -40.372              -57.252           0.302      0.239     0.593
+ GRAPH7 2236.176                -18.601                   -29.455                  -21.326                  67.659              -34.121               -40.372              -57.252           0.302      0.239     0.593
+GRAPH7p      NaN                -18.601                   -29.480                  -21.174                  67.942              -34.121               -40.372              -57.252           0.302      0.239     0.593
+ GRAPH6 2247.453                -18.989                   -33.102                  -25.769                  65.197              -47.527               -62.747              -61.323           0.210      0.249     0.593
+   JPEG 2169.121                 85.508                     1.981                   18.968                  64.819               54.181                40.192              -11.450          -0.019      0.208     0.496
+
+== L = 5
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                -18.490                   -26.648                  -19.840                  52.954              -19.969               -11.536               19.847           0.480      0.306     0.640
+    SEG      NaN                -18.601                   -29.717                  -22.108                  67.612              -36.051               -46.001              -57.252           0.332      0.273     0.603
+ GRAPH7 2236.176                -18.601                   -29.701                  -22.104                  67.495              -36.051               -46.001              -57.252           0.332      0.273     0.603
+GRAPH7p      NaN                -18.601                   -29.717                  -22.072                  67.507              -36.051               -46.001              -57.252           0.332      0.273     0.603
+ GRAPH6 2247.453                -18.989                   -32.731                  -25.356                  65.177              -40.656               -56.051              -61.323           0.289      0.280     0.601
+   JPEG 2169.121                 85.508                     0.518                   16.075                  64.811               41.532                15.145              -11.450          -0.022      0.250     0.503
+
+== L = auto
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                -18.490                   -27.100                  -16.006                  52.931              -23.821               -17.466               19.847           0.431      0.278     0.626
+    SEG      NaN                -18.989                   -30.176                  -21.032                  67.522              -40.469               -52.055              -57.252           0.288      0.249     0.591
+ GRAPH7 2236.176                -18.989                   -30.162                  -21.025                  67.419              -40.469               -52.055              -57.252           0.287      0.248     0.591
+GRAPH7p      NaN                -18.989                   -30.316                  -20.872                  67.145              -41.391               -53.493              -57.252           0.272      0.250     0.590
+ GRAPH6 2247.453                -19.156                   -33.156                  -25.484                  65.036              -44.922               -61.507              -61.323           0.251      0.241     0.589
+   JPEG 2169.121                 56.413                    -1.583                   19.424                  65.048               20.268                 1.438              -12.214          -0.018      0.222     0.503

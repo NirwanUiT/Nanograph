@@ -133,10 +133,11 @@ def main():
     parser.add_argument('--seed', type=int, default=42, help='Random seed for sampling')
     parser.add_argument('--sam', default=None, help='Path to SAM checkpoint (optional)')
     parser.add_argument('--preset', default=None,
-                        choices=['curvilinear', 'learned-replace', 'classical'],
+                        choices=['curvilinear', 'learned-replace', 'classical', 'real-mito'],
                         help="Optional config preset ('curvilinear' = multi-domain clDice U-Net in replace mode; "
                              "'learned-replace' = default organelle U-Net in replace mode; "
-                             "'classical' = disable the learned candidate)")
+                             "'classical' = disable the learned candidate; "
+                             "'real-mito' = U-Net trained on real annotated mitochondria, replace mode)")
     parser.add_argument('--builder', default=None, choices=['branch', 'pixel'],
                         help="graph builder: 'branch' (v7 structure layer, default) or 'pixel' (v6)")
     parser.add_argument('--force-segmenter', default=None,
@@ -177,6 +178,8 @@ def main():
         cfg = cfg.for_curvilinear()
     elif args.preset == 'learned-replace':
         cfg.segment.learned_mode = 'replace'
+    elif args.preset == 'real-mito':
+        cfg = cfg.for_real_mito()
     elif args.preset == 'classical':
         cfg.segment.use_learned = False
     if args.builder:

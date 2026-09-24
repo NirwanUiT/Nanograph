@@ -28,6 +28,11 @@ _CURVILINEAR_LEARNED_CKPT = os.path.join(_PKG_DIR, 'weights', 'unet_curvilinear_
 if not os.path.isfile(_CURVILINEAR_LEARNED_CKPT):
     _CURVILINEAR_LEARNED_CKPT = ''
 
+# Real-mitochondria weight (T13): the organelle U-Net trained on real annotated
+# fluorescence mitochondria (EP1-UiT-Rat, CBMI MITO, Zenodo MITO; see
+# experiments/train_real.py). Used by NanographConfig.for_real_mito().
+_REAL_MITO_CKPT = os.path.join(_PKG_DIR, 'weights', 'unet_mito_real.pt')
+
 
 @dataclass
 class PreprocessConfig:
@@ -287,6 +292,21 @@ class NanographConfig:
         cfg.segment.learned_mode = 'replace'
         cfg.segment.learned_light_clean = True
         cfg.recon.use_oriented_psf = True
+        return cfg
+
+    def for_real_mito(self) -> 'NanographConfig':
+        """Return a copy that segments with the U-Net trained on REAL annotated
+        mitochondria (instead of the simulation-trained default), used directly
+        (learned_mode='replace'): the simulation-calibrated quality score is not
+        a reliable judge on real acquisitions."""
+        cfg = deepcopy(self)
+        if not os.path.isfile(_REAL_MITO_CKPT):
+            raise FileNotFoundError('real-mitochondria weight not found: '
+                                    'Nanograph/weights/unet_mito_real.pt')
+        cfg.segment.use_learned = True
+        cfg.segment.learned_ckpt = _REAL_MITO_CKPT
+        cfg.segment.learned_mode = 'replace'
+        cfg.segment.learned_light_clean = True
         return cfg
 
     def param_count(self) -> int:

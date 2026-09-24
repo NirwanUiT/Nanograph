@@ -168,6 +168,48 @@ def _one(i):
     return rows
 
 
+def calibrate(out, settings=('5', 'auto')):
+    """2-fold (by image id parity) cross-validated linear calibration of every
+    arm to TRUE; MdAPE after calibration and a paired |error| test against
+    JPEG. Systematic bias is removable by calibration, noise is not."""
+    import pandas as pd
+    from scipy.stats import wilcoxon
+    import downstream_morphometry as dm
+    P = pd.read_csv(os.path.join(out, 'per_image.csv'))
+    P['L'] = P.L.astype(str)
+    P['key'] = P.img.astype(str).str.replace('clip:', '', regex=False).astype(int)
+    rows = []
+    for L in settings:
+        W = {x: g.set_index('key') for x, g in P[P.L == L].groupby('arm')}
+        ids = sorted(set.intersection(*(set(W[x].index) for x in W)))
+        fold = np.array(ids) % 2
+        for d in ['n_components', 'total_length_px', 'mean_width_px', 'n_branches', 'n_junctions',
+                  'cycle_rank']:
+            y = W['TRUE'].loc[ids, d].to_numpy(float)
+            errs = {}
+            for arm in [x for x in W if x != 'TRUE']:
+                x = W[arm].loc[ids, d].to_numpy(float)
+                pred = np.zeros_like(y)
+                for f in (0, 1):
+                    tr = fold != f
+                    c = np.linalg.lstsq(np.vstack([x[tr], np.ones(tr.sum())]).T, y[tr], rcond=None)[0]
+                    pred[fold == f] = c[0] * x[fold == f] + c[1]
+                errs[arm] = np.abs(pred - y)
+            nz = y != 0
+            for arm, e in errs.items():
+                r = {'L': L, 'descriptor': d, 'arm': arm,
+                     'mdape_calibrated': np.median(e[nz] / np.abs(y[nz])) * 100 if nz.any() else np.nan}
+                if arm != 'JPEG' and 'JPEG' in errs:
+                    ej = errs['JPEG']
+                    w, l = int((e < ej).sum()), int((e > ej).sum())
+                    r.update(closer_than_jpeg=w, jpeg_closer=l,
+                             p=wilcoxon(e, ej).pvalue if w + l else np.nan)
+                rows.append(r)
+    C = pd.DataFrame(rows)
+    C.to_csv(os.path.join(out, 'calibrated.csv'), index=False)
+    print(C[C.arm.isin(['REF', 'GRAPH7', 'JPEG'])].round(3).to_string(index=False))
+
+
 def main():
     import multiprocessing as mp
     import pandas as pd
@@ -176,9 +218,13 @@ def main():
     ap.add_argument('--workers', type=int, default=12)
     ap.add_argument('--dataset', default='sim', choices=['sim', 'clip'])
     ap.add_argument('--out', default=None)
+    ap.add_argument('--calibrate-only', action='store_true')
     a = ap.parse_args()
     a.out = a.out or f'results/real/{a.dataset}_truth'
     os.makedirs(a.out, exist_ok=True)
+    if a.calibrate_only:
+        calibrate(a.out)
+        return
     if a.dataset == 'sim':
         ids = sorted(int(f[:-5]) for f in os.listdir(os.path.join(DATA, 'truth')))
     else:
@@ -228,6 +274,7 @@ def main():
     for L in ('0', '5', 'auto'):
         print(f'\n== L = {L}')
         print(S[S.L == L][cols].round(3).to_string(index=False))
+    calibrate(a.out)
 
 
 if __name__ == '__main__':
