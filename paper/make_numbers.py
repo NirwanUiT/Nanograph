@@ -20,6 +20,9 @@ Missing inputs produce the macro value \\tbd, which renders visibly.
 """
 import argparse
 import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'experiments'))
 
 import numpy as np
 import pandas as pd
@@ -286,7 +289,7 @@ def downstream(M, runs):
     sp, cp = os.path.join(d, 'summary.csv'), os.path.join(d, 'cost_summary.csv')
     S = pd.read_csv(sp) if os.path.exists(sp) else None
     if S is not None and 'L' in S:
-        S = S[(S.L == 0) & (S.get('junction_def', 't10') == 't10')]   # T10 definition
+        S = S[(S.L.astype(str) == '0') & (S.get('junction_def', 't10') == 't10')]   # T10 definition
     C = pd.read_csv(cp, index_col=0)['value'] if os.path.exists(cp) else None
     for dk, dn in DS_DESC:
         for arm, an in DS_ARMS:
@@ -327,7 +330,7 @@ def downstream(M, runs):
     downstream_pruned(M, runs)
 
 
-DS_PRUNE_L = 5   # T11.2: shared terminal-branch pruning length used in the text (px)
+DS_PRUNE_L = 'auto'   # T13: the one-diameter analysis rule is the paper's default
 
 
 def downstream_pruned(M, runs):
@@ -338,10 +341,10 @@ def downstream_pruned(M, runs):
     sp, fp = os.path.join(d, 'summary.csv'), os.path.join(d, 'spur_fractions.csv')
     S = pd.read_csv(sp) if os.path.exists(sp) else None
     if S is not None and 'junction_def' in S:
-        S = S[(S.junction_def == 'degree') & (S.L == DS_PRUNE_L)]
+        S = S[(S.junction_def == 'degree') & (S.L.astype(str) == str(DS_PRUNE_L))]
     else:
         S = None
-    M.put('DsPruneL', str(DS_PRUNE_L))
+    M.put('DsPruneL', 'one diameter' if DS_PRUNE_L == 'auto' else str(DS_PRUNE_L))
     for dk, dn in DS_DESC:
         for arm, an in DS_ARMS:
             r = S[(S.descriptor == dk) & (S.arm == arm) & (S.ref == 'REF')] if S is not None else []
@@ -362,9 +365,127 @@ def downstream_pruned(M, runs):
         r = S[(S.descriptor == 'branch_lengths') & (S.arm == arm)] if S is not None else []
         M.put(f'DsPWass{an}', f'{r.iloc[0].w1_mean:.2f}' if len(r) else '\\tbd')
     F = pd.read_csv(fp) if os.path.exists(fp) else None
-    r = F[(F.arm == 'REF') & (F.L == DS_PRUNE_L)] if F is not None else []
+    r = F[(F.arm == 'REF') & (F.L.astype(str) == '5')] if F is not None else []   # spur share at 5 px
     M.put('DsRefSpurPct', f'{100 * r.iloc[0].branch_frac_pooled:.1f}' if len(r) else '\\tbd')
     M.put('DsRefSpurLenPct', f'{100 * r.iloc[0].length_frac_mean:.1f}' if len(r) else '\\tbd')
+
+
+def _csv(path, **kw):
+    for q in (path, path + '.gz'):
+        if os.path.exists(q):
+            try:
+                return pd.read_csv(q, **kw)
+            except Exception:
+                return None
+    return None
+
+
+def v7_sections(M, runs):
+    """T13 macros: storage layers, stored-graph topology, truth-based and
+    real-data results. Any missing input renders as \\tbd."""
+    import glob
+    import struct
+    TBD = '\\tbd'
+    put = lambda k, v, f: M.put(k, TBD if v is None or v != v else format(v, f))
+    # --- storage layers (organelle payloads cached by the downstream run)
+    sb, pb = [], []
+    for f in glob.glob(os.path.join(runs, 'downstream', 'cache', '*.npz')):
+        p = np.load(f)['payload_tagged'].tobytes()
+        if p and p[0] == 7:
+            sb.append(struct.unpack('<I', p[1:5])[0])
+            pb.append(len(p))
+    put('StructBytesm', np.mean(sb) if sb else None, '.0f')
+    put('AppearBytesm', np.mean(pb) - np.mean(sb) if sb else None, '.0f')
+    put('StructFracPct', 100 * np.mean(sb) / np.mean(pb) if sb else None, '.0f')
+    V = _csv(os.path.join(os.path.dirname(runs.rstrip('/')), 'v7', 'per_image.csv.gz'))
+    mb = V[(V.arm == 'SEG') & (V.L == 0)].bytes.mean() if V is not None else None
+    put('MaskLosslessBytesm', mb, '.0f')
+    put('StructVsMaskX', mb / np.mean(sb) if (sb and mb) else None, '.1f')
+    # --- stored-graph topology vs the mask it encodes
+    D = load(os.path.join(runs, 'org_default'))
+    if D is not None and 'graph_n_components' in D:
+        put('GraphCompEqPct', 100 * (D.graph_n_components == D.ng_seg_beta_0).mean(), '.1f')
+        put('GraphCycEqPct', 100 * (D.graph_n_cycles == D.ng_seg_beta_1).mean(), '.1f')
+    else:
+        put('GraphCompEqPct', None, ''); put('GraphCycEqPct', None, '')
+    # --- simulated truth (one-diameter rule)
+    T = _csv(os.path.join(runs, 'sim_truth', 'summary.csv'))
+    P = _csv(os.path.join(runs, 'sim_truth', 'per_image.csv'))
+    C = _csv(os.path.join(runs, 'sim_truth', 'calibrated.csv'))
+    arms = (('REF', 'Ref'), ('GRAPH7', 'Graph'), ('JPEG', 'Jpeg'))
+    desc = (('n_components', 'Comp'), ('total_length_px', 'Len'), ('mean_width_px', 'Width'),
+            ('n_branches', 'Br'), ('n_junctions', 'Junc'), ('cycle_rank', 'Cyc'))
+    if T is not None:
+        T['L'] = T.L.astype(str)
+    for arm, an in arms:
+        r = T[(T.arm == arm) & (T.L == 'auto')] if T is not None else []
+        for d, dn in desc:
+            put(f'Truth{an}{dn}Bias', r.iloc[0][f'{d}_bias_pct'] if len(r) else None, '+.0f')
+            put(f'Truth{an}{dn}CCC', r.iloc[0][f'{d}_ccc'] if len(r) else None, '.2f')
+        put(f'Truth{an}JuncFone', r.iloc[0]['junc_f1_3'] if len(r) else None, '.2f')
+    if P is not None:
+        P['L'] = P.L.astype(str)
+        tr = P[(P.arm == 'TRUE') & (P.L == '0')]
+        put('TruthN', len(tr), 'd')
+        put('TruthTubesm', tr.n_tubes.mean(), '.1f')
+        put('TruthCompm', tr.n_components.mean(), '.1f')
+        put('TruthJuncm', tr.n_junctions.mean(), '.1f')
+    else:
+        for k in ('TruthN', 'TruthTubesm', 'TruthCompm', 'TruthJuncm'):
+            put(k, None, '')
+    if C is not None:
+        C['L'] = C.L.astype(str)
+    for d, dn in desc:
+        for arm, an in arms:
+            r = C[(C.L == 'auto') & (C.descriptor == d) & (C.arm == arm)] if C is not None else []
+            put(f'Cal{an}{dn}', r.iloc[0].mdape_calibrated if len(r) else None, '.1f')
+        r = C[(C.L == 'auto') & (C.descriptor == d) & (C.arm == 'GRAPH7')] if C is not None else []
+        if len(r):
+            M.put(f'CalWins{dn}', f'{int(r.iloc[0].closer_than_jpeg)}/{int(r.iloc[0].jpeg_closer)}')
+            M.put(f'CalP{dn}', fmt_p(r.iloc[0].p))
+        else:
+            M.put(f'CalWins{dn}', TBD); M.put(f'CalP{dn}', TBD)
+    # --- temporal clip truth: fixed L=0 vs one-diameter rule
+    K = _csv(os.path.join(runs, 'clip_truth', 'summary.csv'))
+    if K is not None:
+        K['L'] = K.L.astype(str)
+    for lab, L in (('Zero', '0'), ('Auto', 'auto')):
+        r = K[(K.arm == 'GRAPH7') & (K.L == L)] if K is not None else []
+        put(f'ClipTruthComp{lab}', r.iloc[0].n_components_bias_pct if len(r) else None, '+.0f')
+        put(f'ClipTruthBr{lab}', r.iloc[0].n_branches_bias_pct if len(r) else None, '+.0f')
+        put(f'ClipTruthLen{lab}', r.iloc[0].total_length_px_bias_pct if len(r) else None, '+.0f')
+        put(f'ClipTruthJf{lab}', r.iloc[0].junc_f1_3 if len(r) else None, '.2f')
+    # --- real data
+    names = (('UIT', 'Uit'), ('CBMI', 'Cbmi'), ('MITO', 'Mito'), ('HUMAN', 'Human'))
+    for d, dn in names:
+        for pre, pn in (('default', 'Sim'), ('real-mito', 'Real')):
+            m = load(os.path.join(runs, 'real', pre, d))
+            put(f'RealSegIoU{pn}{dn}', m.seg_iou.mean() if m is not None else None, '.2f')
+    R = _csv(os.path.join(runs, 'real', 'downstream', 'summary.csv'))
+    Q = _csv(os.path.join(runs, 'real', 'downstream', 'jpeg_low_quality.csv'))
+    for d, dn in names:
+        r = R[(R.dataset == d) & (R.L.astype(str) == 'auto') & (R.arm == 'GRAPH7')] if R is not None else []
+        put(f'RealStructBytes{dn}', r.iloc[0].structure_bytes if len(r) else None, '.0f')
+        put(f'RealBrCCC{dn}', r.iloc[0].n_branches_ccc if len(r) else None, '.2f')
+        put(f'RealLenCCC{dn}', r.iloc[0].total_length_px_ccc if len(r) else None, '.2f')
+        for q, qn in ((1, 'Qone'), (20, 'Qtwenty')):
+            h = Q[(Q.dataset == d) & (Q.q == q)] if Q is not None else []
+            if len(h):
+                import downstream_morphometry as dm
+                put(f'RealJpeg{qn}Bytes{dn}', h.bytes.mean(), '.0f')
+                put(f'RealJpeg{qn}BrCCC{dn}', dm.ccc(h.n_branches.to_numpy(float), h.n_branches_ref.to_numpy(float)), '.2f')
+                put(f'RealJpeg{qn}LenCCC{dn}', dm.ccc(h.total_length_px.to_numpy(float),
+                                                     h.total_length_px_ref.to_numpy(float)), '.2f')
+            else:
+                for k in ('Bytes', 'BrCCC', 'LenCCC'):
+                    put(f'RealJpeg{qn}{k}{dn}', None, '')
+    E = _csv(os.path.join(runs, 'real', 'segmenters', 'eval_summary.csv'))
+    for fam, fn in (('shipped_sim', 'Sim'), ('ALL_joint', 'Real')):
+        g = E[(E.family == fam) & (E.dataset == 'HUMAN')] if E is not None else []
+        put(f'RealHumanBrBias{fn}', g.n_branches_bias_pct.mean() if len(g) else None, '+.0f')
+        put(f'RealHumanJuncBias{fn}', g.n_junctions_bias_pct.mean() if len(g) else None, '+.0f')
+        put(f'RealHumanBrCCC{fn}', g.n_branches_ccc.mean() if len(g) else None, '.2f')
+        put(f'RealHumanIoU{fn}', g.iou.mean() if len(g) else None, '.2f')
 
 
 def main():
@@ -393,6 +514,7 @@ def main():
     mito(M, a.runs, a.out)
     polarity(M, a.runs)
     downstream(M, a.runs)
+    v7_sections(M, a.runs)
     cross_table(a.runs, D, a.out)
     topo_all_table(a.runs, D, a.out)
     hdr = ('% AUTO-GENERATED by paper/make_numbers.py -- do not edit by hand.\n'

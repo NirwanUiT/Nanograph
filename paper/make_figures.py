@@ -210,8 +210,8 @@ def fig_downstream(runs, out):
     df = pd.read_csv(p, dtype={'stem': str})
     S = pd.read_csv(os.path.join(d, 'summary.csv'))
     if 'L' in df:                      # T10 definition: no shared pruning
-        df = df[(df.L == 0) & (df.get('junction_def', 't10') == 't10')]
-        S = S[(S.L == 0) & (S.get('junction_def', 't10') == 't10')]
+        df = df[(df.L.astype(str) == '0') & (df.get('junction_def', 't10') == 't10')]
+        S = S[(S.L.astype(str) == '0') & (S.get('junction_def', 't10') == 't10')]
     W = {a: g.set_index('stem') for a, g in df.groupby('arm')}
     stems = sorted(set(W['REF'].index) & set(W['GRAPH'].index) & set(W['JPEG'].index))
     R, G, J = (W[a].loc[stems] for a in ('REF', 'GRAPH', 'JPEG'))
@@ -262,7 +262,7 @@ def fig_downstream(runs, out):
     a = ax[3]
     bd = pd.read_csv(os.path.join(d, 'branch_distances.csv'), dtype={'stem': str})
     if 'L' in bd:
-        bd = bd[(bd.L == 0) & (bd.get('junction_def', 't10') == 't10')]
+        bd = bd[(bd.L.astype(str) == '0') & (bd.get('junction_def', 't10') == 't10')]
     bd = bd.dropna(subset=['w1_GRAPH', 'w1_JPEG'])
     stem = bd.iloc[(bd.w1_GRAPH - bd.w1_GRAPH.median()).abs().argsort().iloc[0]].stem
     L = {}
@@ -280,6 +280,134 @@ def fig_downstream(runs, out):
     save(fig, out, 'fig_downstream.png')
 
 
+def _csv(path, **kw):
+    for q in (path, path + '.gz'):
+        if os.path.exists(q):
+            return pd.read_csv(q, **kw)
+    return None
+
+
+def fig_layers(runs, out):
+    """Bytes per stored object (organelle set, means) on a log axis."""
+    import glob
+    import struct
+    D = load(os.path.join(runs, 'org_default'))
+    sb, pb = [], []
+    for f in glob.glob(os.path.join(runs, 'downstream', 'cache', '*.npz')):
+        p = np.load(f)['payload_tagged'].tobytes()
+        if p and p[0] == 7:
+            sb.append(struct.unpack('<I', p[1:5])[0])
+            pb.append(len(p))
+    V = _csv(os.path.join(os.path.dirname(runs.rstrip('/')), 'v7', 'per_image.csv.gz'))
+    if D is None or not sb or V is None:
+        print('skip fig_layers'); return
+    mask = V[(V.arm == 'SEG') & (V.L == 0)].bytes.mean()
+    items = [('raw array', RAW, GREY), ('lossless PNG', D.png_bytes.mean(), GREY),
+             ('byte-matched JPEG', D.jpeg_bytes.mean(), GOLD),
+             ('Nanograph: structure + appearance', np.mean(pb), BLUE),
+             ('lossless mask (bit-packed)', mask, GREY),
+             ('Nanograph: structure layer', np.mean(sb), GREEN)]
+    fig, ax = plt.subplots(figsize=(7.2, 3.2))
+    y = np.arange(len(items))[::-1]
+    for yi, (lab, v, c) in zip(y, items):
+        ax.barh(yi, v, color=c, height=0.62)
+        ax.text(v * 1.08, yi, f'{v:,.0f} B', va='center', fontsize=8.5)
+    ax.set_yticks(y); ax.set_yticklabels([i[0] for i in items])
+    ax.set_xscale('log'); ax.set_xlim(80, RAW * 4)
+    ax.set_xlabel('bytes per 256×256 image (mean over the organelle set)')
+    ax.set_title('What each stored object costs', loc='left')
+    save(fig, out, 'fig_layers.png')
+
+
+TRUTH_DESC = [('n_components', 'components'), ('total_length_px', 'length'), ('mean_width_px', 'width'),
+              ('n_branches', 'branches'), ('n_junctions', 'junctions')]
+
+
+def fig_truth(runs, out):
+    """Against the simulator's geometry: raw bias (a) and calibrated MdAPE (b)."""
+    S = _csv(os.path.join(runs, 'sim_truth', 'summary.csv'))
+    C = _csv(os.path.join(runs, 'sim_truth', 'calibrated.csv'))
+    if S is None or C is None:
+        print('skip fig_truth'); return
+    S['L'] = S.L.astype(str); C['L'] = C.L.astype(str)
+    arms = [('REF', "simulator's own mask", GREY), ('GRAPH7', 'Nanograph (stored graph)', BLUE),
+            ('JPEG', 'byte-matched JPEG', GOLD)]
+    fig, ax = plt.subplots(1, 2, figsize=(12, 3.6))
+    x = np.arange(len(TRUTH_DESC)); w = 0.26
+    for k, (arm, lab, c) in enumerate(arms):
+        r = S[(S.arm == arm) & (S.L == 'auto')].iloc[0]
+        ax[0].bar(x + (k - 1) * w, [r[f'{d}_bias_pct'] for d, _ in TRUTH_DESC], w, color=c, label=lab)
+        v = [C[(C.L == 'auto') & (C.arm == arm) & (C.descriptor == d)].iloc[0].mdape_calibrated
+             for d, _ in TRUTH_DESC]
+        ax[1].bar(x + (k - 1) * w, v, w, color=c, label=lab)
+    for a in ax:
+        a.set_xticks(x); a.set_xticklabels([l for _, l in TRUTH_DESC])
+    ax[0].axhline(0, color='k', lw=.6)
+    ax[0].set_ylabel('bias vs true geometry (%)')
+    ax[0].set_title('(a) raw bias against the simulated tubes', loc='left')
+    ax[1].set_ylabel('median |error| after calibration (%)')
+    ax[1].set_title('(b) after 2-fold linear calibration', loc='left')
+    ax[1].legend(frameon=False, fontsize=8.5)
+    save(fig, out, 'fig_truth.png')
+
+
+def fig_clip(runs, out):
+    """Temporal clip: components and length per frame, truth vs stored graph."""
+    P = _csv(os.path.join(runs, 'clip_truth', 'per_image.csv'))
+    if P is None:
+        print('skip fig_clip'); return
+    P['L'] = P.L.astype(str)
+    P['frame'] = P.img.astype(str).str.replace('clip:', '', regex=False).astype(int)
+    fig, ax = plt.subplots(1, 2, figsize=(12, 3.4), sharex=True)
+    for j, (col, lab) in enumerate([('n_components', 'mitochondria counted'), ('total_length_px', 'total length (px)')]):
+        t = P[(P.arm == 'TRUE') & (P.L == '0')].sort_values('frame')
+        ax[j].plot(t.frame, t[col], color='k', lw=1.8, label='truth')
+        for L, c, ls, name in (('0', RED, '-', 'stored graph, no cleanup'), ('auto', BLUE, '-', 'stored graph, one-diameter rule')):
+            g = P[(P.arm == 'GRAPH7') & (P.L == L)].sort_values('frame')
+            ax[j].plot(g.frame, g[col], color=c, lw=1.3, ls=ls, label=name)
+        ax[j].set_ylabel(lab); ax[j].set_xlabel('frame')
+    ax[0].legend(frameon=False, fontsize=8.5)
+    ax[0].set_title('(a) fragmentation counted as extra mitochondria', loc='left')
+    ax[1].set_title('(b) length through time', loc='left')
+    save(fig, out, 'fig_clip.png')
+
+
+def fig_real(runs, out):
+    """Real annotated mitochondria: segmentation (a); analysis-only bytes (b)."""
+    names = [('UIT', 'UiT rat'), ('CBMI', 'CBMI'), ('MITO', 'MITO'), ('HUMAN', 'UiT human\n(untouched)')]
+    R = _csv(os.path.join(runs, 'real', 'downstream', 'summary.csv'))
+    Q = _csv(os.path.join(runs, 'real', 'downstream', 'jpeg_low_quality.csv'))
+    fig, ax = plt.subplots(1, 2, figsize=(12, 3.6))
+    x = np.arange(len(names))
+    for k, (pre, lab, c) in enumerate([('default', 'simulation-trained', GREY), ('real-mito', 'real-trained', GREEN)]):
+        v = []
+        for d, _ in names:
+            m = load(os.path.join(runs, 'real', pre, d))
+            v.append(m.seg_iou.mean() if m is not None else np.nan)
+        ax[0].bar(x + (k - .5) * .38, v, .36, color=c, label=lab)
+    ax[0].set_xticks(x); ax[0].set_xticklabels([n for _, n in names])
+    ax[0].set_ylabel('Seg-IoU vs expert mask'); ax[0].legend(frameon=False, fontsize=8.5)
+    ax[0].set_title('(a) segmentation inside the pipeline', loc='left')
+    if R is not None and Q is not None:
+        import sys
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'experiments'))
+        import downstream_morphometry as dm
+        cols = [BLUE, GOLD, RED, GREEN]
+        for (d, lab), c in zip(names, cols):
+            h = Q[Q.dataset == d].groupby('q')
+            b = h.bytes.mean()
+            cc = h.apply(lambda g: dm.ccc(g.n_branches.to_numpy(float), g.n_branches_ref.to_numpy(float)))
+            ax[1].plot(b.values, cc.values, 'o-', color=c, ms=4, lw=1.2, label=f'{lab.splitlines()[0]}: JPEG q1-q20')
+            r = R[(R.dataset == d) & (R.L.astype(str) == 'auto') & (R.arm == 'GRAPH7')]
+            if len(r):
+                ax[1].plot(r.iloc[0].structure_bytes, r.iloc[0].n_branches_ccc, marker='*', ms=13, color=c,
+                           markeredgecolor='k', ls='none')
+        ax[1].set_xlabel('bytes stored for analysis'); ax[1].set_ylabel('branch-count CCC vs expert')
+        ax[1].set_title('(b) structure layer (stars) vs JPEG (lines)', loc='left')
+        ax[1].legend(frameon=False, fontsize=7.5, loc='lower right')
+    save(fig, out, 'fig_real.png')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--runs', default='results/paper')
@@ -294,6 +422,10 @@ def main():
     fig_prior(D, a.out)
     fig_perturb(a.runs, a.out)
     fig_downstream(a.runs, a.out)
+    fig_layers(a.runs, a.out)
+    fig_truth(a.runs, a.out)
+    fig_clip(a.runs, a.out)
+    fig_real(a.runs, a.out)
 
 
 if __name__ == '__main__':
