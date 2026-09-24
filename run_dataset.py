@@ -137,6 +137,8 @@ def main():
                         help="Optional config preset ('curvilinear' = multi-domain clDice U-Net in replace mode; "
                              "'learned-replace' = default organelle U-Net in replace mode; "
                              "'classical' = disable the learned candidate)")
+    parser.add_argument('--builder', default=None, choices=['branch', 'pixel'],
+                        help="graph builder: 'branch' (v7 structure layer, default) or 'pixel' (v6)")
     parser.add_argument('--force-segmenter', default=None,
                         choices=['otsu', 'frangi', 'meijering', 'learned'],
                         help='Restrict the cascade to a single segmenter')
@@ -177,6 +179,8 @@ def main():
         cfg.segment.learned_mode = 'replace'
     elif args.preset == 'classical':
         cfg.segment.use_learned = False
+    if args.builder:
+        cfg.graph.builder = args.builder
     if args.force_segmenter:
         cfg.segment.force_segmenter = args.force_segmenter
         if args.force_segmenter == 'learned':
