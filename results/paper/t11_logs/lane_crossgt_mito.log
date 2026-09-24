@@ -1,0 +1,1761 @@
+=== [23:42:50] cross_gt/stare
+Found 20 images in /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/stare/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/stare/labels
+Output: results/paper/cross_gt/stare
+Sample visualizations: 4
+Sample indices: [0, 3, 7, 8]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/20] im0001  (0.0 img/s, ETA 0m)  ** SAMPLE **
+Image: (605, 700), type=sparse (FG=15.1%, n_cc=78, mean_fg_int=0.49)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 175 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          20.5%   0.3931       6ms
+Frangi         0.0%   0.0000     878ms
+Meijering     11.3%   0.4031     798ms
+Learned        8.5% 1000000000.0000     281ms <<<
+
+Selected: Learned
+Nanograph: 3467 points (EP=97, JN=470, S=2900)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 803 branches traced, 3467/3467 nodes assigned, 0 orphans, 3702 edges, 6 components
+Graph: 3467 nodes, 3702 edges, 6 components
+FG residual: 8,676 bytes (101 ms)
+
+============================================================
+  RESULT (v5): 3587 pts, 28,741 bytes
+  vs raw pixels: 15x  vs PNG: 6.4x
+  PSNR=24.87  SSIM=0.7213  FG-PSNR=34.21  FG-SSIM=0.9983
+  Graph topology: 6 components, 241 cycles, 470 junctions, 97 endpoints
+  Segmentation: β₀=6, β₁=24
+  Structures: 6 -- {'ring': 3, 'branched': 2, 'punctate': 1}
+  Total time: 29175 ms
+============================================================
+  Sample saved: results/paper/cross_gt/stare/samples/im0001.png
+  Bytes: 28,741  |  FG-SSIM: 0.9983  |  GT-IoU: 0.0860  |  Seg-F1: 0.7667  |  Topo-Q: 1.0000
+  [GRAPH] 424 branches traced, 3547/3547 nodes assigned, 0 orphans, 3665 edges, 7 components
+  [GRAPH] 360 branches traced, 2150/2150 nodes assigned, 0 orphans, 2260 edges, 3 components
+
+[4/20] im0004  (0.0 img/s, ETA 7m)  ** SAMPLE **
+Image: (605, 700), type=sparse (FG=8.4%, n_cc=21, mean_fg_int=0.46)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 160 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          40.8%   0.3548       6ms
+Frangi         0.0%   0.0000     860ms
+Meijering      7.0%   0.3424     753ms
+Learned        6.3% 1000000000.0000      24ms <<<
+
+Selected: Learned
+Nanograph: 2851 points (EP=71, JN=221, S=2559)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 381 branches traced, 2851/2851 nodes assigned, 0 orphans, 2939 edges, 14 components
+Graph: 2851 nodes, 2941 edges, 12 components
+FG residual: 6,601 bytes (91 ms)
+
+============================================================
+  RESULT (v5): 2971 pts, 22,779 bytes
+  vs raw pixels: 19x  vs PNG: 7.5x
+  PSNR=24.94  SSIM=0.7666  FG-PSNR=34.62  FG-SSIM=0.9991
+  Graph topology: 12 components, 102 cycles, 221 junctions, 71 endpoints
+  Segmentation: β₀=14, β₁=7
+  Structures: 14 -- {'linear': 2, 'punctate': 1, 'branched': 6, 'ring': 3, 'curved': 2}
+  Total time: 16546 ms
+============================================================
+  Sample saved: results/paper/cross_gt/stare/samples/im0004.png
+  Bytes: 22,779  |  FG-SSIM: 0.9991  |  GT-IoU: 0.0907  |  Seg-F1: 0.7551  |  Topo-Q: 0.9997
+  [GRAPH] 590 branches traced, 3421/3421 nodes assigned, 0 orphans, 3565 edges, 20 components
+  [GRAPH] 549 branches traced, 3993/3993 nodes assigned, 0 orphans, 4141 edges, 13 components
+  [GRAPH] 831 branches traced, 4097/4097 nodes assigned, 0 orphans, 4337 edges, 4 components
+
+[8/20] im0081  (0.0 img/s, ETA 5m)  ** SAMPLE **
+Image: (605, 700), type=sparse (FG=16.5%, n_cc=93, mean_fg_int=0.48)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 156 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          41.9%   0.4221       5ms
+Frangi         0.0%   0.0000     880ms
+Meijering     14.7%   0.3766     768ms
+Learned        9.8% 1000000000.0000      27ms <<<
+
+Selected: Learned
+Nanograph: 3734 points (EP=79, JN=424, S=3231)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 711 branches traced, 3734/3734 nodes assigned, 0 orphans, 3942 edges, 3 components
+Graph: 3734 nodes, 3942 edges, 3 components
+FG residual: 9,364 bytes (104 ms)
+
+============================================================
+  RESULT (v5): 3854 pts, 30,887 bytes
+  vs raw pixels: 14x  vs PNG: 6.6x
+  PSNR=26.31  SSIM=0.7248  FG-PSNR=34.73  FG-SSIM=0.9978
+  Graph topology: 3 components, 211 cycles, 424 junctions, 79 endpoints
+  Segmentation: β₀=3, β₁=27
+  Structures: 3 -- {'ring': 1, 'curved': 1, 'branched': 1}
+  Total time: 21299 ms
+============================================================
+  Sample saved: results/paper/cross_gt/stare/samples/im0081.png
+  Bytes: 30,887  |  FG-SSIM: 0.9978  |  GT-IoU: 0.0607  |  Seg-F1: 0.7936  |  Topo-Q: 1.0000
+
+[9/20] im0082  (0.0 img/s, ETA 5m)  ** SAMPLE **
+Image: (605, 700), type=sparse (FG=18.1%, n_cc=104, mean_fg_int=0.56)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 157 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          26.8%   0.4351       5ms
+Frangi         0.0%   0.0000     852ms
+Meijering     12.7%   0.3825     765ms
+Learned       10.0% 1000000000.0000      32ms <<<
+
+Selected: Learned
+Nanograph: 3912 points (EP=93, JN=469, S=3350)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 791 branches traced, 3912/3912 nodes assigned, 0 orphans, 4140 edges, 3 components
+Graph: 3912 nodes, 4140 edges, 3 components
+FG residual: 11,375 bytes (109 ms)
+
+============================================================
+  RESULT (v5): 4032 pts, 33,919 bytes
+  vs raw pixels: 12x  vs PNG: 6.2x
+  PSNR=24.23  SSIM=0.6626  FG-PSNR=32.84  FG-SSIM=0.9978
+  Graph topology: 3 components, 231 cycles, 469 junctions, 93 endpoints
+  Segmentation: β₀=3, β₁=29
+  Structures: 3 -- {'ring': 2, 'linear': 1}
+  Total time: 21779 ms
+============================================================
+  Sample saved: results/paper/cross_gt/stare/samples/im0082.png
+  Bytes: 33,919  |  FG-SSIM: 0.9978  |  GT-IoU: 0.0776  |  Seg-F1: 0.8089  |  Topo-Q: 1.0000
+  [GRAPH] 678 branches traced, 3574/3574 nodes assigned, 0 orphans, 3758 edges, 8 components
+  [GRAPH] 668 branches traced, 4110/4110 nodes assigned, 0 orphans, 4298 edges, 3 components
+  [GRAPH] 584 branches traced, 5176/5176 nodes assigned, 0 orphans, 5347 edges, 8 components
+  [GRAPH] 721 branches traced, 3751/3751 nodes assigned, 0 orphans, 3962 edges, 6 components
+  [GRAPH] 618 branches traced, 3601/3601 nodes assigned, 0 orphans, 3774 edges, 3 components
+  [GRAPH] 738 branches traced, 4935/4935 nodes assigned, 0 orphans, 5156 edges, 4 components
+  [GRAPH] 649 branches traced, 4672/4672 nodes assigned, 0 orphans, 4857 edges, 6 components
+  [GRAPH] 830 branches traced, 4154/4154 nodes assigned, 0 orphans, 4391 edges, 2 components
+  [GRAPH] 351 branches traced, 3095/3095 nodes assigned, 0 orphans, 3203 edges, 2 components
+  [GRAPH] 203 branches traced, 2136/2136 nodes assigned, 0 orphans, 2182 edges, 8 components
+  [GRAPH] 476 branches traced, 3365/3365 nodes assigned, 0 orphans, 3503 edges, 8 components
+
+CSV saved: results/paper/cross_gt/stare/metrics.csv
+TXT saved: results/paper/cross_gt/stare/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 20/20
+  Failures: 0
+  Total time: 489.8s  (24.49s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.0834    0.0185    0.0542    0.1187    0.0818
+  Seg IoU                         0.6641    0.0361    0.6065    0.7342    0.6632
+  Seg F1                          0.7976    0.0260    0.7551    0.8467    0.7975
+  Seg Precision                   0.7655    0.0471    0.6932    0.8667    0.7643
+  Seg Recall                      0.8393    0.0660    0.6966    0.9402    0.8511
+  GT FG-SSIM                      0.9937    0.0137    0.9343    0.9986    0.9968
+  GT FG-PSNR                     28.6936    4.7108   10.0900   33.0454   29.9145
+  FG-SSIM                         0.9985    0.0006    0.9975    0.9994    0.9984
+  FG-PSNR                        33.7912    0.8907   32.3545   35.5316   33.6586
+  IoU (recon)                     0.0933    0.0205    0.0623    0.1343    0.0950
+  Topology Q                      0.9999    0.0002    0.9993    1.0000    1.0000
+  Topo Preservation               0.8654    0.1472    0.4584    1.0000    0.8652
+  Full PSNR                      24.0837    1.5603   21.0555   26.3074   24.4432
+  Full SSIM                       0.7026    0.0425    0.5961    0.7666    0.7149
+  Bytes                        30326.9500 5853.3364 18599.0000 41007.0000 30955.5000
+  Graph Components                6.0000    4.1593    2.0000   19.0000    5.5000
+  Graph Cycles                  175.6000   52.1617   54.0000  244.0000  185.0000
+  Graph Complexity               43.9633   28.5957    8.5000  119.5000   39.1833
+  Nodes                        3687.0500  759.6206 2136.0000 5176.0000 3667.5000
+  Edges                        3856.6500  796.9093 2184.0000 5347.0000 3858.0000
+  Total Edge Length            8454.0984 1845.9497 4839.9597 10799.3181 9116.4949
+  Mean Width (px)                 2.4724    0.1471    2.1876    2.6722    2.5191
+  Mean Curvature                  0.0985    0.0103    0.0690    0.1116    0.1009
+  Time (ms)                    22099.7633 4162.3881 16460.7279 29568.8617 21828.9105
+
+  WINS vs byte-matched JPEG (20 images):
+    GT-IoU          : 8/20 wins (40%)  mean Δ=-0.0034
+    GT-FG-SSIM      : 0/20 wins (0%)  mean Δ=-0.0061
+    GT-FG-PSNR      : 0/20 wins (0%)  mean Δ=-14.1865
+    FG-SSIM         : 0/20 wins (0%)  mean Δ=-0.0013
+    IoU             : 10/20 wins (50%)  mean Δ=-0.0029
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/cross_gt/stare/summary.txt
+Aggregate plots saved: results/paper/cross_gt/stare/aggregate_plots.png
+
+Done. All results in results/paper/cross_gt/stare/
+=== [23:51:03] cross_gt/drive
+Found 20 images in /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/drive/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/drive/labels
+Output: results/paper/cross_gt/drive
+Sample visualizations: 4
+Sample indices: [0, 3, 7, 8]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/20] 21  (0.0 img/s, ETA 0m)  ** SAMPLE **
+Image: (584, 565), type=dense (FG=11.4%, n_cc=39, mean_fg_int=0.58)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 116 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          13.0%   0.3816       4ms
+Frangi         0.0%   0.0000     718ms
+Meijering      2.9%   0.4013     644ms
+Learned        8.5% 1000000000.0000     290ms <<<
+
+Selected: Learned
+Nanograph: 4500 points (EP=61, JN=355, S=4084)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 614 branches traced, 4500/4500 nodes assigned, 0 orphans, 4694 edges, 7 components
+Graph: 4500 nodes, 4694 edges, 7 components
+FG residual: 7,971 bytes (91 ms)
+
+============================================================
+  RESULT (v5): 4700 pts, 32,458 bytes
+  vs raw pixels: 10x  vs PNG: 4.7x
+  PSNR=21.48  SSIM=0.6438  FG-PSNR=32.40  FG-SSIM=0.9978
+  Graph topology: 7 components, 201 cycles, 355 junctions, 61 endpoints
+  Segmentation: β₀=7, β₁=27
+  Structures: 7 -- {'branched': 2, 'curved': 3, 'ring': 1, 'linear': 1}
+  Total time: 16829 ms
+============================================================
+  Sample saved: results/paper/cross_gt/drive/samples/21.png
+  Bytes: 32,458  |  FG-SSIM: 0.9978  |  GT-IoU: 0.1103  |  Seg-F1: 0.7587  |  Topo-Q: 1.0000
+  [GRAPH] 388 branches traced, 4089/4089 nodes assigned, 0 orphans, 4175 edges, 13 components
+  [GRAPH] 497 branches traced, 3839/3839 nodes assigned, 0 orphans, 3970 edges, 12 components
+
+[4/20] 24  (0.1 img/s, ETA 5m)  ** SAMPLE **
+Image: (584, 565), type=dense (FG=13.5%, n_cc=49, mean_fg_int=0.60)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 98 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          13.7%   0.3761       3ms
+Frangi         0.0%   0.0000     672ms
+Meijering      4.4%   0.4024     600ms
+Learned       10.1% 1000000000.0000      27ms <<<
+
+Selected: Learned
+Nanograph: 4846 points (EP=79, JN=390, S=4377)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 662 branches traced, 4846/4846 nodes assigned, 0 orphans, 5037 edges, 6 components
+Graph: 4846 nodes, 5037 edges, 6 components
+FG residual: 9,269 bytes (94 ms)
+
+============================================================
+  RESULT (v5): 5046 pts, 35,601 bytes
+  vs raw pixels: 9x  vs PNG: 4.3x
+  PSNR=20.47  SSIM=0.6076  FG-PSNR=32.29  FG-SSIM=0.9974
+  Graph topology: 6 components, 197 cycles, 390 junctions, 79 endpoints
+  Segmentation: β₀=6, β₁=24
+  Structures: 6 -- {'branched': 2, 'curved': 2, 'ring': 1, 'punctate': 1}
+  Total time: 14425 ms
+============================================================
+  Sample saved: results/paper/cross_gt/drive/samples/24.png
+  Bytes: 35,601  |  FG-SSIM: 0.9974  |  GT-IoU: 0.1666  |  Seg-F1: 0.7787  |  Topo-Q: 1.0000
+  [GRAPH] 421 branches traced, 3301/3301 nodes assigned, 0 orphans, 3406 edges, 11 components
+  [GRAPH] 455 branches traced, 3488/3488 nodes assigned, 0 orphans, 3617 edges, 4 components
+  [GRAPH] 692 branches traced, 4787/4787 nodes assigned, 0 orphans, 4993 edges, 7 components
+
+[8/20] 28  (0.1 img/s, ETA 4m)  ** SAMPLE **
+Image: (584, 565), type=dense (FG=12.8%, n_cc=43, mean_fg_int=0.54)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 99 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          18.1%   0.3947       3ms
+Frangi         0.0%   0.0000     668ms
+Meijering      7.5%   0.4010     607ms
+Learned        9.3% 1000000000.0000      27ms <<<
+
+Selected: Learned
+Nanograph: 4405 points (EP=72, JN=323, S=4010)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 552 branches traced, 4405/4405 nodes assigned, 0 orphans, 4558 edges, 11 components
+Graph: 4405 nodes, 4561 edges, 8 components
+FG residual: 8,625 bytes (94 ms)
+
+============================================================
+  RESULT (v5): 4605 pts, 33,011 bytes
+  vs raw pixels: 10x  vs PNG: 4.7x
+  PSNR=22.97  SSIM=0.6460  FG-PSNR=32.02  FG-SSIM=0.9976
+  Graph topology: 8 components, 164 cycles, 323 junctions, 72 endpoints
+  Segmentation: β₀=11, β₁=22
+  Structures: 11 -- {'branched': 3, 'curved': 5, 'ring': 2, 'punctate': 1}
+  Total time: 13517 ms
+============================================================
+  Sample saved: results/paper/cross_gt/drive/samples/28.png
+  Bytes: 33,011  |  FG-SSIM: 0.9976  |  GT-IoU: 0.1448  |  Seg-F1: 0.7614  |  Topo-Q: 1.0000
+
+[9/20] 29  (0.1 img/s, ETA 3m)  ** SAMPLE **
+Image: (584, 565), type=sparse (FG=10.3%, n_cc=57, mean_fg_int=0.42)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 120 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          29.4%   0.4459       3ms
+Frangi         0.1%   0.2474     672ms
+Meijering     14.3%   0.4316     598ms
+Learned        8.3% 1000000000.0000      22ms <<<
+
+Selected: Learned
+Nanograph: 3099 points (EP=66, JN=350, S=2683)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 580 branches traced, 3099/3099 nodes assigned, 0 orphans, 3260 edges, 6 components
+Graph: 3099 nodes, 3261 edges, 5 components
+FG residual: 6,143 bytes (85 ms)
+
+============================================================
+  RESULT (v5): 3219 pts, 23,704 bytes
+  vs raw pixels: 14x  vs PNG: 6.2x
+  PSNR=27.67  SSIM=0.7652  FG-PSNR=34.09  FG-SSIM=0.9977
+  Graph topology: 5 components, 167 cycles, 350 junctions, 66 endpoints
+  Segmentation: β₀=6, β₁=22
+  Structures: 6 -- {'branched': 3, 'curved': 2, 'ring': 1}
+  Total time: 14429 ms
+============================================================
+  Sample saved: results/paper/cross_gt/drive/samples/29.png
+  Bytes: 23,704  |  FG-SSIM: 0.9977  |  GT-IoU: 0.1281  |  Seg-F1: 0.7701  |  Topo-Q: 1.0000
+  [GRAPH] 531 branches traced, 3218/3218 nodes assigned, 0 orphans, 3383 edges, 5 components
+  [GRAPH] 338 branches traced, 3633/3633 nodes assigned, 0 orphans, 3742 edges, 5 components
+  [GRAPH] 449 branches traced, 4242/4242 nodes assigned, 0 orphans, 4370 edges, 6 components
+  [GRAPH] 539 branches traced, 4208/4208 nodes assigned, 0 orphans, 4364 edges, 8 components
+  [GRAPH] 729 branches traced, 3641/3641 nodes assigned, 0 orphans, 3853 edges, 19 components
+  [GRAPH] 509 branches traced, 3482/3482 nodes assigned, 0 orphans, 3613 edges, 9 components
+  [GRAPH] 532 branches traced, 3584/3584 nodes assigned, 0 orphans, 3724 edges, 7 components
+  [GRAPH] 585 branches traced, 4351/4351 nodes assigned, 0 orphans, 4510 edges, 6 components
+  [GRAPH] 566 branches traced, 4717/4717 nodes assigned, 0 orphans, 4870 edges, 10 components
+  [GRAPH] 646 branches traced, 4510/4510 nodes assigned, 0 orphans, 4696 edges, 7 components
+  [GRAPH] 541 branches traced, 3161/3161 nodes assigned, 0 orphans, 3317 edges, 5 components
+
+CSV saved: results/paper/cross_gt/drive/metrics.csv
+TXT saved: results/paper/cross_gt/drive/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 20/20
+  Failures: 0
+  Total time: 344.5s  (17.22s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.1277    0.0194    0.0889    0.1666    0.1284
+  Seg IoU                         0.5969    0.0428    0.4652    0.6392    0.6111
+  Seg F1                          0.7466    0.0353    0.6350    0.7799    0.7586
+  Seg Precision                   0.7481    0.0533    0.6414    0.8347    0.7376
+  Seg Recall                      0.7494    0.0530    0.6065    0.8476    0.7617
+  GT FG-SSIM                      0.9946    0.0014    0.9914    0.9968    0.9949
+  GT FG-PSNR                     27.6866    1.6468   25.4063   31.7035   27.4683
+  FG-SSIM                         0.9978    0.0003    0.9970    0.9983    0.9978
+  FG-PSNR                        33.0359    0.8525   32.0074   34.9920   32.7698
+  IoU (recon)                     0.1188    0.0135    0.0820    0.1375    0.1207
+  Topology Q                      1.0000    0.0000    0.9998    1.0000    1.0000
+  Topo Preservation               0.9943    0.0248    0.8863    1.0003    1.0000
+  Full PSNR                      23.7013    2.1693   20.4713   27.6692   23.0730
+  Full SSIM                       0.6840    0.0483    0.6076    0.7703    0.6844
+  Bytes                        29159.0500 3802.9724 23152.0000 35601.0000 29144.5000
+  Graph Components                7.5000    2.7111    4.0000   14.0000    7.0000
+  Graph Cycles                  160.7500   33.3390   99.0000  231.0000  163.5000
+  Graph Complexity               23.9711    8.1427    8.2500   34.0000   24.9167
+  Nodes                        3955.0500  562.3478 3099.0000 4846.0000 3964.0000
+  Edges                        4108.3000  575.8224 3261.0000 5037.0000 4073.5000
+  Total Edge Length            7746.3960  752.0817 6170.5734 9118.5452 7751.7019
+  Mean Width (px)                 2.1384    0.0738    1.9675    2.2949    2.1324
+  Mean Curvature                  0.0815    0.0078    0.0626    0.0936    0.0806
+  Time (ms)                    15149.4448 1610.6914 11443.7032 18912.3466 15291.2755
+
+  WINS vs byte-matched JPEG (20 images):
+    GT-IoU          : 14/20 wins (70%)  mean Δ=+0.0015
+    GT-FG-SSIM      : 0/20 wins (0%)  mean Δ=-0.0052
+    GT-FG-PSNR      : 0/20 wins (0%)  mean Δ=-13.5613
+    FG-SSIM         : 0/20 wins (0%)  mean Δ=-0.0019
+    IoU             : 17/20 wins (85%)  mean Δ=+0.0029
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/cross_gt/drive/summary.txt
+Aggregate plots saved: results/paper/cross_gt/drive/aggregate_plots.png
+
+Done. All results in results/paper/cross_gt/drive/
+=== [23:56:51] cross_gt/epfl_mito
+Found 10 images in /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/epfl_mito/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/epfl_mito/labels
+Output: results/paper/cross_gt/epfl_mito
+Sample visualizations: 4
+Sample indices: [0, 1, 4, 9]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/10] slice000  (0.0 img/s, ETA 0m)  ** SAMPLE **
+Image: (768, 1024), type=sparse (FG=28.1%, n_cc=184, mean_fg_int=0.73)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 320 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          43.5%   0.3753      26ms
+Frangi         0.0%   0.0000    1861ms
+Meijering     31.4%   0.3736    1664ms
+Learned        7.8% 1000000000.0000     306ms <<<
+
+Selected: Learned
+Nanograph: 1482 points (EP=23, JN=1140, S=319)
+Background grid: 16×16 (6 ms)
+  [GRAPH] 1903 branches traced, 1482/1482 nodes assigned, 0 orphans, 2207 edges, 22 components
+Graph: 1480 nodes, 2207 edges, 20 components
+FG residual: 17,337 bytes (167 ms)
+
+============================================================
+  RESULT (v5): 1602 pts, 27,317 bytes
+  vs raw pixels: 29x  vs PNG: 21.1x
+  PSNR=19.73  SSIM=0.2755  FG-PSNR=27.43  FG-SSIM=0.9814
+  Graph topology: 20 components, 747 cycles, 1140 junctions, 21 endpoints
+  Segmentation: β₀=22, β₁=195
+  Structures: 22 -- {'ring': 19, 'punctate': 1, 'branched': 1, 'curved': 1}
+  Total time: 83282 ms
+============================================================
+  Sample saved: results/paper/cross_gt/epfl_mito/samples/slice000.png
+  Bytes: 27,317  |  FG-SSIM: 0.9814  |  GT-IoU: 0.0081  |  Seg-F1: 0.8990  |  Topo-Q: 0.8972
+
+[2/10] slice018  (0.0 img/s, ETA 13m)  ** SAMPLE **
+Image: (768, 1024), type=sparse (FG=28.6%, n_cc=194, mean_fg_int=0.73)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 394 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          44.9%   0.3948      24ms
+Frangi         0.0%   0.0000    1716ms
+Meijering     28.8%   0.3708    1537ms
+Learned        7.5% 1000000000.0000      33ms <<<
+
+Selected: Learned
+Nanograph: 1378 points (EP=24, JN=1001, S=353)
+Background grid: 16×16 (5 ms)
+  [GRAPH] 1674 branches traced, 1378/1378 nodes assigned, 0 orphans, 2007 edges, 22 components
+Graph: 1378 nodes, 2007 edges, 22 components
+FG residual: 16,689 bytes (158 ms)
+
+============================================================
+  RESULT (v5): 1498 pts, 25,923 bytes
+  vs raw pixels: 30x  vs PNG: 22.2x
+  PSNR=19.76  SSIM=0.2744  FG-PSNR=27.53  FG-SSIM=0.9817
+  Graph topology: 22 components, 651 cycles, 1001 junctions, 24 endpoints
+  Segmentation: β₀=22, β₁=177
+  Structures: 22 -- {'punctate': 4, 'ring': 17, 'branched': 1}
+  Total time: 69604 ms
+============================================================
+  Sample saved: results/paper/cross_gt/epfl_mito/samples/slice018.png
+  Bytes: 25,923  |  FG-SSIM: 0.9817  |  GT-IoU: 0.0080  |  Seg-F1: 0.8823  |  Topo-Q: 0.8900
+  [GRAPH] 1861 branches traced, 1320/1320 nodes assigned, 0 orphans, 2060 edges, 17 components
+  [GRAPH] 1837 branches traced, 1361/1361 nodes assigned, 0 orphans, 2086 edges, 20 components
+
+[5/10] slice072  (0.0 img/s, ETA 7m)  ** SAMPLE **
+Image: (768, 1024), type=sparse (FG=27.0%, n_cc=192, mean_fg_int=0.73)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 284 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          46.5%   0.3714      22ms
+Frangi         0.2%   0.3167    1817ms
+Meijering     45.4%   0.3510    1557ms
+Learned        4.9% 1000000000.0000      39ms <<<
+
+Selected: Learned
+Nanograph: 809 points (EP=11, JN=696, S=102)
+Background grid: 16×16 (5 ms)
+  [GRAPH] 1166 branches traced, 809/809 nodes assigned, 0 orphans, 1264 edges, 16 components
+Graph: 807 nodes, 1261 edges, 15 components
+FG residual: 11,338 bytes (126 ms)
+
+============================================================
+  RESULT (v5): 929 pts, 17,021 bytes
+  vs raw pixels: 46x  vs PNG: 33.7x
+  PSNR=19.89  SSIM=0.2687  FG-PSNR=27.50  FG-SSIM=0.9879
+  Graph topology: 15 components, 469 cycles, 694 junctions, 11 endpoints
+  Segmentation: β₀=16, β₁=121
+  Structures: 16 -- {'branched': 2, 'ring': 14}
+  Total time: 44670 ms
+============================================================
+  Sample saved: results/paper/cross_gt/epfl_mito/samples/slice072.png
+  Bytes: 17,021  |  FG-SSIM: 0.9879  |  GT-IoU: 0.0035  |  Seg-F1: 0.9155  |  Topo-Q: 0.8218
+  [GRAPH] 907 branches traced, 580/580 nodes assigned, 0 orphans, 938 edges, 9 components
+  [GRAPH] 672 branches traced, 556/556 nodes assigned, 0 orphans, 815 edges, 14 components
+  [GRAPH] 1041 branches traced, 746/746 nodes assigned, 0 orphans, 1147 edges, 11 components
+  [GRAPH] 989 branches traced, 748/748 nodes assigned, 0 orphans, 1135 edges, 12 components
+
+[10/10] slice164  (0.0 img/s, ETA 1m)  ** SAMPLE **
+Image: (768, 1024), type=sparse (FG=29.8%, n_cc=199, mean_fg_int=0.75)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 275 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          56.5%   0.3959      20ms
+Frangi         0.1%   0.3156    1741ms
+Meijering     49.3%   0.4081    1901ms
+Learned        3.0% 1000000000.0000      53ms <<<
+
+Selected: Learned
+Nanograph: 538 points (EP=8, JN=308, S=222)
+Background grid: 16×16 (5 ms)
+  [GRAPH] 521 branches traced, 538/538 nodes assigned, 0 orphans, 742 edges, 8 components
+Graph: 538 nodes, 742 edges, 8 components
+FG residual: 6,746 bytes (113 ms)
+
+============================================================
+  RESULT (v5): 658 pts, 10,755 bytes
+  vs raw pixels: 73x  vs PNG: 53.5x
+  PSNR=19.45  SSIM=0.2409  FG-PSNR=27.97  FG-SSIM=0.9942
+  Graph topology: 8 components, 212 cycles, 308 junctions, 8 endpoints
+  Segmentation: β₀=8, β₁=51
+  Structures: 8 -- {'ring': 7, 'punctate': 1}
+  Total time: 66289 ms
+============================================================
+  Sample saved: results/paper/cross_gt/epfl_mito/samples/slice164.png
+  Bytes: 10,755  |  FG-SSIM: 0.9942  |  GT-IoU: 0.0023  |  Seg-F1: 0.8195  |  Topo-Q: 0.8803
+
+CSV saved: results/paper/cross_gt/epfl_mito/metrics.csv
+TXT saved: results/paper/cross_gt/epfl_mito/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 10/10
+  Failures: 0
+  Total time: 597.9s  (59.79s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.0049    0.0024    0.0013    0.0081    0.0046
+  Seg IoU                         0.8079    0.0700    0.6701    0.8805    0.8210
+  Seg F1                          0.8920    0.0445    0.8025    0.9364    0.9017
+  Seg Precision                   0.9271    0.0192    0.8984    0.9715    0.9266
+  Seg Recall                      0.8629    0.0767    0.7152    0.9441    0.8741
+  GT FG-SSIM                      0.9798    0.0087    0.9665    0.9901    0.9841
+  GT FG-PSNR                     24.3675    0.6224   22.9772   25.2810   24.5010
+  FG-SSIM                         0.9875    0.0046    0.9814    0.9942    0.9884
+  FG-PSNR                        27.5269    0.2101   27.2326   27.9663   27.5132
+  IoU (recon)                     0.0048    0.0027    0.0015    0.0101    0.0042
+  Topology Q                      0.8746    0.0449    0.7646    0.9279    0.8923
+  Topo Preservation               0.5313    0.2633    0.2563    0.9879    0.5025
+  Full PSNR                      19.8008    0.1562   19.4501   20.0765   19.8299
+  Full SSIM                       0.2686    0.0107    0.2409    0.2788    0.2733
+  Bytes                        18500.0000 6058.0358 10755.0000 27317.0000 16466.0000
+  Graph Components               14.5000    4.5880    8.0000   22.0000   13.5000
+  Graph Cycles                  503.2000  195.1537  212.0000  757.0000  440.5000
+  Graph Complexity               34.2680    6.4551   22.7500   44.5294   35.3000
+  Nodes                         951.4000  365.3265  538.0000 1480.0000  777.5000
+  Edges                        1440.1000  552.3621  742.0000 2207.0000 1204.0000
+  Total Edge Length            2518.9502 1002.9949 1261.3616 3884.1248 2099.2100
+  Mean Width (px)                 3.5782    1.2543    2.3558    7.1296    3.2575
+  Mean Curvature                  0.0721    0.0043    0.0631    0.0778    0.0730
+  Time (ms)                    55993.7863 13725.9800 33254.0233 83282.3489 56345.7574
+
+  WINS vs byte-matched JPEG (10 images):
+    GT-IoU          : 8/10 wins (80%)  mean Δ=+0.0026
+    GT-FG-SSIM      : 7/10 wins (70%)  mean Δ=+0.0028
+    GT-FG-PSNR      : 1/10 wins (10%)  mean Δ=-1.2979
+    FG-SSIM         : 8/10 wins (80%)  mean Δ=+0.0052
+    IoU             : 8/10 wins (80%)  mean Δ=+0.0023
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/cross_gt/epfl_mito/summary.txt
+Aggregate plots saved: results/paper/cross_gt/epfl_mito/aggregate_plots.png
+
+Done. All results in results/paper/cross_gt/epfl_mito/
+=== [00:06:51] cross_gt/microtubules
+Found 66 images in /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/microtubules/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/microtubules/labels
+Output: results/paper/cross_gt/microtubules
+Sample visualizations: 4
+Sample indices: [3, 14, 31, 35]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/66] irm_in_vitro_microtubules_0  (0.0 img/s, ETA 0m)
+  [GRAPH] 222 branches traced, 1942/1942 nodes assigned, 0 orphans, 1952 edges, 40 components
+  [GRAPH] 5 branches traced, 147/147 nodes assigned, 0 orphans, 142 edges, 5 components
+  [GRAPH] 33 branches traced, 875/875 nodes assigned, 0 orphans, 848 edges, 28 components
+
+[4/66] irm_in_vitro_microtubules_11  (0.1 img/s, ETA 8m)  ** SAMPLE **
+Image: (512, 512), type=sparse (FG=4.9%, n_cc=66, mean_fg_int=0.87)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 96 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          79.1%   0.3832       3ms
+Frangi         2.8%   0.3407     569ms
+Meijering     94.9%   0.2457     516ms
+Learned        3.4% 1000000000.0000      18ms <<<
+
+Selected: Learned
+Nanograph: 1009 points (EP=80, JN=12, S=917)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 59 branches traced, 1009/1009 nodes assigned, 0 orphans, 976 edges, 38 components
+Graph: 1009 nodes, 976 edges, 38 components
+FG residual: 6,946 bytes (65 ms)
+
+============================================================
+  RESULT (v5): 1129 pts, 13,316 bytes
+  vs raw pixels: 20x  vs PNG: 15.9x
+  PSNR=19.29  SSIM=0.1659  FG-PSNR=24.75  FG-SSIM=0.9991
+  Graph topology: 38 components, 5 cycles, 12 junctions, 80 endpoints
+  Segmentation: β₀=38, β₁=0
+  Structures: 38 -- {'curved': 26, 'punctate': 6, 'branched': 4, 'linear': 2}
+  Total time: 5656 ms
+============================================================
+  Sample saved: results/paper/cross_gt/microtubules/samples/irm_in_vitro_microtubules_11.png
+  Bytes: 13,316  |  FG-SSIM: 0.9991  |  GT-IoU: 0.0155  |  Seg-F1: 0.6625  |  Topo-Q: 0.5867
+  [GRAPH] 11 branches traced, 356/356 nodes assigned, 0 orphans, 345 edges, 11 components
+  [GRAPH] 22 branches traced, 497/497 nodes assigned, 0 orphans, 476 edges, 21 components
+  [GRAPH] 33 branches traced, 551/551 nodes assigned, 0 orphans, 533 edges, 21 components
+  [GRAPH] 77 branches traced, 1226/1226 nodes assigned, 0 orphans, 1200 edges, 36 components
+  [GRAPH] 109 branches traced, 1386/1386 nodes assigned, 0 orphans, 1381 edges, 27 components
+  [GRAPH] 15 branches traced, 418/418 nodes assigned, 0 orphans, 405 edges, 13 components
+  [GRAPH] 10 branches traced, 273/273 nodes assigned, 0 orphans, 263 edges, 10 components
+  [GRAPH] 21 branches traced, 578/578 nodes assigned, 0 orphans, 566 edges, 14 components
+  [GRAPH] 5 branches traced, 174/174 nodes assigned, 0 orphans, 169 edges, 5 components
+  [GRAPH] 3 branches traced, 133/133 nodes assigned, 0 orphans, 130 edges, 3 components
+
+[15/66] irm_in_vitro_microtubules_21  (0.2 img/s, ETA 5m)  ** SAMPLE **
+Image: (512, 512), type=sparse (FG=0.5%, n_cc=7, mean_fg_int=0.86)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 99 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          94.1%   0.3387       2ms
+Frangi        18.9%   0.3311     563ms
+Meijering     99.6%   0.2109     497ms
+Learned        0.7% 1000000000.0000      16ms <<<
+
+Selected: Learned
+Nanograph: 229 points (EP=15, JN=4, S=210)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 14 branches traced, 229/229 nodes assigned, 0 orphans, 224 edges, 7 components
+Graph: 229 nodes, 224 edges, 7 components
+FG residual: 1,468 bytes (25 ms)
+
+============================================================
+  RESULT (v5): 349 pts, 3,425 bytes
+  vs raw pixels: 77x  vs PNG: 60.9x
+  PSNR=20.93  SSIM=0.1438  FG-PSNR=24.67  FG-SSIM=0.9998
+  Graph topology: 7 components, 2 cycles, 4 junctions, 15 endpoints
+  Segmentation: β₀=7, β₁=0
+  Structures: 7 -- {'punctate': 2, 'curved': 4, 'branched': 1}
+  Total time: 3672 ms
+============================================================
+  Sample saved: results/paper/cross_gt/microtubules/samples/irm_in_vitro_microtubules_21.png
+  Bytes: 3,425  |  FG-SSIM: 0.9998  |  GT-IoU: 0.0041  |  Seg-F1: 0.6994  |  Topo-Q: 0.5934
+  [GRAPH] 4 branches traced, 99/99 nodes assigned, 0 orphans, 95 edges, 4 components
+  [GRAPH] 5 branches traced, 169/169 nodes assigned, 0 orphans, 164 edges, 5 components
+  [GRAPH] 5 branches traced, 161/161 nodes assigned, 0 orphans, 156 edges, 5 components
+  [GRAPH] 8 branches traced, 316/316 nodes assigned, 0 orphans, 308 edges, 8 components
+  [GRAPH] 5 branches traced, 143/143 nodes assigned, 0 orphans, 138 edges, 5 components
+  [GRAPH] 7 branches traced, 299/299 nodes assigned, 0 orphans, 292 edges, 7 components
+  [GRAPH] 8 branches traced, 212/212 nodes assigned, 0 orphans, 204 edges, 8 components
+  [GRAPH] 117 branches traced, 1672/1672 nodes assigned, 0 orphans, 1665 edges, 31 components
+  [GRAPH] 101 branches traced, 1673/1673 nodes assigned, 0 orphans, 1651 edges, 38 components
+  [GRAPH] 3 branches traced, 84/84 nodes assigned, 0 orphans, 81 edges, 3 components
+  [GRAPH] 4 branches traced, 90/90 nodes assigned, 0 orphans, 86 edges, 4 components
+  [GRAPH] 129 branches traced, 1592/1592 nodes assigned, 0 orphans, 1589 edges, 30 components
+  [GRAPH] 24 branches traced, 538/538 nodes assigned, 0 orphans, 524 edges, 16 components
+  [GRAPH] 36 branches traced, 611/611 nodes assigned, 0 orphans, 600 edges, 16 components
+  [GRAPH] 65 branches traced, 950/950 nodes assigned, 0 orphans, 937 edges, 24 components
+  [GRAPH] 8 branches traced, 254/254 nodes assigned, 0 orphans, 246 edges, 8 components
+
+[32/66] irm_in_vitro_microtubules_37  (0.2 img/s, ETA 3m)  ** SAMPLE **
+Image: (512, 512), type=sparse (FG=4.1%, n_cc=54, mean_fg_int=0.87)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 95 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          98.9%   0.3483       2ms
+Frangi        22.0%   0.3300     557ms
+Meijering     99.6%   0.2106     492ms
+Learned        1.2% 1000000000.0000      21ms <<<
+
+Selected: Learned
+Nanograph: 459 points (EP=19, JN=1, S=439)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 11 branches traced, 459/459 nodes assigned, 0 orphans, 449 edges, 10 components
+Graph: 459 nodes, 449 edges, 10 components
+FG residual: 2,737 bytes (47 ms)
+
+============================================================
+  RESULT (v5): 579 pts, 5,964 bytes
+  vs raw pixels: 44x  vs PNG: 33.0x
+  PSNR=21.77  SSIM=0.1882  FG-PSNR=25.84  FG-SSIM=0.9998
+  Graph topology: 10 components, 0 cycles, 1 junctions, 19 endpoints
+  Segmentation: β₀=10, β₁=0
+  Structures: 10 -- {'branched': 1, 'curved': 8, 'linear': 1}
+  Total time: 4216 ms
+============================================================
+  Sample saved: results/paper/cross_gt/microtubules/samples/irm_in_vitro_microtubules_37.png
+  Bytes: 5,964  |  FG-SSIM: 0.9998  |  GT-IoU: 0.0044  |  Seg-F1: 0.7040  |  Topo-Q: 0.6994
+  [GRAPH] 5 branches traced, 171/171 nodes assigned, 0 orphans, 166 edges, 5 components
+  [GRAPH] 6 branches traced, 245/245 nodes assigned, 0 orphans, 239 edges, 6 components
+  [GRAPH] 20 branches traced, 444/444 nodes assigned, 0 orphans, 433 edges, 13 components
+
+[36/66] irm_in_vitro_microtubules_40  (0.2 img/s, ETA 3m)  ** SAMPLE **
+Image: (512, 512), type=sparse (FG=0.0%, n_cc=0, mean_fg_int=0.00)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 92 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          96.4%   0.3426       2ms
+Frangi        26.1%   0.3329     560ms
+Meijering     99.9%   0.2138     493ms
+Learned        0.5% 1000000000.0000      20ms <<<
+
+Selected: Learned
+Nanograph: 206 points (EP=10, JN=0, S=196)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 5 branches traced, 206/206 nodes assigned, 0 orphans, 201 edges, 5 components
+Graph: 206 nodes, 201 edges, 5 components
+FG residual: 1,173 bytes (32 ms)
+
+============================================================
+  RESULT (v5): 326 pts, 2,957 bytes
+  vs raw pixels: 89x  vs PNG: 73.5x
+  PSNR=19.49  SSIM=0.0984  FG-PSNR=24.21  FG-SSIM=0.9999
+  Graph topology: 5 components, 0 cycles, 0 junctions, 10 endpoints
+  Segmentation: β₀=5, β₁=0
+  Structures: 5 -- {'curved': 4, 'linear': 1}
+  Total time: 3882 ms
+============================================================
+  Sample saved: results/paper/cross_gt/microtubules/samples/irm_in_vitro_microtubules_40.png
+  Bytes: 2,957  |  FG-SSIM: 0.9999  |  GT-IoU: 0.0034  |  Seg-F1: 0.6665  |  Topo-Q: 0.6451
+  [GRAPH] 16 branches traced, 401/401 nodes assigned, 0 orphans, 391 edges, 12 components
+  [GRAPH] 25 branches traced, 437/437 nodes assigned, 0 orphans, 418 edges, 20 components
+  [GRAPH] 14 branches traced, 395/395 nodes assigned, 0 orphans, 381 edges, 14 components
+  [GRAPH] 4 branches traced, 115/115 nodes assigned, 0 orphans, 111 edges, 4 components
+  [GRAPH] 1 branches traced, 52/52 nodes assigned, 0 orphans, 51 edges, 1 components
+  [GRAPH] 2 branches traced, 75/75 nodes assigned, 0 orphans, 73 edges, 2 components
+  [GRAPH] 1 branches traced, 74/74 nodes assigned, 0 orphans, 73 edges, 1 components
+  [GRAPH] 17 branches traced, 437/437 nodes assigned, 0 orphans, 420 edges, 17 components
+  [GRAPH] 9 branches traced, 245/245 nodes assigned, 0 orphans, 237 edges, 8 components
+  [GRAPH] 50 branches traced, 799/799 nodes assigned, 0 orphans, 797 edges, 13 components
+  [GRAPH] 2 branches traced, 61/61 nodes assigned, 0 orphans, 59 edges, 2 components
+  [GRAPH] 16 branches traced, 374/374 nodes assigned, 0 orphans, 366 edges, 10 components
+  [GRAPH] 10 branches traced, 288/288 nodes assigned, 0 orphans, 278 edges, 10 components
+  [GRAPH] 35 branches traced, 900/900 nodes assigned, 0 orphans, 886 edges, 18 components
+
+[51/66] irm_in_vitro_microtubules_54  (0.2 img/s, ETA 1m)
+  [GRAPH] 9 branches traced, 206/206 nodes assigned, 0 orphans, 197 edges, 9 components
+  [GRAPH] 15 branches traced, 255/255 nodes assigned, 0 orphans, 248 edges, 9 components
+  [GRAPH] 12 branches traced, 324/324 nodes assigned, 0 orphans, 314 edges, 10 components
+  [GRAPH] 17 branches traced, 209/209 nodes assigned, 0 orphans, 208 edges, 5 components
+  [GRAPH] 4 branches traced, 79/79 nodes assigned, 0 orphans, 75 edges, 4 components
+  [GRAPH] 30 branches traced, 401/401 nodes assigned, 0 orphans, 388 edges, 17 components
+  [GRAPH] 64 branches traced, 807/807 nodes assigned, 0 orphans, 797 edges, 24 components
+  [GRAPH] 28 branches traced, 427/427 nodes assigned, 0 orphans, 415 edges, 16 components
+  [GRAPH] 29 branches traced, 406/406 nodes assigned, 0 orphans, 392 edges, 17 components
+  [GRAPH] 60 branches traced, 890/890 nodes assigned, 0 orphans, 884 edges, 18 components
+  [GRAPH] 12 branches traced, 398/398 nodes assigned, 0 orphans, 386 edges, 12 components
+  [GRAPH] 54 branches traced, 546/546 nodes assigned, 0 orphans, 542 edges, 18 components
+  [GRAPH] 21 branches traced, 398/398 nodes assigned, 0 orphans, 383 edges, 16 components
+  [GRAPH] 15 branches traced, 190/190 nodes assigned, 0 orphans, 183 edges, 9 components
+  [GRAPH] 49 branches traced, 554/554 nodes assigned, 0 orphans, 545 edges, 18 components
+  [GRAPH] 36 branches traced, 856/856 nodes assigned, 0 orphans, 847 edges, 16 components
+
+CSV saved: results/paper/cross_gt/microtubules/metrics.csv
+TXT saved: results/paper/cross_gt/microtubules/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 66/66
+  Failures: 0
+  Total time: 358.7s  (5.43s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.0079    0.0064    0.0012    0.0310    0.0054
+  Seg IoU                         0.5370    0.0955    0.2443    0.7917    0.5511
+  Seg F1                          0.6935    0.0848    0.3927    0.8837    0.7106
+  Seg Precision                   0.7826    0.0804    0.5004    0.9447    0.7924
+  Seg Recall                      0.6416    0.1351    0.2975    0.8753    0.6395
+  GT FG-SSIM                      0.9972    0.0023    0.9898    0.9998    0.9978
+  GT FG-PSNR                     15.7617    2.5103   11.0741   20.6973   16.1024
+  FG-SSIM                         0.9994    0.0007    0.9960    1.0000    0.9997
+  FG-PSNR                        22.7300    2.1784   19.4314   27.8659   22.4520
+  IoU (recon)                     0.0056    0.0063    0.0002    0.0316    0.0032
+  Topology Q                      0.6205    0.1157    0.4084    0.8755    0.5956
+  Topo Preservation               1.4458    0.7082    0.3291    3.5715    1.3009
+  Full PSNR                      18.4618    2.1086   14.6064   24.4456   18.3187
+  Full SSIM                       0.1126    0.0651    0.0312    0.4230    0.1024
+  Bytes                        6877.7879 5675.8849 1150.0000 27669.0000 5420.0000
+  Graph Components               13.1212    9.3233    1.0000   39.0000   10.5000
+  Graph Cycles                    4.2121    8.3021    0.0000   50.0000    0.0000
+  Graph Complexity                0.1958    0.2966    0.0000    1.2821    0.0000
+  Nodes                         481.5303  427.3917   52.0000 1942.0000  384.5000
+  Edges                         472.6212  426.1688   51.0000 1953.0000  374.0000
+  Total Edge Length             874.2051  962.3146   59.2426 4649.5819  585.6968
+  Mean Width (px)                 2.5800    0.0993    2.3687    2.8509    2.5686
+  Mean Curvature                  0.0436    0.0224    0.0045    0.1094    0.0373
+  Time (ms)                    4354.6090  981.1817 2926.4174 9511.2011 4171.5529
+
+  WINS vs byte-matched JPEG (66 images):
+    GT-IoU          : 31/66 wins (47%)  mean Δ=+0.0014
+    GT-FG-SSIM      : 11/66 wins (17%)  mean Δ=-0.0006
+    GT-FG-PSNR      : 9/66 wins (14%)  mean Δ=-1.1202
+    FG-SSIM         : 36/66 wins (55%)  mean Δ=+0.0007
+    IoU             : 31/66 wins (47%)  mean Δ=+0.0007
+
+  SEGMENTATION FAILURES (seg_iou < 0.3): 2
+    - irm_in_vitro_microtubules_2.png
+    - irm_in_vitro_microtubules_58.png
+
+Summary saved: results/paper/cross_gt/microtubules/summary.txt
+Aggregate plots saved: results/paper/cross_gt/microtubules/aggregate_plots.png
+
+Done. All results in results/paper/cross_gt/microtubules/
+=== [00:12:53] mito/temporal_clip
+Found 73 images in /mnt/nas1/nba055-2/idea_1/mito_aaron/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/mito_aaron/masks
+Output: results/paper/mito/temporal_clip
+Sample visualizations: 4
+Sample indices: [3, 14, 31, 35]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/73] 1_1  (0.0 img/s, ETA 0m)
+  [GRAPH] 5 branches traced, 260/260 nodes assigned, 0 orphans, 255 edges, 5 components
+  [GRAPH] 11 branches traced, 263/263 nodes assigned, 0 orphans, 260 edges, 5 components
+  [GRAPH] 10 branches traced, 267/267 nodes assigned, 0 orphans, 263 edges, 5 components
+
+[4/73] 1_12  (0.3 img/s, ETA 5m)  ** SAMPLE **
+Image: (285, 285), type=sparse (FG=8.7%, n_cc=8, mean_fg_int=0.61)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 34 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           8.9%   0.5718       1ms <<<
+Frangi         0.0%   0.0000     151ms
+Meijering      7.7%   0.5668     132ms
+Learned        7.1%   0.5458       8ms
+
+Selected: Otsu
+Nanograph: 265 points (EP=11, JN=3, S=251)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 10 branches traced, 265/265 nodes assigned, 0 orphans, 261 edges, 5 components
+Graph: 263 nodes, 260 edges, 4 components
+FG residual: 1,840 bytes (14 ms)
+
+============================================================
+  RESULT (v5): 385 pts, 3,902 bytes
+  vs raw pixels: 21x  vs PNG: 2.9x
+  PSNR=33.36  SSIM=0.8966  FG-PSNR=36.11  FG-SSIM=0.9987
+  Graph topology: 4 components, 1 cycles, 3 junctions, 9 endpoints
+  Segmentation: β₀=5, β₁=0
+  Structures: 5 -- {'punctate': 2, 'linear': 2, 'branched': 1}
+  Total time: 2987 ms
+============================================================
+  Sample saved: results/paper/mito/temporal_clip/samples/1_12.png
+  Bytes: 3,902  |  FG-SSIM: 0.9987  |  GT-IoU: 0.8132  |  Seg-F1: 0.8852  |  Topo-Q: 0.7339
+  [GRAPH] 12 branches traced, 257/257 nodes assigned, 0 orphans, 254 edges, 5 components
+  [GRAPH] 8 branches traced, 243/243 nodes assigned, 0 orphans, 239 edges, 5 components
+  [GRAPH] 5 branches traced, 259/259 nodes assigned, 0 orphans, 254 edges, 5 components
+  [GRAPH] 10 branches traced, 253/253 nodes assigned, 0 orphans, 249 edges, 5 components
+  [GRAPH] 15 branches traced, 241/241 nodes assigned, 0 orphans, 239 edges, 5 components
+  [GRAPH] 12 branches traced, 240/240 nodes assigned, 0 orphans, 236 edges, 5 components
+  [GRAPH] 11 branches traced, 246/246 nodes assigned, 0 orphans, 243 edges, 5 components
+  [GRAPH] 8 branches traced, 259/259 nodes assigned, 0 orphans, 255 edges, 5 components
+  [GRAPH] 11 branches traced, 249/249 nodes assigned, 0 orphans, 246 edges, 5 components
+  [GRAPH] 5 branches traced, 258/258 nodes assigned, 0 orphans, 253 edges, 5 components
+
+[15/73] 1_22  (0.3 img/s, ETA 3m)  ** SAMPLE **
+Image: (285, 285), type=sparse (FG=8.7%, n_cc=8, mean_fg_int=0.63)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 34 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           8.6%   0.5804       1ms <<<
+Frangi         0.0%   0.0000     152ms
+Meijering      7.3%   0.5731     129ms
+Learned        6.5%   0.5690       7ms
+
+Selected: Otsu
+Nanograph: 260 points (EP=10, JN=0, S=250)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 5 branches traced, 260/260 nodes assigned, 0 orphans, 255 edges, 5 components
+Graph: 258 nodes, 254 edges, 4 components
+FG residual: 1,953 bytes (16 ms)
+
+============================================================
+  RESULT (v5): 410 pts, 4,130 bytes
+  vs raw pixels: 20x  vs PNG: 2.8x
+  PSNR=32.91  SSIM=0.8973  FG-PSNR=35.46  FG-SSIM=0.9988
+  Graph topology: 4 components, 0 cycles, 0 junctions, 8 endpoints
+  Segmentation: β₀=5, β₁=0
+  Structures: 5 -- {'punctate': 4, 'linear': 1}
+  Total time: 2777 ms
+============================================================
+  Sample saved: results/paper/mito/temporal_clip/samples/1_22.png
+  Bytes: 4,130  |  FG-SSIM: 0.9988  |  GT-IoU: 0.8012  |  Seg-F1: 0.8849  |  Topo-Q: 0.7220
+  [GRAPH] 14 branches traced, 250/250 nodes assigned, 0 orphans, 248 edges, 5 components
+  [GRAPH] 16 branches traced, 260/260 nodes assigned, 0 orphans, 259 edges, 5 components
+  [GRAPH] 11 branches traced, 261/261 nodes assigned, 0 orphans, 258 edges, 5 components
+  [GRAPH] 18 branches traced, 257/257 nodes assigned, 0 orphans, 256 edges, 5 components
+  [GRAPH] 5 branches traced, 243/243 nodes assigned, 0 orphans, 238 edges, 5 components
+  [GRAPH] 11 branches traced, 252/252 nodes assigned, 0 orphans, 249 edges, 5 components
+  [GRAPH] 12 branches traced, 260/260 nodes assigned, 0 orphans, 257 edges, 5 components
+  [GRAPH] 5 branches traced, 260/260 nodes assigned, 0 orphans, 255 edges, 5 components
+  [GRAPH] 11 branches traced, 258/258 nodes assigned, 0 orphans, 255 edges, 5 components
+  [GRAPH] 7 branches traced, 247/247 nodes assigned, 0 orphans, 240 edges, 7 components
+  [GRAPH] 8 branches traced, 233/233 nodes assigned, 0 orphans, 226 edges, 7 components
+  [GRAPH] 7 branches traced, 252/252 nodes assigned, 0 orphans, 245 edges, 7 components
+  [GRAPH] 7 branches traced, 233/233 nodes assigned, 0 orphans, 226 edges, 7 components
+  [GRAPH] 6 branches traced, 224/224 nodes assigned, 0 orphans, 218 edges, 6 components
+  [GRAPH] 7 branches traced, 238/238 nodes assigned, 0 orphans, 231 edges, 7 components
+  [GRAPH] 6 branches traced, 237/237 nodes assigned, 0 orphans, 231 edges, 6 components
+
+[32/73] 1_38  (0.3 img/s, ETA 3m)  ** SAMPLE **
+Image: (285, 285), type=sparse (FG=8.0%, n_cc=8, mean_fg_int=0.58)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 34 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           7.8%   0.5313       1ms
+Frangi         0.0%   0.0000     155ms
+Meijering      6.1%   0.5435     135ms <<<
+Learned        7.2%   0.5026       5ms
+
+Selected: Meijering
+Nanograph: 226 points (EP=14, JN=8, S=204)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 19 branches traced, 226/226 nodes assigned, 0 orphans, 223 edges, 7 components
+Graph: 224 nodes, 222 edges, 6 components
+FG residual: 1,645 bytes (15 ms)
+
+============================================================
+  RESULT (v5): 436 pts, 3,934 bytes
+  vs raw pixels: 21x  vs PNG: 2.7x
+  PSNR=33.21  SSIM=0.9038  FG-PSNR=33.80  FG-SSIM=0.9987
+  Graph topology: 6 components, 4 cycles, 8 junctions, 12 endpoints
+  Segmentation: β₀=7, β₁=0
+  Structures: 7 -- {'punctate': 4, 'branched': 1, 'linear': 2}
+  Total time: 3541 ms
+============================================================
+  Sample saved: results/paper/mito/temporal_clip/samples/1_38.png
+  Bytes: 3,934  |  FG-SSIM: 0.9987  |  GT-IoU: 0.7118  |  Seg-F1: 0.8621  |  Topo-Q: 0.5744
+  [GRAPH] 6 branches traced, 212/212 nodes assigned, 0 orphans, 206 edges, 6 components
+  [GRAPH] 5 branches traced, 268/268 nodes assigned, 0 orphans, 263 edges, 5 components
+  [GRAPH] 12 branches traced, 200/200 nodes assigned, 0 orphans, 196 edges, 6 components
+
+[36/73] 1_41  (0.3 img/s, ETA 2m)  ** SAMPLE **
+Image: (285, 285), type=sparse (FG=7.5%, n_cc=5, mean_fg_int=0.56)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 34 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           7.3%   0.5207       1ms
+Frangi         0.0%   0.0000     156ms
+Meijering      5.7%   0.5370     135ms <<<
+Learned        7.0%   0.4987       6ms
+
+Selected: Meijering
+Nanograph: 200 points (EP=12, JN=0, S=188)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 6 branches traced, 200/200 nodes assigned, 0 orphans, 194 edges, 6 components
+Graph: 198 nodes, 193 edges, 5 components
+FG residual: 1,557 bytes (14 ms)
+
+============================================================
+  RESULT (v5): 320 pts, 3,299 bytes
+  vs raw pixels: 25x  vs PNG: 3.0x
+  PSNR=34.23  SSIM=0.9088  FG-PSNR=33.78  FG-SSIM=0.9986
+  Graph topology: 5 components, 0 cycles, 0 junctions, 10 endpoints
+  Segmentation: β₀=6, β₁=0
+  Structures: 6 -- {'punctate': 4, 'linear': 2}
+  Total time: 2565 ms
+============================================================
+  Sample saved: results/paper/mito/temporal_clip/samples/1_41.png
+  Bytes: 3,299  |  FG-SSIM: 0.9986  |  GT-IoU: 0.7008  |  Seg-F1: 0.8542  |  Topo-Q: 0.5697
+  [GRAPH] 7 branches traced, 210/210 nodes assigned, 0 orphans, 203 edges, 7 components
+  [GRAPH] 6 branches traced, 210/210 nodes assigned, 0 orphans, 204 edges, 6 components
+  [GRAPH] 7 branches traced, 210/210 nodes assigned, 0 orphans, 203 edges, 7 components
+  [GRAPH] 6 branches traced, 211/211 nodes assigned, 0 orphans, 205 edges, 6 components
+  [GRAPH] 7 branches traced, 214/214 nodes assigned, 0 orphans, 207 edges, 7 components
+  [GRAPH] 7 branches traced, 230/230 nodes assigned, 0 orphans, 223 edges, 7 components
+  [GRAPH] 6 branches traced, 212/212 nodes assigned, 0 orphans, 206 edges, 6 components
+  [GRAPH] 7 branches traced, 214/214 nodes assigned, 0 orphans, 207 edges, 7 components
+  [GRAPH] 5 branches traced, 274/274 nodes assigned, 0 orphans, 269 edges, 5 components
+  [GRAPH] 7 branches traced, 212/212 nodes assigned, 0 orphans, 205 edges, 7 components
+  [GRAPH] 6 branches traced, 229/229 nodes assigned, 0 orphans, 223 edges, 6 components
+  [GRAPH] 8 branches traced, 216/216 nodes assigned, 0 orphans, 208 edges, 8 components
+  [GRAPH] 8 branches traced, 199/199 nodes assigned, 0 orphans, 191 edges, 8 components
+  [GRAPH] 8 branches traced, 197/197 nodes assigned, 0 orphans, 189 edges, 8 components
+
+[51/73] 1_55  (0.3 img/s, ETA 1m)
+  [GRAPH] 8 branches traced, 180/180 nodes assigned, 0 orphans, 172 edges, 8 components
+  [GRAPH] 8 branches traced, 203/203 nodes assigned, 0 orphans, 195 edges, 8 components
+  [GRAPH] 8 branches traced, 177/177 nodes assigned, 0 orphans, 169 edges, 8 components
+  [GRAPH] 8 branches traced, 168/168 nodes assigned, 0 orphans, 160 edges, 8 components
+  [GRAPH] 8 branches traced, 183/183 nodes assigned, 0 orphans, 175 edges, 8 components
+  [GRAPH] 11 branches traced, 256/256 nodes assigned, 0 orphans, 253 edges, 5 components
+  [GRAPH] 7 branches traced, 181/181 nodes assigned, 0 orphans, 174 edges, 7 components
+  [GRAPH] 8 branches traced, 199/199 nodes assigned, 0 orphans, 191 edges, 8 components
+  [GRAPH] 13 branches traced, 196/196 nodes assigned, 0 orphans, 190 edges, 8 components
+  [GRAPH] 8 branches traced, 183/183 nodes assigned, 0 orphans, 175 edges, 8 components
+  [GRAPH] 9 branches traced, 211/211 nodes assigned, 0 orphans, 202 edges, 9 components
+  [GRAPH] 12 branches traced, 200/200 nodes assigned, 0 orphans, 194 edges, 8 components
+  [GRAPH] 9 branches traced, 186/186 nodes assigned, 0 orphans, 177 edges, 9 components
+  [GRAPH] 8 branches traced, 184/184 nodes assigned, 0 orphans, 176 edges, 8 components
+  [GRAPH] 9 branches traced, 196/196 nodes assigned, 0 orphans, 187 edges, 9 components
+  [GRAPH] 10 branches traced, 200/200 nodes assigned, 0 orphans, 196 edges, 6 components
+  [GRAPH] 5 branches traced, 261/261 nodes assigned, 0 orphans, 256 edges, 5 components
+  [GRAPH] 7 branches traced, 182/182 nodes assigned, 0 orphans, 176 edges, 6 components
+  [GRAPH] 9 branches traced, 198/198 nodes assigned, 0 orphans, 193 edges, 6 components
+  [GRAPH] 9 branches traced, 206/206 nodes assigned, 0 orphans, 198 edges, 8 components
+  [GRAPH] 9 branches traced, 197/197 nodes assigned, 0 orphans, 188 edges, 9 components
+  [GRAPH] 5 branches traced, 266/266 nodes assigned, 0 orphans, 261 edges, 5 components
+  [GRAPH] 8 branches traced, 263/263 nodes assigned, 0 orphans, 259 edges, 5 components
+
+CSV saved: results/paper/mito/temporal_clip/metrics.csv
+TXT saved: results/paper/mito/temporal_clip/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 73/73
+  Failures: 0
+  Total time: 261.6s  (3.58s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.7332    0.0723    0.5882    0.8147    0.7572
+  Seg IoU                         0.7502    0.0602    0.6147    0.8125    0.7793
+  Seg F1                          0.8559    0.0407    0.7614    0.8965    0.8760
+  Seg Precision                   0.8541    0.0423    0.7880    0.9121    0.8721
+  Seg Recall                      0.8676    0.0994    0.6860    0.9747    0.8639
+  GT FG-SSIM                      0.9925    0.0014    0.9890    0.9945    0.9925
+  GT FG-PSNR                     28.9750    1.7037   25.6973   32.6783   28.3728
+  FG-SSIM                         0.9987    0.0002    0.9983    0.9991    0.9988
+  FG-PSNR                        35.0033    0.8798   33.6041   37.1049   34.8104
+  IoU (recon)                     0.8948    0.0217    0.8418    0.9436    0.8967
+  Topology Q                      0.6086    0.1108    0.4134    0.7444    0.5934
+  Topo Preservation               1.0364    0.2281    0.7036    1.4326    0.9956
+  Full PSNR                      34.2814    0.8638   32.6079   36.4003   34.2637
+  Full SSIM                       0.9084    0.0098    0.8846    0.9290    0.9062
+  Bytes                        3767.6712  318.7503 3064.0000 4450.0000 3831.0000
+  Graph Components                5.4110    1.3633    4.0000    9.0000    5.0000
+  Graph Cycles                    0.7123    1.1039    0.0000    4.0000    0.0000
+  Graph Complexity                0.1569    0.2440    0.0000    1.0000    0.0000
+  Nodes                         225.6575   29.2908  166.0000  272.0000  228.0000
+  Edges                         220.9589   30.7676  159.0000  268.0000  222.0000
+  Total Edge Length             332.8928   40.8123  247.9361  395.4752  340.6051
+  Mean Width (px)                 7.0666    0.7935    6.1749    8.2638    6.4903
+  Mean Curvature                  0.0343    0.0078    0.0201    0.0505    0.0333
+  Time (ms)                    3328.1604  509.4167 2564.9323 5043.4852 3233.1915
+
+  WINS vs byte-matched JPEG (73 images):
+    GT-IoU          : 0/73 wins (0%)  mean Δ=-0.0248
+    GT-FG-SSIM      : 0/73 wins (0%)  mean Δ=-0.0073
+    GT-FG-PSNR      : 0/73 wins (0%)  mean Δ=-15.6886
+    FG-SSIM         : 0/73 wins (0%)  mean Δ=-0.0011
+    IoU             : 42/73 wins (58%)  mean Δ=+0.0251
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/mito/temporal_clip/summary.txt
+Aggregate plots saved: results/paper/mito/temporal_clip/aggregate_plots.png
+
+Done. All results in results/paper/mito/temporal_clip/
+=== [00:17:17] mito/temporal_clip_replace
+Found 73 images in /mnt/nas1/nba055-2/idea_1/mito_aaron/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/mito_aaron/masks
+Output: results/paper/mito/temporal_clip_replace
+Sample visualizations: 4
+Sample indices: [3, 14, 31, 35]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/73] 1_1  (0.0 img/s, ETA 0m)
+  [GRAPH] 56 branches traced, 568/568 nodes assigned, 0 orphans, 586 edges, 7 components
+  [GRAPH] 217 branches traced, 655/655 nodes assigned, 0 orphans, 745 edges, 10 components
+  [GRAPH] 122 branches traced, 614/614 nodes assigned, 0 orphans, 650 edges, 11 components
+
+[4/73] 1_12  (0.3 img/s, ETA 4m)  ** SAMPLE **
+Image: (285, 285), type=sparse (FG=8.7%, n_cc=8, mean_fg_int=0.61)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 34 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           8.9%   0.5718       1ms
+Frangi         0.0%   0.0000     155ms
+Meijering      7.7%   0.5668     134ms
+Learned        7.1% 1000000000.0000       7ms <<<
+
+Selected: Learned
+Nanograph: 595 points (EP=12, JN=53, S=530)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 93 branches traced, 595/595 nodes assigned, 0 orphans, 622 edges, 10 components
+Graph: 589 nodes, 619 edges, 7 components
+FG residual: 2,018 bytes (17 ms)
+
+============================================================
+  RESULT (v5): 715 pts, 5,814 bytes
+  vs raw pixels: 14x  vs PNG: 2.0x
+  PSNR=31.50  SSIM=0.8769  FG-PSNR=33.05  FG-SSIM=0.9989
+  Graph topology: 7 components, 37 cycles, 53 junctions, 6 endpoints
+  Segmentation: β₀=10, β₁=13
+  Structures: 10 -- {'ring': 5, 'punctate': 3, 'linear': 2}
+  Total time: 2510 ms
+============================================================
+  Sample saved: results/paper/mito/temporal_clip_replace/samples/1_12.png
+  Bytes: 5,814  |  FG-SSIM: 0.9989  |  GT-IoU: 0.8449  |  Seg-F1: 0.8404  |  Topo-Q: 0.8300
+  [GRAPH] 99 branches traced, 619/619 nodes assigned, 0 orphans, 647 edges, 10 components
+  [GRAPH] 103 branches traced, 573/573 nodes assigned, 0 orphans, 606 edges, 8 components
+  [GRAPH] 71 branches traced, 600/600 nodes assigned, 0 orphans, 619 edges, 9 components
+  [GRAPH] 89 branches traced, 578/578 nodes assigned, 0 orphans, 605 edges, 9 components
+  [GRAPH] 165 branches traced, 606/606 nodes assigned, 0 orphans, 665 edges, 9 components
+  [GRAPH] 97 branches traced, 611/611 nodes assigned, 0 orphans, 640 edges, 10 components
+  [GRAPH] 83 branches traced, 599/600 nodes assigned, 1 orphans, 625 edges, 9 components
+  [GRAPH] 65 branches traced, 540/540 nodes assigned, 0 orphans, 559 edges, 8 components
+  [GRAPH] 58 branches traced, 569/569 nodes assigned, 0 orphans, 586 edges, 8 components
+  [GRAPH] 91 branches traced, 564/564 nodes assigned, 0 orphans, 590 edges, 10 components
+
+[15/73] 1_22  (0.4 img/s, ETA 3m)  ** SAMPLE **
+Image: (285, 285), type=sparse (FG=8.7%, n_cc=8, mean_fg_int=0.63)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 34 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           8.6%   0.5804       1ms
+Frangi         0.0%   0.0000     151ms
+Meijering      7.3%   0.5731     130ms
+Learned        6.5% 1000000000.0000       5ms <<<
+
+Selected: Learned
+Nanograph: 527 points (EP=7, JN=34, S=486)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 58 branches traced, 527/527 nodes assigned, 0 orphans, 543 edges, 8 components
+Graph: 521 nodes, 540 edges, 5 components
+FG residual: 2,020 bytes (16 ms)
+
+============================================================
+  RESULT (v5): 647 pts, 5,441 bytes
+  vs raw pixels: 15x  vs PNG: 2.1x
+  PSNR=31.52  SSIM=0.8798  FG-PSNR=32.86  FG-SSIM=0.9992
+  Graph topology: 5 components, 24 cycles, 34 junctions, 1 endpoints
+  Segmentation: β₀=8, β₁=10
+  Structures: 8 -- {'ring': 5, 'punctate': 3}
+  Total time: 2128 ms
+============================================================
+  Sample saved: results/paper/mito/temporal_clip_replace/samples/1_22.png
+  Bytes: 5,441  |  FG-SSIM: 0.9992  |  GT-IoU: 0.8372  |  Seg-F1: 0.8707  |  Topo-Q: 0.8515
+  [GRAPH] 73 branches traced, 535/535 nodes assigned, 0 orphans, 557 edges, 8 components
+  [GRAPH] 60 branches traced, 539/540 nodes assigned, 1 orphans, 559 edges, 7 components
+  [GRAPH] 80 branches traced, 542/542 nodes assigned, 0 orphans, 569 edges, 7 components
+  [GRAPH] 50 branches traced, 534/534 nodes assigned, 0 orphans, 548 edges, 8 components
+  [GRAPH] 77 branches traced, 562/562 nodes assigned, 0 orphans, 582 edges, 9 components
+  [GRAPH] 49 branches traced, 535/535 nodes assigned, 0 orphans, 547 edges, 9 components
+  [GRAPH] 59 branches traced, 563/563 nodes assigned, 0 orphans, 577 edges, 9 components
+  [GRAPH] 58 branches traced, 543/543 nodes assigned, 0 orphans, 560 edges, 7 components
+  [GRAPH] 46 branches traced, 508/508 nodes assigned, 0 orphans, 519 edges, 8 components
+  [GRAPH] 66 branches traced, 587/587 nodes assigned, 0 orphans, 604 edges, 10 components
+  [GRAPH] 97 branches traced, 569/569 nodes assigned, 0 orphans, 596 edges, 10 components
+  [GRAPH] 105 branches traced, 569/569 nodes assigned, 0 orphans, 604 edges, 9 components
+  [GRAPH] 104 branches traced, 559/560 nodes assigned, 1 orphans, 592 edges, 9 components
+  [GRAPH] 83 branches traced, 580/580 nodes assigned, 0 orphans, 603 edges, 10 components
+  [GRAPH] 82 branches traced, 554/554 nodes assigned, 0 orphans, 575 edges, 10 components
+  [GRAPH] 119 branches traced, 569/570 nodes assigned, 1 orphans, 605 edges, 10 components
+
+[32/73] 1_38  (0.4 img/s, ETA 2m)  ** SAMPLE **
+Image: (285, 285), type=sparse (FG=8.0%, n_cc=8, mean_fg_int=0.58)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 40 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           7.8%   0.5313       1ms
+Frangi         0.0%   0.0000     153ms
+Meijering      6.1%   0.5435     172ms
+Learned        7.2% 1000000000.0000       8ms <<<
+
+Selected: Learned
+Nanograph: 591 points (EP=12, JN=59, S=520)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 102 branches traced, 591/591 nodes assigned, 0 orphans, 620 edges, 10 components
+Graph: 587 nodes, 618 edges, 8 components
+FG residual: 1,883 bytes (16 ms)
+
+============================================================
+  RESULT (v5): 711 pts, 5,658 bytes
+  vs raw pixels: 14x  vs PNG: 1.9x
+  PSNR=33.36  SSIM=0.9077  FG-PSNR=33.90  FG-SSIM=0.9987
+  Graph topology: 8 components, 39 cycles, 59 junctions, 8 endpoints
+  Segmentation: β₀=10, β₁=15
+  Structures: 10 -- {'ring': 6, 'curved': 2, 'punctate': 2}
+  Total time: 2476 ms
+============================================================
+  Sample saved: results/paper/mito/temporal_clip_replace/samples/1_38.png
+  Bytes: 5,658  |  FG-SSIM: 0.9987  |  GT-IoU: 0.7583  |  Seg-F1: 0.8162  |  Topo-Q: 0.8324
+  [GRAPH] 129 branches traced, 568/568 nodes assigned, 0 orphans, 610 edges, 8 components
+  [GRAPH] 56 branches traced, 548/548 nodes assigned, 0 orphans, 565 edges, 8 components
+  [GRAPH] 136 branches traced, 577/577 nodes assigned, 0 orphans, 622 edges, 9 components
+
+[36/73] 1_41  (0.4 img/s, ETA 2m)  ** SAMPLE **
+Image: (285, 285), type=sparse (FG=7.5%, n_cc=5, mean_fg_int=0.56)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 34 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           7.3%   0.5207       1ms
+Frangi         0.0%   0.0000     151ms
+Meijering      5.7%   0.5370     130ms
+Learned        7.0% 1000000000.0000       5ms <<<
+
+Selected: Learned
+Nanograph: 555 points (EP=9, JN=69, S=477)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 115 branches traced, 554/555 nodes assigned, 1 orphans, 591 edges, 9 components
+Graph: 551 nodes, 587 edges, 7 components
+FG residual: 1,751 bytes (16 ms)
+
+============================================================
+  RESULT (v5): 675 pts, 5,402 bytes
+  vs raw pixels: 15x  vs PNG: 1.8x
+  PSNR=34.26  SSIM=0.9157  FG-PSNR=34.47  FG-SSIM=0.9984
+  Graph topology: 7 components, 43 cycles, 67 junctions, 7 endpoints
+  Segmentation: β₀=10, β₁=15
+  Structures: 10 -- {'ring': 6, 'punctate': 3, 'curved': 1}
+  Total time: 2754 ms
+============================================================
+  Sample saved: results/paper/mito/temporal_clip_replace/samples/1_41.png
+  Bytes: 5,402  |  FG-SSIM: 0.9984  |  GT-IoU: 0.7223  |  Seg-F1: 0.7963  |  Topo-Q: 0.8080
+  [GRAPH] 107 branches traced, 545/547 nodes assigned, 2 orphans, 581 edges, 7 components
+  [GRAPH] 101 branches traced, 536/536 nodes assigned, 0 orphans, 564 edges, 10 components
+  [GRAPH] 111 branches traced, 530/532 nodes assigned, 2 orphans, 567 edges, 8 components
+  [GRAPH] 84 branches traced, 541/541 nodes assigned, 0 orphans, 563 edges, 9 components
+  [GRAPH] 139 branches traced, 545/545 nodes assigned, 0 orphans, 593 edges, 8 components
+  [GRAPH] 91 branches traced, 515/515 nodes assigned, 0 orphans, 543 edges, 9 components
+  [GRAPH] 121 branches traced, 541/541 nodes assigned, 0 orphans, 580 edges, 9 components
+  [GRAPH] 101 branches traced, 542/543 nodes assigned, 1 orphans, 573 edges, 8 components
+  [GRAPH] 56 branches traced, 546/546 nodes assigned, 0 orphans, 565 edges, 7 components
+  [GRAPH] 117 branches traced, 536/537 nodes assigned, 1 orphans, 571 edges, 8 components
+  [GRAPH] 129 branches traced, 576/578 nodes assigned, 2 orphans, 618 edges, 8 components
+  [GRAPH] 161 branches traced, 594/595 nodes assigned, 1 orphans, 648 edges, 9 components
+  [GRAPH] 124 branches traced, 549/550 nodes assigned, 1 orphans, 590 edges, 7 components
+  [GRAPH] 103 branches traced, 527/528 nodes assigned, 1 orphans, 558 edges, 9 components
+
+[51/73] 1_55  (0.4 img/s, ETA 1m)
+  [GRAPH] 166 branches traced, 542/543 nodes assigned, 1 orphans, 598 edges, 8 components
+  [GRAPH] 154 branches traced, 563/563 nodes assigned, 0 orphans, 611 edges, 9 components
+  [GRAPH] 183 branches traced, 557/558 nodes assigned, 1 orphans, 623 edges, 8 components
+  [GRAPH] 164 branches traced, 552/553 nodes assigned, 1 orphans, 605 edges, 9 components
+  [GRAPH] 169 branches traced, 570/570 nodes assigned, 0 orphans, 625 edges, 9 components
+  [GRAPH] 103 branches traced, 559/559 nodes assigned, 0 orphans, 594 edges, 8 components
+  [GRAPH] 165 branches traced, 561/562 nodes assigned, 1 orphans, 617 edges, 9 components
+  [GRAPH] 160 branches traced, 520/521 nodes assigned, 1 orphans, 570 edges, 8 components
+  [GRAPH] 150 branches traced, 571/572 nodes assigned, 1 orphans, 624 edges, 9 components
+  [GRAPH] 185 branches traced, 593/593 nodes assigned, 0 orphans, 656 edges, 8 components
+  [GRAPH] 156 branches traced, 575/577 nodes assigned, 2 orphans, 632 edges, 7 components
+  [GRAPH] 149 branches traced, 552/553 nodes assigned, 1 orphans, 599 edges, 8 components
+  [GRAPH] 127 branches traced, 543/544 nodes assigned, 1 orphans, 579 edges, 11 components
+  [GRAPH] 138 branches traced, 541/543 nodes assigned, 2 orphans, 587 edges, 9 components
+  [GRAPH] 81 branches traced, 527/528 nodes assigned, 1 orphans, 547 edges, 11 components
+  [GRAPH] 132 branches traced, 562/562 nodes assigned, 0 orphans, 600 edges, 10 components
+  [GRAPH] 58 branches traced, 550/550 nodes assigned, 0 orphans, 566 edges, 8 components
+  [GRAPH] 159 branches traced, 575/575 nodes assigned, 0 orphans, 623 edges, 11 components
+  [GRAPH] 91 branches traced, 526/528 nodes assigned, 2 orphans, 551 edges, 10 components
+  [GRAPH] 106 branches traced, 543/544 nodes assigned, 1 orphans, 575 edges, 9 components
+  [GRAPH] 78 branches traced, 472/473 nodes assigned, 1 orphans, 494 edges, 10 components
+  [GRAPH] 107 branches traced, 584/584 nodes assigned, 0 orphans, 618 edges, 8 components
+  [GRAPH] 108 branches traced, 590/590 nodes assigned, 0 orphans, 629 edges, 8 components
+
+CSV saved: results/paper/mito/temporal_clip_replace/metrics.csv
+TXT saved: results/paper/mito/temporal_clip_replace/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 73/73
+  Failures: 0
+  Total time: 205.4s  (2.81s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.7693    0.0685    0.6410    0.8526    0.7881
+  Seg IoU                         0.6961    0.0462    0.6061    0.7800    0.6981
+  Seg F1                          0.8200    0.0322    0.7548    0.8764    0.8222
+  Seg Precision                   0.8153    0.0655    0.7000    0.9208    0.8100
+  Seg Recall                      0.8280    0.0213    0.7621    0.8621    0.8306
+  GT FG-SSIM                      0.9940    0.0011    0.9906    0.9956    0.9942
+  GT FG-PSNR                     26.6556    1.0493   23.2059   29.4765   26.7601
+  FG-SSIM                         0.9987    0.0005    0.9971    0.9995    0.9988
+  FG-PSNR                        33.5435    0.7936   31.2408   35.3066   33.6780
+  IoU (recon)                     0.6472    0.0753    0.5147    0.7699    0.6536
+  Topology Q                      0.8355    0.0349    0.7338    0.8974    0.8380
+  Topo Preservation               0.9826    0.1977    0.4543    1.3631    1.0211
+  Full PSNR                      33.0807    1.2161   29.7820   35.4769   33.4489
+  Full SSIM                       0.8994    0.0175    0.8548    0.9264    0.9050
+  Bytes                        5535.7808  226.4730 4766.0000 6038.0000 5520.0000
+  Graph Components                6.8219    1.2424    5.0000   11.0000    7.0000
+  Graph Cycles                   42.1781   15.0382   19.0000  100.0000   40.0000
+  Graph Complexity                6.3195    2.3792    2.7273   14.2000    5.7143
+  Nodes                         556.2740   28.4481  471.0000  651.0000  556.0000
+  Edges                         591.6301   37.1858  491.0000  743.0000  590.0000
+  Total Edge Length            1018.3270   69.5553  874.7986 1202.7565 1013.7682
+  Mean Width (px)                 3.1788    0.1439    2.8657    3.5831    3.1533
+  Mean Curvature                  0.0457    0.0050    0.0363    0.0615    0.0455
+  Time (ms)                    2566.9611  388.2564 1946.8122 3902.5202 2530.0217
+
+  WINS vs byte-matched JPEG (73 images):
+    GT-IoU          : 64/73 wins (88%)  mean Δ=+0.0110
+    GT-FG-SSIM      : 0/73 wins (0%)  mean Δ=-0.0059
+    GT-FG-PSNR      : 0/73 wins (0%)  mean Δ=-22.5122
+    FG-SSIM         : 0/73 wins (0%)  mean Δ=-0.0013
+    IoU             : 73/73 wins (100%)  mean Δ=+0.0211
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/mito/temporal_clip_replace/summary.txt
+Aggregate plots saved: results/paper/mito/temporal_clip_replace/aggregate_plots.png
+
+Done. All results in results/paper/mito/temporal_clip_replace/
+=== [00:20:45] mito/mito_mip
+Found 228 images in /mnt/nas1/nba055-2/idea_1/public_mito/mito_mip_tiles/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/public_mito/mito_mip_tiles/masks
+Output: results/paper/mito/mito_mip
+Sample visualizations: 4
+Sample indices: [6, 28, 163, 189]
+
+Nanograph v5 — 123 params
+======================================================================
+
+[1/228] M1_001_y0x0  (0.0 img/s, ETA 0m)
+  [GRAPH] 14 branches traced, 24/24 nodes assigned, 0 orphans, 24 edges, 4 components
+  [GRAPH] 53 branches traced, 182/182 nodes assigned, 0 orphans, 155 edges, 33 components
+  [GRAPH] 576 branches traced, 1349/1349 nodes assigned, 0 orphans, 1488 edges, 36 components
+  [GRAPH] 3 branches traced, 25/25 nodes assigned, 0 orphans, 22 edges, 3 components
+  [GRAPH] 200 branches traced, 722/722 nodes assigned, 0 orphans, 752 edges, 24 components
+  [GRAPH] 108 branches traced, 612/612 nodes assigned, 0 orphans, 624 edges, 11 components
+
+[7/228] M1_001_y512x512  (0.2 img/s, ETA 17m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=29.7%, n_cc=57, mean_fg_int=0.46)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          29.4%   0.3823       1ms
+Frangi         0.0%   0.0000     133ms
+Meijering      9.4%   0.4037     117ms <<<
+Learned       32.2%   0.3837       6ms
+
+Selected: Meijering
+Nanograph: 310 points (EP=62, JN=17, S=231)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 59 branches traced, 310/310 nodes assigned, 0 orphans, 287 edges, 32 components
+Graph: 298 nodes, 282 edges, 25 components
+FG residual: 2,418 bytes (17 ms)
+
+============================================================
+  RESULT (v5): 430 pts, 5,066 bytes
+  vs raw pixels: 13x  vs PNG: 7.4x
+  PSNR=28.77  SSIM=0.7179  FG-PSNR=31.71  FG-SSIM=0.9982
+  Graph topology: 25 components, 9 cycles, 17 junctions, 50 endpoints
+  Segmentation: β₀=32, β₁=0
+  Structures: 32 -- {'curved': 1, 'branched': 5, 'punctate': 20, 'linear': 6}
+  Total time: 2322 ms
+============================================================
+  Sample saved: results/paper/mito/mito_mip/samples/M1_001_y512x512.png
+  Bytes: 5,066  |  FG-SSIM: 0.9982  |  GT-IoU: 0.0573  |  Seg-F1: 0.2542  |  Topo-Q: 0.2716
+  [GRAPH] 11 branches traced, 42/42 nodes assigned, 0 orphans, 39 edges, 5 components
+  [GRAPH] 3 branches traced, 28/28 nodes assigned, 0 orphans, 25 edges, 3 components
+  [GRAPH] 460 branches traced, 1354/1354 nodes assigned, 0 orphans, 1454 edges, 30 components
+  [GRAPH] 84 branches traced, 198/199 nodes assigned, 1 orphans, 191 edges, 32 components
+  [GRAPH] 156 branches traced, 554/554 nodes assigned, 0 orphans, 584 edges, 15 components
+  [GRAPH] 2 branches traced, 8/8 nodes assigned, 0 orphans, 6 edges, 2 components
+  [GRAPH] 188 branches traced, 747/747 nodes assigned, 0 orphans, 779 edges, 17 components
+  [GRAPH] 259 branches traced, 1022/1022 nodes assigned, 0 orphans, 1081 edges, 8 components
+  [GRAPH] 1 branches traced, 21/21 nodes assigned, 0 orphans, 20 edges, 1 components
+  [GRAPH] 40 branches traced, 331/331 nodes assigned, 0 orphans, 304 edges, 30 components
+  [GRAPH] 692 branches traced, 1518/1518 nodes assigned, 0 orphans, 1717 edges, 13 components
+  [GRAPH] 207 branches traced, 828/828 nodes assigned, 0 orphans, 867 edges, 15 components
+  [GRAPH] 1 branches traced, 11/11 nodes assigned, 0 orphans, 10 edges, 1 components
+  [GRAPH] 207 branches traced, 812/812 nodes assigned, 0 orphans, 850 edges, 17 components
+  [GRAPH] 3 branches traced, 7/7 nodes assigned, 0 orphans, 4 edges, 3 components
+  [GRAPH] 279 branches traced, 907/907 nodes assigned, 0 orphans, 956 edges, 23 components
+  [GRAPH] 1 branches traced, 3/3 nodes assigned, 0 orphans, 2 edges, 1 components
+  [GRAPH] 580 branches traced, 1484/1484 nodes assigned, 0 orphans, 1642 edges, 21 components
+  [GRAPH] 248 branches traced, 973/973 nodes assigned, 0 orphans, 1034 edges, 6 components
+  [GRAPH] 270 branches traced, 814/815 nodes assigned, 1 orphans, 861 edges, 28 components
+  [GRAPH] 198 branches traced, 740/740 nodes assigned, 0 orphans, 757 edges, 35 components
+
+[29/228] M1_005_y768x512  (0.2 img/s, ETA 16m)  ** SAMPLE **
+Image: (256, 256), type=dense (FG=22.7%, n_cc=73, mean_fg_int=0.56)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 19 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          16.1%   0.3863       1ms
+Frangi         0.1%   0.5614     133ms <<<
+Meijering     11.6%   0.4168     117ms
+Learned       31.9%   0.3934       8ms
+
+Selected: Frangi
+Nanograph: 4 points (EP=2, JN=0, S=2)
+Background grid: 16×16 (2 ms)
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+Graph: 4 nodes, 3 edges, 1 components
+FG residual: 60 bytes (1 ms)
+
+============================================================
+  RESULT (v5): 55 pts, 587 bytes
+  vs raw pixels: 112x  vs PNG: 65.7x
+  PSNR=20.94  SSIM=0.5399  FG-PSNR=27.92  FG-SSIM=1.0000
+  Graph topology: 1 components, 0 cycles, 0 junctions, 2 endpoints
+  Segmentation: β₀=1, β₁=0
+  Structures: 1 -- {'punctate': 1}
+  Total time: 491 ms
+============================================================
+  Sample saved: results/paper/mito/mito_mip/samples/M1_005_y768x512.png
+  Bytes: 587  |  FG-SSIM: 1.0000  |  GT-IoU: 0.4860  |  Seg-F1: 0.0000  |  Topo-Q: 0.1131
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 177 branches traced, 516/516 nodes assigned, 0 orphans, 570 edges, 3 components
+  [GRAPH] 43 branches traced, 203/203 nodes assigned, 0 orphans, 182 edges, 26 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 205 branches traced, 800/800 nodes assigned, 0 orphans, 814 edges, 35 components
+  [GRAPH] 491 branches traced, 1247/1247 nodes assigned, 0 orphans, 1370 edges, 26 components
+  [GRAPH] 419 branches traced, 1559/1561 nodes assigned, 2 orphans, 1621 edges, 56 components
+  [GRAPH] 408 branches traced, 1126/1127 nodes assigned, 1 orphans, 1189 edges, 49 components
+  [GRAPH] 211 branches traced, 809/809 nodes assigned, 0 orphans, 863 edges, 4 components
+  [GRAPH] 710 branches traced, 1668/1669 nodes assigned, 1 orphans, 1874 edges, 17 components
+  [GRAPH] 501 branches traced, 1079/1079 nodes assigned, 0 orphans, 1235 edges, 9 components
+  [GRAPH] 122 branches traced, 536/536 nodes assigned, 0 orphans, 541 edges, 22 components
+  [GRAPH] 601 branches traced, 1510/1511 nodes assigned, 1 orphans, 1686 edges, 9 components
+  [GRAPH] 122 branches traced, 566/566 nodes assigned, 0 orphans, 548 edges, 41 components
+  [GRAPH] 465 branches traced, 1238/1238 nodes assigned, 0 orphans, 1368 edges, 11 components
+  [GRAPH] 42 branches traced, 329/330 nodes assigned, 1 orphans, 301 edges, 33 components
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  [GRAPH] 2 branches traced, 2/2 nodes assigned, 0 orphans, 2 edges, 1 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  [GRAPH] 141 branches traced, 337/337 nodes assigned, 0 orphans, 375 edges, 4 components
+  [GRAPH] 1026 branches traced, 2776/2776 nodes assigned, 0 orphans, 3051 edges, 35 components
+
+[51/228] M1_008_y768x256  (0.2 img/s, ETA 13m)
+  [GRAPH] 886 branches traced, 2533/2534 nodes assigned, 1 orphans, 2772 edges, 31 components
+  [GRAPH] 1 branches traced, 6/6 nodes assigned, 0 orphans, 5 edges, 1 components
+  [GRAPH] 5 branches traced, 33/34 nodes assigned, 1 orphans, 29 edges, 5 components
+  [GRAPH] 89 branches traced, 436/436 nodes assigned, 0 orphans, 435 edges, 19 components
+  [GRAPH] 37 branches traced, 186/186 nodes assigned, 0 orphans, 165 edges, 25 components
+  [GRAPH] 50 branches traced, 301/301 nodes assigned, 0 orphans, 261 edges, 42 components
+  [GRAPH] 72 branches traced, 249/249 nodes assigned, 0 orphans, 249 edges, 18 components
+  [GRAPH] 46 branches traced, 247/247 nodes assigned, 0 orphans, 225 edges, 28 components
+  [GRAPH] 367 branches traced, 996/996 nodes assigned, 0 orphans, 1117 edges, 4 components
+  [GRAPH] 86 branches traced, 511/511 nodes assigned, 0 orphans, 526 edges, 5 components
+  [GRAPH] 661 branches traced, 1439/1439 nodes assigned, 0 orphans, 1629 edges, 17 components
+  [GRAPH] 614 branches traced, 1270/1270 nodes assigned, 0 orphans, 1444 edges, 15 components
+  [GRAPH] 186 branches traced, 789/789 nodes assigned, 0 orphans, 824 edges, 11 components
+  [GRAPH] 704 branches traced, 2111/2111 nodes assigned, 0 orphans, 2293 edges, 28 components
+  [GRAPH] 67 branches traced, 353/353 nodes assigned, 0 orphans, 342 edges, 23 components
+  [GRAPH] 79 branches traced, 386/386 nodes assigned, 0 orphans, 375 edges, 24 components
+  [GRAPH] 35 branches traced, 210/210 nodes assigned, 0 orphans, 176 edges, 34 components
+  [GRAPH] 48 branches traced, 254/254 nodes assigned, 0 orphans, 241 edges, 22 components
+  [GRAPH] 81 branches traced, 268/268 nodes assigned, 0 orphans, 256 edges, 33 components
+  [GRAPH] 32 branches traced, 147/147 nodes assigned, 0 orphans, 126 edges, 24 components
+  [GRAPH] 957 branches traced, 2481/2481 nodes assigned, 0 orphans, 2765 edges, 27 components
+  [GRAPH] 83 branches traced, 418/418 nodes assigned, 0 orphans, 399 edges, 34 components
+  [GRAPH] 603 branches traced, 1604/1605 nodes assigned, 1 orphans, 1786 edges, 7 components
+  [GRAPH] 159 branches traced, 667/667 nodes assigned, 0 orphans, 707 edges, 11 components
+  [GRAPH] 2 branches traced, 16/16 nodes assigned, 0 orphans, 14 edges, 2 components
+  [GRAPH] 644 branches traced, 1999/2001 nodes assigned, 2 orphans, 2161 edges, 32 components
+  [GRAPH] 793 branches traced, 2137/2137 nodes assigned, 0 orphans, 2365 edges, 22 components
+  [GRAPH] 474 branches traced, 1310/1310 nodes assigned, 0 orphans, 1428 edges, 20 components
+  [GRAPH] 44 branches traced, 174/174 nodes assigned, 0 orphans, 169 edges, 13 components
+  [GRAPH] 460 branches traced, 1630/1632 nodes assigned, 2 orphans, 1727 edges, 35 components
+  [GRAPH] 264 branches traced, 653/653 nodes assigned, 0 orphans, 727 edges, 8 components
+  [GRAPH] 138 branches traced, 650/650 nodes assigned, 0 orphans, 647 edges, 37 components
+  [GRAPH] 208 branches traced, 962/962 nodes assigned, 0 orphans, 992 edges, 21 components
+  [GRAPH] 159 branches traced, 586/586 nodes assigned, 0 orphans, 618 edges, 14 components
+  [GRAPH] 418 branches traced, 1449/1450 nodes assigned, 1 orphans, 1529 edges, 46 components
+  [GRAPH] 496 branches traced, 1517/1517 nodes assigned, 0 orphans, 1658 edges, 17 components
+  [GRAPH] 1 branches traced, 15/15 nodes assigned, 0 orphans, 14 edges, 1 components
+  [GRAPH] 757 branches traced, 2150/2150 nodes assigned, 0 orphans, 2344 edges, 32 components
+  [GRAPH] 102 branches traced, 493/493 nodes assigned, 0 orphans, 480 edges, 32 components
+  [GRAPH] 181 branches traced, 631/631 nodes assigned, 0 orphans, 651 edges, 27 components
+  [GRAPH] 47 branches traced, 230/230 nodes assigned, 0 orphans, 202 edges, 33 components
+  [GRAPH] 14 branches traced, 73/73 nodes assigned, 0 orphans, 72 edges, 4 components
+  [GRAPH] 91 branches traced, 274/274 nodes assigned, 0 orphans, 273 edges, 24 components
+  [GRAPH] 92 branches traced, 393/393 nodes assigned, 0 orphans, 371 edges, 36 components
+  [GRAPH] 169 branches traced, 736/736 nodes assigned, 0 orphans, 754 edges, 25 components
+  [GRAPH] 57 branches traced, 351/351 nodes assigned, 0 orphans, 333 edges, 26 components
+  [GRAPH] 80 branches traced, 363/363 nodes assigned, 0 orphans, 351 edges, 34 components
+  [GRAPH] 47 branches traced, 200/200 nodes assigned, 0 orphans, 189 edges, 20 components
+  [GRAPH] 208 branches traced, 754/754 nodes assigned, 0 orphans, 807 edges, 6 components
+  [GRAPH] 47 branches traced, 232/232 nodes assigned, 0 orphans, 240 edges, 5 components
+
+[101/228] M1_016_y256x768  (0.3 img/s, ETA 8m)
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+  [GRAPH] 85 branches traced, 431/431 nodes assigned, 0 orphans, 421 edges, 26 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  [GRAPH] 123 branches traced, 619/619 nodes assigned, 0 orphans, 616 edges, 31 components
+  [GRAPH] 55 branches traced, 324/324 nodes assigned, 0 orphans, 303 edges, 29 components
+  [GRAPH] 637 branches traced, 1796/1796 nodes assigned, 0 orphans, 1970 edges, 26 components
+  [GRAPH] 207 branches traced, 910/910 nodes assigned, 0 orphans, 951 edges, 11 components
+  [GRAPH] 256 branches traced, 608/608 nodes assigned, 0 orphans, 677 edges, 11 components
+  [GRAPH] 604 branches traced, 1544/1545 nodes assigned, 1 orphans, 1716 edges, 14 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+  [GRAPH] 2 branches traced, 12/12 nodes assigned, 0 orphans, 10 edges, 2 components
+  [GRAPH] 2 branches traced, 4/4 nodes assigned, 0 orphans, 2 edges, 2 components
+  [GRAPH] 3 branches traced, 11/11 nodes assigned, 0 orphans, 8 edges, 3 components
+  [GRAPH] 185 branches traced, 796/796 nodes assigned, 0 orphans, 832 edges, 15 components
+  [GRAPH] 121 branches traced, 534/534 nodes assigned, 0 orphans, 535 edges, 24 components
+  [GRAPH] 49 branches traced, 250/250 nodes assigned, 0 orphans, 225 edges, 31 components
+  [GRAPH] 121 branches traced, 488/488 nodes assigned, 0 orphans, 509 edges, 10 components
+  [GRAPH] 21 branches traced, 140/140 nodes assigned, 0 orphans, 140 edges, 5 components
+  [GRAPH] 362 branches traced, 1237/1237 nodes assigned, 0 orphans, 1351 edges, 7 components
+  [GRAPH] 245 branches traced, 845/845 nodes assigned, 0 orphans, 888 edges, 20 components
+  [GRAPH] 828 branches traced, 2240/2241 nodes assigned, 1 orphans, 2470 edges, 32 components
+  [GRAPH] 104 branches traced, 590/590 nodes assigned, 0 orphans, 573 edges, 35 components
+  [GRAPH] 730 branches traced, 1452/1453 nodes assigned, 1 orphans, 1676 edges, 7 components
+  [GRAPH] 2 branches traced, 14/14 nodes assigned, 0 orphans, 12 edges, 2 components
+  [GRAPH] 774 branches traced, 2339/2340 nodes assigned, 1 orphans, 2540 edges, 33 components
+  [GRAPH] 697 branches traced, 1590/1590 nodes assigned, 0 orphans, 1786 edges, 15 components
+  [GRAPH] 1 branches traced, 8/8 nodes assigned, 0 orphans, 7 edges, 1 components
+  [GRAPH] 190 branches traced, 784/784 nodes assigned, 0 orphans, 823 edges, 8 components
+  [GRAPH] 5 branches traced, 45/45 nodes assigned, 0 orphans, 40 edges, 5 components
+  [GRAPH] 695 branches traced, 1523/1523 nodes assigned, 0 orphans, 1732 edges, 16 components
+  [GRAPH] 75 branches traced, 354/354 nodes assigned, 0 orphans, 323 edges, 42 components
+  [GRAPH] 2 branches traced, 4/4 nodes assigned, 0 orphans, 2 edges, 2 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 5 branches traced, 17/17 nodes assigned, 0 orphans, 12 edges, 5 components
+  [GRAPH] 450 branches traced, 1351/1351 nodes assigned, 0 orphans, 1425 edges, 48 components
+  [GRAPH] 3 branches traced, 4/4 nodes assigned, 0 orphans, 2 edges, 2 components
+  [GRAPH] 5 branches traced, 16/16 nodes assigned, 0 orphans, 11 edges, 5 components
+  [GRAPH] 364 branches traced, 1014/1014 nodes assigned, 0 orphans, 1113 edges, 10 components
+  [GRAPH] 15 branches traced, 98/98 nodes assigned, 0 orphans, 83 edges, 15 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 6 branches traced, 28/28 nodes assigned, 0 orphans, 22 edges, 6 components
+  [GRAPH] 299 branches traced, 891/891 nodes assigned, 0 orphans, 954 edges, 19 components
+  [GRAPH] 6 branches traced, 26/26 nodes assigned, 0 orphans, 20 edges, 6 components
+  [GRAPH] 278 branches traced, 1087/1090 nodes assigned, 3 orphans, 1082 edges, 72 components
+  [GRAPH] 3 branches traced, 17/18 nodes assigned, 1 orphans, 15 edges, 3 components
+  [GRAPH] 6 branches traced, 49/49 nodes assigned, 0 orphans, 43 edges, 6 components
+  [GRAPH] 35 branches traced, 215/215 nodes assigned, 0 orphans, 191 edges, 26 components
+  [GRAPH] 45 branches traced, 284/284 nodes assigned, 0 orphans, 269 edges, 23 components
+  [GRAPH] 1 branches traced, 17/17 nodes assigned, 0 orphans, 16 edges, 1 components
+  [GRAPH] 96 branches traced, 400/400 nodes assigned, 0 orphans, 394 edges, 25 components
+
+[151/228] M2_003_y512x512  (0.3 img/s, ETA 5m)
+  [GRAPH] 12 branches traced, 41/41 nodes assigned, 0 orphans, 39 edges, 4 components
+  [GRAPH] 50 branches traced, 270/270 nodes assigned, 0 orphans, 274 edges, 7 components
+  [GRAPH] 39 branches traced, 202/202 nodes assigned, 0 orphans, 174 edges, 31 components
+  [GRAPH] 9 branches traced, 38/38 nodes assigned, 0 orphans, 35 edges, 4 components
+  [GRAPH] 67 branches traced, 270/270 nodes assigned, 0 orphans, 271 edges, 13 components
+  [GRAPH] 35 branches traced, 180/181 nodes assigned, 1 orphans, 159 edges, 24 components
+  [GRAPH] 7 branches traced, 14/14 nodes assigned, 0 orphans, 12 edges, 3 components
+  [GRAPH] 7 branches traced, 13/13 nodes assigned, 0 orphans, 14 edges, 1 components
+  [GRAPH] 483 branches traced, 1827/1827 nodes assigned, 0 orphans, 1925 edges, 38 components
+  [GRAPH] 124 branches traced, 623/623 nodes assigned, 0 orphans, 636 edges, 15 components
+  [GRAPH] 190 branches traced, 445/445 nodes assigned, 0 orphans, 505 edges, 4 components
+  [GRAPH] 149 branches traced, 669/669 nodes assigned, 0 orphans, 691 edges, 15 components
+  [GRAPH] 1 branches traced, 4/4 nodes assigned, 0 orphans, 3 edges, 1 components
+
+[164/228] M2_007_y512x0  (0.3 img/s, ETA 4m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=5.7%, n_cc=19, mean_fg_int=0.22)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          13.0%   0.3766       1ms
+Frangi         0.0%   0.0000     132ms
+Meijering      5.5%   0.3978     116ms
+Learned       13.6%   0.4470       5ms <<<
+
+Selected: Learned
+Nanograph: 687 points (EP=20, JN=164, S=503)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 277 branches traced, 687/687 nodes assigned, 0 orphans, 780 edges, 4 components
+Graph: 685 nodes, 779 edges, 3 components
+FG residual: 1,164 bytes (13 ms)
+
+============================================================
+  RESULT (v5): 1287 pts, 7,387 bytes
+  vs raw pixels: 9x  vs PNG: 3.0x
+  PSNR=35.89  SSIM=0.9580  FG-PSNR=37.47  FG-SSIM=0.9922
+  Graph topology: 3 components, 97 cycles, 164 junctions, 18 endpoints
+  Segmentation: β₀=4, β₁=13
+  Structures: 4 -- {'ring': 1, 'punctate': 2, 'linear': 1}
+  Total time: 7254 ms
+============================================================
+  Sample saved: results/paper/mito/mito_mip/samples/M2_007_y512x0.png
+  Bytes: 7,387  |  FG-SSIM: 0.9922  |  GT-IoU: 0.0886  |  Seg-F1: 0.1379  |  Topo-Q: 0.9979
+  [GRAPH] 6 branches traced, 21/21 nodes assigned, 0 orphans, 21 edges, 2 components
+  [GRAPH] 6 branches traced, 36/36 nodes assigned, 0 orphans, 30 edges, 6 components
+  [GRAPH] 2 branches traced, 20/20 nodes assigned, 0 orphans, 18 edges, 2 components
+  [GRAPH] 7 branches traced, 20/20 nodes assigned, 0 orphans, 19 edges, 3 components
+  [GRAPH] 1 branches traced, 10/10 nodes assigned, 0 orphans, 9 edges, 1 components
+  [GRAPH] 26 branches traced, 213/213 nodes assigned, 0 orphans, 188 edges, 26 components
+  [GRAPH] 46 branches traced, 208/208 nodes assigned, 0 orphans, 214 edges, 5 components
+  [GRAPH] 512 branches traced, 1709/1710 nodes assigned, 1 orphans, 1834 edges, 23 components
+  [GRAPH] 126 branches traced, 686/686 nodes assigned, 0 orphans, 704 edges, 11 components
+  [GRAPH] 4 branches traced, 24/24 nodes assigned, 0 orphans, 20 edges, 4 components
+  [GRAPH] 311 branches traced, 968/969 nodes assigned, 1 orphans, 1015 edges, 33 components
+  [GRAPH] 57 branches traced, 284/284 nodes assigned, 0 orphans, 255 edges, 37 components
+  [GRAPH] 474 branches traced, 1129/1129 nodes assigned, 0 orphans, 1258 edges, 13 components
+  [GRAPH] 49 branches traced, 154/155 nodes assigned, 1 orphans, 137 edges, 26 components
+  [GRAPH] 39 branches traced, 230/230 nodes assigned, 0 orphans, 217 edges, 19 components
+  [GRAPH] 1 branches traced, 2/2 nodes assigned, 0 orphans, 1 edges, 1 components
+  [GRAPH] 79 branches traced, 393/393 nodes assigned, 0 orphans, 409 edges, 3 components
+  [GRAPH] 1 branches traced, 7/7 nodes assigned, 0 orphans, 6 edges, 1 components
+  [GRAPH] 37 branches traced, 127/127 nodes assigned, 0 orphans, 126 edges, 12 components
+  [GRAPH] 41 branches traced, 169/169 nodes assigned, 0 orphans, 149 edges, 26 components
+  [GRAPH] 302 branches traced, 677/677 nodes assigned, 0 orphans, 768 edges, 7 components
+  [GRAPH] 31 branches traced, 143/143 nodes assigned, 0 orphans, 127 edges, 20 components
+  [GRAPH] 59 branches traced, 316/316 nodes assigned, 0 orphans, 292 edges, 33 components
+  [GRAPH] 33 branches traced, 203/203 nodes assigned, 0 orphans, 180 edges, 25 components
+  [GRAPH] 56 branches traced, 420/420 nodes assigned, 0 orphans, 395 edges, 32 components
+
+[190/228] M2_013_y0x512  (0.3 img/s, ETA 2m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=19.0%, n_cc=71, mean_fg_int=0.48)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          21.6%   0.4798       1ms <<<
+Frangi         0.0%   0.0000     133ms
+Meijering      9.1%   0.4510     117ms
+Learned       19.9%   0.4665       5ms
+
+Selected: Otsu
+Nanograph: 616 points (EP=28, JN=76, S=512)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 135 branches traced, 616/616 nodes assigned, 0 orphans, 642 edges, 6 components
+Graph: 614 nodes, 644 edges, 2 components
+FG residual: 2,671 bytes (14 ms)
+
+============================================================
+  RESULT (v5): 766 pts, 7,167 bytes
+  vs raw pixels: 9x  vs PNG: 4.6x
+  PSNR=31.20  SSIM=0.8613  FG-PSNR=33.89  FG-SSIM=0.9906
+  Graph topology: 2 components, 32 cycles, 76 junctions, 26 endpoints
+  Segmentation: β₀=6, β₁=1
+  Structures: 6 -- {'punctate': 2, 'ring': 1, 'branched': 3}
+  Total time: 5354 ms
+============================================================
+  Sample saved: results/paper/mito/mito_mip/samples/M2_013_y0x512.png
+  Bytes: 7,167  |  FG-SSIM: 0.9906  |  GT-IoU: 0.4172  |  Seg-F1: 0.5854  |  Topo-Q: 0.9602
+  [GRAPH] 60 branches traced, 352/352 nodes assigned, 0 orphans, 341 edges, 22 components
+  [GRAPH] 113 branches traced, 521/521 nodes assigned, 0 orphans, 509 edges, 37 components
+  [GRAPH] 207 branches traced, 755/755 nodes assigned, 0 orphans, 805 edges, 9 components
+  [GRAPH] 97 branches traced, 509/509 nodes assigned, 0 orphans, 515 edges, 18 components
+  [GRAPH] 21 branches traced, 100/100 nodes assigned, 0 orphans, 90 edges, 14 components
+  [GRAPH] 13 branches traced, 59/59 nodes assigned, 0 orphans, 46 edges, 13 components
+  [GRAPH] 43 branches traced, 232/232 nodes assigned, 0 orphans, 208 edges, 29 components
+  [GRAPH] 10 branches traced, 39/39 nodes assigned, 0 orphans, 37 edges, 4 components
+  [GRAPH] 2 branches traced, 32/32 nodes assigned, 0 orphans, 30 edges, 2 components
+  [GRAPH] 291 branches traced, 849/849 nodes assigned, 0 orphans, 925 edges, 10 components
+
+[201/228] M2_014_y512x512  (0.3 img/s, ETA 2m)
+  [GRAPH] 79 branches traced, 341/341 nodes assigned, 0 orphans, 340 edges, 20 components
+  [GRAPH] 52 branches traced, 212/212 nodes assigned, 0 orphans, 200 edges, 22 components
+  [GRAPH] 1 branches traced, 11/11 nodes assigned, 0 orphans, 10 edges, 1 components
+  [GRAPH] 346 branches traced, 1025/1026 nodes assigned, 1 orphans, 1057 edges, 56 components
+  [GRAPH] 100 branches traced, 410/410 nodes assigned, 0 orphans, 419 edges, 13 components
+  [GRAPH] 336 branches traced, 993/993 nodes assigned, 0 orphans, 1077 edges, 10 components
+  [GRAPH] 12 branches traced, 76/76 nodes assigned, 0 orphans, 64 edges, 12 components
+  [GRAPH] 2 branches traced, 10/10 nodes assigned, 0 orphans, 8 edges, 2 components
+  [GRAPH] 1 branches traced, 5/5 nodes assigned, 0 orphans, 4 edges, 1 components
+  [GRAPH] 110 branches traced, 407/408 nodes assigned, 1 orphans, 394 edges, 36 components
+  [GRAPH] 15 branches traced, 36/36 nodes assigned, 0 orphans, 36 edges, 4 components
+  [GRAPH] 9 branches traced, 84/84 nodes assigned, 0 orphans, 75 edges, 9 components
+  [GRAPH] 117 branches traced, 470/470 nodes assigned, 0 orphans, 487 edges, 12 components
+  [GRAPH] 52 branches traced, 280/280 nodes assigned, 0 orphans, 264 edges, 24 components
+  [GRAPH] 30 branches traced, 152/152 nodes assigned, 0 orphans, 142 edges, 15 components
+  [GRAPH] 99 branches traced, 521/521 nodes assigned, 0 orphans, 546 edges, 2 components
+  [GRAPH] 36 branches traced, 350/350 nodes assigned, 0 orphans, 349 edges, 7 components
+  [GRAPH] 71 branches traced, 308/308 nodes assigned, 0 orphans, 291 edges, 31 components
+  [GRAPH] 45 branches traced, 276/276 nodes assigned, 0 orphans, 255 edges, 26 components
+  [GRAPH] 40 branches traced, 199/199 nodes assigned, 0 orphans, 169 edges, 33 components
+  [GRAPH] 26 branches traced, 118/118 nodes assigned, 0 orphans, 116 edges, 7 components
+  [GRAPH] 2 branches traced, 10/10 nodes assigned, 0 orphans, 8 edges, 2 components
+  [GRAPH] 2 branches traced, 20/20 nodes assigned, 0 orphans, 18 edges, 2 components
+  [GRAPH] 316 branches traced, 759/759 nodes assigned, 0 orphans, 836 edges, 20 components
+  [GRAPH] 48 branches traced, 207/207 nodes assigned, 0 orphans, 212 edges, 4 components
+  [GRAPH] 137 branches traced, 612/612 nodes assigned, 0 orphans, 637 edges, 10 components
+  [GRAPH] 151 branches traced, 690/690 nodes assigned, 0 orphans, 721 edges, 7 components
+  [GRAPH] 117 branches traced, 490/490 nodes assigned, 0 orphans, 516 edges, 5 components
+
+CSV saved: results/paper/mito/mito_mip/metrics.csv
+TXT saved: results/paper/mito/mito_mip/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 228/228
+  Failures: 0
+  Total time: 782.4s  (3.43s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.2109    0.1450    0.0000    0.5706    0.1911
+  Seg IoU                         0.1332    0.1225    0.0000    0.5243    0.1084
+  Seg F1                          0.2159    0.1784    0.0000    0.6879    0.1956
+  Seg Precision                   0.2268    0.1807    0.0000    0.9608    0.1957
+  Seg Recall                      0.4289    0.3576    0.0000    1.0000    0.4084
+  GT FG-SSIM                      0.9865    0.0141    0.9242    0.9999    0.9907
+  GT FG-PSNR                     26.5806    4.9028   15.7747   39.0515   26.8504
+  FG-SSIM                         0.9957    0.0042    0.9839    1.0000    0.9974
+  FG-PSNR                        32.0724    3.5831   21.5128   38.7838   32.8457
+  IoU (recon)                     0.3293    0.2344    0.0010    0.8020    0.3720
+  Topology Q                      0.4979    0.3205    0.0952    0.9996    0.3623
+  Topo Preservation               0.9231    0.6895    0.0579    5.6630    0.8442
+  Full PSNR                      28.8525    4.8978   16.8196   41.9435   29.3428
+  Full SSIM                       0.8017    0.1142    0.4325    0.9761    0.8263
+  Bytes                        6136.5395 4908.0212  370.0000 22338.0000 5179.0000
+  Graph Components               11.9342   10.0372    0.0000   44.0000    9.0000
+  Graph Cycles                   47.2237   69.2640    0.0000  311.0000   13.5000
+  Graph Complexity                5.1367    8.4841    0.0000   46.0000    1.0000
+  Nodes                         535.9298  588.2315    0.0000 2774.0000  333.0000
+  Edges                         571.2193  651.2483    0.0000 3060.0000  323.5000
+  Total Edge Length            1040.4134 1201.7112    0.0000 5444.3096  524.3443
+  Mean Width (px)                 4.5325    1.8164    0.0000    9.3514    4.2791
+  Mean Curvature                  0.0676    0.0384    0.0000    0.2735    0.0649
+  Time (ms)                    3215.5999 2705.9165  471.9272 17145.6115 2802.6271
+
+  WINS vs byte-matched JPEG (228 images):
+    GT-IoU          : 66/228 wins (29%)  mean Δ=-0.0036
+    GT-FG-SSIM      : 1/228 wins (0%)  mean Δ=-0.0063
+    GT-FG-PSNR      : 0/228 wins (0%)  mean Δ=-9.2773
+    FG-SSIM         : 11/228 wins (5%)  mean Δ=-0.0032
+    IoU             : 66/228 wins (29%)  mean Δ=-0.0050
+
+  SEGMENTATION FAILURES (seg_iou < 0.3): 205
+    - M1_001_y0x0.png
+    - M1_001_y0x256.png
+    - M1_001_y0x512.png
+    - M1_001_y256x0.png
+    - M1_001_y512x512.png
+    - M1_002_y256x512.png
+    - M1_002_y256x768.png
+    - M1_002_y768x256.png
+    - M1_002_y768x768.png
+    - M1_003_y256x256.png
+    - M1_003_y256x512.png
+    - M1_003_y512x256.png
+    - M1_003_y512x768.png
+    - M1_003_y768x512.png
+    - M1_003_y768x768.png
+    - M1_004_y256x256.png
+    - M1_004_y256x512.png
+    - M1_004_y512x0.png
+    - M1_004_y768x0.png
+    - M1_004_y768x512.png
+
+Summary saved: results/paper/mito/mito_mip/summary.txt
+Aggregate plots saved: results/paper/mito/mito_mip/aggregate_plots.png
+
+Done. All results in results/paper/mito/mito_mip/
+=== [00:33:50] heldout
+wrote /mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/results/paper/heldout_organelle.txt (108 stems of 726)

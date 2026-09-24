@@ -2,7 +2,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
 ======================================================================
   Images processed: 25/25
   Failures: 0
-  Total time: 327.9s  (13.12s/image)
+  Total time: 338.9s  (13.56s/image)
 
   Metric                            Mean       Std       Min       Max    Median
   --------------------------------------------------------------------------
@@ -12,7 +12,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Topology Q                      0.8559    0.1191    0.5926    1.0000    0.8999
   Full PSNR                      28.0037    2.5297   23.2963   32.6709   27.8799
   Full SSIM                       0.8125    0.0806    0.5801    0.9200    0.8275
-  Bytes                        13458.9200 25892.5771 3277.0000 138939.0000 7691.0000
+  Bytes                        13145.6400 25884.0392 3277.0000 138939.0000 7691.0000
   Graph Components               10.0800    9.7115    2.0000   39.0000    7.0000
   Graph Cycles                   94.0800  297.1184    0.0000 1541.0000   26.0000
   Graph Complexity               34.2345  150.3373    0.0000  770.5000    2.8750
@@ -21,7 +21,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Total Edge Length            2439.5190 5689.0215  315.3675 30058.3577 1314.1413
   Mean Width (px)                 4.7299    1.8464    2.6787   11.8638    4.1158
   Mean Curvature                  0.0435    0.0201    0.0096    0.0831    0.0403
-  Time (ms)                    12183.6688 42550.6883 1440.8853 220321.6975 2933.7938
+  Time (ms)                    12584.6313 44307.5868 1447.3395 229325.1662 2951.1480
 
   WINS vs byte-matched JPEG (25 images):
     GT-IoU          : 0/25 wins (0%)  mean Δ=+0.0000

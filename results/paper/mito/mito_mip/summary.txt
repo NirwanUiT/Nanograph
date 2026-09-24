@@ -2,7 +2,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
 ======================================================================
   Images processed: 228/228
   Failures: 0
-  Total time: 772.1s  (3.39s/image)
+  Total time: 782.4s  (3.43s/image)
 
   Metric                            Mean       Std       Min       Max    Median
   --------------------------------------------------------------------------
@@ -20,7 +20,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Topo Preservation               0.9231    0.6895    0.0579    5.6630    0.8442
   Full PSNR                      28.8525    4.8978   16.8196   41.9435   29.3428
   Full SSIM                       0.8017    0.1142    0.4325    0.9761    0.8263
-  Bytes                        6683.5526 5586.6624  370.0000 25113.0000 5324.0000
+  Bytes                        6136.5395 4908.0212  370.0000 22338.0000 5179.0000
   Graph Components               11.9342   10.0372    0.0000   44.0000    9.0000
   Graph Cycles                   47.2237   69.2640    0.0000  311.0000   13.5000
   Graph Complexity                5.1367    8.4841    0.0000   46.0000    1.0000
@@ -29,14 +29,14 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Total Edge Length            1040.4134 1201.7112    0.0000 5444.3096  524.3443
   Mean Width (px)                 4.5325    1.8164    0.0000    9.3514    4.2791
   Mean Curvature                  0.0676    0.0384    0.0000    0.2735    0.0649
-  Time (ms)                    3180.6777 2679.6141  462.1494 17013.6526 2747.9579
+  Time (ms)                    3215.5999 2705.9165  471.9272 17145.6115 2802.6271
 
   WINS vs byte-matched JPEG (228 images):
-    GT-IoU          : 67/228 wins (29%)  mean Δ=-0.0038
-    GT-FG-SSIM      : 1/228 wins (0%)  mean Δ=-0.0064
-    GT-FG-PSNR      : 0/228 wins (0%)  mean Δ=-9.6047
-    FG-SSIM         : 12/228 wins (5%)  mean Δ=-0.0033
-    IoU             : 66/228 wins (29%)  mean Δ=-0.0046
+    GT-IoU          : 66/228 wins (29%)  mean Δ=-0.0036
+    GT-FG-SSIM      : 1/228 wins (0%)  mean Δ=-0.0063
+    GT-FG-PSNR      : 0/228 wins (0%)  mean Δ=-9.2773
+    FG-SSIM         : 11/228 wins (5%)  mean Δ=-0.0032
+    IoU             : 66/228 wins (29%)  mean Δ=-0.0050
 
   SEGMENTATION FAILURES (seg_iou < 0.3): 205
     - M1_001_y0x0.png

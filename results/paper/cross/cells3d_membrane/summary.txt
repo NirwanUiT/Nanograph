@@ -2,7 +2,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
 ======================================================================
   Images processed: 60/60
   Failures: 0
-  Total time: 283.6s  (4.73s/image)
+  Total time: 311.5s  (5.19s/image)
 
   Metric                            Mean       Std       Min       Max    Median
   --------------------------------------------------------------------------
@@ -12,7 +12,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Topology Q                      0.8286    0.1819    0.3549    1.0000    0.8688
   Full PSNR                      31.8904    3.8263   25.2100   39.5198   32.9259
   Full SSIM                       0.8048    0.1536    0.5086    0.9582    0.8996
-  Bytes                        13360.9000 5669.4529 2299.0000 27571.0000 14034.5000
+  Bytes                        12177.9500 5156.9419 2299.0000 24658.0000 12547.5000
   Graph Components               14.2000    7.2728    4.0000   35.0000   12.5000
   Graph Cycles                  139.8500  104.8844    5.0000  445.0000  138.5000
   Graph Complexity               13.9946   20.6365    0.7143  111.2500    7.3449
@@ -21,13 +21,13 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Total Edge Length            2671.5433 1424.2789  159.1543 5707.0855 3150.8517
   Mean Width (px)                 3.8642    2.2765    2.3001   11.1616    2.9608
   Mean Curvature                  0.0736    0.0153    0.0316    0.0992    0.0766
-  Time (ms)                    4447.3180 2948.8495 1467.8564 14097.0531 3220.4323
+  Time (ms)                    4881.7300 3442.5745 1651.7839 16741.1053 3408.8466
 
   WINS vs byte-matched JPEG (60 images):
     GT-IoU          : 0/60 wins (0%)  mean Δ=+0.0000
     GT-FG-SSIM      : 0/60 wins (0%)  mean Δ=+0.0000
     GT-FG-PSNR      : 0/60 wins (0%)  mean Δ=+0.0000
-    FG-SSIM         : 0/60 wins (0%)  mean Δ=-0.0130
-    IoU             : 30/60 wins (50%)  mean Δ=+0.0048
+    FG-SSIM         : 0/60 wins (0%)  mean Δ=-0.0126
+    IoU             : 31/60 wins (52%)  mean Δ=+0.0048
 
   No segmentation failures (all seg_iou >= 0.3)

@@ -2,7 +2,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
 ======================================================================
   Images processed: 726/726
   Failures: 0
-  Total time: 977.0s  (1.35s/image)
+  Total time: 1054.9s  (1.45s/image)
 
   Metric                            Mean       Std       Min       Max    Median
   --------------------------------------------------------------------------
@@ -20,7 +20,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Topo Preservation               0.6476    0.1927    0.2124    1.2621    0.6401
   Full PSNR                      30.7587    0.6246   27.4437   31.9321   30.7791
   Full SSIM                       0.5622    0.0273    0.4928    0.6165    0.5606
-  Bytes                        2199.8623  319.0154  818.0000 2996.0000 2219.5000
+  Bytes                        2197.9821  319.1563  818.0000 2996.0000 2217.0000
   Graph Components                4.3678    0.7337    1.0000    7.0000    4.0000
   Graph Cycles                    3.6612    3.1620    0.0000   19.0000    3.0000
   Graph Complexity                0.8637    0.8010    0.0000    7.5000    0.7500
@@ -29,14 +29,14 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Total Edge Length             243.0852   59.2167   23.8995  426.7178  244.4153
   Mean Width (px)                 2.9816    0.4368    2.1989    5.6453    2.9291
   Mean Curvature                  0.0371    0.0116    0.0098    0.1442    0.0361
-  Time (ms)                    1154.0828  209.1058  652.1831 3027.1673 1144.6936
+  Time (ms)                    1247.8723  256.7576  686.8994 4177.9785 1226.9275
 
   WINS vs byte-matched JPEG (726 images):
-    GT-IoU          : 385/726 wins (53%)  mean Δ=-0.0007
+    GT-IoU          : 386/726 wins (53%)  mean Δ=-0.0007
     GT-FG-SSIM      : 45/726 wins (6%)  mean Δ=-0.0002
-    GT-FG-PSNR      : 154/726 wins (21%)  mean Δ=-0.4118
+    GT-FG-PSNR      : 154/726 wins (21%)  mean Δ=-0.4104
     FG-SSIM         : 402/726 wins (55%)  mean Δ=+0.0000
-    IoU             : 526/726 wins (72%)  mean Δ=+0.0198
+    IoU             : 527/726 wins (73%)  mean Δ=+0.0198
 
   SEGMENTATION FAILURES (seg_iou < 0.3): 14
     - 7292.png
