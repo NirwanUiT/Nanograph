@@ -285,6 +285,8 @@ def downstream(M, runs):
     d = os.path.join(runs, 'downstream')
     sp, cp = os.path.join(d, 'summary.csv'), os.path.join(d, 'cost_summary.csv')
     S = pd.read_csv(sp) if os.path.exists(sp) else None
+    if S is not None and 'L' in S:
+        S = S[(S.L == 0) & (S.get('junction_def', 't10') == 't10')]   # T10 definition
     C = pd.read_csv(cp, index_col=0)['value'] if os.path.exists(cp) else None
     for dk, dn in DS_DESC:
         for arm, an in DS_ARMS:
@@ -322,6 +324,47 @@ def downstream(M, runs):
     else:
         for k in ('DsN', 'DsTimeGraph', 'DsTimeJpeg', 'DsTimeRef', 'DsTimeRatio', 'DsTimeRatioRef'):
             M.put(k, '\\tbd')
+    downstream_pruned(M, runs)
+
+
+DS_PRUNE_L = 5   # T11.2: shared terminal-branch pruning length used in the text (px)
+
+
+def downstream_pruned(M, runs):
+    """T11.2 macros at the chosen shared pruning length (degree-based junctions):
+    \\DsP<Arm><Descriptor>{CCC,MdAPE,BiasPct}, \\DsPWins<Descriptor>/\\DsPLosses/\\DsPWinsP,
+    \\DsPWass{Graph,Jpeg}, \\DsPruneL, \\DsRefSpurPct, \\DsRefSpurLenPct."""
+    d = os.path.join(runs, 'downstream')
+    sp, fp = os.path.join(d, 'summary.csv'), os.path.join(d, 'spur_fractions.csv')
+    S = pd.read_csv(sp) if os.path.exists(sp) else None
+    if S is not None and 'junction_def' in S:
+        S = S[(S.junction_def == 'degree') & (S.L == DS_PRUNE_L)]
+    else:
+        S = None
+    M.put('DsPruneL', str(DS_PRUNE_L))
+    for dk, dn in DS_DESC:
+        for arm, an in DS_ARMS:
+            r = S[(S.descriptor == dk) & (S.arm == arm) & (S.ref == 'REF')] if S is not None else []
+            for k, col, fmt in (('CCC', 'ccc', '.3f'), ('MdAPE', 'mdape', '.1f'),
+                                ('BiasPct', 'bias_pct', '+.1f')):
+                M.put(f'DsP{an}{dn}{k}', format(r.iloc[0][col], fmt) if len(r) else '\\tbd')
+        r = S[(S.descriptor == dk) & (S.arm == 'GRAPH') & (S.ref == 'REF')] if S is not None else []
+        if len(r):
+            r = r.iloc[0]
+            n = int(r.wins_graph + r.wins_jpeg + r.ties)
+            M.put(f'DsPWins{dn}', f'{int(r.wins_graph)}/{n}')
+            M.put(f'DsPLosses{dn}', f'{int(r.wins_jpeg)}/{n}')
+            M.put(f'DsPWinsP{dn}', fmt_p(r.wilcoxon_p))
+        else:
+            for k in ('DsPWins', 'DsPLosses', 'DsPWinsP'):
+                M.put(f'{k}{dn}', '\\tbd')
+    for arm, an in (('GRAPH', 'Graph'), ('JPEG', 'Jpeg')):
+        r = S[(S.descriptor == 'branch_lengths') & (S.arm == arm)] if S is not None else []
+        M.put(f'DsPWass{an}', f'{r.iloc[0].w1_mean:.2f}' if len(r) else '\\tbd')
+    F = pd.read_csv(fp) if os.path.exists(fp) else None
+    r = F[(F.arm == 'REF') & (F.L == DS_PRUNE_L)] if F is not None else []
+    M.put('DsRefSpurPct', f'{100 * r.iloc[0].branch_frac_pooled:.1f}' if len(r) else '\\tbd')
+    M.put('DsRefSpurLenPct', f'{100 * r.iloc[0].length_frac_mean:.1f}' if len(r) else '\\tbd')
 
 
 def main():

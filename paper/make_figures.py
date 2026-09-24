@@ -209,6 +209,9 @@ def fig_downstream(runs, out):
         return
     df = pd.read_csv(p, dtype={'stem': str})
     S = pd.read_csv(os.path.join(d, 'summary.csv'))
+    if 'L' in df:                      # T10 definition: no shared pruning
+        df = df[(df.L == 0) & (df.get('junction_def', 't10') == 't10')]
+        S = S[(S.L == 0) & (S.get('junction_def', 't10') == 't10')]
     W = {a: g.set_index('stem') for a, g in df.groupby('arm')}
     stems = sorted(set(W['REF'].index) & set(W['GRAPH'].index) & set(W['JPEG'].index))
     R, G, J = (W[a].loc[stems] for a in ('REF', 'GRAPH', 'JPEG'))
@@ -258,12 +261,16 @@ def fig_downstream(runs, out):
     # (d) the image whose GRAPH-vs-REF Wasserstein distance is the median one
     a = ax[3]
     bd = pd.read_csv(os.path.join(d, 'branch_distances.csv'), dtype={'stem': str})
+    if 'L' in bd:
+        bd = bd[(bd.L == 0) & (bd.get('junction_def', 't10') == 't10')]
     bd = bd.dropna(subset=['w1_GRAPH', 'w1_JPEG'])
     stem = bd.iloc[(bd.w1_GRAPH - bd.w1_GRAPH.median()).abs().argsort().iloc[0]].stem
     L = {}
     for arm in ('REF', 'GRAPH', 'JPEG'):
         with open(os.path.join(d, 'branch_lengths', f'{stem}_{arm}.json')) as f:
-            L[arm] = json.load(f)['branch_lengths']
+            js = json.load(f)
+            L[arm] = (js['branch_lengths'] if 'branch_lengths' in js
+                      else [b[2] for b in js['branches']])
     bins = np.linspace(0, max(max(v) for v in L.values() if v), 16)
     for arm, c in (('REF', GREY), ('GRAPH', BLUE), ('JPEG', GOLD)):
         a.hist(L[arm], bins, histtype='step', lw=1.6, color=c, label=f'{arm} (n={len(L[arm])})')

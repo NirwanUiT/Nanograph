@@ -56,12 +56,14 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 #     four types count towards length and branch totals;
 #   - cycle_rank = n_branches - n_branch_vertices + n_components on the
 #     contracted graph (an isolated cycle is 1 branch on 1 vertex).
-def branch_descriptors(pos, width, edges, edge_len=None, contract=True):
-    """Descriptors of an undirected graph.
+def branch_table(pos, width, edges, edge_len=None, contract=True):
+    """Branch decomposition of an undirected graph (input to descriptors_at).
 
     pos (n,2) float, width (n,) node diameters, edges (m,2) int,
     edge_len (m,) optional (default: Euclidean between endpoints).
-    Returns (dict of scalars, list of branch lengths, list of branch types).
+    Returns a dict: branches [[a, b, length, length-weighted width sum]] over
+    vertices a, b (an isolated cycle gets its own vertex), vjunc (vertex is a
+    junction cluster), n_components, and node-level auxiliaries.
     """
     pos = np.asarray(pos, float).reshape(-1, 2)
     width = np.asarray(width, float)
@@ -104,7 +106,7 @@ def branch_descriptors(pos, width, edges, edge_len=None, contract=True):
     for k, (u, v) in enumerate(edges):       # intra-cluster links
         if vlabel[u] >= 0 and vlabel[u] == vlabel[v]:
             used[k] = True
-    lengths, types, wsum = [], [], 0.0
+    lengths, types, wsum, wlist = [], [], 0.0, []
     ends = []                                # (vertex a, vertex b) per branch
 
     def walk(u, w, k):
@@ -135,6 +137,7 @@ def branch_descriptors(pos, width, edges, edge_len=None, contract=True):
             types.append(3 if a == b else 2 if (ja and jb) else 1 if (ja or jb) else 0)
             lengths.append(L)
             wsum += W
+            wlist.append(W)
             ends.append((a, b))
     # isolated cycles: remaining edges lie on components with no vertex
     n_cyc_only = 0
@@ -158,6 +161,8 @@ def branch_descriptors(pos, width, edges, edge_len=None, contract=True):
         lengths.append(L)
         types.append(3)
         wsum += W
+        wlist.append(W)
+        ends.append((nv + n_cyc_only, nv + n_cyc_only))
         n_cyc_only += 1
 
     # components over nodes with degree >= 1
@@ -176,27 +181,123 @@ def branch_descriptors(pos, width, edges, edge_len=None, contract=True):
                     stack.append(w)
         n_comp += 1
 
-    total = float(np.sum(lengths)) if lengths else 0.0
-    n_br = len(lengths)
-    d = {
+    return {
+        'branches': [[int(a), int(b), float(L), float(W)]
+                     for (a, b), L, W in zip(ends, lengths, wlist)],
+        'vjunc': [bool(v) for v in vjunc] + [False] * n_cyc_only,
         'n_components': n_comp,
-        'total_length_px': total,
-        'mean_width_px': wsum / total if total > 0 else np.nan,
-        'n_branches': n_br,
-        'n_junctions': int(vjunc.sum()),
-        'cycle_rank': int(n_br - (nv + n_cyc_only) + n_comp),
-        # auxiliary (not among the seven)
         'n_junction_nodes': int((deg >= 3).sum()),
         'n_endpoints': int((deg == 1).sum()),
         'n_isolated_cycles': n_cyc_only,
     }
-    return d, [float(x) for x in lengths], types
 
 
-def pixel_arm_descriptors(mask, contract=True, timings=None):
+def _branch_types(br, is_junc):
+    return [3 if a == b else 2 if (is_junc[a] and is_junc[b]) else
+            1 if (is_junc[a] or is_junc[b]) else 0 for a, b, _, _ in br]
+
+
+def spur_fraction(table, L):
+    """Fraction of branches (and of total length) that the degree-based
+    pruning at L removes: terminal (free end of degree 1 at one end, a vertex
+    with >= 3 branches at the other) and shorter than L, before any merging."""
+    from collections import Counter
+    br = table['branches']
+    if not br:
+        return np.nan, np.nan
+    deg = Counter(v for b in br for v in b[:2])
+    spur = [a != b and ln < L and min(deg[a], deg[b]) == 1 and max(deg[a], deg[b]) >= 3
+            for a, b, ln, _ in br]
+    tot = sum(b[2] for b in br)
+    return (float(np.mean(spur)),
+            sum(b[2] for b, s_ in zip(br, spur) if s_) / tot if tot > 0 else np.nan)
+
+
+def descriptors_at(table, L=0.0, junction_def='degree'):
+    """Descriptors after dropping terminal branches shorter than L px.
+
+    junction_def='t10' (only with L = 0) is the T10 definition: a junction is
+    any contracted cluster containing a degree>=3 node, even if only two
+    branches leave it. junction_def='degree' (T11.2): for L > 0, one pass
+    removes every terminal branch (one end a free end of degree 1, the other a
+    vertex of degree >= 3) shorter than L; if all branches at a vertex would
+    go, its longest is kept, so no component disappears. Then vertices with
+    two branches are merged into one branch, and a junction is a vertex with
+    >= 3 branches.
+    Returns (dict of scalars, list of branch lengths, list of branch types).
+    """
+    from collections import defaultdict
+    br = [list(b) for b in table['branches']]
+    is_junc = list(table['vjunc'])
+    assert junction_def in ('t10', 'degree') and not (junction_def == 't10' and L > 0)
+    if junction_def == 'degree' and br:
+        inc = defaultdict(list)
+        for k, (a, b, _, _) in enumerate(br):
+            inc[a].append(k)
+            inc[b].append(k)
+        deg = {v: len(ks) for v, ks in inc.items()}
+        drop = set()
+        for k, (a, b, ln, _) in enumerate(br if L > 0 else []):
+            if a != b and ln < L and min(deg[a], deg[b]) == 1 and max(deg[a], deg[b]) >= 3:
+                drop.add(k)
+        for v, ks in inc.items():                    # keep the longest if all go
+            if deg[v] >= 3 and all(k in drop for k in ks):
+                drop.discard(max(ks, key=lambda k: br[k][2]))
+        alive = {k: br[k] for k in range(len(br)) if k not in drop}
+        inc = defaultdict(list)
+        for k, (a, b, _, _) in alive.items():
+            inc[a].append(k)
+            inc[b].append(k)
+        nxt = len(br)
+        for v in list(inc):
+            ks = inc.get(v, [])
+            if len(ks) != 2 or ks[0] == ks[1]:
+                continue
+            k1, k2 = ks
+            x = alive[k1][1] if alive[k1][0] == v else alive[k1][0]
+            y = alive[k2][1] if alive[k2][0] == v else alive[k2][0]
+            alive[nxt] = [x, y, alive[k1][2] + alive[k2][2], alive[k1][3] + alive[k2][3]]
+            for k, end in ((k1, x), (k2, y)):
+                inc[end].remove(k)
+                del alive[k]
+            inc[x].append(nxt)
+            inc[y].append(nxt)
+            del inc[v]
+            nxt += 1
+        br = list(alive.values())
+        n_vert = len(inc)
+        is_junc = defaultdict(bool, {v: len(ks) >= 3 for v, ks in inc.items()})
+        n_junc = sum(1 for ks in inc.values() if len(ks) >= 3)
+    else:
+        n_vert = len({v for b in br for v in b[:2]})
+        n_junc = int(sum(table['vjunc']))
+    lengths = [b[2] for b in br]
+    total = float(np.sum(lengths)) if lengths else 0.0
+    n_comp = table['n_components']
+    d = {
+        'n_components': n_comp,
+        'total_length_px': total,
+        'mean_width_px': sum(b[3] for b in br) / total if total > 0 else np.nan,
+        'n_branches': len(br),
+        'n_junctions': n_junc,
+        'cycle_rank': int(len(br) - n_vert + n_comp) if br else 0,
+        # auxiliary (not among the seven)
+        'n_junction_nodes': table['n_junction_nodes'],
+        'n_endpoints': table['n_endpoints'],
+        'n_isolated_cycles': table['n_isolated_cycles'],
+    }
+    return d, [float(x) for x in lengths], _branch_types(br, is_junc)
+
+
+def branch_descriptors(pos, width, edges, edge_len=None, contract=True, L=0.0):
+    """Descriptors of an undirected graph (branch_table -> descriptors_at)."""
+    return descriptors_at(branch_table(pos, width, edges, edge_len, contract), L)
+
+
+def pixel_arm_table(mask, contract=True, timings=None):
     """Annotation/segmentation mask -> skeletonize -> skan pixel graph ->
-    branch_descriptors. Widths = 2 x cv2 L2 distance transform (as encoder).
-    If `timings` is a dict, the skeleton+skan and descriptor times go in it."""
+    branch_table. Widths = 2 x cv2 L2 distance transform (as encoder).
+    If `timings` is a dict, the skeleton+skan and branch-table times go in it."""
     import time
     import cv2
     import skan
@@ -205,7 +306,7 @@ def pixel_arm_descriptors(mask, contract=True, timings=None):
     fg = (mask > 0).astype(np.uint8)
     skel = skeletonize(fg > 0)
     if skel.sum() < 2:
-        return branch_descriptors(np.zeros((0, 2)), [], np.zeros((0, 2)))
+        return branch_table(np.zeros((0, 2)), [], np.zeros((0, 2)))
     dt = cv2.distanceTransform(fg, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
     S = skan.Skeleton(skel)
     g = S.graph.tocoo()
@@ -214,16 +315,24 @@ def pixel_arm_descriptors(mask, contract=True, timings=None):
     coords = np.asarray(S.coordinates)
     width = 2.0 * dt[coords[:, 0].astype(int), coords[:, 1].astype(int)]
     t1 = time.perf_counter()
-    out = branch_descriptors(coords, width, edges, g.data[sel], contract=contract)
+    out = branch_table(coords, width, edges, g.data[sel], contract=contract)
     if timings is not None:
         timings['skeleton_skan_s'] = t1 - t0
         timings['descriptors_s'] = time.perf_counter() - t1
     return out
 
 
-def graph_arm_descriptors(nodes_pos, radius, edges, edge_len=None):
-    """Nanograph nodes/edges (stored radius) -> branch_descriptors."""
-    return branch_descriptors(nodes_pos, 2.0 * np.asarray(radius, float), edges, edge_len)
+def pixel_arm_descriptors(mask, contract=True, L=0.0):
+    return descriptors_at(pixel_arm_table(mask, contract), L)
+
+
+def graph_arm_table(nodes_pos, radius, edges, edge_len=None):
+    """Nanograph nodes/edges (stored radius) -> branch_table."""
+    return branch_table(nodes_pos, 2.0 * np.asarray(radius, float), edges, edge_len)
+
+
+def graph_arm_descriptors(nodes_pos, radius, edges, edge_len=None, L=0.0):
+    return descriptors_at(graph_arm_table(nodes_pos, radius, edges, edge_len), L)
 
 
 # ---------------------------------------------------------------------------
@@ -313,6 +422,9 @@ def stage_encode(args):
 # ---------------------------------------------------------------------------
 # measure stage (sequential, single-threaded: this is where timing happens)
 # ---------------------------------------------------------------------------
+PRUNE_LS = [0, 2, 5, 10]   # T11.2: shared terminal-branch pruning lengths (px)
+# (junction definition, L): the T10 definition at L=0, then the degree-based one
+SETTINGS = [('t10', 0)] + [('degree', L) for L in PRUNE_LS]
 DESCRIPTORS = ['n_components', 'total_length_px', 'mean_width_px',
                'n_branches', 'n_junctions', 'cycle_rank']
 
@@ -380,7 +492,8 @@ def stage_measure(args):
         t0 = time.perf_counter()
         arrays = _decoded_graph_arrays(payload)
         t1 = time.perf_counter()
-        out = graph_arm_descriptors(*arrays)
+        out = graph_arm_table(*arrays)
+        descriptors_at(out, 0.0, 't10')
         if timings is not None:
             timings['decode_graph_s'] = t1 - t0
             timings['descriptors_s'] = time.perf_counter() - t1
@@ -388,11 +501,11 @@ def stage_measure(args):
 
     def arm_jpeg(buf, segmenter):
         dec = cv2.imdecode(np.frombuffer(buf, np.uint8), cv2.IMREAD_GRAYSCALE)
-        return pixel_arm_descriptors(segment_like_pipeline(dec, segmenter, model))
+        return pixel_arm_table(segment_like_pipeline(dec, segmenter, model))
 
     # warm-up (imports, allocator, U-Net first call) on the first image
     c, img, gt = load(stems[0])
-    pixel_arm_descriptors(gt)
+    pixel_arm_table(gt)
     arm_graph(c[primary].tobytes())
     _, jb = jpeg_for_budget(img, len(c[primary]))
     if jb:
@@ -414,7 +527,8 @@ def stage_measure(args):
 
         t0 = time.perf_counter()
         sp = {}
-        res['REF'] = pixel_arm_descriptors(gt, timings=sp)
+        res['REF'] = pixel_arm_table(gt, timings=sp)
+        descriptors_at(res['REF'], 0.0, 't10')
         tt['REF'] = time.perf_counter() - t0
         split.update({f'ref_{k}': v for k, v in sp.items()})
 
@@ -431,22 +545,26 @@ def stage_measure(args):
             jmask = segment_like_pipeline(dec, seg, model)
             t2 = time.perf_counter()
             sp = {}
-            res['JPEG'] = pixel_arm_descriptors(jmask, timings=sp)
+            res['JPEG'] = pixel_arm_table(jmask, timings=sp)
+            descriptors_at(res['JPEG'], 0.0, 't10')
             tt['JPEG'] = time.perf_counter() - t0
             split.update(jpeg_decode_s=t1 - t0, jpeg_segment_s=t2 - t1,
                          **{f'jpeg_{k}': v for k, v in sp.items()})
 
         # untimed arms
-        res['PRE'] = graph_arm_descriptors(c['pre_pos'], c['pre_rad'], c['pre_edges'],
-                                           c['pre_elen'])
-        res['GRAPH_' + other.split('_')[1].upper()] = arm_graph(c[other].tobytes())
-        res['SEG'] = pixel_arm_descriptors(segment_like_pipeline(img, seg, model))
+        res['PRE'] = graph_arm_table(c['pre_pos'], c['pre_rad'], c['pre_edges'],
+                                     c['pre_elen'])
+        if c[other].tobytes() != payload:        # only differs before the T11.1 fix
+            res['GRAPH_' + other.split('_')[1].upper()] = arm_graph(c[other].tobytes())
+        res['SEG'] = pixel_arm_table(segment_like_pipeline(img, seg, model))
 
-        for arm, (d, L, T) in res.items():
-            rows.append({**common, 'arm': arm, **d,
-                         'time_s': tt.get(arm, np.nan)})
+        for arm, table in res.items():
+            for jd, Lp in SETTINGS:
+                d, _, _ = descriptors_at(table, Lp, jd)
+                rows.append({**common, 'arm': arm, 'junction_def': jd, 'L': Lp, **d,
+                             'time_s': tt.get(arm, np.nan) if jd == 't10' else np.nan})
             with open(os.path.join(bl_dir, f'{stem}_{arm}.json'), 'w') as f:
-                json.dump({'branch_lengths': L, 'branch_types': T}, f)
+                json.dump(table, f)
         timing.append({'stem': stem, 'segmenter': seg,
                        **{f'{a.lower()}_s': v for a, v in tt.items()}, **split})
         if i % 50 == 0:
@@ -498,70 +616,96 @@ def paired_error_test(a, b, ref):
             'ties': int(len(ea) - wins - losses)}
 
 
-def branch_distance_table(out, stems, arms):
+def _load_tables(out, stems, arms):
     import json
+    tabs = {}
+    for s in stems:
+        for a in arms:
+            with open(os.path.join(out, 'branch_lengths', f'{s}_{a}.json')) as f:
+                tabs[s, a] = json.load(f)
+    return tabs
+
+
+def branch_distance_table(tabs, stems, arms, jd, L):
+    import pandas as pd
     from scipy.stats import wasserstein_distance, ks_2samp
     rows = []
     for s in stems:
-        L = {}
-        for a in ['REF'] + arms:
-            with open(os.path.join(out, 'branch_lengths', f'{s}_{a}.json')) as f:
-                L[a] = json.load(f)['branch_lengths']
-        r = {'stem': s}
+        bl = {a: descriptors_at(tabs[s, a], L, jd)[1] for a in ['REF'] + arms}
+        r = {'stem': s, 'junction_def': jd, 'L': L}
         for a in arms:
-            if L['REF'] and L[a]:
-                r[f'w1_{a}'] = wasserstein_distance(L[a], L['REF'])
-                r[f'ks_{a}'] = ks_2samp(L[a], L['REF']).statistic
+            if bl['REF'] and bl[a]:
+                r[f'w1_{a}'] = wasserstein_distance(bl[a], bl['REF'])
+                r[f'ks_{a}'] = ks_2samp(bl[a], bl['REF'], method='asymp').statistic
             else:
                 r[f'w1_{a}'] = r[f'ks_{a}'] = np.nan
         rows.append(r)
-    return __import__('pandas').DataFrame(rows)
+    return pd.DataFrame(rows)
 
 
 def stage_stats(args):
     import platform
     import pandas as pd
+    from scipy.stats import wilcoxon
     df = pd.read_csv(os.path.join(args.out, 'per_image.csv'), dtype={'stem': str})
-    wide = {a: g.set_index('stem') for a, g in df.groupby('arm')}
-    # Common image set: every arm defined (JPEG needs a quality that fits).
-    stems = sorted(set.intersection(*(set(g.index) for g in wide.values())))
+    core = ['REF', 'GRAPH', 'JPEG', 'PRE', 'SEG']
+    d0 = df[df.junction_def == 't10']
+    # Common image set: every core arm defined (JPEG needs a quality that fits).
+    stems = sorted(set.intersection(*(set(d0[d0.arm == a].stem) for a in core)))
+    comps = [(a, r) for a, r in COMPARISONS if a in set(df.arm)]
     rows = []
-    for desc in DESCRIPTORS:
-        for arm, ref in COMPARISONS:
-            x = wide[arm].loc[stems, desc].to_numpy(float)
-            y = wide[ref].loc[stems, desc].to_numpy(float)
-            ok = np.isfinite(x) & np.isfinite(y)
-            r = {'descriptor': desc, 'arm': arm, 'ref': ref, **agreement(x[ok], y[ok])}
-            if ref == 'REF' and arm in ('GRAPH', 'JPEG'):
-                g = wide['GRAPH'].loc[stems, desc].to_numpy(float)
-                j = wide['JPEG'].loc[stems, desc].to_numpy(float)
-                yy = wide['REF'].loc[stems, desc].to_numpy(float)
-                ok3 = np.isfinite(g) & np.isfinite(j) & np.isfinite(yy)
-                r.update(paired_error_test(g[ok3], j[ok3], yy[ok3]))
-            rows.append(r)
+    for jd, L in SETTINGS:
+        sel = df[(df.junction_def == jd) & (df.L == L)]
+        wide = {a: g.set_index('stem') for a, g in sel.groupby('arm')}
+        for desc in DESCRIPTORS:
+            for arm, ref in comps:
+                st = [s for s in stems if s in wide[arm].index]
+                x = wide[arm].loc[st, desc].to_numpy(float)
+                y = wide[ref].loc[st, desc].to_numpy(float)
+                ok = np.isfinite(x) & np.isfinite(y)
+                r = {'junction_def': jd, 'L': L, 'descriptor': desc, 'arm': arm, 'ref': ref, **agreement(x[ok], y[ok])}
+                if ref == 'REF' and arm in ('GRAPH', 'JPEG'):
+                    g = wide['GRAPH'].loc[stems, desc].to_numpy(float)
+                    j = wide['JPEG'].loc[stems, desc].to_numpy(float)
+                    yy = wide['REF'].loc[stems, desc].to_numpy(float)
+                    ok3 = np.isfinite(g) & np.isfinite(j) & np.isfinite(yy)
+                    r.update(paired_error_test(g[ok3], j[ok3], yy[ok3]))
+                rows.append(r)
 
     arms = ['GRAPH', 'JPEG', 'PRE', 'SEG']
-    bd = branch_distance_table(args.out, stems, arms)
-    bd.to_csv(os.path.join(args.out, 'branch_distances.csv'), index=False)
-    from scipy.stats import wilcoxon
-    for a in arms:
-        r = {'descriptor': 'branch_lengths', 'arm': a, 'ref': 'REF',
-             'n': int(bd[f'w1_{a}'].notna().sum()),
-             'w1_mean': bd[f'w1_{a}'].mean(), 'w1_median': bd[f'w1_{a}'].median(),
-             'ks_mean': bd[f'ks_{a}'].mean(), 'ks_median': bd[f'ks_{a}'].median()}
-        if a in ('GRAPH', 'JPEG'):
-            ok = bd['w1_GRAPH'].notna() & bd['w1_JPEG'].notna()
-            for m in ('w1', 'ks'):
-                g, j = bd.loc[ok, f'{m}_GRAPH'], bd.loc[ok, f'{m}_JPEG']
-                r[f'{m}_wilcoxon_p'] = wilcoxon(g, j).pvalue
-                r[f'{m}_wins_graph'] = int((g < j).sum())
-                r[f'{m}_wins_jpeg'] = int((g > j).sum())
-        rows.append(r)
+    tabs = _load_tables(args.out, stems, ['REF'] + arms)
+    bds, spur = [], []
+    for jd, L in SETTINGS:
+        bd = branch_distance_table(tabs, stems, arms, jd, L)
+        bds.append(bd)
+        for a in arms:
+            r = {'junction_def': jd, 'L': L, 'descriptor': 'branch_lengths', 'arm': a, 'ref': 'REF',
+                 'n': int(bd[f'w1_{a}'].notna().sum()),
+                 'w1_mean': bd[f'w1_{a}'].mean(), 'w1_median': bd[f'w1_{a}'].median(),
+                 'ks_mean': bd[f'ks_{a}'].mean(), 'ks_median': bd[f'ks_{a}'].median()}
+            if a in ('GRAPH', 'JPEG'):
+                ok = bd['w1_GRAPH'].notna() & bd['w1_JPEG'].notna()
+                for m in ('w1', 'ks'):
+                    g, j = bd.loc[ok, f'{m}_GRAPH'], bd.loc[ok, f'{m}_JPEG']
+                    r[f'{m}_wilcoxon_p'] = wilcoxon(g, j).pvalue
+                    r[f'{m}_wins_graph'] = int((g < j).sum())
+                    r[f'{m}_wins_jpeg'] = int((g > j).sum())
+            rows.append(r)
+        # T11.2: how much of each arm's L=0 count/length is terminal and < L
+        for a in (['REF'] + arms) if jd == 'degree' else []:
+            fr = np.array([spur_fraction(tabs[s, a], L) for s in stems], float)
+            nb = np.array([len(tabs[s, a]['branches']) for s in stems], float)
+            spur.append({'L': L, 'arm': a,
+                         'branch_frac_mean': np.nanmean(fr[:, 0]),
+                         'branch_frac_pooled': np.nansum(fr[:, 0] * nb) / nb.sum(),
+                         'length_frac_mean': np.nanmean(fr[:, 1])})
+    pd.concat(bds).to_csv(os.path.join(args.out, 'branch_distances.csv'), index=False)
+    pd.DataFrame(spur).to_csv(os.path.join(args.out, 'spur_fractions.csv'), index=False)
     pd.DataFrame(rows).to_csv(os.path.join(args.out, 'summary.csv'), index=False)
 
     # cost: bytes (one row per image, from the REF rows) and median times
     t = pd.read_csv(os.path.join(args.out, 'timing.csv'), dtype={'stem': str})
-    ref = wide['REF']
+    ref = d0[d0.arm == 'REF'].set_index('stem')
     cost = {'n_images': len(ref), 'n_common': len(stems)}
     for c in ('payload_bytes', 'jpeg_bytes', 'raw_bytes', 'png_bytes'):
         cost[f'{c}_mean'] = ref[c].mean()
@@ -577,8 +721,9 @@ def stage_stats(args):
     cost['python'] = platform.python_version()
     cost['threads'] = 'OMP/MKL/OPENBLAS_NUM_THREADS=1, torch.set_num_threads(1), cv2.setNumThreads(1), CPU only'
     pd.Series(cost).to_csv(os.path.join(args.out, 'cost_summary.csv'), header=['value'])
-    print(pd.DataFrame(rows)[['descriptor', 'arm', 'ref', 'n', 'ccc', 'mdape', 'bias_pct',
-                              'wilcoxon_p', 'wins_graph', 'wins_jpeg']].to_string())
+    S = pd.DataFrame(rows)
+    print(S[S.ref == 'REF'][['junction_def', 'L', 'descriptor', 'arm', 'n', 'ccc', 'mdape', 'bias_pct',
+                             'wilcoxon_p', 'wins_graph', 'wins_jpeg']].to_string())
     print(pd.Series(cost).to_string())
 
 
