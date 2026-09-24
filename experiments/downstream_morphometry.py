@@ -141,11 +141,13 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
             ends.append((a, b))
     # isolated cycles: remaining edges lie on components with no vertex
     n_cyc_only = 0
+    cyc_pos = []
     for k in range(len(edges)):
         if used[k]:
             continue
         u, w = edges[k]
         start = u
+        cyc_pos.append(pos[u])
         L, W = edge_len[k], edge_len[k] * (width[u] + width[w]) / 2
         used[k] = True
         cur = w
@@ -181,7 +183,21 @@ def branch_table(pos, width, edges, edge_len=None, contract=True):
                     stack.append(w)
         n_comp += 1
 
+    # vertex positions: centroid of the nodes a vertex stands for (junction
+    # clusters), or the node itself; isolated cycles use their first node
+    vpos = np.zeros((nv + n_cyc_only, 2))
+    cnt = np.zeros(nv + n_cyc_only)
+    for u in range(n):
+        if vlabel[u] >= 0:
+            vpos[vlabel[u]] += pos[u]
+            cnt[vlabel[u]] += 1
+    for c, p0 in enumerate(cyc_pos):
+        vpos[nv + c] = p0
+        cnt[nv + c] = 1
+    cnt[cnt == 0] = 1
+    vpos /= cnt[:, None]
     return {
+        'vpos': vpos.round(2).tolist(),
         'branches': [[int(a), int(b), float(L), float(W)]
                      for (a, b), L, W in zip(ends, lengths, wlist)],
         'vjunc': [bool(v) for v in vjunc] + [False] * n_cyc_only,
@@ -320,6 +336,39 @@ def descriptors_at(table, L=0.0, junction_def='degree', prune='once'):
         'n_isolated_cycles': table['n_isolated_cycles'],
     }
     return d, [float(x) for x in lengths], _branch_types(br, is_junc)
+
+
+def vertex_positions(table, L=0.0, prune='once'):
+    """(junction positions, endpoint positions) after degree-based pruning at
+    L: vertices with >= 3 branches, and with exactly 1 branch."""
+    br = [list(b) for b in table['branches']]
+    vp = np.asarray(table.get('vpos', []), float).reshape(-1, 2)
+    if not br:
+        return np.zeros((0, 2)), np.zeros((0, 2))
+    br, inc = _prune_merge(br, L, guard=(prune != 'once_noguard'))
+    while prune == 'iterative' and L > 0:
+        nb = len(br)
+        br, inc = _prune_merge(br, L)
+        if len(br) == nb:
+            break
+    j = [v for v, ks in inc.items() if len(ks) >= 3]
+    e = [v for v, ks in inc.items() if len(ks) == 1]
+    return vp[j].reshape(-1, 2), vp[e].reshape(-1, 2)
+
+
+def point_f1(pred, ref, tol):
+    """Precision / recall / F1 of point sets under one-to-one matching within
+    `tol` px (Hungarian assignment on distances, pairs beyond tol rejected)."""
+    from scipy.optimize import linear_sum_assignment
+    if len(pred) == 0 or len(ref) == 0:
+        tp = 0
+    else:
+        d = np.hypot(pred[:, None, 0] - ref[None, :, 0], pred[:, None, 1] - ref[None, :, 1])
+        r, c = linear_sum_assignment(np.where(d <= tol, d, 1e6))
+        tp = int((d[r, c] <= tol).sum())
+    p = tp / len(pred) if len(pred) else (1.0 if len(ref) == 0 else 0.0)
+    rc = tp / len(ref) if len(ref) else (1.0 if len(pred) == 0 else 0.0)
+    return p, rc, (2 * p * rc / (p + rc) if p + rc > 0 else 0.0)
 
 
 def branch_descriptors(pos, width, edges, edge_len=None, contract=True, L=0.0):

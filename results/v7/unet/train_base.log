@@ -1,0 +1,61 @@
+device=cuda train=557 val=61 test(held-out)=108 skel_recall=0.0
+ep   0 loss=1.5146 val_dice=0.7659 val_iou=0.6232 val_csens=0.9654 *saved
+ep   1 loss=1.0446 val_dice=0.8515 val_iou=0.7427 val_csens=0.9204 *saved
+ep   2 loss=0.7395 val_dice=0.8467 val_iou=0.7361 val_csens=0.8939
+ep   3 loss=0.4604 val_dice=0.8828 val_iou=0.7911 val_csens=0.9345 *saved
+ep   4 loss=0.2855 val_dice=0.8898 val_iou=0.8025 val_csens=0.9458 *saved
+ep   5 loss=0.2181 val_dice=0.8895 val_iou=0.8024 val_csens=0.9531 *saved
+ep   6 loss=0.1874 val_dice=0.9018 val_iou=0.8220 val_csens=0.9487 *saved
+ep   7 loss=0.1724 val_dice=0.9024 val_iou=0.8232 val_csens=0.9524 *saved
+ep   8 loss=0.1625 val_dice=0.8882 val_iou=0.7996 val_csens=0.9294
+ep   9 loss=0.1558 val_dice=0.9074 val_iou=0.8314 val_csens=0.9548 *saved
+ep  10 loss=0.1516 val_dice=0.9111 val_iou=0.8374 val_csens=0.9537 *saved
+ep  11 loss=0.1445 val_dice=0.9063 val_iou=0.8292 val_csens=0.9417
+ep  12 loss=0.1390 val_dice=0.9086 val_iou=0.8334 val_csens=0.9635 *saved
+ep  13 loss=0.1414 val_dice=0.9124 val_iou=0.8395 val_csens=0.9555
+ep  14 loss=0.1361 val_dice=0.9131 val_iou=0.8411 val_csens=0.9608 *saved
+ep  15 loss=0.1340 val_dice=0.9062 val_iou=0.8329 val_csens=0.9615
+ep  16 loss=0.1334 val_dice=0.9129 val_iou=0.8404 val_csens=0.9433
+ep  17 loss=0.1291 val_dice=0.9169 val_iou=0.8473 val_csens=0.9609 *saved
+ep  18 loss=0.1259 val_dice=0.9197 val_iou=0.8519 val_csens=0.9616 *saved
+ep  19 loss=0.1251 val_dice=0.9224 val_iou=0.8565 val_csens=0.9568
+ep  20 loss=0.1221 val_dice=0.9219 val_iou=0.8557 val_csens=0.9602 *saved
+ep  21 loss=0.1211 val_dice=0.9242 val_iou=0.8596 val_csens=0.9614 *saved
+ep  22 loss=0.1192 val_dice=0.9236 val_iou=0.8587 val_csens=0.9578
+ep  23 loss=0.1195 val_dice=0.9237 val_iou=0.8587 val_csens=0.9603
+ep  24 loss=0.1181 val_dice=0.9194 val_iou=0.8514 val_csens=0.9467
+ep  25 loss=0.1185 val_dice=0.9265 val_iou=0.8637 val_csens=0.9567
+ep  26 loss=0.1170 val_dice=0.9257 val_iou=0.8623 val_csens=0.9619 *saved
+ep  27 loss=0.1144 val_dice=0.9267 val_iou=0.8641 val_csens=0.9553
+ep  28 loss=0.1137 val_dice=0.9268 val_iou=0.8641 val_csens=0.9617 *saved
+ep  29 loss=0.1128 val_dice=0.9193 val_iou=0.8512 val_csens=0.9518
+ep  30 loss=0.1108 val_dice=0.9242 val_iou=0.8597 val_csens=0.9686 *saved
+ep  31 loss=0.1095 val_dice=0.9276 val_iou=0.8655 val_csens=0.9633
+ep  32 loss=0.1100 val_dice=0.9290 val_iou=0.8680 val_csens=0.9573
+ep  33 loss=0.1088 val_dice=0.9215 val_iou=0.8550 val_csens=0.9488
+ep  34 loss=0.1079 val_dice=0.9278 val_iou=0.8660 val_csens=0.9652 *saved
+ep  35 loss=0.1066 val_dice=0.9314 val_iou=0.8722 val_csens=0.9604
+ep  36 loss=0.1061 val_dice=0.9324 val_iou=0.8740 val_csens=0.9638 *saved
+ep  37 loss=0.1069 val_dice=0.9314 val_iou=0.8721 val_csens=0.9626
+ep  38 loss=0.1051 val_dice=0.9327 val_iou=0.8744 val_csens=0.9585
+ep  39 loss=0.1040 val_dice=0.9319 val_iou=0.8730 val_csens=0.9608
+ep  40 loss=0.1049 val_dice=0.9341 val_iou=0.8768 val_csens=0.9607
+ep  41 loss=0.1027 val_dice=0.9327 val_iou=0.8743 val_csens=0.9609
+ep  42 loss=0.1033 val_dice=0.9334 val_iou=0.8755 val_csens=0.9578
+ep  43 loss=0.1024 val_dice=0.9329 val_iou=0.8749 val_csens=0.9668 *saved
+ep  44 loss=0.1008 val_dice=0.9352 val_iou=0.8787 val_csens=0.9661 *saved
+ep  45 loss=0.1006 val_dice=0.9351 val_iou=0.8785 val_csens=0.9621
+ep  46 loss=0.1006 val_dice=0.9329 val_iou=0.8748 val_csens=0.9687 *saved
+ep  47 loss=0.0995 val_dice=0.9358 val_iou=0.8798 val_csens=0.9632
+ep  48 loss=0.0992 val_dice=0.9358 val_iou=0.8798 val_csens=0.9638
+ep  49 loss=0.0991 val_dice=0.9356 val_iou=0.8795 val_csens=0.9603
+ep  50 loss=0.0998 val_dice=0.9356 val_iou=0.8794 val_csens=0.9613
+ep  51 loss=0.0986 val_dice=0.9331 val_iou=0.8750 val_csens=0.9588
+ep  52 loss=0.0984 val_dice=0.9366 val_iou=0.8813 val_csens=0.9627
+ep  53 loss=0.0969 val_dice=0.9367 val_iou=0.8813 val_csens=0.9628
+ep  54 loss=0.0980 val_dice=0.9365 val_iou=0.8810 val_csens=0.9638
+ep  55 loss=0.0972 val_dice=0.9365 val_iou=0.8811 val_csens=0.9623
+ep  56 loss=0.0973 val_dice=0.9366 val_iou=0.8812 val_csens=0.9634
+ep  57 loss=0.0970 val_dice=0.9369 val_iou=0.8817 val_csens=0.9639
+ep  58 loss=0.0975 val_dice=0.9368 val_iou=0.8816 val_csens=0.9641
+ep  59 loss=0.0974 val_dice=0.9367 val_iou=0.8814 val_csens=0.9637

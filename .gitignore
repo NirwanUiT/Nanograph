@@ -28,3 +28,7 @@ paper/*.synctex.gz
 # OS / editor cruft
 .DS_Store
 *.swp
+results/v7/cache/
+results/v7/tables/
+results/v7/unet/*.pt
+results/v7/per_image.csv
