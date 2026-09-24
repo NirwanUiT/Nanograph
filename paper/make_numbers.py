@@ -52,8 +52,10 @@ def self_iou_col(df):
 class Macros:
     def __init__(self):
         self.lines = []
+        self.d = {}
 
     def put(self, name, value):
+        self.d[name] = str(value)
         self.lines.append(f'\\newcommand{{\\{name}}}{{{value}}}')
 
     def pm(self, name, s, d):
@@ -479,6 +481,13 @@ def v7_sections(M, runs):
             else:
                 for k in ('Bytes', 'BrCCC', 'LenCCC'):
                     put(f'RealJpeg{qn}{k}{dn}', None, '')
+    sbv = [float(M.d[f'RealStructBytes{dn}']) for _, dn in names if M.d[f'RealStructBytes{dn}'] != TBD]
+    put('RealStructBytesMin', min(sbv) if sbv else None, '.0f')
+    put('RealStructBytesMax', max(sbv) if sbv else None, '.0f')
+    rat = [float(M.d[f'RealJpegQtwentyBytes{dn}']) / float(M.d[f'RealStructBytes{dn}'])
+           for _, dn in names if TBD not in (M.d[f'RealJpegQtwentyBytes{dn}'], M.d[f'RealStructBytes{dn}'])]
+    put('RealJpegRatioMin', min(rat) if rat else None, '.1f')
+    put('RealJpegRatioMax', max(rat) if rat else None, '.1f')
     E = _csv(os.path.join(runs, 'real', 'segmenters', 'eval_summary.csv'))
     for fam, fn in (('shipped_sim', 'Sim'), ('ALL_joint', 'Real')):
         g = E[(E.family == fam) & (E.dataset == 'HUMAN')] if E is not None else []
@@ -486,6 +495,80 @@ def v7_sections(M, runs):
         put(f'RealHumanJuncBias{fn}', g.n_junctions_bias_pct.mean() if len(g) else None, '+.0f')
         put(f'RealHumanBrCCC{fn}', g.n_branches_ccc.mean() if len(g) else None, '.2f')
         put(f'RealHumanIoU{fn}', g.iou.mean() if len(g) else None, '.2f')
+
+
+def perturbation(M, runs):
+    """Perturbation-study macros (\\Pert*), from seg_perturbation_ablation.csv."""
+    d = _csv(os.path.join(runs, 'seg_perturbation_ablation.csv'))
+    keys = ['PertN', 'PertBaseSegIoU', 'PertBaseComp', 'PertBaseCyc', 'PertDilOneBz', 'PertDilFiveBz',
+            'PertDilFiveSeg', 'PertDilOneW', 'PertDilFiveW', 'PertDilCycLo', 'PertDilCycHi',
+            'PertEroOneBz', 'PertEroBzLo', 'PertEroBzHi', 'PertEroWLo', 'PertEroWHi',
+            'PertNoiseOneBz', 'PertNoiseOneCyc', 'PertNoiseThreeCyc', 'PertNoiseW',
+            'PertDropW', 'PertDropCyc']
+    if d is None:
+        for k in keys:
+            M.put(k, '\\tbd')
+        return
+    b = d[d.kind == 'baseline'][['filename', 'beta0', 'beta1', 'mean_width', 'seg_iou']]
+    m = d[d.kind != 'baseline'].merge(b, on='filename', suffixes=('', '_b'))
+    m['bz'] = (m.beta0 != m.beta0_b) * 100
+    m['ab1'] = (m.beta1 - m.beta1_b).abs()
+    m['w'] = (m.mean_width / m.mean_width_b.where(m.mean_width_b > 0) - 1) * 100
+    g = m.groupby(['kind', 'level']).agg(bz=('bz', 'mean'), ab1=('ab1', 'median'), w=('w', 'median'),
+                                          seg=('seg_iou', 'median'))
+    G = lambda k, l, c: g.loc[(k, float(l)), c]
+    M.put('PertN', f'{len(m):,}'.replace(',', '{,}'))
+    M.put('PertBaseSegIoU', f'{b.seg_iou.mean():.3f}')
+    M.put('PertBaseComp', f'{b.beta0.median():.0f}')
+    M.put('PertBaseCyc', f'{b.beta1.median():.0f}')
+    M.put('PertDilOneBz', f"{G('dilate', 1, 'bz'):.0f}")
+    M.put('PertDilFiveBz', f"{G('dilate', 5, 'bz'):.0f}")
+    M.put('PertDilFiveSeg', f"{G('dilate', 5, 'seg'):.2f}")
+    M.put('PertDilOneW', f"{G('dilate', 1, 'w'):+.0f}")
+    M.put('PertDilFiveW', f"{G('dilate', 5, 'w'):+.0f}")
+    dc = [G('dilate', l, 'ab1') for l in range(1, 6)]
+    M.put('PertDilCycLo', f'{min(dc):.0f}'); M.put('PertDilCycHi', f'{max(dc):.0f}')
+    M.put('PertEroOneBz', f"{G('erode', 1, 'bz'):.0f}")
+    eb = [G('erode', l, 'bz') for l in range(2, 6)]
+    ew = [G('erode', l, 'w') for l in range(2, 6)]
+    M.put('PertEroBzLo', f'{min(eb):.0f}'); M.put('PertEroBzHi', f'{max(eb):.0f}')
+    M.put('PertEroWLo', f'{min(ew, key=abs):+.0f}'); M.put('PertEroWHi', f'{max(ew, key=abs):+.0f}')
+    M.put('PertNoiseOneBz', f"{G('boundary_noise', 1, 'bz'):.0f}")
+    M.put('PertNoiseOneCyc', f"{G('boundary_noise', 1, 'ab1'):.0f}")
+    M.put('PertNoiseThreeCyc', f"{G('boundary_noise', 3, 'ab1'):.0f}")
+    M.put('PertNoiseW', f"{np.median([G('boundary_noise', l, 'w') for l in (1, 2, 3)]):+.0f}")
+    dw = [G('drop_components', l, 'w') for l in (0.05, 0.1, 0.2, 0.3, 0.4)]
+    dy = [G('drop_components', l, 'ab1') for l in (0.05, 0.1, 0.2, 0.3, 0.4)]
+    M.put('PertDropW', f'{max(abs(x) for x in dw):.0f}')
+    M.put('PertDropCyc', f'{max(dy):.0f}')
+
+
+REAL_FAMILIES = [('shipped_sim', 'Simulation only (shipped default)'),
+                 ('ALL_scratch', 'Real, from scratch'),
+                 ('ALL_finetune', 'Real, fine-tuned from simulation'),
+                 ('ALL_joint', 'Real + simulation, joint (\\texttt{real-mito})')]
+
+
+def real_seg_table(runs, out):
+    """tables/tab_realseg_body.tex: standalone test-set IoU per training family
+    (mean over seeds) and, on the untouched Human set, branch-count bias/CCC;
+    last row: each dataset left out of joint training (LOO_<d>_joint)."""
+    E = _csv(os.path.join(runs, 'real', 'segmenters', 'eval_summary.csv'))
+    ds = ['UIT', 'CBMI', 'MITO', 'HUMAN']
+    lines = []
+    f = lambda v, fmt: '\\tbd' if v is None or v != v else format(v, fmt)
+    for fam, lab in REAL_FAMILIES:
+        g = E[E.family == fam] if E is not None else None
+        iou = [g[g.dataset == d].iou.mean() if g is not None else None for d in ds]
+        h = g[g.dataset == 'HUMAN'] if g is not None else None
+        lines.append(' & '.join([lab] + [f(v, '.2f') for v in iou] +
+                                [f(h.n_branches_bias_pct.mean() if h is not None else None, '+.0f') + '\\%',
+                                 f(h.n_branches_ccc.mean() if h is not None else None, '.2f')]) + r'\\')
+    loo = [E[(E.family == f'LOO_{d}_joint') & (E.dataset == d)].iou.mean() if E is not None and d != 'HUMAN'
+           else None for d in ds]
+    lines.append(' & '.join(['Joint, test dataset left out'] + [f(v, '.2f') for v in loo[:3]] + ['--', '--', '--'])
+                 + r'\\')
+    open(os.path.join(out, 'tables', 'tab_realseg_body.tex'), 'w').write('\n'.join(lines) + '\n')
 
 
 def main():
@@ -515,6 +598,8 @@ def main():
     polarity(M, a.runs)
     downstream(M, a.runs)
     v7_sections(M, a.runs)
+    perturbation(M, a.runs)
+    real_seg_table(a.runs, a.out)
     cross_table(a.runs, D, a.out)
     topo_all_table(a.runs, D, a.out)
     hdr = ('% AUTO-GENERATED by paper/make_numbers.py -- do not edit by hand.\n'

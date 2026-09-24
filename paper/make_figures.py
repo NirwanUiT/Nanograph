@@ -9,12 +9,15 @@ generalisation) are produced by experiments/render_*.py, not here.
 """
 import argparse
 import os
+import sys
 
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'experiments'))
 
 BLUE, GREEN, GREY, RED, GOLD = '#1f5fa8', '#2e7d32', '#8a8a8a', '#b8322a', '#b8860b'
 RAW = 256 * 256
@@ -199,9 +202,15 @@ DS_LABELS = [('n_components', 'components'), ('total_length_px', 'total length')
              ('n_junctions', 'junctions'), ('cycle_rank', 'cycle rank')]
 
 
+DS_SETTING = ('degree', 'auto')   # paper default: degree junctions, one-diameter rule
+
+
 def fig_downstream(runs, out):
-    """T10: descriptors read from the stored graph vs pixels (REF) vs byte-matched JPEG."""
+    """Descriptors read from the stored graph vs pixels (REF) vs byte-matched JPEG,
+    at the paper's analysis setting DS_SETTING."""
     import json
+    import downstream_morphometry as dm
+    jd, Ls = DS_SETTING
     d = os.path.join(runs, 'downstream')
     p = os.path.join(d, 'per_image.csv')
     if not os.path.exists(p):
@@ -209,9 +218,9 @@ def fig_downstream(runs, out):
         return
     df = pd.read_csv(p, dtype={'stem': str})
     S = pd.read_csv(os.path.join(d, 'summary.csv'))
-    if 'L' in df:                      # T10 definition: no shared pruning
-        df = df[(df.L.astype(str) == '0') & (df.get('junction_def', 't10') == 't10')]
-        S = S[(S.L.astype(str) == '0') & (S.get('junction_def', 't10') == 't10')]
+    if 'L' in df:
+        df = df[(df.L.astype(str) == str(Ls)) & (df.get('junction_def', 't10') == jd)]
+        S = S[(S.L.astype(str) == str(Ls)) & (S.get('junction_def', 't10') == jd)]
     W = {a: g.set_index('stem') for a, g in df.groupby('arm')}
     stems = sorted(set(W['REF'].index) & set(W['GRAPH'].index) & set(W['JPEG'].index))
     R, G, J = (W[a].loc[stems] for a in ('REF', 'GRAPH', 'JPEG'))
@@ -262,15 +271,15 @@ def fig_downstream(runs, out):
     a = ax[3]
     bd = pd.read_csv(os.path.join(d, 'branch_distances.csv'), dtype={'stem': str})
     if 'L' in bd:
-        bd = bd[(bd.L.astype(str) == '0') & (bd.get('junction_def', 't10') == 't10')]
+        bd = bd[(bd.L.astype(str) == str(Ls)) & (bd.get('junction_def', 't10') == jd)]
     bd = bd.dropna(subset=['w1_GRAPH', 'w1_JPEG'])
     stem = bd.iloc[(bd.w1_GRAPH - bd.w1_GRAPH.median()).abs().argsort().iloc[0]].stem
     L = {}
     for arm in ('REF', 'GRAPH', 'JPEG'):
         with open(os.path.join(d, 'branch_lengths', f'{stem}_{arm}.json')) as f:
             js = json.load(f)
-            L[arm] = (js['branch_lengths'] if 'branch_lengths' in js
-                      else [b[2] for b in js['branches']])
+            L[arm] = (dm.descriptors_at(js, Ls, jd)[1] if 'branches' in js
+                      else js['branch_lengths'])
     bins = np.linspace(0, max(max(v) for v in L.values() if v), 16)
     for arm, c in (('REF', GREY), ('GRAPH', BLUE), ('JPEG', GOLD)):
         a.hist(L[arm], bins, histtype='step', lw=1.6, color=c, label=f'{arm} (n={len(L[arm])})')

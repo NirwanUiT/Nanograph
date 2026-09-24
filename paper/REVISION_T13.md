@@ -103,3 +103,25 @@ Keep JPEG / WebP / JPEG 2000 as reference points, not as the opponent.
 3. Ship `weights/unet_mito_real.pt` as a `real-mito` preset and move the real-data section into the main text.
 4. Confirm the simulator provenance wording and cite the CODS simulator used for the temporal clip.
 5. Optional: DRIVE/STARE second-observer labels (public) for an inter-annotator ceiling on vessels. For mitochondria, the simulation truth replaces it.
+
+## 8. Decisions taken (2026-09-25) and manuscript status
+
+1. **v7 adopted** as the paper's method; v6 appears only as the builder ablation (Methods, Results "structure layer").
+2. **One-diameter rule** is the analysis default (`DS_PRUNE_L = 'auto'`); fixed L = 0/2/5/10 go to the supplement. One switch in `paper/make_numbers.py` / `make_figures.py` (`DS_SETTING`).
+3. **Real-data section in the main text** ("Real mitochondria", Table `tab:realseg`, Fig. `fig:real`); `real-mito` preset described in Methods.
+4. **Provenance wording confirmed**; CODS cited as `\cite{cods}`. **The `cods` and `cbmi` entries in `references.bib` are placeholders the authors must fill.**
+
+Manuscript (`nanograph_main.tex`), claims of section 4:
+
+| # | status |
+|---|---|
+| 1 | Betti-at-matched-bytes tables removed; same-segmenter comparison in `tab:downstream` |
+| 2, 3 | stored-graph cycle rank reported; "network redundancy" wording removed |
+| 4 | junction-degree/network claims removed for the simulated set; pointed to real data |
+| 5, 6 | codec section rewritten: GT-IoU parity, JPEG ahead with the classical cascade |
+| 7, 9 | Methods describe the v7 builder and layered serialisation |
+| 8 | refinement described as part of the appearance layer |
+| 10 | clip described as simulated evidence; truth use in "Against the true geometry" |
+| 11 | tables regenerate from the paper-v3 run |
+
+All new numbers are macros; they render as [TBD] until `run_paper_v3.sh` finishes and `make_numbers.py` is re-run. Wording that depends on direction (e.g. "closer on every descriptor", "GT-IoU at parity") must be re-read against the final numbers.

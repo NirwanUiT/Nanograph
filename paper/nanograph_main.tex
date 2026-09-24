@@ -56,14 +56,15 @@
 {\color{red}\small
 Numbers in this build come from \texttt{numbers.tex} (commit \RunCommit).
 Values shown as \tbd{} have not been produced yet. Before submission:
-run the Copilot task list (\texttt{COPILOT\_TASKS.md}) to completion, run
-\texttt{make\_numbers.py} and \texttt{make\_figures.py}, confirm no
-\tbd{} remains, re-read the Results text against the new numbers, and set
+run \texttt{experiments/run\_paper\_v3.sh} to completion, then
+\texttt{make\_numbers.py} and \texttt{make\_figures.py}; confirm no
+\tbd{} remains, re-read the Results text against the new numbers, fill the
+CODS simulator reference (\texttt{cods} in \texttt{references.bib}), and set
 \texttt{\textbackslash finaltrue}.\par}
 \clearpage
 \fi
 
-\title{Nanograph: a shape-preserving graph representation of curvilinear
+\title{Nanograph: a structure-first storage format for curvilinear
 structures in microscopy}
 
 \author[1]{Nirwan Banerjee\thanks{Correspondence: nirwanbanerjee17@gmail.com}}
@@ -77,20 +78,27 @@ University of Norway, Troms{\o} 9037, Norway}
 
 \begin{abstract}
 Curvilinear structures in microscopy---mitochondrial networks, vessels,
-microtubules---are stored as pixel arrays, so every analysis of their shape
-must re-extract the geometry. We present \method, which stores the image
-itself as an attributed graph: nodes carry position, width, intensity and
-orientation, edges carry connectivity, length and curvature. Topology and
-morphometry are read from the stored object without touching pixels, and the
-image is regenerated from it with orientation-aligned point-spread
-functions. The graph costs the storage budget of unstructured key-pixel
-representations, spent on \DFewerX$\times$ fewer but \DRicherX$\times$
-richer primitives. A centreline-aware learned front end lifts segmentation
-IoU from 0.38 to 0.88, and a polarity-agnostic retraining extends the
-representation to retinal vessels, microtubules and electron-microscopy
-mitochondria (IoU 0.001 to 0.82). A controlled perturbation study maps how
-each kind of segmentation error reaches each stored invariant, giving users
-an operating envelope for trusting the stored topology.
+microtubules---are archived as pixel arrays, so every analysis of their shape
+must first re-segment and re-trace them. We present \method, a
+structure-first storage format. Each image is stored in two layers: a
+structure layer that holds the curvilinear network as an attributed graph
+(branch polylines with width and path length, junctions and connectivity),
+and an optional appearance layer from which the image is regenerated with
+orientation-aligned point-spread functions. The structure layer reproduces
+the topology and morphometry of the segmentation it encodes, costs
+$\StructVsMaskX\times$ less than that mask stored losslessly, and is queried
+in $\DsTimeGraph$\,ms, $\DsTimeRatio\times$ faster than decoding a pixel
+file and re-analysing it. \method is not a pixel codec, and at kilobyte
+budgets JPEG reproduces pixels better. It is built for a different job:
+keeping what an image contains rather than what it looks like. For that job,
+on four expert-annotated real mitochondrial datasets, a JPEG needs
+$\RealJpegRatioMin$--$\RealJpegRatioMax\times$ the bytes of the structure
+layer to approach the same analysis. Against simulations with exact ground truth, the stored graph
+carries as much information about the true geometry as the simulator's own
+mask. A segmentation front end trained on real mitochondria, a
+polarity-agnostic retraining for vessels, filaments and electron microscopy,
+and a perturbation study of segmentation error define where the stored
+structure can be trusted.
 \end{abstract}
 
 % =====================================================================
@@ -120,6 +128,16 @@ needed to regenerate the image. General-purpose codecs~\cite{jpeg,webp,skodras20
 compress the pixels without any structural model, and learned
 restoration~\cite{care} improves fidelity without one.
 
+The distinction matters for how such a format should be judged. A pixel
+codec is built to reproduce what an image \emph{looks like}, and is rightly
+judged by photometric fidelity at a given size. A structure-first format is
+built to keep what an image \emph{contains}. It should be judged by whether
+the analysis read from it agrees with the analysis of the original, how many
+bytes that costs, and how quickly the analysis can be read. By the first
+criterion a pixel codec will usually win, and we report where it does. By
+the second, the relevant alternatives are storing the segmentation mask, or
+storing the image and re-running the analysis pipeline on demand.
+
 \method is the fourth system in our own line of work on compact image
 representation. Earlier systems stored an image as a set of key pixels,
 selected by a genetic algorithm~\cite{malakar2025eaai} or by a guided
@@ -135,41 +153,96 @@ segmenter~\cite{unet,cldice}, a polarity-agnostic multi-domain retraining
 that carries the representation to new imaging modalities, and a controlled
 study of how segmentation error propagates into each stored invariant.
 
+We make four claims and test each directly. (i)~The structure layer is the
+analysis of the mask it encodes, at about half the size of that mask stored
+losslessly. (ii)~Analysis read from it agrees with analysis of the reference
+masks at least as well as analysis of a byte-matched JPEG, and costs a
+fraction of the time. (iii)~On simulated data, where the true geometry is
+known, the stored graph is as informative about that geometry as the
+simulator's own mask. (iv)~On four expert-annotated real mitochondrial
+datasets, a segmenter trained on real data carries these properties to real
+images, and a pixel codec needs several times the bytes to match the
+structure layer for analysis.
+
 % =====================================================================
 \section{Results}
 % =====================================================================
 
-\subsection{\method stores the image as an attributed graph}
+\subsection{\method stores an image as a structure layer and an appearance layer}
 \label{sec:overview}
 \method maps an image to a graph $G=(V,E)$ in eight stages
 (Fig.~\ref{fig:overview}; Methods). After polarity-normalised
 preprocessing, a cascade of classical and learned segmenters produces a
-foreground mask, which is skeletonised and traced into a formal graph.
-Nodes are sampled along branches at a spacing proportional to local width
-and carry position, width, intensity and tangent orientation; edges carry
-connectivity, length, mean width, mean intensity and curvature. The graph,
-a $16\times16$ background field and an optional foreground residual are
-serialised into a compact payload. Decoding rebuilds $G$ from the payload
-and renders the image by placing orientation-aligned elliptical
-point-spread functions at the nodes. Because the connectivity is stored,
-connected components, cycles and all morphometric descriptors are read from the payload directly; we call them
-\emph{graph-exact}. Graph-exactness removes the need to re-estimate topology
-from decoded pixels; the fidelity of $G$ to the specimen is set by the
-foreground mask, which we characterise below.
+foreground mask, which is skeletonised and decomposed into branches. Each
+branch between junctions and endpoints is stored as a simplified polyline
+(Douglas--Peucker, tolerance 0.75\,px) whose vertices carry position and
+width; each branch also stores its path length measured on the full-resolution
+skeleton, and each junction cluster becomes a single node. These form the
+\emph{structure layer}. A separate \emph{appearance layer} holds what is
+needed to render the image: points sampled along the skeleton with width,
+intensity and orientation, a $16\times16$ background field and an optional
+foreground residual. Decoding renders the image by placing
+orientation-aligned elliptical point-spread functions at the appearance
+points. The structure layer can be read without the appearance layer:
+connected components, cycles, branch and junction counts, lengths and
+widths are properties of the stored graph and need no pixels, and the
+image is regenerated only on demand. We call descriptors computed this way
+\emph{graph-exact}: exact properties of $G$, whose fidelity to the specimen
+is set by the foreground mask, which we characterise below.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{figures/fig_pipeline.png}
 \caption{\textbf{\method reduces a curvilinear image once, then reads the
 result.} Top: the encode path, on a simulated fluorescence mitochondria image. Middle:
-what is stored---per-node position, width, intensity and orientation, the
-edge list, a coarse background field and an optional foreground residual.
+what is stored---the structure layer (branch polylines with width and path
+length, junction nodes, connectivity) and the appearance layer (rendering
+points with width, intensity and orientation, a coarse background field and
+an optional foreground residual).
 Bottom left: topology and morphometry are properties of that stored object
 and are read from it without touching pixels. Bottom right: the image is
 re-rendered on demand by placing orientation-aligned elliptical
 point-spread functions at the nodes. A pixel codec must re-derive every
 descriptor after decoding; \method stores them once.}
 \label{fig:overview}
+\end{figure}
+
+\subsection{The structure layer is the analysis of the mask, at half its size}
+\label{sec:layers}
+The structure layer is designed to carry exactly what analysis needs. On the
+726-image organelle set it takes $\StructBytesm$\,bytes per image, about
+$\StructFracPct\%$ of the full payload ($\StructBytesm$ structure $+$
+$\AppearBytesm$ appearance), and $\StructVsMaskX\times$ less than the same
+segmentation mask stored losslessly as a bit-packed, zlib-compressed array
+($\MaskLosslessBytesm$\,bytes; Fig.~\ref{fig:layers}). Splitting the payload
+into two layers costs nothing: the appearance layer is the rendering stream
+of the single-layer format, and the rendered images are identical.
+
+What the structure layer stores is the analysis of the mask it encodes.
+Built from a mask and decoded from its bytes, it reproduces the mask's
+skeleton descriptors---components, branches, junctions, cycle rank, total
+length and mean width---on every organelle image (Methods; a unit test
+checks branch and junction counts against an independent skeleton analysis,
+skan~\cite{skan}). Its topology agrees with the mask's own: the stored
+component count equals the mask's $\beta_0$ on $\GraphCompEqPct\%$ of images,
+and the stored cycle rank equals the mask's number of enclosed holes on
+$\GraphCycEqPct\%$. An earlier builder that sampled nodes at fixed spacing
+along skeleton pixels, which we keep as an ablation, matched on 95.6\% and
+16\% of images: junction pixels produced spurious short cycles. A lossless
+mask would carry the same information, but it must be re-skeletonised and
+re-traced before every query. The structure layer is smaller, and the answer
+is already in it.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/fig_layers.png}
+\caption{\textbf{What each stored object costs} on the 726-image organelle
+set (mean bytes per $256\times256$ image, log axis). The structure layer
+alone supports every descriptor in this paper; the lossless mask carries the
+same information but must be re-analysed before each query; the full
+\method payload and a byte-matched JPEG are the two routes that also
+regenerate the image.}
+\label{fig:layers}
 \end{figure}
 
 \subsection{The graph costs the storage budget of an unstructured point set}
@@ -240,18 +313,21 @@ On the 726-image organelle set each image is stored in
 $\DBytesm$\,bytes, $\DVsRawm\times$ smaller than the raw array and
 $\DVsPNGm\times$ smaller than lossless PNG (Table~\ref{tab:nmi}). The same
 object answers structural queries directly: $\beta_0=\DBetaZero$
-components, $\beta_1=\DBetaOne$ enclosed holes, a skeleton-graph cycle rank of
-$\DCycles$, mean width $\DWidth$\,px, total network length and
-junction-degree statistics (Fig.~\ref{fig:topology}), with no
-segmentation or tracing of pixels at analysis time. Inside the foreground
-the regenerated image is faithful (FG-SSIM $\DFGSSIM$; GT-FG-SSIM
-$\DGTFGSSIM$ inside the simulator's ground-truth mask). Full-image SSIM
-($\DFullSSIMm$) reflects a deliberate design choice: the noisy background
-of these sparse fields is summarised by a 256-byte field rather than stored.
-Replacing the classical cascade by the learned front end (Methods) raises
-Seg-IoU from $\CSegIoUm$ to $\DSegIoUm$ and produces markedly cleaner graphs
-(cycle rank $\CCyclesm\to\DCyclesm$, mean width $\CWidthm\to\DWidthm$\,px)
-at a smaller payload ($\CBytesm\to\DBytesm$\,bytes).
+components, a cycle rank of $\DCycles$ (matching the mask's
+$\beta_1=\DBetaOne$ enclosed holes), mean width $\DWidth$\,px and total
+length (Fig.~\ref{fig:topology}), with no segmentation or tracing of pixels
+at analysis time. The simulated tubes in this set are unbranched, so its
+junctions and cycles arise only where tubes cross in projection; we show
+branching-network statistics on real mitochondria below. Inside the
+foreground the regenerated image is faithful (FG-SSIM $\DFGSSIM$;
+GT-FG-SSIM $\DGTFGSSIM$ inside the simulator's ground-truth mask).
+Full-image SSIM ($\DFullSSIMm$) reflects a deliberate design choice: the
+noisy background of these sparse fields is summarised by a 256-byte field
+rather than stored. Replacing the classical cascade by the learned front end
+(Methods) raises Seg-IoU from $\CSegIoUm$ to $\DSegIoUm$ and produces
+markedly cleaner graphs (cycle rank $\CCyclesm\to\DCyclesm$, mean width
+$\CWidthm\to\DWidthm$\,px) at a smaller payload
+($\CBytesm\to\DBytesm$\,bytes).
 
 \begin{table}[t]
 \centering
@@ -280,7 +356,7 @@ Fidelity  & FG-PSNR (dB) / FG-SSIM & $\CFGPSNRm$ / $\CFGSSIMm$ & $\DFGPSNRm$ / $
 \midrule
 Structure & $\beta_0$ (components) & $\CBetaZero$ & $\DBetaZero$\\
           & $\beta_1$ (enclosed holes) & $\CBetaOne$ & $\DBetaOne$\\
-          & Skeleton-graph cycle rank & $\CCycles$ & $\DCycles$\\
+          & Stored-graph cycle rank & $\CCycles$ & $\DCycles$\\
           & Mean width (px) & $\CWidth$ & $\DWidth$\\
 \bottomrule
 \end{tabular}
@@ -291,9 +367,10 @@ Structure & $\beta_0$ (components) & $\CBetaZero$ & $\DBetaZero$\\
 \centering
 \includegraphics[width=\textwidth]{figures/fig_topology.png}
 \caption{\textbf{Structural descriptors read directly from the stored
-graph.} (a)~Components $\beta_0$. (b)~Skeleton-graph cycle rank (path
-redundancy of the traced network; Methods). (c)~Total network length
-against mean width, coloured by $\beta_0$.}
+graph.} (a)~Components $\beta_0$. (b)~Cycle rank of the stored graph
+(Methods); on these unbranched simulated tubes, cycles arise where tubes
+cross in projection. (c)~Total length against mean width, coloured by
+$\beta_0$.}
 \label{fig:topology}
 \end{figure}
 
@@ -306,7 +383,7 @@ ground-truth mask. Middle row: oriented-PSF reconstruction from the graph,
 absolute error map, and segmentation-vs-ground-truth overlay (green true
 positive, red false negative, blue false positive). Bottom row: skeleton,
 sampled graph nodes (red endpoints, blue junctions), and the final attributed
-graph (346 nodes, 376 edges, 4 components). The blue halo in the overlay is
+graph. The blue halo in the overlay is
 the systematic over-prediction of the classical cascade quantified in
 Fig.~\ref{fig:segbottleneck} (here precision 0.492 at recall 0.951).}
 \label{fig:qualitative}
@@ -325,6 +402,211 @@ label makes tubes hollow, which the graph traces as parallel filaments.
 Bottom: public confocal MITO dataset~\cite{zhanghao2023mito}, where the
 selected mask covers less of the expert annotation.}
 \label{fig:mitogen}
+\end{figure}
+
+\subsection{Analysis is read from the stored object}
+\label{sec:downstream}
+We next asked whether analysis read from the structure layer agrees with
+analysis of the reference mask, and compared it with the route a pixel
+archive offers: decode a byte-matched JPEG of the full payload, segment it
+with the same learned segmenter, and analyse the result
+(Table~\ref{tab:downstream}, Fig.~\ref{fig:downstream}; Methods). Every arm
+passes through one descriptor definition and one cleanup rule. Terminal
+branches and isolated fragments shorter than one mean structure diameter are
+removed (the \emph{one-diameter rule}). The rule was fixed before any
+comparison with the simulated ground truth, has no free parameter, and is
+applied at analysis time, so the stored payload is unchanged. Fixed lengths
+of 0, 2, 5 and 10\,px are reported in the Supplement.
+
+Across \DsN{} organelle images the stored graph agrees with the reference
+mask more closely than the byte-matched JPEG route on every descriptor
+(Table~\ref{tab:downstream}). The difference is largest for the counts.
+Re-segmenting a JPEG fragments thin tubes at block boundaries, which adds
+components and short branches (components $\DsPJpegNComponentsBiasPct\%$,
+CCC $\DsPJpegNComponentsCCC$). The stored graph inherits only the
+segmenter's own error on the original image (components
+$\DsPGraphNComponentsBiasPct\%$, CCC $\DsPGraphNComponentsCCC$). The
+branch-length distribution is also closer to the reference (mean
+Wasserstein distance $\DsPWassGraph$ vs.\ $\DsPWassJpeg$\,px). Reading the
+descriptors takes $\DsTimeGraph$\,ms per image from the payload, against
+$\DsTimeRef$\,ms to re-analyse a stored mask and $\DsTimeJpeg$\,ms to
+decode, segment and skeletonise a JPEG (single thread; Methods).
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Descriptors read from the stored graph vs.\ a byte-matched
+JPEG route}, each compared with the same descriptors of the reference mask
+(726 organelle images, one-diameter rule in every arm). CCC: Lin's
+concordance; MdAPE: median absolute percentage error; bias: mean relative
+error. Last column: images on which the stored graph is closer to the
+reference than JPEG, with paired Wilcoxon $p$.}
+\label{tab:downstream}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lccccccc}
+\toprule
+ & \multicolumn{3}{c}{\method structure layer} & \multicolumn{3}{c}{byte-matched JPEG} & \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Descriptor & CCC & MdAPE (\%) & Bias (\%) & CCC & MdAPE (\%) & Bias (\%) & Graph closer\\
+\midrule
+Components & $\DsPGraphNComponentsCCC$ & $\DsPGraphNComponentsMdAPE$ & $\DsPGraphNComponentsBiasPct$ & $\DsPJpegNComponentsCCC$ & $\DsPJpegNComponentsMdAPE$ & $\DsPJpegNComponentsBiasPct$ & \DsPWinsNComponents ($p=\DsPWinsPNComponents$)\\
+Total length & $\DsPGraphTotalLengthCCC$ & $\DsPGraphTotalLengthMdAPE$ & $\DsPGraphTotalLengthBiasPct$ & $\DsPJpegTotalLengthCCC$ & $\DsPJpegTotalLengthMdAPE$ & $\DsPJpegTotalLengthBiasPct$ & \DsPWinsTotalLength ($p=\DsPWinsPTotalLength$)\\
+Mean width & $\DsPGraphMeanWidthCCC$ & $\DsPGraphMeanWidthMdAPE$ & $\DsPGraphMeanWidthBiasPct$ & $\DsPJpegMeanWidthCCC$ & $\DsPJpegMeanWidthMdAPE$ & $\DsPJpegMeanWidthBiasPct$ & \DsPWinsMeanWidth ($p=\DsPWinsPMeanWidth$)\\
+Branches & $\DsPGraphNBranchesCCC$ & $\DsPGraphNBranchesMdAPE$ & $\DsPGraphNBranchesBiasPct$ & $\DsPJpegNBranchesCCC$ & $\DsPJpegNBranchesMdAPE$ & $\DsPJpegNBranchesBiasPct$ & \DsPWinsNBranches ($p=\DsPWinsPNBranches$)\\
+Junctions & $\DsPGraphNJunctionsCCC$ & $\DsPGraphNJunctionsMdAPE$ & $\DsPGraphNJunctionsBiasPct$ & $\DsPJpegNJunctionsCCC$ & $\DsPJpegNJunctionsMdAPE$ & $\DsPJpegNJunctionsBiasPct$ & \DsPWinsNJunctions ($p=\DsPWinsPNJunctions$)\\
+Cycle rank & $\DsPGraphCycleRankCCC$ & $\DsPGraphCycleRankMdAPE$ & $\DsPGraphCycleRankBiasPct$ & $\DsPJpegCycleRankCCC$ & $\DsPJpegCycleRankMdAPE$ & $\DsPJpegCycleRankBiasPct$ & \DsPWinsCycleRank ($p=\DsPWinsPCycleRank$)\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_downstream.png}
+\caption{\textbf{Descriptors read from the stored graph (GRAPH) and from a
+re-segmented byte-matched JPEG, against the reference mask (REF).}
+(a)~Total length per image (log axes). (b)~Bland--Altman plot of mean
+width. (c)~Median absolute percentage error per descriptor. (d)~Branch-length
+distributions on the image with the median GRAPH--REF Wasserstein distance.
+One-diameter rule in every arm.}
+\label{fig:downstream}
+\end{figure}
+
+\subsection{Against the true geometry}
+\label{sec:truth}
+A reference mask is itself a measurement. Simulation lets us compare every
+route with the geometry that generated the image. We regenerated
+\TruthN{} organelle-like images with the same simulator and settings,
+keeping each tube's centreline and diameter (on average \TruthTubesm{}
+tubes, \TruthCompm{} connected structures and \TruthJuncm{} projected
+crossings per image; Methods), and measured three routes against it: the
+simulator's own mask, the \method structure layer, and the byte-matched JPEG
+route (Fig.~\ref{fig:truth}).
+
+No 2-D route recovers the true geometry without bias, the simulator's own
+mask included. At 42\,nm pixels, tubes of 20--300\,nm diameter are blurred
+into structures of a few pixels, so the mask loses
+$\TruthRefLenBias\%$ of the length and overstates width by
+$\TruthRefWidthBias\%$; the stored graph inherits these biases
+(length $\TruthGraphLenBias\%$, width $\TruthGraphWidthBias\%$).
+JPEG's mean length bias ($\TruthJpegLenBias\%$) looks better, but it comes
+from two errors cancelling: fragmentation adds length and merging removes
+it, and its per-image concordance with the truth is low (CCC
+$\TruthJpegLenCCC$ vs.\ $\TruthGraphLenCCC$). A consistent bias can be
+calibrated out, and a random error cannot. After a two-fold cross-validated
+linear calibration against the truth, the stored graph is as close to the
+true geometry as the simulator's own mask. It is closer than the JPEG route
+on components ($\CalGraphComp$ vs.\ $\CalJpegComp\%$ median error), length
+($\CalGraphLen$ vs.\ $\CalJpegLen\%$), branches ($\CalGraphBr$ vs.\
+$\CalJpegBr\%$) and junctions ($\CalGraphJunc$ vs.\ $\CalJpegJunc\%$;
+Fig.~\ref{fig:truth}b).
+
+The simulated temporal clip (73 frames, four unbranched mitochondria in
+elastic motion, per-frame ground-truth skeletons~\cite{cods}) shows the
+failure mode the one-diameter rule addresses (Fig.~\ref{fig:clip}). As the
+mitochondria move and thin, segmentation leaves small fragments that a
+count reads as extra mitochondria: without cleanup the stored graph
+overcounts components by $\ClipTruthCompZero\%$, and with the one-diameter
+rule by $\ClipTruthCompAuto\%$. Length is under-estimated by
+$\ClipTruthLenAuto\%$ in the late frames, where the tubes approach the
+optical limit.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_truth.png}
+\caption{\textbf{Against the true simulated geometry} (\TruthN{} images).
+(a)~Mean relative bias of each descriptor for the simulator's own mask, the
+\method structure layer and the byte-matched JPEG route. (b)~Median absolute
+error after two-fold cross-validated linear calibration against the truth.}
+\label{fig:truth}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_clip.png}
+\caption{\textbf{The simulated temporal clip against its ground-truth
+skeletons.} (a)~Number of mitochondria counted per frame from the stored
+graph, without cleanup and with the one-diameter rule. (b)~Total length per
+frame.}
+\label{fig:clip}
+\end{figure}
+
+\subsection{Real mitochondria}
+\label{sec:real}
+We evaluated four real, expert-annotated mitochondrial datasets: UiT rat cells
+(EP1-UiT-Rat, epifluorescence), CBMI~\cite{cbmi},
+MITO~\cite{zhanghao2023mito} and UiT human cells (EP-UiT-Human), split by
+frame or cell and never by tile (Methods). The organelle segmenter, trained
+only on simulations, transfers poorly: in-pipeline Seg-IoU is
+$\RealSegIoUSimUit$, $\RealSegIoUSimCbmi$, $\RealSegIoUSimMito$ and
+$\RealSegIoUSimHuman$. We retrained it on the real training splits in
+three ways---from scratch, fine-tuned from the simulation network, and jointly
+with the simulations---with three seeds each, and additionally left each
+dataset out of training in turn (36 networks; Table~\ref{tab:realseg}). The
+joint network, which we ship as the \texttt{real-mito} preset, raises
+in-pipeline Seg-IoU to $\RealSegIoURealUit$, $\RealSegIoURealCbmi$,
+$\RealSegIoURealMito$ and $\RealSegIoURealHuman$ (Fig.~\ref{fig:real}a).
+EP-UiT-Human was never used for training or model selection. On it, real
+training mostly fixes topology: the branch-count bias falls from
+$\RealHumanBrBiasSim\%$ to $\RealHumanBrBiasReal\%$ and its concordance
+rises from $\RealHumanBrCCCSim$ to $\RealHumanBrCCCReal$. Transfer between
+microscopes is limited. A network that has not seen a dataset's microscope
+gains little on it (last row of Table~\ref{tab:realseg}), and on CBMI no
+real-trained network improves on the simulation network by more than a few
+points of IoU. Each new acquisition
+type should therefore contribute training data.
+
+On these data the structure layer takes
+$\RealStructBytesMin$--$\RealStructBytesMax$\,bytes per $256\times256$ tile
+(Fig.~\ref{fig:real}b). To support analysis from a pixel archive instead, a
+JPEG must be decoded and re-segmented with the same network. Even the
+smallest JPEG (quality 1, $\RealJpegQoneBytesUit$\,bytes on UiT) is
+markedly worse. Branch-count concordance with the expert masks is
+$\RealJpegQoneBrCCCUit$ vs.\ $\RealBrCCCUit$ for the structure layer on UiT,
+and $\RealJpegQoneBrCCCHuman$ vs.\ $\RealBrCCCHuman$ on EP-UiT-Human.
+At quality 20, which costs $\RealJpegRatioMin$--$\RealJpegRatioMax\times$
+the bytes of the structure layer, JPEG reaches the structure layer's
+concordance on CBMI and MITO, where every route is limited by segmentation
+(branch CCC $\RealBrCCCCbmi$ and $\RealBrCCCMito$), and still falls short on
+UiT and EP-UiT-Human. When JPEG is
+instead given the full \method payload (4--6.5\,kB on these data, structure
+plus appearance), it is close to lossless. Its analysis then matches
+analysis of the original image, and the two routes tie within noise. At
+that budget the structure layer reaches the same analysis from about a
+tenth of the bytes, and needs no re-segmentation.
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Standalone segmentation of real mitochondria} (test-set
+IoU against expert masks, mean over three seeds). EP-UiT-Human was used
+neither for training nor for model selection; the last two columns give the
+branch-count bias and concordance on it. Last row: each dataset's IoU from
+the joint network trained without that dataset.}
+\label{tab:realseg}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lcccccc}
+\toprule
+Training & UiT rat & CBMI & MITO & UiT human & Human branch bias & Human branch CCC\\
+\midrule
+\tabinput{tables/tab_realseg_body.tex}
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_real.png}
+\caption{\textbf{Real mitochondria.} (a)~In-pipeline Seg-IoU against the
+expert masks with the simulation-trained and the real-trained
+(\texttt{real-mito}) front end; EP-UiT-Human was untouched by training.
+(b)~Branch-count concordance with the expert masks against bytes stored for
+analysis: the \method structure layer (stars) and JPEG at quality 1--20,
+decoded and re-segmented with the same network (lines).}
+\label{fig:real}
 \end{figure}
 
 \subsection{Background-field and residual coding carry most of the foreground fidelity}
@@ -567,32 +849,32 @@ Graph-exactness guarantees that the stored invariants describe $G$; it says
 nothing about how well $G$ describes the specimen when the mask is wrong. We
 measure that dependence directly. For each of the 726 organelle images we
 take the mask selected by the default configuration (mean Seg-IoU
-$0.870$), degrade it in four controlled ways---morphological dilation and
+$\PertBaseSegIoU$), degrade it in four controlled ways---morphological dilation and
 erosion at radii 1--5\,px (over- and under-segmentation), random removal of
 5--40\% of connected components (missed detections) and random flips within
-a 1--3\,px boundary band (noisy edges)---and rebuild the graph from each
-degraded mask with the pipeline's own construction (13{,}068 rebuilt
+a 1--3\,px boundary band (noisy edges)---and rebuild the structure layer from each
+degraded mask with the pipeline's own construction ($\PertN$ rebuilt
 graphs). We record the change in each invariant relative to the graph of
 the unperturbed mask, indexed by the degraded mask's Seg-IoU against ground
 truth (Fig.~\ref{fig:segperturb}). The unperturbed graphs have a median of
-4 components and 3 cycles.
+$\PertBaseComp$ components and $\PertBaseCyc$ cycles.
 
 The four error types affect the invariants very differently, and a single
 Seg-IoU threshold does not summarise them.
 \emph{Over-segmentation} leaves the component count largely intact: after
-1\,px of dilation $\beta_0$ changes on 8\% of images, and after 5\,px (Seg-IoU
-$0.32$) on 34\%, through merging of neighbouring structures. Mean width,
-however, is biased immediately and in proportion ($+31\%$ at 1\,px, $+183\%$ at
-5\,px), and the cycle rank shifts by a median of one to two cycles.
-\emph{Under-segmentation} is benign at 1\,px ($\beta_0$ changes on 4\% of
+1\,px of dilation $\beta_0$ changes on $\PertDilOneBz\%$ of images, and after 5\,px (Seg-IoU
+$\PertDilFiveSeg$) on $\PertDilFiveBz\%$, through merging of neighbouring structures. Mean width,
+however, is biased immediately and in proportion ($\PertDilOneW\%$ at 1\,px, $\PertDilFiveW\%$ at
+5\,px), and the cycle rank shifts by a median of $\PertDilCycLo$--$\PertDilCycHi$ cycles.
+\emph{Under-segmentation} is benign at 1\,px ($\beta_0$ changes on $\PertEroOneBz\%$ of
 images) but fragments structures at 2\,px and beyond ($\beta_0$ changes on
-81--99\% of images) while width falls by 29--100\%.
+$\PertEroBzLo$--$\PertEroBzHi\%$ of images) while width changes by $\PertEroWLo$ to $\PertEroWHi\%$.
 \emph{Boundary noise} is the most damaging error for topology: a 1\,px band of
-flipped pixels changes $\beta_0$ on 78\% of images and adds a median of 281
-spurious cycles, rising to 596 at 3\,px, while width falls by about half.
+flipped pixels changes $\beta_0$ on $\PertNoiseOneBz\%$ of images and adds a median of $\PertNoiseOneCyc$
+spurious cycles, rising to $\PertNoiseThreeCyc$ at 3\,px, while width changes by about $\PertNoiseW\%$.
 \emph{Missed detections} behave locally: removing components changes $\beta_0$
-by construction but leaves mean width within 1\% and the cycle rank of the
-remaining structures essentially unchanged, i.e.\ losing a structure removes
+by construction but moves mean width by at most $\PertDropW\%$ and the cycle rank of the
+remaining structures by at most a median of $\PertDropCyc$, i.e.\ losing a structure removes
 its subgraph without corrupting the invariants of the structures that
 remain.
 
@@ -613,7 +895,7 @@ of magnitude.
 726-image organelle set. Each column degrades the mask selected by
 the default configuration in one controlled way; the x-axis is the degraded
 mask's Seg-IoU against ground truth (reversed), and the dotted line marks
-the unperturbed operating point ($0.870$). Rows: fraction of images whose
+the unperturbed operating point ($\PertBaseSegIoU$). Rows: fraction of images whose
 component count $\beta_0$ changes; median absolute change in cycle rank
 $\beta_1$ (symlog); median relative change in mean width. Over-segmentation
 preserves $\beta_0$ but biases width; boundary noise inflates the cycle
@@ -624,24 +906,25 @@ leaving the other invariants intact.}
 
 \subsection{The representation transfers to further mitochondrial acquisitions}
 \label{sec:mito-gen}
-We applied the pipeline to three further mitochondrial sources
-(Table~\ref{tab:mitogen}, Fig.~\ref{fig:mitogen}; Methods). On a 73-frame
-simulated temporal clip (four unbranched mitochondria in elastic motion, from a
-separate dynamic simulator) it transfers across time without
-adjustment (Seg-IoU $\ClipSegIoUm$, GT-IoU $\ClipGTIoUm$; with the learned
-mask forced, Seg-IoU $\ClipLSegIoUm$). On an independent live-cell STED
+We applied the default pipeline, unchanged, to three further mitochondrial
+sources (Table~\ref{tab:mitogen}, Fig.~\ref{fig:mitogen}; Methods). On the
+73-frame simulated temporal clip (four unbranched mitochondria in elastic
+motion, from a separate dynamic simulator~\cite{cods}), segmentation holds
+up across frames (Seg-IoU $\ClipSegIoUm$, GT-IoU $\ClipGTIoUm$; with the
+learned mask forced, Seg-IoU $\ClipLSegIoUm$). This is simulated evidence;
+its ground truth is used against the stored graph in
+Section~\ref{sec:truth}. On an independent live-cell STED
 dataset~\cite{balakrishnan2024sted}, the organelle network, applied
 zero-shot, produces clean masks and graphs where the classical cascade is
 confounded by background haze; the outer-membrane label makes each tubule
 appear as two parallel walls, which the graph traces as paired filaments
 (about $\StedNodesm$ nodes and $\StedBytesm$\,kB per $600\times600$ frame).
 On an independent confocal dataset with per-slice expert
-masks~\cite{zhanghao2023mito}, agreement with the annotation is lower
-(Seg-IoU $\MitoSegIoUm$) with precision $\MitoPrec$ at recall $\MitoRec$,
-i.e.\ much of the predicted foreground lies outside the annotated
-structures. These public datasets are the natural material for a
-multi-acquisition retraining of the organelle segmenter, mirroring the
-retraining that carried the representation across modalities.
+masks~\cite{zhanghao2023mito}, the simulation-trained front end agrees
+poorly with the annotation (Seg-IoU $\MitoSegIoUm$, precision $\MitoPrec$ at
+recall $\MitoRec$): much of the predicted foreground lies outside the
+annotated structures. This dataset is one of the four used to train the
+real-data front end in Section~\ref{sec:real}.
 
 \begin{table}[t]
 \centering
@@ -663,32 +946,22 @@ $256\times256$ tiles of per-slice max-intensity projections.}
 \end{table}
 
 
-\subsection{\method against general-purpose codecs}
+\subsection{Where pixel codecs are the better tool}
 \label{sec:codec}
-Because the payload is compact, we also compared \method with JPEG, WebP
-and JPEG~2000 at matched bytes (Methods). With the default learned front end,
-the regenerated image localises the foreground more accurately than
-byte-matched JPEG: GT-IoU is higher on \DGTIoUWins{} images
-($\DGTIoUWinsPct\%$, sign test $p=\DGTIoUWinsP$; paired 95\% CI
-$\DGTIoUWinsCI$), and on \DHeldGTIoUWins{} ($\DHeldGTIoUWinsPct\%$,
-$p=\DHeldGTIoUWinsP$) of the images the segmenter never saw. With the classical
-cascade the two are at parity (\CGTIoUWins, $p=\CGTIoUWinsP$), so the
-advantage follows segmentation quality. Photometric fidelity against the
-simulator's ground-truth mask (GT-FG-PSNR $\DGTFGPSNRm$ vs.\ $\DJpegGTFGPSNRm$\,dB)
-and full-image fidelity favour the codecs, which spend their bits on
-texture that the representation deliberately summarises (Table~\ref{tab:codec}).
-
-The decisive difference is structural. \method's Betti numbers are exact
-by construction; byte-matched JPEG must re-estimate them from decoded pixels,
-reaching a mean Betti agreement of only $\DJpegBettim$ and inflating both
-invariants ($\beta_0=\DJpegBetaZerom$, $\beta_1=\DJpegBetaOnem$ against
-the graph's $\DBetaZerom$ and $\DBetaOnem$; Table~\ref{tab:topo}). The same
-holds across the modalities evaluated here (Table~\ref{tab:topo-all}): at
-tight budgets on thin, complex structure, block and ringing artefacts
-fragment components and create spurious holes, inflating JPEG's estimated
-invariants by up to two orders of magnitude. The margin narrows as the
-budget grows relative to the structure, as on the sparse temporal clip.
-No codec exposes morphometry at all.
+For completeness we compared the full \method payload with JPEG, WebP and
+JPEG~2000 at matched bytes, as image codecs (Table~\ref{tab:codec},
+Fig.~\ref{fig:codec}; Methods). By that criterion the codecs win. Photometric fidelity inside the
+simulator's ground-truth mask (GT-FG-PSNR $\DGTFGPSNRm$ vs.\
+$\DJpegGTFGPSNRm$\,dB) and over the full image favours them, because they
+spend their bits on texture and background that \method deliberately
+summarises. Foreground localisation from the regenerated image is at parity
+with JPEG: GT-IoU is higher for \method on \DGTIoUWins{} images, with a
+paired 95\% confidence interval of the mean difference of $\DGTIoUWinsCI$.
+It follows segmentation quality: with the classical cascade, JPEG is ahead
+(\method higher on \CGTIoUWins{} images). Pixel codecs are the right choice
+when the image itself is the product. The comparison that matters for
+\method is the analysis comparison of Sections~\ref{sec:downstream}
+and~\ref{sec:real}.
 
 On the annotated out-of-domain datasets (Methods), the pipeline reproduces
 the retrained segmenter's accuracy inside the encoder (Seg-IoU
@@ -726,39 +999,6 @@ JPEG~2000  & $\DJtwoBytes$ & $\DJtwoFullPSNR$ & $\DJtwoFullSSIM$ & $\DJtwoFGPSNR
 \end{adjustbox}
 \end{table}
 
-\begin{table}[t]
-\centering
-\caption{\textbf{Topology at matched bytes} on the organelle set
-(mean$\pm$s.d.). Betti agreement is the per-image score in $[0,1]$
-comparing a representation's $(\beta_0,\beta_1)$ with those of the mask it
-encodes.}
-\label{tab:topo}
-\begin{tabular}{lccc}
-\toprule
- & $\beta_0$ & $\beta_1$ & Betti agreement\\
-\midrule
-\method (graph)        & $\DBetaZero$ & $\DBetaOne$ & exact by construction\\
-byte-matched JPEG      & $\DJpegBetaZero$ & $\DJpegBetaOne$ & $\DJpegBetti$\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[t]
-\centering
-\caption{\textbf{Betti agreement of byte-matched JPEG across all evaluated
-datasets} (reference: the mask \method encodes, against which the graph is
-exact). $^{*}$Images on which JPEG can reach the byte budget.}
-\label{tab:topo-all}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lcccc}
-\toprule
-Dataset & $n$ & JPEG Betti agr. & JPEG / graph $\beta_0$ & JPEG / graph $\beta_1$\\
-\midrule
-\tabinput{tables/tab_topoall_body.tex}
-\bottomrule
-\end{tabular}
-\end{table}
 
 \begin{figure}[t]
 \centering
@@ -775,15 +1015,33 @@ at matched bytes against independent ground truth (blue) and against
 \section{Discussion}
 % =====================================================================
 \method makes the geometry of a curvilinear image a stored, queryable
-object. The attributed graph costs no more storage than the unstructured
-point sets it replaces, exposes graph-exact topology and morphometry, and
-regenerates the image on demand. The work also turns segmentation, the
-limitation named by every earlier system in this line, into a studied and
-retrainable component: a centreline-aware front end that removes the
-organelle bottleneck, a polarity-agnostic retraining that carries the
-representation to vessels, filaments and EM, and a perturbation map that
-tells users which stored invariants to trust under which kind of mask
-error.
+object. Its structure layer is the analysis of the segmentation it encodes,
+costs about half the bytes of that segmentation stored losslessly, and is read
+in about a millisecond. Against a pixel archive, analysis read from it
+agrees better with the reference on simulated organelles, and on real
+annotated mitochondria a JPEG must be several times larger to support the
+same analysis. Against the true simulated geometry it is as informative as
+the simulator's own mask. The appearance layer regenerates the image when
+it is needed.
+
+We do not claim that \method is a better image codec. When the image is
+the product---for display, for photometric measurement, or for analyses
+not yet defined---a pixel codec at the same budget reproduces it better,
+and given the several kilobytes of the full payload, a JPEG is nearly
+lossless and supports the same analysis as the original. The two formats
+are built for different jobs. \method is for archives whose purpose is the
+structure. There, storage, analysis and reconstruction become reads of one
+object, and the analysis is done once, at encoding, with a declared
+segmenter and a declared cleanup rule, rather than repeated inconsistently
+by every user of the data.
+
+The work also turns segmentation, the limitation named by every earlier
+system in this line, into a studied and retrainable component: a
+centreline-aware front end for simulated organelles, a front end trained on
+four real mitochondrial datasets, a polarity-agnostic retraining that
+carries the representation to vessels, filaments and EM, and a
+perturbation map that tells users which stored invariants to trust under
+which kind of mask error.
 
 \subsection{Towards temporal tracking and event detection}
 The representation established here is intended as the substrate for a further
@@ -813,24 +1071,28 @@ released code; its systematic evaluation (ideally against
 manually-tracked ground truth on a live-imaging time series) is deferred to
 future work.
 
-\subsection{Scope}
-The out-of-domain datasets are small and their figures are validation
-estimates; the EM result comes from one volume with a guard-gap split.
-Payload grows with structural complexity, so on dense networks a
-general-purpose codec at the same budget is photometrically at least as
-good, and the representation's value there is the structure it exposes.
-The confocal MITO dataset marks where the organelle segmenter, trained on
-one acquisition, needs further data. An error-guided refinement stage is
-implemented but not triggered on these data (Methods).
+\subsection{Limitations}
+The stored graph is exactly as good as the mask it is built from. Its
+branch and junction under-counts relative to reference masks come from
+segmentation, not storage, and each new acquisition type should contribute
+training data: transfer between microscopes was limited in our
+leave-one-dataset-out experiments. Near the optical limit, 2-D width is a
+resolution-limited quantity; every 2-D route we evaluated overstates it,
+including the simulator's own mask. The real test sets are small
+(33--133 tiles), and tiles from one frame are correlated. The simulated
+evaluation set was regenerated with the organelle simulator's settings; it
+matches the original set closely but not exactly. The out-of-domain
+datasets are small and their figures are validation estimates, and the EM
+result comes from one volume with a guard-gap split. Payload grows with
+structural complexity, so on dense vasculature the full payload reaches a
+budget at which a pixel codec is near-transparent.
 
 \subsection{Outlook}
 Natural extensions are 3-D graphs; systematic validation of the temporal
 module against ground-truth trajectories, for which mitochondrial network
-tracking provides a protocol~\cite{wang2023mitotnt}; multi-acquisition
-retraining using the public mitochondrial datasets evaluated here; and
-graph-native downstream models that operate on the stored graph directly.
-The most direct test of the representation is the one it is built for:
-analysis on the stored graph matching analysis on the pixels.
+tracking provides a protocol~\cite{wang2023mitotnt}; further real
+acquisitions for the segmentation front end; and graph-native downstream
+models that operate on the structure layer directly.
 
 % =====================================================================
 \section{Methods}\label{sec:method}
@@ -877,42 +1139,49 @@ but it also means the learned candidate
 is not guaranteed to win even where it is more accurate. A dedicated
 \texttt{for\_curvilinear()} preset instead sets
 \texttt{learned\_mode='replace'}, bypassing the cascade entirely for
-dark-on-bright curvilinear imagery (Table~\ref{tab:retrain}).
+dark-on-bright curvilinear imagery (Table~\ref{tab:retrain}). A \texttt{for\_real\_mito()} preset
+likewise uses, in \texttt{replace} mode, the network trained on real
+mitochondria (Section~\ref{sec:real}).
 
-\subsection{Skeletonisation and formal graph construction}\label{sec:graph}
+\subsection{Skeletonisation and the structure layer}\label{sec:graph}
 The selected foreground mask is skeletonised~\cite{lee} and its Euclidean
-distance transform gives a per-pixel width. Branches between junctions and
-endpoints are traced into a formal attributed graph object,
-$G=(V,E,\mathrm{adj})$: each node $v\in V$ stores position, width, intensity,
-tangent orientation (estimated from a smoothed structure
-tensor~\cite{bigun1987structuretensor}) and topological type (endpoint,
-junction, sampled); each edge $e\in E$ stores its endpoints, pixel length,
-mean width, mean intensity and curvature; an explicit adjacency map supports
-graph traversal. Nodes are sub-sampled along branches at a spacing
-proportional to local width, giving a variable-density point set that is
-denser where geometry changes fastest. Two post-processing steps operate on
-the graph directly: \emph{gap bridging} reconnects degree-1 endpoints across
-different components when they are within 12\,px and collinear (cosine
-alignment $\geq 0.6$) at both ends, repairing skeleton breaks caused by dim
-or interrupted structure; and \emph{small-component removal} drops connected
-components with fewer than 3 nodes, filtering out isolated noise blobs. The
-two steps mean that $G$ need not be the exact skeleton of the mask, and
-component counts on $G$ and on the mask can differ slightly. The resulting \texttt{Nanograph} object exposes queries used throughout our
-evaluation without any re-processing of pixels: connected-component
-extraction ($\beta_0$), induced-subgraph extraction by node id, per-graph
-morphometry (mean/max width, edge length, curvature, junction-degree
-distribution, network total length, spatial extent), and cycle rank
-($\beta_1 = |E| - |V| + \beta_0$, giving graph complexity as
-$\beta_1/\beta_0$). Both invariants are read from the stored graph rather
-than estimated from pixels, which is what we mean throughout by
-\emph{graph-exact}. The term is deliberately narrow, and the distinction is
-worth stating once: $\beta_0$ and $\beta_1$ are exact properties of $G$, not
-guaranteed properties of the underlying biological structure. Any error in
-the foreground mask propagates into $G$ and is then represented exactly.
-Graph-exactness therefore removes one error source---re-estimating topology
-from decoded pixels---without removing the earlier one, and the accuracy of
-the representation with respect to the specimen remains bounded by the
+distance transform gives a per-pixel radius. The skeleton is decomposed into
+branches with skan~\cite{skan}. Every connected cluster of junction pixels
+becomes one junction vertex at the cluster's centroid, and every endpoint
+becomes an end vertex. Each branch is stored as a polyline between its two
+vertices, simplified with the Douglas--Peucker algorithm (tolerance
+0.75\,px) and subdivided so that no chord exceeds 8\,px. A branch that joins
+two junctions keeps at least one interior point, so that adjacent junctions
+are never contracted into one. Each polyline point stores its position and
+radius. Each branch also stores its path length, measured on the
+full-resolution skeleton before simplification. Closed loops without a
+vertex are stored as cycles on a single vertex. The resulting graph
+$G=(V,E)$ exposes, without reprocessing pixels: connected components
+($\beta_0$), cycle rank ($|E|-|V|+\beta_0$ on the branch graph), branch and
+junction counts, junction degrees, branch lengths, total length, width
+along every branch, spatial extent and induced subgraphs. Curvature can be
+derived from the polylines. We call these properties \emph{graph-exact}.
+The term is deliberately narrow: they are exact properties of $G$, not
+guaranteed properties of the specimen. Any error in the foreground mask
+propagates into $G$ and is then represented exactly, and the accuracy of the
+representation with respect to the specimen remains bounded by the
 segmentation, a bound we quantify in Fig.~\ref{fig:segperturb}.
+
+The earlier builder, kept as an ablation (\texttt{graph.builder='pixel'}),
+sampled nodes at fixed spacing along skeleton pixels, joined them greedily
+and did not store path lengths. Junction clusters then produced spurious
+short cycles. Its stored cycle rank matched the mask's enclosed holes on
+16\% of organelle images, against $\GraphCycEqPct\%$ for the branch
+builder.
+
+\subsection{Appearance layer}
+The appearance layer carries the points from which the image is rendered.
+They are sampled along the skeleton at fixed spacing, after spur pruning
+(5\,px), gap bridging of collinear endpoints (at most 12\,px apart, cosine
+alignment $\geq0.6$ at both ends) and removal of components with fewer than
+3 points; these steps affect the rendering only, not the structure layer.
+Each point carries width, intensity and a tangent orientation estimated from
+a smoothed structure tensor~\cite{bigun1987structuretensor}.
 
 \subsection{Oriented-PSF reconstruction}
 Filaments are anisotropic, so isotropic Gaussians waste energy perpendicular
@@ -928,37 +1197,42 @@ placement misses.
 
 \subsection{Error-guided refinement}
 \label{sec:optimizer}
-The codebase implements an optional refinement stage that re-renders the
-node set, forms a foreground-restricted error map and admits nodes at
-high-residual locations until foreground SSIM plateaus. With width-proportional
-sampling, no in-mask residual exceeds its trigger threshold on any image
-evaluated here, so all reported results come from skeleton sampling,
-oriented-PSF rendering, the background field and the residual coder.
+After the skeleton points are placed, a refinement stage re-renders the
+point set, forms a foreground-restricted error map, and adds rendering
+points at high-residual locations (at most 30 per iteration, up to 20
+iterations) until the foreground error plateaus. The added points belong to
+the appearance layer only; the structure layer is unaffected.
 
 \subsection{Serialisation}\label{sec:compression}
-The graph is serialised as quantised node attributes---position
-(row-delta coded), width, intensity and a 1-byte orientation (256 levels
-over $[0,\pi)$, quantisation error $<0.4^\circ$)---followed by the edge list
-as signed index offsets in the same node order, the background field and the
-optional residual, behind a short versioned header; the concatenation is
-zlib-compressed at level 9. Width and intensity are coded predictively from
-already-decoded neighbours along the stored edges, so the decoder
-reproduces every prediction exactly. The decoder rebuilds $G$ from the
-stream, and every fidelity figure in this paper is computed on the image
-rendered from the decoded payload.
+The payload is a one-byte version tag and the length of the structure layer,
+followed by the two layers. The structure layer stores vertices sorted by
+row as position deltas, their kinds (2 bits) and radii, then for every
+branch its end vertices, its path length (quantised to 1/4\,px) and its
+interior polyline points as position deltas with radii predicted from the
+preceding point (radius quantised to 1/4\,px); all integers are variable-length
+coded and the layer is zlib-compressed. The appearance layer stores quantised
+point attributes---position (row-delta coded), width, intensity and a 1-byte
+orientation (256 levels over $[0,\pi)$, quantisation error $<0.4^\circ$)---the
+background field and the optional residual, with width and intensity coded
+predictively from already-decoded neighbours, compressed with zlib at level
+9. The structure layer can be read without decompressing the appearance
+layer. Every fidelity figure in this paper is computed on the image
+rendered from the decoded payload, and every descriptor attributed to
+\method on the structure layer decoded from it.
 
 \subsection{Configuration and image-type presets}
 \label{sec:config}
-Every stage above is controlled by one of 121 explicit parameters, organised
-into nine dataclasses (preprocessing 12, segmentation 36, reconstruction 15,
-topology optimiser 10, compression 10, image-type detection 14,
-classification 6, evaluation 8, graph construction 10). Two presets adapt
+Every stage above is controlled by one of 127 explicit parameters, organised
+into nine dataclasses (preprocessing 12, segmentation 37, reconstruction 15,
+refinement 10, compression 11, image-type detection 14,
+classification 6, evaluation 8, graph construction 14). Presets adapt
 this configuration to different imaging regimes without hand-tuning:
 \texttt{for\_image\_type()} adjusts background-subtraction kernel size and
-expected foreground-fraction bounds for sparse vs.\ dense structures, and
+expected foreground-fraction bounds for sparse vs.\ dense structures;
 \texttt{for\_curvilinear()} swaps in the polarity-agnostic
 multi-domain segmenter in unconditional \texttt{replace} mode for dark-on-bright
-vessel/EM/filament imagery.
+vessel/EM/filament imagery; and \texttt{for\_real\_mito()} swaps in the
+network trained on real mitochondria.
 
 \subsection{Datasets}
 The main evaluation set is 726 \emph{simulated} fluorescence images of
@@ -988,6 +1262,29 @@ frames)~\cite{balakrishnan2024sted}; and a public confocal dataset with
 per-slice expert masks~\cite{zhanghao2023mito}, evaluated as
 $256\times256$ tiles of max-intensity projections ($n=228$).
 
+\emph{Simulation with geometry.} For the truth evaluation we regenerated
+organelle-like images with the same simulator, calling its own geometry and
+point-spread-function code and keeping what the original pipeline discards:
+each tube's centreline and diameter. Batch settings (lateral extent, number
+of tubes per patch and noise range) were calibrated so that the regenerated
+images match the organelle set in foreground fraction, structure size and
+intensity statistics. The true skeleton is every centreline drawn
+8-connected on the pixel grid, so crossings in projection become junctions
+exactly as any 2-D analysis must see them; the true width is the tube's
+diameter. The temporal clip's truth is its per-frame skeleton polylines and
+the median surface-to-skeleton distance of each mitochondrion~\cite{cods}.
+
+\emph{Real mitochondria.} Four expert-annotated datasets were tiled into
+$256\times256$ tiles after a per-frame (0.5, 99.8) percentile contrast
+stretch; tiles with less than 0.5\% foreground were dropped. Splits are by
+frame or cell, never by tile. EP1-UiT-Rat: 32 epifluorescence frames
+($1024\times1024$), shuffled into 24/4/4 training/validation/test frames
+(277/44/45 tiles). CBMI~\cite{cbmi}: the provided splits (165/20/68 tiles).
+MITO~\cite{zhanghao2023mito}: cell M1 for training (its last slices for
+validation) and cell M2 for testing (143/33/133 tiles). EP-UiT-Human: four
+epifluorescence frames ($1024\times1024$; 33 tiles; annotation maps
+thresholded at 128), used only for testing.
+
 \subsection{Metrics}\label{sec:metrics}
 \emph{Seg-IoU} is the IoU between the pipeline's selected foreground mask
 and the reference mask (the simulator's ground truth on the simulated sets,
@@ -997,12 +1294,35 @@ imposes width-consistent shapes, it can exceed Seg-IoU. \emph{Self-IoU}
 compares the thresholded reconstruction with the pipeline's own mask and
 measures self-consistency. \emph{FG-PSNR/FG-SSIM} restrict PSNR/SSIM to the
 pipeline's own mask; \emph{GT-FG-PSNR/GT-FG-SSIM} restrict them to the
-reference mask. \emph{Graph-exact $\beta_0$/$\beta_1$} are computed in two
-senses that we keep separate: on the mask, $\beta_1$ counts enclosed
-holes; on the traced skeleton graph, the cycle rank $|E|-|V|+\beta_0$
-counts path redundancy in the branching network. \emph{Betti agreement}
-is the pipeline's per-image score in $[0,1]$ comparing a representation's
-recovered $(\beta_0,\beta_1)$ with those of the reference mask.
+reference mask. On the mask, $\beta_0$ counts connected components and
+$\beta_1$ enclosed holes; on the stored graph, the cycle rank
+$|E|-|V|+\beta_0$ counts independent cycles, which equals the mask's
+$\beta_1$ when the skeleton preserves the mask's topology.
+
+\subsection{Descriptors and analysis protocol}\label{sec:downstream-methods}
+Every route is reduced to a node--edge graph and passed through one
+descriptor definition. Pixel routes (reference mask, re-segmented JPEG,
+true centrelines) use the 8-neighbour skeleton-pixel graph; \method uses the
+decoded structure layer. Junction pixels that touch are contracted to one
+vertex; a branch is a maximal chain between vertices of degree $\neq2$; the
+cycle rank is $n_\text{branches}-n_\text{vertices}+n_\text{components}$ of
+the branch graph. Width is the distance-transform diameter, averaged along
+the branches with length weighting. Length is the branch path length (pixel routes: skeleton
+path; \method: the stored path length). The \emph{one-diameter rule}
+removes terminal branches and isolated components shorter than the
+length-weighted mean diameter that the same route measures on the same
+image, and is applied identically to every route.
+It was declared before the truth evaluation was run. Agreement is reported
+as Lin's concordance correlation coefficient (CCC), median absolute
+percentage error (MdAPE) and mean relative bias; paired route comparisons
+use two-sided Wilcoxon signed-rank tests on per-image absolute errors. In
+the truth evaluation, each route's descriptors were additionally calibrated
+against the truth with a linear fit on one half of the images and evaluated
+on the other half, and vice versa (two-fold cross-validation). Query cost is
+the median single-thread wall time per image, with no GPU: decoding the
+structure layer and computing all descriptors (\method), skeletonising and
+analysing a stored mask, and decoding, segmenting (U-Net, CPU) and analysing
+a JPEG.
 
 \subsection{Codec comparison}
 For each image we encode with JPEG at the highest quality whose file does
@@ -1020,21 +1340,32 @@ Dice, BCE and clDice loss. The multi-domain network was trained for 120
 epochs on STARE, DRIVE, microtubules and EPFL EM with random-inversion
 augmentation; vessels and filaments use random image-level splits, and the
 EM volume a contiguous tail block with a four-slice guard gap. The
-checkpoint with the best macro validation score was retained.
+checkpoint with the best macro validation score was retained. The real-data networks
+use the same architecture and loss. Three strategies were trained with
+three seeds each: from scratch on the real training splits, fine-tuned from
+the simulation network, and jointly on real tiles and the simulated
+organelle images outside the held-out set. Each strategy was also trained
+with each of UiT, CBMI and MITO left out (36 networks). Models were
+selected on the validation splits by validation Dice plus centreline
+sensitivity; test sets were used only for the reported evaluation. The
+shipped \texttt{real-mito} network is the joint model of seed 0.
 
 \subsection{Perturbation study}
 For each organelle image the mask selected by the default configuration was
 degraded by dilation and erosion (radii 1--5\,px), random removal of 5--40\%
 of connected components, and random flips within a 1--3\,px boundary band;
-the graph was rebuilt from each degraded mask with the pipeline's own
-construction, and its invariants were compared with those of the graph
-built from the unperturbed mask.
+the structure layer was rebuilt from each degraded mask with the
+pipeline's own construction, and its descriptors (one-diameter rule) were
+compared with those of the structure layer built from the unperturbed
+mask.
 
 % =====================================================================
 \section*{Data availability}
 STARE~\cite{stare}, DRIVE~\cite{drive}, the EPFL/Lucchi EM
 volume~\cite{lucchi}, the STED dataset~\cite{balakrishnan2024sted} and the
-MITO dataset~\cite{zhanghao2023mito} are publicly available. The simulated
+MITO~\cite{zhanghao2023mito} and CBMI~\cite{cbmi} datasets are publicly
+available. The EP1-UiT-Rat and EP-UiT-Human images and annotations are
+available from the authors. The simulated
 organelle images and temporal clip were produced with the simulators described
 in Methods (the organelle simulator is public with Sekh et
 al.~\cite{sekh2021}); the images, their ground truth and our regeneration
@@ -1043,7 +1374,9 @@ script are available from the authors and in the code repository.
 \section*{Code availability}
 The encoder/decoder, configuration presets, evaluation scripts, trained
 weights and the scripts that generate every number, table and figure in this
-paper are available at \url{https://github.com/NirwanUiT/Nanograph}.
+paper are available at \url{https://github.com/NirwanUiT/Nanograph}. One script
+(\texttt{experiments/run\_paper\_v3.sh}) regenerates every result at a
+tagged commit.
 
 \section*{Acknowledgements}
 This work was supported by the Research Council of Norway Project (nanoAI,
