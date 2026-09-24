@@ -479,3 +479,47 @@ Without shared pruning (L = 0, T10 definition) the encoder spur prune is visible
 (changes relative to the default spacing of 3.)
 - **FG-PSNR is flat across every setting** (28.06–28.09 dB).
 - **Where the construction loss lives:** none of the four knobs moves the junction deficit by more than 3.5 pp. The construction share (PRE vs SEG: −8 % branches, −23 % junctions at L = 5) sits in `build_nanograph`'s edge building at junction-pixel clusters, which has no parameter. This is inferred from the degree-2 junction evidence in T11.2, not tested directly.
+
+---
+
+## T11.4 — robustness of the T11.2 comparison
+
+Script `experiments/downstream_robustness.py`; outputs `results/paper/downstream/robustness/`.
+
+**Pruning rule** (`pruning_rule.csv`). At L = 5, alternatives to the one-pass guarded rule change every bias by < 0.7 pp and no GRAPH-vs-JPEG verdict:
+- **one pass, no guard:** branches −17.5 %, junctions −38.4 %
+- **iterative:** branches −16.8 %, junctions −37.6 %; GRAPH closer on branches 334 vs 191, junctions 246 vs 198.
+- Same at L = 2 and 10.
+
+**Holm correction** (`holm.csv`, 7 paired tests per (definition, L), 35 in total). At L = 5 every significant result survives correction across all 35: components, width, branches (p_adj 1e-14), junctions (1e-3), cycle rank, branch-length W1 (1e-6). Total length stays n.s. At L = 10, junctions and length are n.s.
+
+**SEG arm CPU vs GPU masks** (`seg_masks_cpu_gpu.csv`, `decomposition_gpu_mask.csv`):
+- Mask IoU 0.99996 (min 0.9990); 675/715 masks bit-identical.
+- The GPU re-segmentation equals the encoder's own mask on 13/13 images checked (both segmenters).
+- The decomposition moves by ≤ 0.06 pp (L = 5 junctions: graph construction −23.03 → −22.97 %). **The graph-construction share is not a device artefact.**
+
+**Held-out 108 images only** (105 with a fitting JPEG; U-Net never trained on them), L = 5:
+
+| descriptor | GRAPH bias % (CCC) | JPEG bias % (CCC) | GRAPH / JPEG closer | p |
+|---|---|---|---|---|
+| components | −3.8 (0.724) | +41.2 (−0.005) | 36 / 5 | 4e-7 |
+| total length | −8.4 (0.825) | +9.4 (0.347) | 45 / 60 | 0.81 |
+| mean width | +2.2 (0.927) | +4.6 (0.797) | 78 / 27 | 5e-10 |
+| branches | −19.5 (0.665) | +28.7 (0.186) | 54 / 31 | 1e-3 |
+| junctions | −39.9 (0.636) | +14.3 (0.614) | 35 / 33 | 0.44 |
+| cycle rank | −43.5 (0.431) | +6.5 (0.440) | 18 / 7 | 0.07 |
+
+On held-out images GRAPH still wins on components, width and branches, but junctions and cycle rank are ties. **"Higher CCC on all six" does not hold on held-out images** (cycle rank 0.431 vs 0.440). Seg-IoU itself barely depends on the split (held-out 0.863, training 0.872).
+
+**Checks bearing on manuscript claims** (not T10 outputs; recorded for the revision):
+- **Betti agreement vs JPEG is a segmenter mismatch, not compression.** Against the pipeline mask on 197 images:
+  - Otsu of the **uncompressed** image: **0.000**
+  - Otsu of byte-matched JPEG (the paper's protocol): 0.124
+  - the pipeline's own segmenter on the JPEG: 0.777
+- **Paper's graph "β1" is the mask's hole count.** `\DBetaZero`/`\DBetaOne` are mask Betti numbers (`ng_seg_beta_*`), not stored-graph quantities; the mask is not in the payload.
+- **Paper's cycle rank is dominated by junction-cluster triangles.** `graph_n_cycles` mean 3.66; mask holes 0.32; stored-graph cycle rank with junction clusters contracted 0.30 (annotation 0.55).
+- **Refinement runs on every image.** 726/726 images carry optimizer PSF points in the payload (exactly 120 on 711 images, 122–124 on the rest; ~43 % of stored points). Methods says the stage is never triggered.
+- **Node spacing is fixed,** 3 px (sparse) / 2 px (dense), not width-proportional as Methods states.
+- **Decoded edges keep only the endpoints:** length is the chord between stored nodes (−2 % vs the traced path), and curvature is not stored (decoded as 0).
+- **A lossless mask costs 3–6× less than the payload.** The pipeline's mask stored losslessly takes 366 B (bit-packed + zlib) or 659 B (PNG) vs 2211 B for the payload (182 images).
+- **GT-IoU vs byte-matched JPEG is a tie in effect size.** Mean paired difference −0.0007 (all) / +0.0002 (held-out).
