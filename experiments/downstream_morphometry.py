@@ -408,6 +408,8 @@ def descriptors_at(table, L=0.0, junction_def='degree', prune='once', bridge=0.0
     Returns (dict of scalars, list of branch lengths, list of branch types).
     """
     from collections import defaultdict
+    if L == 'auto' and min_len == 0.0:
+        min_len = 'auto'                     # the one-diameter rule sets both
     if L == 'auto' or min_len == 'auto':
         # one-diameter rule (T13): prune terminal branches and drop components
         # shorter than the arm's own length-weighted mean diameter
@@ -463,6 +465,8 @@ def vertex_positions(table, L=0.0, prune='once', min_len=0.0):
     L (and removal of components shorter than min_len): vertices with >= 3
     branches, and with exactly 1 branch. L / min_len may be 'auto' (the
     one-diameter rule of descriptors_at)."""
+    if L == 'auto' and min_len == 0.0:
+        min_len = 'auto'
     if L == 'auto' or min_len == 'auto':
         tl = sum(b[2] for b in table['branches'])
         diam = sum(b[3] for b in table['branches']) / tl if tl > 0 else 0.0
@@ -645,7 +649,7 @@ def stage_encode(args):
 # ---------------------------------------------------------------------------
 PRUNE_LS = [0, 2, 5, 10]   # T11.2: shared terminal-branch pruning lengths (px)
 # (junction definition, L): the T10 definition at L=0, then the degree-based one
-SETTINGS = [('t10', 0)] + [('degree', L) for L in PRUNE_LS]
+SETTINGS = [('t10', 0)] + [('degree', L) for L in PRUNE_LS] + [('degree', 'auto')]  # 'auto': one-diameter rule (T13 default)
 DESCRIPTORS = ['n_components', 'total_length_px', 'mean_width_px',
                'n_branches', 'n_junctions', 'cycle_rank']
 
@@ -914,7 +918,7 @@ def stage_stats(args):
                     r[f'{m}_wins_jpeg'] = int((g > j).sum())
             rows.append(r)
         # T11.2: how much of each arm's L=0 count/length is terminal and < L
-        for a in (['REF'] + arms) if jd == 'degree' else []:
+        for a in (['REF'] + arms) if (jd == 'degree' and L != 'auto') else []:
             fr = np.array([spur_fraction(tabs[s, a], L) for s in stems], float)
             nb = np.array([len(tabs[s, a]['branches']) for s in stems], float)
             spur.append({'L': L, 'arm': a,

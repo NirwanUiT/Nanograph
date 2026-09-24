@@ -83,8 +83,8 @@ def main():
     with mp.get_context('spawn').Pool(workers) as pool:
         rows = [r for rs in pool.imap_unordered(_one, jobs, chunksize=2) for r in rs]
     P = pd.DataFrame(rows)
-    out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'results', 'real',
-                       'real_downstream')
+    out = os.environ.get('OUT_DIR', os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                                  'results', 'real', 'real_downstream'))
     os.makedirs(out, exist_ok=True)
     P.to_csv(os.path.join(out, 'per_tile.csv'), index=False)
     S = []

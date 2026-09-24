@@ -76,12 +76,13 @@ def main():
     import downstream_morphometry as dm
     models = {'shipped_sim': os.path.join(ROOT, 'weights', 'unet_organelle_cldice.pt'),
               'clean_sim': os.path.join(ROOT, 'results', 'v7', 'unet', 'unet_clean_base.pt')}
-    for p in sorted(glob.glob(os.path.join(ROOT, 'results', 'real', 'unet', '*.pt'))):
+    for p in sorted(glob.glob(os.path.join(os.environ.get('UNET_DIR', os.path.join(ROOT, 'results', 'real', 'unet')), '*.pt'))):
         models[os.path.splitext(os.path.basename(p))[0]] = p
     with mp.get_context('spawn').Pool(int(os.environ.get('WORKERS', 12))) as pool:
         rows = [r for rs in pool.imap_unordered(_eval_model, list(models.items())) for r in rs]
     P = pd.DataFrame(rows)
-    out = os.path.join(ROOT, 'results', 'real')
+    out = os.environ.get('OUT_DIR', os.path.join(ROOT, 'results', 'real'))
+    os.makedirs(out, exist_ok=True)
     P.to_csv(os.path.join(out, 'eval_per_tile.csv'), index=False)
     S = []
     for (name, d), g in P.groupby(['model', 'dataset']):

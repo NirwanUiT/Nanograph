@@ -23,6 +23,7 @@ import cv2
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from nanograph_v4 import nanograph_encode, NanographConfig
 from nanograph_v4.skeleton import skeletonize_and_classify, extract_nanograph_points, \
     compute_skeleton_orientations
@@ -35,10 +36,32 @@ def iou(a, b):
     return float(np.logical_and(a, b).sum() / u) if u else 0.0
 
 
+BUILDER = 'branch'
+
+
 def graph_metrics(mask, img):
-    """Mask -> graph via the pipeline's own construction; return invariants."""
+    """Mask -> stored graph via the pipeline's own construction; invariants.
+
+    builder 'branch' (v7, default): the structure layer built from the mask's
+    skeleton, passed through its codec; descriptors under the one-diameter
+    rule (components, cycle rank, length, length-weighted diameter).
+    builder 'pixel' (v6): the paper-v2 construction, kept for comparison."""
     if mask.sum() == 0:
         return None
+    if BUILDER == 'branch':
+        from skimage.morphology import skeletonize
+        from nanograph_v4 import graph_branch as gb
+        import downstream_morphometry as dm
+        m = (mask > 0).astype(np.uint8)
+        sk = skeletonize(m > 0)
+        if sk.sum() < 2:
+            return None
+        dt = cv2.distanceTransform(m, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
+        st = gb.decode_structure(gb.encode_structure(gb.branch_structure(sk, dt)))
+        pos, rad, edges, elen = gb.structure_to_arrays(st, path_lengths=True)
+        d = dm.descriptors_at(dm.graph_arm_table(pos, rad, edges, elen), 'auto')[0]
+        return dict(beta0=d['n_components'], beta1=d['cycle_rank'], n_nodes=len(pos),
+                    total_edge_length=d['total_length_px'], mean_width=d['mean_width_px'])
     skel, ep, jn = skeletonize_and_classify(mask)
     if skel.sum() == 0:
         return None
@@ -92,7 +115,11 @@ def main():
     ap.add_argument('--out', default='seg_perturbation_ablation.csv')
     ap.add_argument('--seed', type=int, default=0)
     ap.add_argument('--limit', type=int, default=0)
+    ap.add_argument('--builder', default='branch', choices=['branch', 'pixel'],
+                    help="stored-graph construction: 'branch' (v7) or 'pixel' (v6)")
     args = ap.parse_args()
+    global BUILDER
+    BUILDER = args.builder
 
     paths = sorted(glob.glob(os.path.join(args.images, '*.png')))
     if args.limit:
