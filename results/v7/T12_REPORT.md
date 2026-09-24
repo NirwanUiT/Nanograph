@@ -89,7 +89,7 @@ The split costs nothing overall (2189 ≤ 2198 B). The analysis-facing layer is 
 
 **Mixed result.** The profile width is almost immune to mask error: +2 % / +4 % under 1 / 2 px dilation, −1 % under erosion. The mask-distance-transform width moves by +31 % / +63 % / −28 %. But the profile width agrees **less** with the annotation (r 0.57 vs 0.81; bias +18 %), because it measures the optical (blurred) width, not the drawn mask width.
 
-**Recommendation:** store both. That costs about 8 B per image (180 vs 172 B structure layer). Use the profile width when the mask is uncertain, or when comparing across segmenters. Calibrating the profile width against the PSF (deconvolving the FWHM) is the obvious next step; it is not done here.
+**Recommendation:** store both. Profile widths *instead of* mask widths cost 180 vs 172 B; carrying both adds a second width per point (size not measured). Use the profile width when the mask is uncertain, or when comparing across segmenters. Calibrating the profile width against the PSF (deconvolving the FWHM) is the obvious next step; it is not done here.
 
 ## #4 Topology-aware segmentation (clean split)
 
