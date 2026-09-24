@@ -4,7 +4,7 @@ Real annotated mitochondria data -> 256x256 uint8 tiles + manifest (T13).
 
 Sources (all with expert/manual foreground masks):
   UIT    EP1-UiT-Rat: 32 epifluorescence frames, 1024x1024
-  HUMAN  EP-UiT-Human: 4 epifluorescence frames, 1024x1024 (labels 0-4; >0 = fg)
+  HUMAN  EP-UiT-Human: 4 epifluorescence frames, 1024x1024 (greyscale maps; >=128 = fg)
   CBMI   CBMI MITO ("Fluorescence Microscopy Images v2"): 256x256 uint16 tiles,
          provided train/val/test splits (disjoint source frames)
   MITO   Zenodo 7724799: 2 cells (M1, M2) x ~20 z-slices, 1200x1200
@@ -85,6 +85,10 @@ def main():
         msk = cv2.imread(glob.glob(os.path.join(ROOT, 'EP-UiT-Human', 'annotation', f + '.*'))[0], -1)
         img = img if img.ndim == 2 else img[..., 0]
         msk = msk if msk.ndim == 2 else msk[..., 0]
+        # EP-UiT-Human "annotations" are greyscale maps (0-255, bimodal: faint
+        # halo values near 0, structure near 255), not binary masks. Foreground
+        # = value >= 128 (the midpoint), fixed before any evaluation on it.
+        msk = (msk >= 128).astype(np.uint8)
         for y, x, ti, tm in tiles(stretch(img), msk):
             emit('HUMAN', f'HUMAN_{f}', 'test', f'HUMAN_{f}_y{y}x{x}', ti, tm)
 

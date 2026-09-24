@@ -1,0 +1,61 @@
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 133/133
+  Failures: 0
+  Total time: 331.9s  (2.50s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.1512    0.0978    0.0000    0.4786    0.1386
+  Seg IoU                         0.3149    0.1371    0.0000    0.6187    0.3270
+  Seg F1                          0.4617    0.1673    0.0000    0.7644    0.4928
+  Seg Precision                   0.4867    0.1900    0.0000    0.9767    0.5092
+  Seg Recall                      0.5198    0.2269    0.0000    0.9974    0.5221
+  GT FG-SSIM                      0.9936    0.0056    0.9738    0.9999    0.9952
+  GT FG-PSNR                     26.1549    4.5231    3.2992   37.4759   25.8521
+  FG-SSIM                         0.9979    0.0017    0.9911    1.0000    0.9984
+  FG-PSNR                        34.1703    2.3624   27.4319   39.0587   34.1025
+  IoU (recon)                     0.1677    0.1161    0.0019    0.6753    0.1342
+  Topology Q                      0.3957    0.1378    0.1029    0.9288    0.3867
+  Topo Preservation               1.5799    0.8402    0.3294    5.0828    1.4167
+  Full PSNR                      25.5629    4.3054   17.9924   43.5182   24.5066
+  Full SSIM                       0.7585    0.0983    0.5041    0.9611    0.7624
+  Bytes                        3774.3985 1991.0599  406.0000 11028.0000 3380.0000
+  Graph Components               15.8947    8.9479    1.0000   43.0000   15.0000
+  Graph Cycles                    0.6992    1.1951    0.0000    7.0000    0.0000
+  Graph Complexity                0.0574    0.1266    0.0000    1.0000    0.0000
+  Nodes                         109.3308   70.0932    4.0000  353.0000   90.0000
+  Edges                          94.1353   63.9213    4.0000  319.0000   79.0000
+  Total Edge Length             463.3953  319.8125    5.8284 1624.1484  379.6640
+  Mean Width (px)                 3.6554    0.3382    2.7161    5.0687    3.6322
+  Mean Curvature                  0.0000    0.0000    0.0000    0.0000    0.0000
+  Time (ms)                    2290.8741  931.6349  569.4106 6217.1161 2056.1805
+
+  WINS vs byte-matched JPEG (133 images):
+    GT-IoU          : 34/133 wins (26%)  mean Δ=+0.0018
+    GT-FG-SSIM      : 1/133 wins (1%)  mean Δ=-0.0052
+    GT-FG-PSNR      : 1/133 wins (1%)  mean Δ=-9.8641
+    FG-SSIM         : 19/133 wins (14%)  mean Δ=-0.0009
+    IoU             : 44/133 wins (33%)  mean Δ=+0.0012
+
+  SEGMENTATION FAILURES (seg_iou < 0.3): 55
+    - MITO_M2_001_y512x256.png
+    - MITO_M2_002_y0x256.png
+    - MITO_M2_002_y0x512.png
+    - MITO_M2_002_y256x256.png
+    - MITO_M2_002_y256x512.png
+    - MITO_M2_003_y0x256.png
+    - MITO_M2_003_y0x512.png
+    - MITO_M2_004_y0x0.png
+    - MITO_M2_004_y256x0.png
+    - MITO_M2_004_y256x256.png
+    - MITO_M2_004_y256x512.png
+    - MITO_M2_004_y512x0.png
+    - MITO_M2_004_y512x256.png
+    - MITO_M2_006_y0x512.png
+    - MITO_M2_006_y256x256.png
+    - MITO_M2_006_y512x512.png
+    - MITO_M2_007_y0x0.png
+    - MITO_M2_007_y512x256.png
+    - MITO_M2_007_y512x512.png
+    - MITO_M2_008_y0x0.png

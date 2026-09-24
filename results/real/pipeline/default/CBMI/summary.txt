@@ -1,0 +1,50 @@
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 68/68
+  Failures: 0
+  Total time: 163.9s  (2.41s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.4604    0.1708    0.0794    0.7502    0.4671
+  Seg IoU                         0.4938    0.1948    0.0088    0.7603    0.4914
+  Seg F1                          0.6344    0.2085    0.0174    0.8638    0.6590
+  Seg Precision                   0.7108    0.1448    0.2067    0.9615    0.7368
+  Seg Recall                      0.6600    0.2630    0.0089    0.9818    0.7505
+  GT FG-SSIM                      0.9739    0.0272    0.8848    0.9988    0.9883
+  GT FG-PSNR                     19.7185    5.2195   10.5323   27.6149   21.3422
+  FG-SSIM                         0.9947    0.0157    0.8687    1.0000    0.9975
+  FG-PSNR                        26.6450    3.2831   20.1866   33.3448   26.1247
+  IoU (recon)                     0.5850    0.2026    0.0022    0.8429    0.6396
+  Topology Q                      0.4975    0.2226    0.1306    1.0000    0.5083
+  Topo Preservation               1.2256    0.7901    0.4879    4.2768    0.9512
+  Full PSNR                      26.0938    3.3450   19.8040   31.9008   26.1717
+  Full SSIM                       0.6301    0.1990    0.1589    0.9224    0.6172
+  Bytes                        5813.6618 3314.1246  525.0000 17708.0000 5002.0000
+  Graph Components               15.5882    9.3843    1.0000   47.0000   14.0000
+  Graph Cycles                    3.1618    4.2551    0.0000   23.0000    1.5000
+  Graph Complexity                0.3392    1.3779    0.0000   11.5000    0.1292
+  Nodes                         164.7500  126.1583    3.0000  541.0000  121.5000
+  Edges                         152.3235  124.3099    2.0000  562.0000  111.0000
+  Total Edge Length             752.9505  627.3796    6.8284 3029.0298  554.6798
+  Mean Width (px)                 3.7820    1.2272    2.2905    9.9950    3.4768
+  Mean Curvature                  0.0000    0.0000    0.0000    0.0000    0.0000
+  Time (ms)                    2171.6581  911.0850  612.8519 6350.1024 2101.5751
+
+  WINS vs byte-matched JPEG (68 images):
+    GT-IoU          : 20/68 wins (29%)  mean Δ=-0.0869
+    GT-FG-SSIM      : 2/68 wins (3%)  mean Δ=-0.0197
+    GT-FG-PSNR      : 2/68 wins (3%)  mean Δ=-7.4975
+    FG-SSIM         : 18/68 wins (26%)  mean Δ=-0.0022
+    IoU             : 51/68 wins (75%)  mean Δ=+0.0691
+
+  SEGMENTATION FAILURES (seg_iou < 0.3): 9
+    - CBMI_004t01_h128_w384.png
+    - CBMI_Captured_CSU488_4_h384_w384.png
+    - CBMI_Captured_CSU488_4_h640_w640.png
+    - CBMI_Captured_CSU488_5_h384_w384.png
+    - CBMI_cell10_1_h154_w394.png
+    - CBMI_mito1_h714_w709.png
+    - CBMI_mito6_h330_w512.png
+    - CBMI_mito6_h348_w799.png
+    - CBMI_mito6_h702_w480.png
