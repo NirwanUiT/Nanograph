@@ -1,0 +1,188 @@
+Found 66 images in /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/microtubules/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/microtubules/labels
+Output: cross_gt_results/microtubules
+Sample visualizations: 2
+Sample indices: [3, 14]
+
+Nanograph v5 — 121 params
+======================================================================
+
+[1/66] irm_in_vitro_microtubules_0  (0.0 img/s, ETA 0m)
+  [GRAPH] 222 branches traced, 1942/1942 nodes assigned, 0 orphans, 1952 edges, 40 components
+  [GRAPH] 5 branches traced, 147/147 nodes assigned, 0 orphans, 142 edges, 5 components
+  [GRAPH] 33 branches traced, 875/875 nodes assigned, 0 orphans, 848 edges, 28 components
+
+[4/66] irm_in_vitro_microtubules_11  (0.2 img/s, ETA 6m)  ** SAMPLE **
+Image: (512, 512), type=sparse (FG=4.9%, n_cc=66, mean_fg_int=0.87)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 94 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          79.1%   0.3832       3ms
+Frangi         2.8%   0.3407     554ms
+Meijering     94.9%   0.2457     481ms
+Learned        3.4% 1000000000.0000      15ms <<<
+
+Selected: Learned
+Nanograph: 1009 points (EP=80, JN=12, S=917)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 59 branches traced, 1009/1009 nodes assigned, 0 orphans, 976 edges, 38 components
+Graph: 1009 nodes, 976 edges, 38 components
+FG residual: 6,946 bytes (60 ms)
+
+============================================================
+  RESULT (v5): 1129 pts, 12,650 bytes
+  vs raw pixels: 21x  vs PNG: 16.7x
+  PSNR=19.30  SSIM=0.1659  FG-PSNR=24.75  FG-SSIM=0.9991
+  Graph topology: 38 components, 5 cycles, 12 junctions, 80 endpoints
+  Segmentation: β₀=38, β₁=0
+  Structures: 38 -- {'curved': 26, 'punctate': 6, 'branched': 4, 'linear': 2}
+  Total time: 4227 ms
+============================================================
+  Sample saved: cross_gt_results/microtubules/samples/irm_in_vitro_microtubules_11.png
+  Bytes: 12,650  |  FG-SSIM: 0.9991  |  GT-IoU: 0.0154  |  Seg-F1: 0.6625  |  Topo-Q: 0.5867
+  [GRAPH] 11 branches traced, 356/356 nodes assigned, 0 orphans, 345 edges, 11 components
+  [GRAPH] 22 branches traced, 497/497 nodes assigned, 0 orphans, 476 edges, 21 components
+  [GRAPH] 33 branches traced, 551/551 nodes assigned, 0 orphans, 533 edges, 21 components
+  [GRAPH] 77 branches traced, 1226/1226 nodes assigned, 0 orphans, 1200 edges, 36 components
+  [GRAPH] 109 branches traced, 1386/1386 nodes assigned, 0 orphans, 1381 edges, 27 components
+  [GRAPH] 15 branches traced, 418/418 nodes assigned, 0 orphans, 405 edges, 13 components
+  [GRAPH] 10 branches traced, 273/273 nodes assigned, 0 orphans, 263 edges, 10 components
+  [GRAPH] 21 branches traced, 578/578 nodes assigned, 0 orphans, 566 edges, 14 components
+  [GRAPH] 5 branches traced, 174/174 nodes assigned, 0 orphans, 169 edges, 5 components
+  [GRAPH] 3 branches traced, 133/133 nodes assigned, 0 orphans, 130 edges, 3 components
+
+[15/66] irm_in_vitro_microtubules_21  (0.2 img/s, ETA 4m)  ** SAMPLE **
+Image: (512, 512), type=sparse (FG=0.5%, n_cc=7, mean_fg_int=0.86)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 91 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          94.1%   0.3387       2ms
+Frangi        18.9%   0.3311     554ms
+Meijering     99.6%   0.2109     481ms
+Learned        0.7% 1000000000.0000      14ms <<<
+
+Selected: Learned
+Nanograph: 229 points (EP=15, JN=4, S=210)
+Background grid: 16×16 (3 ms)
+  [GRAPH] 14 branches traced, 229/229 nodes assigned, 0 orphans, 224 edges, 7 components
+Graph: 229 nodes, 224 edges, 7 components
+FG residual: 1,468 bytes (25 ms)
+
+============================================================
+  RESULT (v5): 349 pts, 3,274 bytes
+  vs raw pixels: 80x  vs PNG: 63.7x
+  PSNR=20.93  SSIM=0.1438  FG-PSNR=24.67  FG-SSIM=0.9998
+  Graph topology: 7 components, 2 cycles, 4 junctions, 15 endpoints
+  Segmentation: β₀=7, β₁=0
+  Structures: 7 -- {'punctate': 2, 'curved': 4, 'branched': 1}
+  Total time: 3217 ms
+============================================================
+  Sample saved: cross_gt_results/microtubules/samples/irm_in_vitro_microtubules_21.png
+  Bytes: 3,274  |  FG-SSIM: 0.9998  |  GT-IoU: 0.0041  |  Seg-F1: 0.6994  |  Topo-Q: 0.5934
+  [GRAPH] 4 branches traced, 99/99 nodes assigned, 0 orphans, 95 edges, 4 components
+  [GRAPH] 5 branches traced, 169/169 nodes assigned, 0 orphans, 164 edges, 5 components
+  [GRAPH] 5 branches traced, 161/161 nodes assigned, 0 orphans, 156 edges, 5 components
+  [GRAPH] 8 branches traced, 316/316 nodes assigned, 0 orphans, 308 edges, 8 components
+  [GRAPH] 5 branches traced, 143/143 nodes assigned, 0 orphans, 138 edges, 5 components
+  [GRAPH] 7 branches traced, 299/299 nodes assigned, 0 orphans, 292 edges, 7 components
+  [GRAPH] 8 branches traced, 212/212 nodes assigned, 0 orphans, 204 edges, 8 components
+  [GRAPH] 117 branches traced, 1672/1672 nodes assigned, 0 orphans, 1665 edges, 31 components
+  [GRAPH] 101 branches traced, 1673/1673 nodes assigned, 0 orphans, 1651 edges, 38 components
+  [GRAPH] 3 branches traced, 84/84 nodes assigned, 0 orphans, 81 edges, 3 components
+  [GRAPH] 4 branches traced, 90/90 nodes assigned, 0 orphans, 86 edges, 4 components
+  [GRAPH] 129 branches traced, 1592/1592 nodes assigned, 0 orphans, 1589 edges, 30 components
+  [GRAPH] 24 branches traced, 538/538 nodes assigned, 0 orphans, 524 edges, 16 components
+  [GRAPH] 36 branches traced, 611/611 nodes assigned, 0 orphans, 600 edges, 16 components
+  [GRAPH] 65 branches traced, 950/950 nodes assigned, 0 orphans, 937 edges, 24 components
+  [GRAPH] 8 branches traced, 254/254 nodes assigned, 0 orphans, 246 edges, 8 components
+  [GRAPH] 11 branches traced, 459/459 nodes assigned, 0 orphans, 449 edges, 10 components
+  [GRAPH] 5 branches traced, 171/171 nodes assigned, 0 orphans, 166 edges, 5 components
+  [GRAPH] 6 branches traced, 245/245 nodes assigned, 0 orphans, 239 edges, 6 components
+  [GRAPH] 20 branches traced, 444/444 nodes assigned, 0 orphans, 433 edges, 13 components
+  [GRAPH] 5 branches traced, 206/206 nodes assigned, 0 orphans, 201 edges, 5 components
+  [GRAPH] 16 branches traced, 401/401 nodes assigned, 0 orphans, 391 edges, 12 components
+  [GRAPH] 25 branches traced, 437/437 nodes assigned, 0 orphans, 418 edges, 20 components
+  [GRAPH] 14 branches traced, 395/395 nodes assigned, 0 orphans, 381 edges, 14 components
+  [GRAPH] 4 branches traced, 115/115 nodes assigned, 0 orphans, 111 edges, 4 components
+  [GRAPH] 1 branches traced, 52/52 nodes assigned, 0 orphans, 51 edges, 1 components
+  [GRAPH] 2 branches traced, 75/75 nodes assigned, 0 orphans, 73 edges, 2 components
+  [GRAPH] 1 branches traced, 74/74 nodes assigned, 0 orphans, 73 edges, 1 components
+  [GRAPH] 17 branches traced, 437/437 nodes assigned, 0 orphans, 420 edges, 17 components
+  [GRAPH] 9 branches traced, 245/245 nodes assigned, 0 orphans, 237 edges, 8 components
+  [GRAPH] 50 branches traced, 799/799 nodes assigned, 0 orphans, 797 edges, 13 components
+  [GRAPH] 2 branches traced, 61/61 nodes assigned, 0 orphans, 59 edges, 2 components
+  [GRAPH] 16 branches traced, 374/374 nodes assigned, 0 orphans, 366 edges, 10 components
+  [GRAPH] 10 branches traced, 288/288 nodes assigned, 0 orphans, 278 edges, 10 components
+  [GRAPH] 35 branches traced, 900/900 nodes assigned, 0 orphans, 886 edges, 18 components
+
+[51/66] irm_in_vitro_microtubules_54  (0.2 img/s, ETA 1m)
+  [GRAPH] 9 branches traced, 206/206 nodes assigned, 0 orphans, 197 edges, 9 components
+  [GRAPH] 15 branches traced, 255/255 nodes assigned, 0 orphans, 248 edges, 9 components
+  [GRAPH] 12 branches traced, 324/324 nodes assigned, 0 orphans, 314 edges, 10 components
+  [GRAPH] 17 branches traced, 209/209 nodes assigned, 0 orphans, 208 edges, 5 components
+  [GRAPH] 4 branches traced, 79/79 nodes assigned, 0 orphans, 75 edges, 4 components
+  [GRAPH] 30 branches traced, 401/401 nodes assigned, 0 orphans, 388 edges, 17 components
+  [GRAPH] 64 branches traced, 807/807 nodes assigned, 0 orphans, 797 edges, 24 components
+  [GRAPH] 28 branches traced, 427/427 nodes assigned, 0 orphans, 415 edges, 16 components
+  [GRAPH] 29 branches traced, 406/406 nodes assigned, 0 orphans, 392 edges, 17 components
+  [GRAPH] 60 branches traced, 890/890 nodes assigned, 0 orphans, 884 edges, 18 components
+  [GRAPH] 12 branches traced, 398/398 nodes assigned, 0 orphans, 386 edges, 12 components
+  [GRAPH] 54 branches traced, 546/546 nodes assigned, 0 orphans, 542 edges, 18 components
+  [GRAPH] 21 branches traced, 398/398 nodes assigned, 0 orphans, 383 edges, 16 components
+  [GRAPH] 15 branches traced, 190/190 nodes assigned, 0 orphans, 183 edges, 9 components
+  [GRAPH] 49 branches traced, 554/554 nodes assigned, 0 orphans, 545 edges, 18 components
+  [GRAPH] 36 branches traced, 856/856 nodes assigned, 0 orphans, 847 edges, 16 components
+
+CSV saved: cross_gt_results/microtubules/metrics.csv
+TXT saved: cross_gt_results/microtubules/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 66/66
+  Failures: 0
+  Total time: 305.6s  (4.63s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.0079    0.0064    0.0012    0.0310    0.0053
+  Seg IoU                         0.5370    0.0955    0.2443    0.7917    0.5511
+  Seg F1                          0.6935    0.0848    0.3927    0.8837    0.7106
+  Seg Precision                   0.7826    0.0804    0.5004    0.9447    0.7924
+  Seg Recall                      0.6416    0.1351    0.2975    0.8753    0.6395
+  GT FG-SSIM                      0.9972    0.0023    0.9898    0.9998    0.9978
+  GT FG-PSNR                     15.7619    2.5095   11.0765   20.7051   16.1069
+  FG-SSIM                         0.9994    0.0007    0.9960    1.0000    0.9997
+  FG-PSNR                        22.7311    2.1792   19.4322   27.8703   22.4521
+  IoU (recon)                     1.0000    0.0000    1.0000    1.0000    1.0000
+  Topology Q                      0.6205    0.1157    0.4084    0.8755    0.5956
+  Topo Preservation               1.4434    0.7083    0.3284    3.5715    1.2798
+  Full PSNR                      18.4619    2.1088   14.6066   24.4490   18.3189
+  Full SSIM                       0.1126    0.0651    0.0312    0.4230    0.1024
+  Bytes                        6557.6061 5340.2943 1091.0000 25949.0000 5165.0000
+  Graph Components               13.1212    9.3233    1.0000   39.0000   10.5000
+  Graph Cycles                    4.2121    8.3021    0.0000   50.0000    0.0000
+  Graph Complexity                0.1958    0.2966    0.0000    1.2821    0.0000
+  Nodes                         481.5303  427.3917   52.0000 1942.0000  384.5000
+  Edges                         472.6212  426.1688   51.0000 1953.0000  374.0000
+  Total Edge Length             874.2051  962.3146   59.2426 4649.5819  585.6968
+  Mean Width (px)                 2.5800    0.0993    2.3687    2.8509    2.5686
+  Mean Curvature                  0.0436    0.0224    0.0045    0.1094    0.0373
+  Time (ms)                    3712.0842  741.0186 2465.7304 7638.0575 3539.8214
+
+  WINS vs byte-matched JPEG (66 images):
+    GT-IoU          : 28/66 wins (42%)  mean Δ=+0.0013
+    GT-FG-SSIM      : 10/66 wins (15%)  mean Δ=-0.0006
+    GT-FG-PSNR      : 10/66 wins (15%)  mean Δ=-1.0512
+    FG-SSIM         : 34/66 wins (52%)  mean Δ=+0.0007
+    IoU             : 34/66 wins (52%)  mean Δ=+0.5111
+
+  SEGMENTATION FAILURES (seg_iou < 0.3): 2
+    - irm_in_vitro_microtubules_2.png
+    - irm_in_vitro_microtubules_58.png
+
+Summary saved: cross_gt_results/microtubules/summary.txt
+Aggregate plots saved: cross_gt_results/microtubules/aggregate_plots.png
+
+Done. All results in cross_gt_results/microtubules/

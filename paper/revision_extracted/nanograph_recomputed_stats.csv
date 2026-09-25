@@ -1,0 +1,8 @@
+metric,reference,nanograph_mean,jpeg_mean,ng_wins,n,win_pct,sign_test_p,mean_paired_diff,ci95_lo,ci95_hi,verdict
+Recon-IoU,Nanograph's own selected mask (self-referenced),0.4331,0.4242,557,726,76.7,1.608e-49,+0.00892,+0.00792,+0.00994,Nanograph better
+GT-IoU,independent ground-truth mask,0.6543,0.6537,354,726,48.8,5.281e-01,+0.00065,-0.00044,+0.00175,no detectable difference
+FG-PSNR,Nanograph's own selected mask (self-referenced),28.3767,28.8355,33,726,4.5,8.432e-162,-0.45874,-0.48175,-0.43661,JPEG better
+GT-FG-PSNR,independent ground-truth mask,27.7351,28.1035,90,726,12.4,4.274e-102,-0.36839,-0.39661,-0.34162,JPEG better
+GT-FG-SSIM,independent ground-truth mask,0.9991,0.9992,50,726,6.9,3.983e-141,-0.00013,-0.00014,-0.00012,JPEG better
+Full PSNR,whole image,30.7440,31.2449,0,726,0.0,5.666e-219,-0.50085,-0.51645,-0.48615,JPEG better
+Full SSIM,whole image,0.5639,0.6196,0,726,0.0,5.666e-219,-0.05568,-0.05685,-0.05450,JPEG better

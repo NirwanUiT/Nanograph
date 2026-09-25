@@ -1,0 +1,136 @@
+Found 20 images in /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/drive/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/drive/labels
+Output: cross_gt_results/drive
+Sample visualizations: 2
+Sample indices: [0, 3]
+
+Nanograph v5 — 121 params
+======================================================================
+
+[1/20] 21  (0.0 img/s, ETA 0m)  ** SAMPLE **
+Image: (584, 565), type=dense (FG=11.4%, n_cc=39, mean_fg_int=0.58)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 111 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          13.0%   0.3816       4ms
+Frangi         0.0%   0.0000     677ms
+Meijering      2.9%   0.4013     591ms
+Learned        8.5% 1000000000.0000     256ms <<<
+
+Selected: Learned
+Nanograph: 4500 points (EP=61, JN=355, S=4084)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 614 branches traced, 4500/4500 nodes assigned, 0 orphans, 4694 edges, 7 components
+Graph: 4500 nodes, 4694 edges, 7 components
+FG residual: 7,971 bytes (90 ms)
+
+============================================================
+  RESULT (v5): 4700 pts, 28,464 bytes
+  vs raw pixels: 12x  vs PNG: 5.3x
+  PSNR=21.47  SSIM=0.6437  FG-PSNR=32.39  FG-SSIM=0.9978
+  Graph topology: 7 components, 201 cycles, 355 junctions, 61 endpoints
+  Segmentation: β₀=7, β₁=27
+  Structures: 7 -- {'branched': 2, 'curved': 3, 'ring': 1, 'linear': 1}
+  Total time: 13384 ms
+============================================================
+  Sample saved: cross_gt_results/drive/samples/21.png
+  Bytes: 28,464  |  FG-SSIM: 0.9978  |  GT-IoU: 0.1103  |  Seg-F1: 0.7587  |  Topo-Q: 1.0000
+  [GRAPH] 388 branches traced, 4089/4089 nodes assigned, 0 orphans, 4175 edges, 13 components
+  [GRAPH] 497 branches traced, 3839/3839 nodes assigned, 0 orphans, 3970 edges, 12 components
+
+[4/20] 24  (0.1 img/s, ETA 4m)  ** SAMPLE **
+Image: (584, 565), type=dense (FG=13.5%, n_cc=49, mean_fg_int=0.60)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 98 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          13.7%   0.3761       3ms
+Frangi         0.0%   0.0000     665ms
+Meijering      4.4%   0.4024     584ms
+Learned       10.1% 1000000000.0000      18ms <<<
+
+Selected: Learned
+Nanograph: 4846 points (EP=79, JN=390, S=4377)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 662 branches traced, 4846/4846 nodes assigned, 0 orphans, 5037 edges, 6 components
+Graph: 4846 nodes, 5037 edges, 6 components
+FG residual: 9,269 bytes (93 ms)
+
+============================================================
+  RESULT (v5): 5046 pts, 31,266 bytes
+  vs raw pixels: 11x  vs PNG: 4.9x
+  PSNR=20.47  SSIM=0.6075  FG-PSNR=32.30  FG-SSIM=0.9974
+  Graph topology: 6 components, 197 cycles, 390 junctions, 79 endpoints
+  Segmentation: β₀=6, β₁=24
+  Structures: 6 -- {'branched': 2, 'curved': 2, 'ring': 1, 'punctate': 1}
+  Total time: 12560 ms
+============================================================
+  Sample saved: cross_gt_results/drive/samples/24.png
+  Bytes: 31,266  |  FG-SSIM: 0.9974  |  GT-IoU: 0.1662  |  Seg-F1: 0.7787  |  Topo-Q: 1.0000
+  [GRAPH] 421 branches traced, 3301/3301 nodes assigned, 0 orphans, 3406 edges, 11 components
+  [GRAPH] 455 branches traced, 3488/3488 nodes assigned, 0 orphans, 3617 edges, 4 components
+  [GRAPH] 692 branches traced, 4787/4787 nodes assigned, 0 orphans, 4993 edges, 7 components
+  [GRAPH] 552 branches traced, 4405/4405 nodes assigned, 0 orphans, 4558 edges, 11 components
+  [GRAPH] 580 branches traced, 3099/3099 nodes assigned, 0 orphans, 3260 edges, 6 components
+  [GRAPH] 531 branches traced, 3218/3218 nodes assigned, 0 orphans, 3383 edges, 5 components
+  [GRAPH] 338 branches traced, 3633/3633 nodes assigned, 0 orphans, 3742 edges, 5 components
+  [GRAPH] 449 branches traced, 4242/4242 nodes assigned, 0 orphans, 4370 edges, 6 components
+  [GRAPH] 539 branches traced, 4208/4208 nodes assigned, 0 orphans, 4364 edges, 8 components
+  [GRAPH] 729 branches traced, 3641/3641 nodes assigned, 0 orphans, 3853 edges, 19 components
+  [GRAPH] 509 branches traced, 3482/3482 nodes assigned, 0 orphans, 3613 edges, 9 components
+  [GRAPH] 532 branches traced, 3584/3584 nodes assigned, 0 orphans, 3724 edges, 7 components
+  [GRAPH] 585 branches traced, 4351/4351 nodes assigned, 0 orphans, 4510 edges, 6 components
+  [GRAPH] 566 branches traced, 4717/4717 nodes assigned, 0 orphans, 4870 edges, 10 components
+  [GRAPH] 646 branches traced, 4510/4510 nodes assigned, 0 orphans, 4696 edges, 7 components
+  [GRAPH] 541 branches traced, 3161/3161 nodes assigned, 0 orphans, 3317 edges, 5 components
+
+CSV saved: cross_gt_results/drive/metrics.csv
+TXT saved: cross_gt_results/drive/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 20/20
+  Failures: 0
+  Total time: 260.0s  (13.00s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.1277    0.0194    0.0890    0.1662    0.1284
+  Seg IoU                         0.5969    0.0428    0.4652    0.6392    0.6111
+  Seg F1                          0.7466    0.0353    0.6350    0.7799    0.7586
+  Seg Precision                   0.7481    0.0533    0.6414    0.8347    0.7376
+  Seg Recall                      0.7494    0.0530    0.6065    0.8476    0.7617
+  GT FG-SSIM                      0.9946    0.0014    0.9914    0.9968    0.9949
+  GT FG-PSNR                     27.6876    1.6492   25.4094   31.7156   27.4705
+  FG-SSIM                         0.9978    0.0003    0.9970    0.9983    0.9978
+  FG-PSNR                        33.0443    0.8539   32.0099   35.0061   32.7780
+  IoU (recon)                     1.0000    0.0000    1.0000    1.0000    1.0000
+  Topology Q                      1.0000    0.0000    0.9998    1.0000    1.0000
+  Topo Preservation               0.9947    0.0232    0.8934    1.0003    1.0000
+  Full PSNR                      23.7012    2.1714   20.4696   27.6701   23.0732
+  Full SSIM                       0.6841    0.0485    0.6075    0.7705    0.6845
+  Bytes                        25504.1500 3351.6292 20052.0000 31266.0000 25430.5000
+  Graph Components                7.5000    2.7111    4.0000   14.0000    7.0000
+  Graph Cycles                  160.7500   33.3390   99.0000  231.0000  163.5000
+  Graph Complexity               23.9711    8.1427    8.2500   34.0000   24.9167
+  Nodes                        3955.0500  562.3478 3099.0000 4846.0000 3964.0000
+  Edges                        4108.3000  575.8224 3261.0000 5037.0000 4073.5000
+  Total Edge Length            7746.3960  752.0817 6170.5734 9118.5452 7751.7019
+  Mean Width (px)                 2.1384    0.0738    1.9675    2.2949    2.1324
+  Mean Curvature                  0.0815    0.0078    0.0626    0.0936    0.0806
+  Time (ms)                    11398.0304  928.9094 9807.5294 13384.1588 11065.2503
+
+  WINS vs byte-matched JPEG (20 images):
+    GT-IoU          : 14/20 wins (70%)  mean Δ=+0.0015
+    GT-FG-SSIM      : 0/20 wins (0%)  mean Δ=-0.0052
+    GT-FG-PSNR      : 0/20 wins (0%)  mean Δ=-13.0023
+    FG-SSIM         : 0/20 wins (0%)  mean Δ=-0.0019
+    IoU             : 20/20 wins (100%)  mean Δ=+0.8841
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: cross_gt_results/drive/summary.txt
+Aggregate plots saved: cross_gt_results/drive/aggregate_plots.png
+
+Done. All results in cross_gt_results/drive/

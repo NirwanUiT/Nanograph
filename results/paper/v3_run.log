@@ -1,0 +1,551 @@
+=== [01:37:40] org_default
+Found 726 images in /mnt/nas1/nba055-2/idea_1/nmi_data/org
+Masks directory: /mnt/nas1/nba055-2/idea_1/nmi_data/seg
+Output: results/paper/org_default
+Sample visualizations: 6
+Sample indices: [25, 114, 228, 250, 281, 654]
+
+Nanograph v5 — 127 params
+======================================================================
+
+[1/726] 7249  (0.0 img/s, ETA 0m)
+
+[26/726] 7275  (0.7 img/s, ETA 18m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=2.5%, n_cc=5, mean_fg_int=0.46)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           4.7%   0.3994       1ms
+Frangi         0.6%   0.3821     135ms
+Meijering     87.0%   0.2313     117ms
+Learned        2.0%   0.4739       7ms <<<
+
+Selected: Learned
+Nanograph: 169 points (EP=12, JN=9, S=148)
+Background grid: 16×16 (3 ms)
+Graph (branch): 48 nodes, 43 edges, 5 components
+FG residual: 697 bytes (8 ms)
+
+============================================================
+  RESULT (v5): 289 pts, 2,229 bytes
+  vs raw pixels: 29x  vs PNG: 20.3x
+  PSNR=31.07  SSIM=0.5769  FG-PSNR=27.79  FG-SSIM=0.9994
+  Graph topology: 5 components, 0 cycles, 2 junctions, 12 endpoints
+  Segmentation: β₀=5, β₁=0
+  Structures: 5 -- {'linear': 1, 'punctate': 3, 'branched': 1}
+  Total time: 946 ms
+============================================================
+  Sample saved: results/paper/org_default/samples/7275.png
+  Bytes: 2,229  |  FG-SSIM: 0.9994  |  GT-IoU: 0.7022  |  Seg-F1: 0.9494  |  Topo-Q: 0.5768
+
+[51/726] 7301  (0.7 img/s, ETA 16m)
+
+[101/726] 7353  (0.7 img/s, ETA 15m)
+
+[115/726] 7368  (0.7 img/s, ETA 14m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=4.5%, n_cc=4, mean_fg_int=0.50)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           4.6%   0.4301       1ms
+Frangi         3.1%   0.4036     134ms
+Meijering     42.7%   0.3195     118ms
+Learned        2.5%   0.4695       5ms <<<
+
+Selected: Learned
+Nanograph: 157 points (EP=9, JN=4, S=144)
+Background grid: 16×16 (3 ms)
+Graph (branch): 49 nodes, 45 edges, 4 components
+FG residual: 772 bytes (8 ms)
+
+============================================================
+  RESULT (v5): 277 pts, 2,305 bytes
+  vs raw pixels: 28x  vs PNG: 19.4x
+  PSNR=31.55  SSIM=0.6119  FG-PSNR=28.02  FG-SSIM=0.9990
+  Graph topology: 4 components, 0 cycles, 3 junctions, 11 endpoints
+  Segmentation: β₀=4, β₁=0
+  Structures: 4 -- {'branched': 2, 'punctate': 2}
+  Total time: 1347 ms
+============================================================
+  Sample saved: results/paper/org_default/samples/7368.png
+  Bytes: 2,305  |  FG-SSIM: 0.9990  |  GT-IoU: 0.6247  |  Seg-F1: 0.9498  |  Topo-Q: 0.6430
+
+[151/726] 7405  (0.7 img/s, ETA 13m)
+
+[201/726] 7457  (0.7 img/s, ETA 12m)
+
+[229/726] 7485  (0.7 img/s, ETA 11m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=2.8%, n_cc=6, mean_fg_int=0.47)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           8.1%   0.3622       1ms
+Frangi         3.4%   0.3494     133ms
+Meijering     96.9%   0.2147     117ms
+Learned        2.8%   0.4155       5ms <<<
+
+Selected: Learned
+Nanograph: 220 points (EP=9, JN=10, S=201)
+Background grid: 16×16 (3 ms)
+Graph (branch): 69 nodes, 64 edges, 5 components
+FG residual: 749 bytes (8 ms)
+
+============================================================
+  RESULT (v5): 340 pts, 2,564 bytes
+  vs raw pixels: 26x  vs PNG: 17.9x
+  PSNR=30.07  SSIM=0.5213  FG-PSNR=28.60  FG-SSIM=0.9986
+  Graph topology: 5 components, 0 cycles, 3 junctions, 14 endpoints
+  Segmentation: β₀=5, β₁=1
+  Structures: 5 -- {'punctate': 3, 'branched': 1, 'ring': 1}
+  Total time: 1448 ms
+============================================================
+  Sample saved: results/paper/org_default/samples/7485.png
+  Bytes: 2,564  |  FG-SSIM: 0.9986  |  GT-IoU: 0.5619  |  Seg-F1: 0.9452  |  Topo-Q: 0.6827
+
+[251/726] 7507  (0.7 img/s, ETA 11m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=2.2%, n_cc=5, mean_fg_int=0.42)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           4.0%   0.4031       1ms
+Frangi         5.5%   0.3497     133ms
+Meijering     98.2%   0.2123     117ms
+Learned        2.1%   0.4656       7ms <<<
+
+Selected: Learned
+Nanograph: 129 points (EP=9, JN=7, S=113)
+Background grid: 16×16 (3 ms)
+Graph (branch): 43 nodes, 39 edges, 4 components
+FG residual: 602 bytes (7 ms)
+
+============================================================
+  RESULT (v5): 249 pts, 1,985 bytes
+  vs raw pixels: 33x  vs PNG: 22.5x
+  PSNR=31.73  SSIM=0.6042  FG-PSNR=28.72  FG-SSIM=0.9985
+  Graph topology: 4 components, 0 cycles, 2 junctions, 10 endpoints
+  Segmentation: β₀=4, β₁=0
+  Structures: 4 -- {'linear': 2, 'punctate': 1, 'branched': 1}
+  Total time: 1482 ms
+============================================================
+  Sample saved: results/paper/org_default/samples/7507.png
+  Bytes: 1,985  |  FG-SSIM: 0.9985  |  GT-IoU: 0.5478  |  Seg-F1: 0.9619  |  Topo-Q: 0.5618
+
+[282/726] 7538  (0.7 img/s, ETA 10m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=4.3%, n_cc=4, mean_fg_int=0.56)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           4.4%   0.4507       1ms
+Frangi         0.0%   0.0000     133ms
+Meijering     43.6%   0.3279     117ms
+Learned        2.6%   0.4929       6ms <<<
+
+Selected: Learned
+Nanograph: 193 points (EP=10, JN=4, S=179)
+Background grid: 16×16 (3 ms)
+Graph (branch): 54 nodes, 50 edges, 4 components
+FG residual: 830 bytes (8 ms)
+
+============================================================
+  RESULT (v5): 313 pts, 2,524 bytes
+  vs raw pixels: 26x  vs PNG: 17.8x
+  PSNR=31.46  SSIM=0.6159  FG-PSNR=27.41  FG-SSIM=0.9990
+  Graph topology: 4 components, 0 cycles, 2 junctions, 10 endpoints
+  Segmentation: β₀=4, β₁=0
+  Structures: 4 -- {'branched': 2, 'linear': 1, 'punctate': 1}
+  Total time: 1544 ms
+============================================================
+  Sample saved: results/paper/org_default/samples/7538.png
+  Bytes: 2,524  |  FG-SSIM: 0.9990  |  GT-IoU: 0.7551  |  Seg-F1: 0.9487  |  Topo-Q: 0.7048
+
+[301/726] 7559  (0.7 img/s, ETA 10m)
+
+[351/726] 7612  (0.7 img/s, ETA 9m)
+
+[401/726] 7664  (0.7 img/s, ETA 7m)
+
+[451/726] 7716  (0.7 img/s, ETA 6m)
+
+[501/726] 7768  (0.7 img/s, ETA 5m)
+
+[551/726] 7818  (0.7 img/s, ETA 4m)
+
+[601/726] 7870  (0.7 img/s, ETA 3m)
+
+[651/726] 7922  (0.7 img/s, ETA 2m)
+
+[655/726] 7926  (0.7 img/s, ETA 2m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=2.5%, n_cc=5, mean_fg_int=0.45)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 24 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           6.7%   0.3833       1ms
+Frangi         1.4%   0.3702     133ms
+Meijering     89.6%   0.2273     117ms
+Learned        1.9%   0.4608       5ms <<<
+
+Selected: Learned
+Nanograph: 140 points (EP=9, JN=3, S=128)
+Background grid: 16×16 (3 ms)
+Graph (branch): 44 nodes, 39 edges, 5 components
+FG residual: 689 bytes (8 ms)
+
+============================================================
+  RESULT (v5): 260 pts, 2,090 bytes
+  vs raw pixels: 31x  vs PNG: 21.8x
+  PSNR=30.68  SSIM=0.5543  FG-PSNR=27.83  FG-SSIM=0.9993
+  Graph topology: 5 components, 0 cycles, 1 junctions, 11 endpoints
+  Segmentation: β₀=5, β₁=0
+  Structures: 5 -- {'punctate': 3, 'branched': 1, 'linear': 1}
+  Total time: 1218 ms
+============================================================
+  Sample saved: results/paper/org_default/samples/7926.png
+  Bytes: 2,090  |  FG-SSIM: 0.9993  |  GT-IoU: 0.7679  |  Seg-F1: 0.9477  |  Topo-Q: 0.5113
+
+[701/726] 7974  (0.7 img/s, ETA 1m)
+
+CSV saved: results/paper/org_default/metrics.csv
+TXT saved: results/paper/org_default/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 726/726
+  Failures: 0
+  Total time: 978.2s  (1.35s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.6460    0.1042    0.1554    0.8603    0.6586
+  Seg IoU                         0.8704    0.1057    0.1554    0.9584    0.8902
+  Seg F1                          0.9258    0.0868    0.2690    0.9787    0.9419
+  Seg Precision                   0.9321    0.0271    0.7233    0.9787    0.9373
+  Seg Recall                      0.9282    0.1115    0.1562    0.9869    0.9497
+  GT FG-SSIM                      0.9988    0.0015    0.9868    0.9997    0.9991
+  GT FG-PSNR                     27.3035    2.0393   13.1600   29.6133   27.6759
+  FG-SSIM                         0.9992    0.0003    0.9977    0.9999    0.9992
+  FG-PSNR                        28.0920    0.5596   25.8055   29.7843   28.1032
+  IoU (recon)                     0.6754    0.1039    0.0992    0.9894    0.6830
+  Topology Q                      0.6092    0.0887    0.2289    0.8347    0.6133
+  Topo Preservation               0.6476    0.1927    0.2124    1.2621    0.6401
+  Full PSNR                      30.7587    0.6246   27.4437   31.9321   30.7791
+  Full SSIM                       0.5622    0.0273    0.4928    0.6165    0.5606
+  Bytes                        2193.7989  307.5678  840.0000 2983.0000 2216.0000
+  Graph Components                4.4118    0.7252    1.0000    7.0000    4.0000
+  Graph Cycles                    0.3416    0.6068    0.0000    4.0000    0.0000
+  Graph Complexity                0.0801    0.1466    0.0000    1.0000    0.0000
+  Nodes                          51.0455   11.7432    6.0000   83.0000   51.0000
+  Edges                          46.9752   11.6671    5.0000   82.0000   47.0000
+  Total Edge Length             241.4869   58.0168   23.8995  416.1615  242.2021
+  Mean Width (px)                 2.9718    0.4128    2.2471    5.1420    2.9141
+  Mean Curvature                  0.0000    0.0000    0.0000    0.0000    0.0000
+  Time (ms)                    1151.3731  263.7615  651.4690 5834.8231 1134.9252
+
+  WINS vs byte-matched JPEG (726 images):
+    GT-IoU          : 389/726 wins (54%)  mean Δ=-0.0011
+    GT-FG-SSIM      : 42/726 wins (6%)  mean Δ=-0.0003
+    GT-FG-PSNR      : 155/726 wins (21%)  mean Δ=-0.4226
+    FG-SSIM         : 409/726 wins (56%)  mean Δ=+0.0000
+    IoU             : 526/726 wins (72%)  mean Δ=+0.0205
+
+  SEGMENTATION FAILURES (seg_iou < 0.3): 14
+    - 7292.png
+    - 7380.png
+    - 7434.png
+    - 7460.png
+    - 7543.png
+    - 7544.png
+    - 7573.png
+    - 7701.png
+    - 7848.png
+    - 7879.png
+    - 7902.png
+    - 7905.png
+    - 7924.png
+    - 7987.png
+
+Summary saved: results/paper/org_default/summary.txt
+Aggregate plots saved: results/paper/org_default/aggregate_plots.png
+
+Done. All results in results/paper/org_default/
+=== [01:54:01] org_classical
+Found 726 images in /mnt/nas1/nba055-2/idea_1/nmi_data/org
+Masks directory: /mnt/nas1/nba055-2/idea_1/nmi_data/seg
+Output: results/paper/org_classical
+Sample visualizations: 6
+Sample indices: [25, 114, 228, 250, 281, 654]
+
+Nanograph v5 — 127 params
+======================================================================
+
+[1/726] 7249  (0.0 img/s, ETA 0m)
+
+[26/726] 7275  (0.4 img/s, ETA 33m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=2.5%, n_cc=5, mean_fg_int=0.46)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           4.7%   0.3994       1ms <<<
+Frangi         0.6%   0.3821     132ms
+Meijering     87.0%   0.2313     116ms
+
+Selected: Otsu
+Nanograph: 164 points (EP=18, JN=8, S=138)
+Background grid: 16×16 (3 ms)
+Graph (branch): 58 nodes, 51 edges, 8 components
+FG residual: 1,051 bytes (13 ms)
+
+============================================================
+  RESULT (v5): 374 pts, 3,016 bytes
+  vs raw pixels: 22x  vs PNG: 15.0x
+  PSNR=30.78  SSIM=0.5728  FG-PSNR=28.98  FG-SSIM=0.9967
+  Graph topology: 8 components, 1 cycles, 3 junctions, 18 endpoints
+  Segmentation: β₀=8, β₁=0
+  Structures: 8 -- {'punctate': 3, 'linear': 2, 'branched': 3}
+  Total time: 2597 ms
+============================================================
+  Sample saved: results/paper/org_classical/samples/7275.png
+  Bytes: 3,016  |  FG-SSIM: 0.9967  |  GT-IoU: 0.6532  |  Seg-F1: 0.5547  |  Topo-Q: 0.4316
+
+[51/726] 7301  (0.4 img/s, ETA 32m)
+
+[101/726] 7353  (0.4 img/s, ETA 29m)
+
+[115/726] 7368  (0.4 img/s, ETA 29m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=4.5%, n_cc=4, mean_fg_int=0.50)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           4.6%   0.4301       1ms <<<
+Frangi         3.1%   0.4036     136ms
+Meijering     42.7%   0.3195     117ms
+
+Selected: Otsu
+Nanograph: 108 points (EP=8, JN=0, S=100)
+Background grid: 16×16 (3 ms)
+Graph (branch): 31 nodes, 27 edges, 4 components
+FG residual: 835 bytes (9 ms)
+
+============================================================
+  RESULT (v5): 228 pts, 2,149 bytes
+  vs raw pixels: 30x  vs PNG: 20.8x
+  PSNR=31.75  SSIM=0.6149  FG-PSNR=29.03  FG-SSIM=0.9966
+  Graph topology: 4 components, 0 cycles, 0 junctions, 8 endpoints
+  Segmentation: β₀=4, β₁=0
+  Structures: 4 -- {'punctate': 3, 'linear': 1}
+  Total time: 1945 ms
+============================================================
+  Sample saved: results/paper/org_classical/samples/7368.png
+  Bytes: 2,149  |  FG-SSIM: 0.9966  |  GT-IoU: 0.6356  |  Seg-F1: 0.6779  |  Topo-Q: 0.4780
+
+[151/726] 7405  (0.4 img/s, ETA 27m)
+
+[201/726] 7457  (0.4 img/s, ETA 24m)
+
+[229/726] 7485  (0.4 img/s, ETA 22m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=2.8%, n_cc=6, mean_fg_int=0.47)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           8.1%   0.3622       1ms <<<
+Frangi         3.4%   0.3494     133ms
+Meijering     96.9%   0.2147     117ms
+
+Selected: Otsu
+Nanograph: 299 points (EP=40, JN=36, S=223)
+Background grid: 16×16 (3 ms)
+Graph (branch): 133 nodes, 115 edges, 21 components
+FG residual: 1,512 bytes (16 ms)
+
+============================================================
+  RESULT (v5): 419 pts, 4,095 bytes
+  vs raw pixels: 16x  vs PNG: 11.2x
+  PSNR=29.41  SSIM=0.5156  FG-PSNR=29.32  FG-SSIM=0.9907
+  Graph topology: 21 components, 3 cycles, 9 junctions, 48 endpoints
+  Segmentation: β₀=21, β₁=3
+  Structures: 21 -- {'linear': 4, 'branched': 2, 'punctate': 13, 'ring': 2}
+  Total time: 2623 ms
+============================================================
+  Sample saved: results/paper/org_classical/samples/7485.png
+  Bytes: 4,095  |  FG-SSIM: 0.9907  |  GT-IoU: 0.5053  |  Seg-F1: 0.4642  |  Topo-Q: 0.3448
+
+[251/726] 7507  (0.4 img/s, ETA 22m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=2.2%, n_cc=5, mean_fg_int=0.42)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           4.0%   0.4031       1ms <<<
+Frangi         5.5%   0.3497     133ms
+Meijering     98.2%   0.2123     117ms
+
+Selected: Otsu
+Nanograph: 123 points (EP=15, JN=7, S=101)
+Background grid: 16×16 (3 ms)
+Graph (branch): 45 nodes, 38 edges, 7 components
+FG residual: 773 bytes (12 ms)
+
+============================================================
+  RESULT (v5): 243 pts, 2,220 bytes
+  vs raw pixels: 30x  vs PNG: 20.1x
+  PSNR=31.66  SSIM=0.6040  FG-PSNR=29.86  FG-SSIM=0.9968
+  Graph topology: 7 components, 0 cycles, 2 junctions, 16 endpoints
+  Segmentation: β₀=7, β₁=0
+  Structures: 7 -- {'punctate': 5, 'linear': 1, 'branched': 1}
+  Total time: 1836 ms
+============================================================
+  Sample saved: results/paper/org_classical/samples/7507.png
+  Bytes: 2,220  |  FG-SSIM: 0.9968  |  GT-IoU: 0.5345  |  Seg-F1: 0.6821  |  Topo-Q: 0.3865
+
+[282/726] 7538  (0.4 img/s, ETA 20m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=4.3%, n_cc=4, mean_fg_int=0.56)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           4.4%   0.4507       1ms <<<
+Frangi         0.0%   0.0000     133ms
+Meijering     43.6%   0.3279     117ms
+
+Selected: Otsu
+Nanograph: 130 points (EP=12, JN=6, S=112)
+Background grid: 16×16 (3 ms)
+Graph (branch): 45 nodes, 40 edges, 5 components
+FG residual: 958 bytes (11 ms)
+
+============================================================
+  RESULT (v5): 250 pts, 2,433 bytes
+  vs raw pixels: 27x  vs PNG: 18.4x
+  PSNR=31.42  SSIM=0.6155  FG-PSNR=28.13  FG-SSIM=0.9974
+  Graph topology: 5 components, 0 cycles, 2 junctions, 12 endpoints
+  Segmentation: β₀=5, β₁=0
+  Structures: 5 -- {'linear': 1, 'branched': 2, 'punctate': 2}
+  Total time: 1970 ms
+============================================================
+  Sample saved: results/paper/org_classical/samples/7538.png
+  Bytes: 2,433  |  FG-SSIM: 0.9974  |  GT-IoU: 0.7363  |  Seg-F1: 0.7143  |  Topo-Q: 0.5014
+
+[301/726] 7559  (0.4 img/s, ETA 19m)
+
+[351/726] 7612  (0.4 img/s, ETA 17m)
+
+[401/726] 7664  (0.4 img/s, ETA 14m)
+
+[451/726] 7716  (0.4 img/s, ETA 12m)
+
+[501/726] 7768  (0.4 img/s, ETA 10m)
+
+[551/726] 7818  (0.4 img/s, ETA 8m)
+
+[601/726] 7870  (0.4 img/s, ETA 5m)
+
+[651/726] 7922  (0.4 img/s, ETA 3m)
+
+[655/726] 7926  (0.4 img/s, ETA 3m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=2.5%, n_cc=5, mean_fg_int=0.45)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 23 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           6.7%   0.3833       1ms <<<
+Frangi         1.4%   0.3702     133ms
+Meijering     89.6%   0.2273     117ms
+
+Selected: Otsu
+Nanograph: 256 points (EP=29, JN=24, S=203)
+Background grid: 16×16 (3 ms)
+Graph (branch): 103 nodes, 89 edges, 15 components
+FG residual: 1,389 bytes (13 ms)
+
+============================================================
+  RESULT (v5): 526 pts, 4,153 bytes
+  vs raw pixels: 16x  vs PNG: 11.0x
+  PSNR=30.06  SSIM=0.5495  FG-PSNR=29.24  FG-SSIM=0.9935
+  Graph topology: 15 components, 1 cycles, 8 junctions, 37 endpoints
+  Segmentation: β₀=15, β₁=1
+  Structures: 15 -- {'punctate': 10, 'linear': 2, 'branched': 2, 'ring': 1}
+  Total time: 3552 ms
+============================================================
+  Sample saved: results/paper/org_classical/samples/7926.png
+  Bytes: 4,153  |  FG-SSIM: 0.9935  |  GT-IoU: 0.6755  |  Seg-F1: 0.4262  |  Topo-Q: 0.3918
+
+[701/726] 7974  (0.4 img/s, ETA 1m)
+
+CSV saved: results/paper/org_classical/metrics.csv
+TXT saved: results/paper/org_classical/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 726/726
+  Failures: 0
+  Total time: 1866.0s  (2.57s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.5638    0.1221    0.1481    0.7999    0.5828
+  Seg IoU                         0.3659    0.1221    0.0466    0.7017    0.3726
+  Seg F1                          0.5238    0.1344    0.0890    0.8247    0.5429
+  Seg Precision                   0.4374    0.1776    0.0775    0.9806    0.4240
+  Seg Recall                      0.8494    0.2260    0.0755    1.0000    0.9467
+  GT FG-SSIM                      0.9974    0.0029    0.9863    0.9997    0.9986
+  GT FG-PSNR                     24.9066    4.1174   12.5866   29.4037   26.7125
+  FG-SSIM                         0.9955    0.0032    0.9758    0.9999    0.9963
+  FG-PSNR                        29.0394    0.7089   25.7925   30.2994   29.2100
+  IoU (recon)                     0.3509    0.1491    0.0258    0.9894    0.3447
+  Topology Q                      0.3904    0.1097    0.1350    0.6988    0.3687
+  Topo Preservation               0.5752    0.1713    0.1912    1.2700    0.5571
+  Full PSNR                      30.0559    1.0866   27.2249   31.8586   30.1579
+  Full SSIM                       0.5561    0.0302    0.4926    0.6155    0.5563
+  Bytes                        2871.0895 1207.1725  825.0000 8606.0000 2535.0000
+  Graph Components               10.7741    7.5375    1.0000   43.0000    8.0000
+  Graph Cycles                    0.4435    0.8005    0.0000    4.0000    0.0000
+  Graph Complexity                0.0356    0.0831    0.0000    1.0000    0.0000
+  Nodes                          67.4725   40.9982    6.0000  273.0000   55.0000
+  Edges                          57.1419   34.4379    5.0000  231.0000   48.0000
+  Total Edge Length             266.9797  151.0993   22.0711 1056.5778  230.3087
+  Mean Width (px)                 5.1794    0.8618    3.1648    8.1237    5.1238
+  Mean Curvature                  0.0000    0.0000    0.0000    0.0000    0.0000
+  Time (ms)                    2378.6657 1278.3337  556.7582 9082.7808 1963.3161
+
+  WINS vs byte-matched JPEG (726 images):
+    GT-IoU          : 42/726 wins (6%)  mean Δ=-0.0726
+    GT-FG-SSIM      : 26/726 wins (4%)  mean Δ=-0.0013
+    GT-FG-PSNR      : 60/726 wins (8%)  mean Δ=-2.7372
+    FG-SSIM         : 345/726 wins (48%)  mean Δ=-0.0004
+    IoU             : 394/726 wins (54%)  mean Δ=+0.0192
+
+  SEGMENTATION FAILURES (seg_iou < 0.3): 227
+    - 7253.png
+    - 7255.png
+    - 7257.png
+    - 7259.png
+    - 7260.png
+    - 7265.png
+    - 7273.png
+    - 7274.png
+    - 7277.png
+    - 7279.png
+    - 7284.png
+    - 7285.png
+    - 7288.png
+    - 7290.png
+    - 7291.png
+    - 7292.png
+    - 7293.png
+    - 7295.png
+    - 7298.png
+    - 7299.png
+
+Summary saved: results/paper/org_classical/summary.txt
+Aggregate plots saved: results/paper/org_classical/aggregate_plots.png
+
+Done. All results in results/paper/org_classical/
+=== [02:25:10] org_replace

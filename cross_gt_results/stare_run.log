@@ -1,0 +1,136 @@
+Found 20 images in /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/stare/images
+Masks directory: /mnt/nas1/nba055-2/idea_1/ext_datasets/prepared/stare/labels
+Output: cross_gt_results/stare
+Sample visualizations: 2
+Sample indices: [0, 3]
+
+Nanograph v5 — 121 params
+======================================================================
+
+[1/20] im0001  (0.0 img/s, ETA 0m)  ** SAMPLE **
+Image: (605, 700), type=sparse (FG=15.1%, n_cc=78, mean_fg_int=0.49)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 174 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          20.5%   0.3931       6ms
+Frangi         0.0%   0.0000     869ms
+Meijering     11.3%   0.4031     780ms
+Learned        8.5% 1000000000.0000     268ms <<<
+
+Selected: Learned
+Nanograph: 3467 points (EP=97, JN=470, S=2900)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 803 branches traced, 3467/3467 nodes assigned, 0 orphans, 3702 edges, 6 components
+Graph: 3467 nodes, 3702 edges, 6 components
+FG residual: 8,676 bytes (99 ms)
+
+============================================================
+  RESULT (v5): 3587 pts, 25,230 bytes
+  vs raw pixels: 17x  vs PNG: 7.3x
+  PSNR=24.87  SSIM=0.7213  FG-PSNR=34.23  FG-SSIM=0.9983
+  Graph topology: 6 components, 241 cycles, 470 junctions, 97 endpoints
+  Segmentation: β₀=6, β₁=24
+  Structures: 6 -- {'ring': 3, 'branched': 2, 'punctate': 1}
+  Total time: 24035 ms
+============================================================
+  Sample saved: cross_gt_results/stare/samples/im0001.png
+  Bytes: 25,230  |  FG-SSIM: 0.9983  |  GT-IoU: 0.0859  |  Seg-F1: 0.7667  |  Topo-Q: 1.0000
+  [GRAPH] 424 branches traced, 3547/3547 nodes assigned, 0 orphans, 3665 edges, 7 components
+  [GRAPH] 360 branches traced, 2150/2150 nodes assigned, 0 orphans, 2260 edges, 3 components
+
+[4/20] im0004  (0.0 img/s, ETA 6m)  ** SAMPLE **
+Image: (605, 700), type=sparse (FG=8.4%, n_cc=21, mean_fg_int=0.46)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 156 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          40.8%   0.3548       6ms
+Frangi         0.0%   0.0000     847ms
+Meijering      7.0%   0.3424     751ms
+Learned        6.3% 1000000000.0000      22ms <<<
+
+Selected: Learned
+Nanograph: 2851 points (EP=71, JN=221, S=2559)
+Background grid: 16×16 (4 ms)
+  [GRAPH] 381 branches traced, 2851/2851 nodes assigned, 0 orphans, 2939 edges, 14 components
+Graph: 2851 nodes, 2941 edges, 12 components
+FG residual: 6,601 bytes (90 ms)
+
+============================================================
+  RESULT (v5): 2971 pts, 20,042 bytes
+  vs raw pixels: 21x  vs PNG: 8.5x
+  PSNR=24.94  SSIM=0.7667  FG-PSNR=34.64  FG-SSIM=0.9991
+  Graph topology: 12 components, 102 cycles, 221 junctions, 71 endpoints
+  Segmentation: β₀=14, β₁=7
+  Structures: 14 -- {'linear': 2, 'punctate': 1, 'branched': 6, 'ring': 3, 'curved': 2}
+  Total time: 14659 ms
+============================================================
+  Sample saved: cross_gt_results/stare/samples/im0004.png
+  Bytes: 20,042  |  FG-SSIM: 0.9991  |  GT-IoU: 0.0908  |  Seg-F1: 0.7551  |  Topo-Q: 0.9997
+  [GRAPH] 590 branches traced, 3421/3421 nodes assigned, 0 orphans, 3565 edges, 20 components
+  [GRAPH] 549 branches traced, 3993/3993 nodes assigned, 0 orphans, 4141 edges, 13 components
+  [GRAPH] 831 branches traced, 4097/4097 nodes assigned, 0 orphans, 4337 edges, 4 components
+  [GRAPH] 711 branches traced, 3734/3734 nodes assigned, 0 orphans, 3942 edges, 3 components
+  [GRAPH] 791 branches traced, 3912/3912 nodes assigned, 0 orphans, 4140 edges, 3 components
+  [GRAPH] 678 branches traced, 3574/3574 nodes assigned, 0 orphans, 3758 edges, 8 components
+  [GRAPH] 668 branches traced, 4110/4110 nodes assigned, 0 orphans, 4298 edges, 3 components
+  [GRAPH] 584 branches traced, 5176/5176 nodes assigned, 0 orphans, 5347 edges, 8 components
+  [GRAPH] 721 branches traced, 3751/3751 nodes assigned, 0 orphans, 3962 edges, 6 components
+  [GRAPH] 618 branches traced, 3601/3601 nodes assigned, 0 orphans, 3774 edges, 3 components
+  [GRAPH] 738 branches traced, 4935/4935 nodes assigned, 0 orphans, 5156 edges, 4 components
+  [GRAPH] 649 branches traced, 4672/4672 nodes assigned, 0 orphans, 4857 edges, 6 components
+  [GRAPH] 830 branches traced, 4154/4154 nodes assigned, 0 orphans, 4391 edges, 2 components
+  [GRAPH] 351 branches traced, 3095/3095 nodes assigned, 0 orphans, 3203 edges, 2 components
+  [GRAPH] 203 branches traced, 2136/2136 nodes assigned, 0 orphans, 2182 edges, 8 components
+  [GRAPH] 476 branches traced, 3365/3365 nodes assigned, 0 orphans, 3503 edges, 8 components
+
+CSV saved: cross_gt_results/stare/metrics.csv
+TXT saved: cross_gt_results/stare/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 20/20
+  Failures: 0
+  Total time: 395.0s  (19.75s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  GT IoU                          0.0834    0.0185    0.0542    0.1187    0.0817
+  Seg IoU                         0.6641    0.0361    0.6065    0.7342    0.6632
+  Seg F1                          0.7976    0.0260    0.7551    0.8467    0.7975
+  Seg Precision                   0.7655    0.0471    0.6932    0.8667    0.7643
+  Seg Recall                      0.8393    0.0660    0.6966    0.9402    0.8511
+  GT FG-SSIM                      0.9937    0.0137    0.9343    0.9986    0.9968
+  GT FG-PSNR                     28.6968    4.7127   10.0914   33.0527   29.9229
+  FG-SSIM                         0.9985    0.0006    0.9975    0.9994    0.9984
+  FG-PSNR                        33.8064    0.8895   32.3729   35.5361   33.6805
+  IoU (recon)                     1.0000    0.0000    1.0000    1.0000    1.0000
+  Topology Q                      0.9999    0.0002    0.9993    1.0000    1.0000
+  Topo Preservation               0.8642    0.1471    0.4558    1.0000    0.8687
+  Full PSNR                      24.0838    1.5606   21.0528   26.3046   24.4462
+  Full SSIM                       0.7026    0.0424    0.5962    0.7667    0.7150
+  Bytes                        26736.2500 5127.0462 16629.0000 36044.0000 27322.0000
+  Graph Components                6.0000    4.1593    2.0000   19.0000    5.5000
+  Graph Cycles                  175.6000   52.1617   54.0000  244.0000  185.0000
+  Graph Complexity               43.9633   28.5957    8.5000  119.5000   39.1833
+  Nodes                        3687.0500  759.6206 2136.0000 5176.0000 3667.5000
+  Edges                        3856.6500  796.9093 2184.0000 5347.0000 3858.0000
+  Total Edge Length            8454.0984 1845.9497 4839.9597 10799.3181 9116.4949
+  Mean Width (px)                 2.4724    0.1471    2.1876    2.6722    2.5191
+  Mean Curvature                  0.0985    0.0103    0.0690    0.1116    0.1009
+  Time (ms)                    17804.1568 2735.8735 12292.8433 24035.3248 17200.4348
+
+  WINS vs byte-matched JPEG (20 images):
+    GT-IoU          : 8/20 wins (40%)  mean Δ=-0.0034
+    GT-FG-SSIM      : 0/20 wins (0%)  mean Δ=-0.0061
+    GT-FG-PSNR      : 0/20 wins (0%)  mean Δ=-13.5972
+    FG-SSIM         : 0/20 wins (0%)  mean Δ=-0.0013
+    IoU             : 20/20 wins (100%)  mean Δ=+0.9038
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: cross_gt_results/stare/summary.txt
+Aggregate plots saved: cross_gt_results/stare/aggregate_plots.png
+
+Done. All results in cross_gt_results/stare/
