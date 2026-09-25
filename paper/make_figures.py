@@ -417,6 +417,36 @@ def fig_real(runs, out):
     save(fig, out, 'fig_real.png')
 
 
+def fig_lossless(runs, out):
+    """T14: mean bytes per stored form, per dataset (log y)."""
+    p = os.path.join(runs, 'lossless', 'summary.csv')
+    if not os.path.exists(p):
+        print('skip fig_lossless (no lossless/summary.csv)')
+        return
+    S = pd.read_csv(p)
+    fmts = [('mask_zlib', 'mask + zlib', GREY), ('mask_png', '1-bit PNG', '#b0b0b0'),
+            ('mask_webp_lossless', 'lossless WebP', '#6f6f6f'), ('mask_jbig2', 'JBIG2 (lossless)', '#3a3a3a'),
+            ('mask_jbig1', 'JBIG1', '#3a3a3a'), ('skel_chain', 'skeleton chain code', GOLD),
+            ('swc_gz', 'SWC (gzip)', RED), ('v7_struct_e0.75', 'structure layer (ε 0.75)', BLUE),
+            ('v7_struct_e3', 'structure layer (ε 3)', GREEN)]
+    fmts = [f for f in fmts if f[0] in set(S.format)]
+    sets = [('ORGANELLE', 'organelles\n(simulated)'), ('UIT', 'UiT rat'), ('CBMI', 'CBMI'),
+            ('MITO', 'MITO'), ('HUMAN', 'UiT human')]
+    fig, a = plt.subplots(figsize=(13, 3.8))
+    w = 0.84 / len(fmts)
+    for k, (f, lab, c) in enumerate(fmts):
+        v = [S[(S.dataset == d) & (S.format == f)].bytes_mean.mean() for d, _ in sets]
+        a.bar(np.arange(len(sets)) + (k - (len(fmts) - 1) / 2) * w, v, w, color=c, label=lab,
+              hatch='//' if f == 'mask_jbig2' else None, edgecolor='white', lw=.3)
+    a.set_yscale('log')
+    a.set_xticks(np.arange(len(sets)))
+    a.set_xticklabels([l for _, l in sets])
+    a.set_ylabel('mean bytes per 256×256 image')
+    a.legend(frameon=False, fontsize=8, loc='upper left', bbox_to_anchor=(1.0, 1.0))
+    a.set_title('Lossless and structure-preserving stored forms of the same mask', loc='left')
+    save(fig, out, 'fig_lossless.png')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--runs', default='results/paper')
@@ -435,6 +465,7 @@ def main():
     fig_truth(a.runs, a.out)
     fig_clip(a.runs, a.out)
     fig_real(a.runs, a.out)
+    fig_lossless(a.runs, a.out)
 
 
 if __name__ == '__main__':

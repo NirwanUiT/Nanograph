@@ -39,3 +39,4 @@ results/real/pipeline/*/*/aggregate_plots.png
 results/real/eval_per_tile.csv
 results/real/real_downstream/*.csv
 !results/real/real_downstream/summary.csv
+annotator_package/

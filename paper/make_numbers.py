@@ -571,6 +571,32 @@ def real_seg_table(runs, out):
     open(os.path.join(out, 'tables', 'tab_realseg_body.tex'), 'w').write('\n'.join(lines) + '\n')
 
 
+LL_LABELS = {'mask_zlib': 'bit-packed mask + zlib', 'mask_png': '1-bit PNG', 'mask_jbig2': 'JBIG2 (lossless)',
+             'mask_jbig1': 'JBIG1', 'mask_webp_lossless': 'lossless WebP', 'skel_chain': 'skeleton chain code',
+             'swc': 'SWC', 'swc_gz': 'SWC (gzip)'}
+LL_SETS = [('ORGANELLE', 'Organelle'), ('UIT', 'Uit'), ('CBMI', 'Cbmi'), ('MITO', 'Mito'), ('HUMAN', 'Human')]
+
+
+def lossless(M, runs):
+    """T14 macros: \\LLBest<D> (smallest non-Nanograph format), \\LLBestBytes<D>,
+    \\LLStruct<D> (v7 structure-layer bytes), \\LLRatio<D> (v7 / best, mean bytes)
+    and \\LLRatioCI<D> (bootstrap 95 % CI over images)."""
+    S = _csv(os.path.join(runs, 'lossless', 'summary.csv'))
+    for ds, dn in LL_SETS:
+        g = S[(S.dataset == ds)] if S is not None else None
+        if g is None or not len(g):
+            for k in ('LLBest', 'LLBestBytes', 'LLStruct', 'LLRatio', 'LLRatioCI'):
+                M.put(f'{k}{dn}', '\\tbd')
+            continue
+        base = g[~g.format.str.startswith('v7_struct')].sort_values('bytes_mean').iloc[0]
+        v7 = g[g.format == 'v7_struct_e0.75'].iloc[0]
+        M.put(f'LLBest{dn}', LL_LABELS.get(base.format, base.format))
+        M.put(f'LLBestBytes{dn}', f'{base.bytes_mean:.0f}')
+        M.put(f'LLStruct{dn}', f'{v7.bytes_mean:.0f}')
+        M.put(f'LLRatio{dn}', f'{base.ratio_v7_over_format:.2f}')
+        M.put(f'LLRatioCI{dn}', f'[{base.ratio_ci_lo:.2f},{base.ratio_ci_hi:.2f}]')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--runs', default='results/paper')
@@ -599,6 +625,7 @@ def main():
     downstream(M, a.runs)
     v7_sections(M, a.runs)
     perturbation(M, a.runs)
+    lossless(M, a.runs)
     real_seg_table(a.runs, a.out)
     cross_table(a.runs, D, a.out)
     topo_all_table(a.runs, D, a.out)
