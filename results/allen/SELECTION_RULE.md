@@ -34,3 +34,16 @@
 - `allen_ft` and `nnunet` learn Allen's segmentation style: they are favoured on benchmark 5.
 - Nellie was inspected visually on 6 Allen cells before this rule was fixed (it looked better than both `real_mito` and Allen's segmentation). Those 6 cells are excluded from benchmark 6.
 - Nellie's filter scales use physical pixel size. The real datasets' pixel sizes are set from their sources where known. Otherwise they are set from the median mitochondrial width in the training masks, fixed before scoring.
+
+## Addendum (2026-09-25, before any variant below was scored)
+Every model is entered untrained or zero-shot, and trained or fine-tuned. All variants are candidates under the same rule.
+
+| model | untrained / zero-shot | trained on real expert data | trained on Allen |
+|---|---|---|---|
+| clDice U-Net | `unet_sim`: shipped simulation-only weights | `real_mito` | `allen_ft` |
+| nnU-Net v2 2-D | n/a: no pretrained nnU-Net exists; it always trains from scratch | `nnunet_real`: UiT-Rat + CBMI + MITO training splits, validated on their val splits | `nnunet` |
+| micro-SAM | `microsam_zs`: vit_b_lm generalist | `microsam_real` | `microsam_ft` |
+| Nellie | `nellie`: defaults | `nellie_tuned_real`: threshold chosen per dataset on its training split | `nellie_tuned_allen`: threshold chosen on Allen training cells |
+
+- Nellie is not a learned model: its "trained" variant is a threshold tuned on training data only.
+- Benchmark results on a variant's own training domain are marked in-domain in every table.

@@ -23,14 +23,16 @@ UM = 0.108333
 
 
 def one(args):
-    cid, out = args
+    cid, img_dir, out, um = args
     import cv2
     import tifffile
     from nellie.im_info.verifier import FileInfo, ImInfo
     from nellie.segmentation.filtering import Filter
     from nellie.segmentation.labelling import Label
     logging.disable(logging.CRITICAL)
-    im = cv2.imread(f'{TEST}/img_raw/{cid}.png', cv2.IMREAD_GRAYSCALE)
+    import time
+    im = cv2.imread(os.path.join(img_dir, f'{cid}.png'), cv2.IMREAD_GRAYSCALE)
+    t0 = time.perf_counter()
     tmp = tempfile.mkdtemp(dir=os.environ.get('TMPDIR', '/var/tmp'))
     try:
         p = os.path.join(tmp, f'{cid}.tif')
@@ -40,16 +42,17 @@ def one(args):
             fi.find_metadata()
             fi.load_metadata()
             fi.change_axes('YX')
-            fi.change_dim_res('X', UM)
-            fi.change_dim_res('Y', UM)
+            fi.change_dim_res('X', um)
+            fi.change_dim_res('Y', um)
             ii = ImInfo(fi)
             Filter(ii, remove_edges=False, device='cpu').run()
             Label(ii, device='cpu').run()
             lab = np.asarray(ii.get_memmap(ii.pipeline_paths['im_instance_label']))
+        dt = time.perf_counter() - t0
         cv2.imwrite(os.path.join(out, f'{cid}.png'), ((lab.reshape(im.shape) > 0) * 255).astype(np.uint8))
-        return cid, ''
+        return cid, '', dt
     except Exception as ex:
-        return cid, f'{type(ex).__name__}: {ex}'
+        return cid, f'{type(ex).__name__}: {ex}', np.nan
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
@@ -59,12 +62,24 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default='/mnt/nas1/nba055-2/idea_1/archive_demo/allen/preds/nellie')
     ap.add_argument('--workers', type=int, default=6)
+    ap.add_argument('--img-dir', default=None, help='default: <ALLEN_TEST>/img_raw')
+    ap.add_argument('--um', type=float, default=UM, help='pixel size (um)')
+    ap.add_argument('--timing', default=None, help='append per-image seconds to this CSV (dataset label = --label)')
+    ap.add_argument('--label', default='ALLEN')
     a = ap.parse_args()
+    img_dir = a.img_dir or f'{TEST}/img_raw'
     os.makedirs(a.out, exist_ok=True)
-    ids = sorted(p[:-4] for p in os.listdir(f'{TEST}/img_raw'))
+    ids = sorted(p[:-4] for p in os.listdir(img_dir) if p.endswith('.png'))
     with mp.get_context('spawn').Pool(a.workers) as pool:
-        res = pool.map(one, [(c, a.out) for c in ids])
-    errs = [f'{c}: {e}' for c, e in res if e]
+        res = pool.map(one, [(c, img_dir, a.out, a.um) for c in ids])
+    if a.timing:
+        new = not os.path.exists(a.timing)
+        with open(a.timing, 'a') as f:
+            if new:
+                f.write('dataset,id,seconds\n')
+            for c, e, t in res:
+                f.write(f'{a.label},{c},{t}\n')
+    errs = [f'{c}: {e}' for c, e, _ in res if e]
     print(f'{len(ids) - len(errs)}/{len(ids)} cells segmented; errors: {len(errs)}')
     for e in errs[:10]:
         print(' ', e)
