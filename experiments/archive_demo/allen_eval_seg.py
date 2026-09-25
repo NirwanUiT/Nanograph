@@ -17,7 +17,7 @@ Segmenters:
               (<DIR>/<CellId>.png, 0/255, cell-crop size): nnU-Net, Nellie,
               micro-SAM, ... each produced in its own environment
 
-Writes <out>/per_cell.csv and <out>/summary.csv (ranked by clDice).
+Writes <out>/per_cell.csv and <out>/summary.csv (ranked by mean clDice, as SELECTION_RULE.md).
 """
 import argparse
 import contextlib
@@ -121,7 +121,8 @@ def main():
     R.to_csv(os.path.join(a.out, 'per_cell.csv'), index=False)
     S = []
     for name, g in R.groupby('segmenter'):
-        r = {'segmenter': name, 'n': len(g), 'cldice': g.cldice.median(), 'dice': g.dice.median(),
+        r = {'segmenter': name, 'n': len(g), 'cldice': g.cldice.mean(), 'cldice_median': g.cldice.median(),
+             'dice': g.dice.mean(),
              'junc_f1': g.junc_f1.mean(), 'end_f1': g.end_f1.mean(), 'fg_in_cell': g.fg_in_cell.median(),
              'structure_bytes': g.structure_bytes.median()}
         for k in DESC:

@@ -59,10 +59,46 @@ def export(src, dst):
     print(f'{n} predictions -> {dst}')
 
 
+REAL = '/mnt/nas1/nba055-2/idea_1/real_mito'
+RB = '/mnt/nas1/nba055-2/idea_1/archive_demo/realbench'
+NAME_REAL = 'Dataset502_RealMito'
+
+
+def data_real():
+    """UiT-Rat + CBMI + MITO train and val tiles (as provided) -> Dataset502;
+    prediction inputs for every benchmark under <NN>/pred_in/."""
+    M = pd.read_csv(f'{REAL}/manifest.csv')
+    M = M[M.dataset.isin(['UIT', 'CBMI', 'MITO']) & M.split.isin(['train', 'val'])]
+    raw = f'{NN}/nnUNet_raw/{NAME_REAL}'
+    for d in ('imagesTr', 'labelsTr'):
+        os.makedirs(f'{raw}/{d}', exist_ok=True)
+    for ds, i in zip(M.dataset, M.id):
+        shutil.copyfile(f'{REAL}/{ds}/images/{i}.png', f'{raw}/imagesTr/{i}_0000.png')
+        m = cv2.imread(f'{REAL}/{ds}/masks/{i}.png', cv2.IMREAD_GRAYSCALE)
+        cv2.imwrite(f'{raw}/labelsTr/{i}.png', (m > 0).astype(np.uint8))
+    json.dump({'channel_names': {'0': 'mito'}, 'labels': {'background': 0, 'mitochondria': 1},
+               'numTraining': len(M), 'file_ending': '.png'}, open(f'{raw}/dataset.json', 'w'), indent=1)
+    for d in ('UIT', 'CBMI', 'MITO', 'HUMAN'):
+        dst = f'{NN}/pred_in/real/{d}'
+        os.makedirs(dst, exist_ok=True)
+        for p in os.listdir(f'{RB}/{d}/img_raw'):
+            shutil.copyfile(f'{RB}/{d}/img_raw/{p}', f'{dst}/{p[:-4]}_0000.png')
+    print(f'{len(M)} real training tiles; prediction inputs in {NN}/pred_in/real')
+
+
+def split_real():
+    M = pd.read_csv(f'{REAL}/manifest.csv')
+    M = M[M.dataset.isin(['UIT', 'CBMI', 'MITO'])]
+    s = [{'train': sorted(M[M.split == 'train'].id), 'val': sorted(M[M.split == 'val'].id)}]
+    json.dump(s, open(f'{NN}/nnUNet_preprocessed/{NAME_REAL}/splits_final.json', 'w'))
+    print(f"fold 0: {len(s[0]['train'])} train / {len(s[0]['val'])} val")
+
+
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--stage', required=True, choices=['data', 'split', 'export'])
+    ap.add_argument('--stage', required=True, choices=['data', 'split', 'export', 'data_real', 'split_real'])
     ap.add_argument('--pred-in')
     ap.add_argument('--pred-out')
     a = ap.parse_args()
-    {'data': data, 'split': split}.get(a.stage, lambda: export(a.pred_in, a.pred_out))()
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+        a.stage, lambda: export(a.pred_in, a.pred_out))()
