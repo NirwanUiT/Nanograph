@@ -48,8 +48,25 @@ def rank(df):
     return r
 
 
+TUNING = '/mnt/nas1/nba055-2/idea_1/archive_demo/realbench/nellie_tuning.json'
+NELLIE_DEFAULT = 'otsu=False,min_r=0.25'
+
+
+def aliases():
+    """A tuned Nellie variant whose chosen setting IS the default is the same
+    segmenter as `nellie`: merge it (identical masks must not take two ranks)."""
+    import json
+    if not os.path.exists(TUNING):
+        return {}
+    ch = json.load(open(TUNING))['chosen']
+    return {f'nellie_tuned_{pool}': 'nellie' for pool, k in ch.items() if k == NELLIE_DEFAULT}
+
+
 def main():
     benches, notes, speed = {}, [], {}
+    alias = aliases()
+    for a_, b_ in alias.items():
+        notes.append(f'{a_}: tuning kept the default setting, so it is the same segmenter as {b_} (merged)')
     if os.path.exists(RB):
         S = pd.read_csv(RB)
         speed = S.groupby('method').sec_per_tile.median().to_dict()      # tie-break: seconds per tile
@@ -69,6 +86,7 @@ def main():
         benches['PREFERENCE'] = pd.DataFrame({'method': P.method, 'score': P.win_rate, 'tie': 0.0, 'failed': False})
     else:
         notes.append('benchmark 6 (blinded preference): not run yet')
+    benches = {b: df[~df.method.isin(alias)].reset_index(drop=True) for b, df in benches.items()}
     ranks = {b: rank(df) for b, df in benches.items()}
     present = sorted(set().union(*[set(df.method) for df in benches.values()])) if benches else []
     rows = []
@@ -80,8 +98,8 @@ def main():
         rows.append({'method': m, **rr, 'mean_rank': np.mean(list(rr.values())), 'absent_from': ','.join(missing),
                      'sec': speed.get(m, np.inf)})
     T = pd.DataFrame(rows).sort_values(['mean_rank', 'sec']) if rows else pd.DataFrame()
-    absent = [c for c in CANDIDATES if c not in present]
-    final = not notes and not absent
+    absent = [c for c in CANDIDATES if c not in present and c not in alias]
+    final = not [n for n in notes if 'not run yet' in n] and not absent
     lines = ['# Default segmenter: selection (SELECTION_RULE.md applied mechanically)', '',
              f"**Status: {'FINAL' if final else 'PROVISIONAL'}**", '']
     lines += [f'- {n}' for n in notes]

@@ -69,3 +69,8 @@ Every model is entered untrained or zero-shot, and trained or fine-tuned. All va
   - It did not on MITO or EP-UiT-Human (Spearman −0.05 to −0.68).
   - The expert mask was never the best-reconstructing mask.
   - So reconstruction fidelity is not a valid proxy for mask correctness here.
+
+## Addendum: identical candidates (2026-09-25, before final results)
+- A tuned variant whose chosen setting equals the untuned default is the same segmenter: it is merged into the default, not ranked separately.
+- Duplicates would otherwise take two ranks and push every other candidate down.
+- This happened for `nellie_tuned_real`: tuning chose Nellie's default.
