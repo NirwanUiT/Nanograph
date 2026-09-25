@@ -67,9 +67,11 @@ def main():
     order = list(STAGE)
     C = C.assign(o=C.cell_stage.map(order.index)).sort_values('o')
     names = ['real_mito'] + list(preds)
-    label = {'real_mito': 'ours now (real-mito U-Net)', 'nellie': 'Nellie (zero-shot)', 'nnunet': 'nnU-Net (Allen-trained)',
+    label = {'real_mito': 'our U-Net, real-trained', 'nellie': 'Nellie (zero-shot)', 'nnunet': 'nnU-Net (Allen-trained)',
              'allen_ft': 'ours, Allen-trained', 'microsam': 'micro-SAM', 'microsam_ft': 'micro-SAM (Allen-trained)',
-             'microsam_zs': 'micro-SAM (zero-shot)'}
+             'microsam_zs': 'micro-SAM (zero-shot)', 'unet_sim': 'our U-Net, sim-only',
+             'nellie_tuned_allen': 'Nellie (Allen-tuned)', 'nnunet_real': 'nnU-Net (real-trained)',
+             'microsam_real': 'micro-SAM (real-trained)'}
     ncol = 2 + len(names)
     fig, ax = plt.subplots(len(C), ncol, figsize=(3.1 * ncol, 3.3 * len(C)))
     ax = np.atleast_2d(ax)
