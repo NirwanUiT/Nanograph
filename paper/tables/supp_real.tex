@@ -1,0 +1,25 @@
+\begin{table}[h]
+\centering
+\caption{Real mitochondria, per test set (\texttt{real-mito} front end, one-diameter rule): bias (\%) / CCC against the expert masks. Bytes: structure layer, or the full payload that the JPEG matches.}
+\label{tab:supp-real}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{llcccccccc}
+\toprule
+Dataset & Route & $n$ & Bytes & Components & Total length & Mean width & Branches & Junctions & Cycle rank\\
+\midrule
+UiT rat & structure layer & 43 & 561 & -5 / 0.94 & -8 / 0.98 & +6 / 0.56 & -14 / 0.94 & -18 / 0.91 & -27 / 0.71\\
+ & byte-matched JPEG & 43 & 6315 & -4 / 0.92 & -8 / 0.98 & +4 / 0.59 & -13 / 0.93 & -17 / 0.90 & -26 / 0.76\\
+\midrule
+CBMI & structure layer & 68 & 564 & -28 / 0.44 & -7 / 0.59 & +18 / 0.55 & -34 / 0.27 & -42 / 0.13 & -56 / 0.03\\
+ & byte-matched JPEG & 68 & 6422 & -26 / 0.54 & -4 / 0.69 & +16 / 0.58 & -30 / 0.35 & -36 / 0.20 & -53 / 0.04\\
+\midrule
+MITO & structure layer & 129 & 377 & -4 / 0.71 & -33 / 0.46 & +27 / 0.07 & -41 / 0.37 & -65 / 0.16 & -66 / 0.11\\
+ & byte-matched JPEG & 129 & 3805 & +13 / 0.66 & -25 / 0.48 & +25 / 0.07 & -31 / 0.37 & -60 / 0.17 & -59 / 0.11\\
+\midrule
+UiT human & structure layer & 33 & 461 & -11 / 0.71 & +16 / 0.87 & +50 / 0.06 & -10 / 0.81 & -12 / 0.74 & -38 / 0.50\\
+ & byte-matched JPEG & 33 & 4875 & -11 / 0.69 & +17 / 0.88 & +46 / 0.05 & -8 / 0.82 & -9 / 0.77 & -38 / 0.55\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
