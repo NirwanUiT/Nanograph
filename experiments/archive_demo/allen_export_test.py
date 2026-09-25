@@ -48,9 +48,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default=f'{ROOT}/testset')
     ap.add_argument('--workers', type=int, default=6)
+    ap.add_argument('--cells', default=None, help='comma list of CellIds from the TOMM20 manifest (instead of the test split)')
     a = ap.parse_args()
-    C = pd.read_csv(f'{ROOT}/trainset/cells.csv')
-    C = C[C.split == 'test']
+    if a.cells:
+        C = pd.read_csv(f'{ROOT}/manifest_tomm20.csv')
+        C = C[C.CellId.isin([int(c) for c in a.cells.split(',')])]
+    else:
+        C = pd.read_csv(f'{ROOT}/trainset/cells.csv')
+        C = C[C.split == 'test']
     for d in ('img', 'img_raw', 'allen', 'cell'):
         os.makedirs(os.path.join(a.out, d), exist_ok=True)
     C.to_csv(os.path.join(a.out, 'cells.csv'), index=False)

@@ -18,7 +18,7 @@ import tempfile
 
 import numpy as np
 
-TEST = '/mnt/nas1/nba055-2/idea_1/archive_demo/allen/testset'
+TEST = os.environ.get('ALLEN_TEST', '/mnt/nas1/nba055-2/idea_1/archive_demo/allen/testset')
 UM = 0.108333
 
 
