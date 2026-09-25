@@ -1,24 +1,25 @@
 #!/usr/bin/env python3
 """
-T18 — segmenters on held-out Allen plates (the 'test' cells of allen_trainset.py).
+T18 segmenter bake-off on held-out Allen plates (allen_export_test.py inputs).
 
-Per cell and segmenter: Dice with Allen's struct_segmentation over the same
-slab, and the descriptors of each segmenter's v7 structure layer (read from
-its bytes, one-diameter rule) against the descriptors of Allen's mask pushed
-through the same structure layer (so storage is identical and only the mask
-differs). Allen's mask is a model output, not ground truth: for the
-Allen-trained network this measures how well the workflow is reproduced.
+Every segmenter is scored the same way per test cell, inside the cell mask:
+  - Dice and clDice with Allen's struct segmentation over the same slab
+    (Allen's mask is a model output, not ground truth);
+  - junction / endpoint F1 (3 px) of the structure layers;
+  - the descriptors of each segmenter's v7 structure layer (read from its
+    bytes, one-diameter rule) against those of Allen's mask pushed through the
+    same structure layer (storage identical, only the mask differs).
 
 Segmenters:
-  real_mito    shipped real-mito U-Net, unmasked slab input (as in the pilot)
-  allen_ft     U-Net fine-tuned on Allen tiles (masked input, allen_trainset.masked_input)
-  nellie       Nellie (Lefebvre et al., Nat Methods 2025), if its env exists
-               (NELLIE_PY=/path/to/python); skipped otherwise
+  real_mito   shipped real-mito U-Net on the unmasked slab (as in the pilot)
+  allen_ft    our clDice U-Net fine-tuned on Allen tiles (--ckpt), masked input
+  <name>      any directory of predictions given as --pred name=DIR
+              (<DIR>/<CellId>.png, 0/255, cell-crop size): nnU-Net, Nellie,
+              micro-SAM, ... each produced in its own environment
 
-Writes <out>/per_cell.csv and <out>/summary.csv.
+Writes <out>/per_cell.csv and <out>/summary.csv (ranked by clDice).
 """
 import argparse
-import ast
 import contextlib
 import io
 import os
@@ -29,32 +30,37 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-from allen_check import slab_projection  # noqa: E402
-from allen_trainset import masked_input  # noqa: E402
 
-ROOT = '/mnt/nas1/nba055-2/idea_1/archive_demo/allen'
+TEST = '/mnt/nas1/nba055-2/idea_1/archive_demo/allen/testset'
 DESC = ['n_components', 'n_branches', 'n_junctions', 'total_length_px', 'mean_width_px', 'cycle_rank']
 
 
-def structure_descriptors(mask):
+def structure_table(mask):
     import cv2
     import downstream_morphometry as dm
     from skimage.morphology import skeletonize
     from nanograph_v4 import graph_branch as gb
     sk = skeletonize(mask > 0)
     if sk.sum() < 2:
-        return {k: 0.0 for k in DESC}, 0
+        return None, 0
     dt = cv2.distanceTransform((mask > 0).astype(np.uint8), cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
     sb = gb.encode_structure(gb.branch_structure(sk, dt))
-    t = dm.graph_arm_table(*gb.structure_to_arrays(gb.decode_structure(sb), True))
-    d = dm.descriptors_at(t, 'auto', 'degree')[0]
-    return {k: d[k] for k in DESC}, len(sb)
+    return dm.graph_arm_table(*gb.structure_to_arrays(gb.decode_structure(sb), True)), len(sb)
+
+
+def cldice(p, r):
+    from skimage.morphology import skeletonize
+    sp, sr = skeletonize(p), skeletonize(r)
+    tprec = (sp & r).sum() / max(sp.sum(), 1)
+    tsens = (sr & p).sum() / max(sr.sum(), 1)
+    return 2 * tprec * tsens / max(tprec + tsens, 1e-9)
 
 
 def work(args):
-    row, ckpt = args
-    import tifffile
+    row, ckpt, preds = args
+    import cv2
     import torch
+    import downstream_morphometry as dm
     from nanograph_v4 import NanographConfig
     from nanograph_v4.detect import detect_polarity
     from nanograph_v4.segment import learned_segment
@@ -67,52 +73,66 @@ def work(args):
         if ckpt and os.path.exists(ckpt):
             _NETS['allen_ft'] = load_unet(ckpt, 'cpu')
     cid = row['CellId']
-    im, cell, aref, _ = slab_projection(tifffile.imread(f'{ROOT}/cells/{cid}_raw.ome.tif'),
-                                        tifffile.imread(f'{ROOT}/cells/{cid}_seg.ome.tif'),
-                                        ast.literal_eval(row['name_dict']),
-                                        ast.literal_eval(row['scale_micron'])[-1])
+    rd = lambda d: cv2.imread(os.path.join(d, f'{cid}.png'), cv2.IMREAD_GRAYSCALE)
+    cell, aref = rd(f'{TEST}/cell') > 0, rd(f'{TEST}/allen') > 0
     masks = {'allen': aref}
     for name, net in _NETS.items():
-        x = masked_input(im, cell) if name == 'allen_ft' else im
+        x = rd(f'{TEST}/img' if name == 'allen_ft' else f'{TEST}/img_raw')
         x = 255 - x if detect_polarity(x, cfg=cfg) else x
         with contextlib.redirect_stdout(io.StringIO()):
             masks[name] = (learned_segment(net, x, cfg=cfg, device='cpu') > 0) & cell
-    ref, rb = structure_descriptors(aref)
+    for name, d in preds.items():
+        m = rd(d)
+        if m is not None:
+            masks[name] = (m > 0) & cell
+    tref, _ = structure_table(aref)
+    ref = dm.descriptors_at(tref, 'auto', 'degree')[0] if tref is not None else {k: 0.0 for k in DESC}
+    jr, er = dm.vertex_positions(tref, 'auto') if tref is not None else ([], [])
     rows = []
     for name, m in masks.items():
-        d, b = structure_descriptors(m)
-        dice = 2 * (m & aref).sum() / max(m.sum() + aref.sum(), 1)
-        rows.append({'CellId': cid, 'cell_stage': row['cell_stage'], 'PlateId': row['PlateId'],
-                     'segmenter': name, 'dice_vs_allen': float(dice), 'fg_in_cell': float(m[cell].mean()),
-                     'structure_bytes': b, **d, **{k + '_allen': ref[k] for k in DESC}})
+        t, b = structure_table(m)
+        d = dm.descriptors_at(t, 'auto', 'degree')[0] if t is not None else {k: 0.0 for k in DESC}
+        ja, ea = dm.vertex_positions(t, 'auto') if t is not None else ([], [])
+        rows.append({'CellId': cid, 'cell_stage': row['cell_stage'], 'PlateId': row['PlateId'], 'segmenter': name,
+                     'dice': 2 * (m & aref).sum() / max(m.sum() + aref.sum(), 1), 'cldice': cldice(m, aref),
+                     'junc_f1': dm.point_f1(ja, jr, 3)[2], 'end_f1': dm.point_f1(ea, er, 3)[2],
+                     'fg_in_cell': float(m[cell].mean()), 'structure_bytes': b,
+                     **{k: d[k] for k in DESC}, **{k + '_allen': ref[k] for k in DESC}})
     return rows
 
 
 def main():
     import multiprocessing as mp
+    import subprocess
     import pandas as pd
     import downstream_morphometry as dm
     ap = argparse.ArgumentParser()
     ap.add_argument('--ckpt', default='results/allen/unet/allen_finetune_s0.pt')
+    ap.add_argument('--pred', action='append', default=[], help='name=DIR of <CellId>.png predictions')
     ap.add_argument('--out', default='results/allen/seg_eval')
     ap.add_argument('--workers', type=int, default=6)
     a = ap.parse_args()
-    C = pd.read_csv(f'{ROOT}/trainset/cells.csv')
-    C = C[C.split == 'test']
+    preds = dict(p.split('=', 1) for p in a.pred)
+    C = pd.read_csv(f'{TEST}/cells.csv')
     with mp.get_context('spawn').Pool(a.workers) as pool:
-        R = pd.DataFrame([r for rs in pool.map(work, [(r, a.ckpt) for r in C.to_dict('records')]) for r in rs])
+        R = pd.DataFrame([r for rs in pool.map(work, [(r, a.ckpt, preds) for r in C.to_dict('records')])
+                          for r in rs])
     os.makedirs(a.out, exist_ok=True)
     R.to_csv(os.path.join(a.out, 'per_cell.csv'), index=False)
     S = []
     for name, g in R.groupby('segmenter'):
-        r = {'segmenter': name, 'n': len(g), 'dice_median': g.dice_vs_allen.median(),
-             'fg_in_cell': g.fg_in_cell.median(), 'structure_bytes_median': g.structure_bytes.median()}
+        r = {'segmenter': name, 'n': len(g), 'cldice': g.cldice.median(), 'dice': g.dice.median(),
+             'junc_f1': g.junc_f1.mean(), 'end_f1': g.end_f1.mean(), 'fg_in_cell': g.fg_in_cell.median(),
+             'structure_bytes': g.structure_bytes.median()}
         for k in DESC:
             ag = dm.agreement(g[k].to_numpy(float), g[k + '_allen'].to_numpy(float))
             r[f'{k}_ccc'], r[f'{k}_bias_pct'] = ag['ccc'], ag['bias_pct']
         S.append(r)
-    S = pd.DataFrame(S)
+    S = pd.DataFrame(S).sort_values('cldice', ascending=False)
     S.to_csv(os.path.join(a.out, 'summary.csv'), index=False)
+    h = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True, text=True,
+                       cwd=os.path.dirname(os.path.abspath(__file__))).stdout.strip()
+    open(os.path.join(a.out, 'commit.txt'), 'w').write(h + '\n')
     pd.set_option('display.width', 220)
     print(S.round(3).T.to_string())
 
