@@ -43,7 +43,12 @@ Every model is entered untrained or zero-shot, and trained or fine-tuned. All va
 | clDice U-Net | `unet_sim`: shipped simulation-only weights | `real_mito` | `allen_ft` |
 | nnU-Net v2 2-D | n/a: no pretrained nnU-Net exists; it always trains from scratch | `nnunet_real`: UiT-Rat + CBMI + MITO training splits, validated on their val splits | `nnunet` |
 | micro-SAM | `microsam_zs`: vit_b_lm generalist | `microsam_real` | `microsam_ft` |
-| Nellie | `nellie`: defaults | `nellie_tuned_real`: threshold chosen per dataset on its training split | `nellie_tuned_allen`: threshold chosen on Allen training cells |
+| Nellie | `nellie`: defaults | `nellie_tuned_real`: one setting chosen on the pooled UiT-Rat + CBMI + MITO training splits | `nellie_tuned_allen`: one setting chosen on Allen training cells |
 
-- Nellie is not a learned model: its "trained" variant is a threshold tuned on training data only.
+- Nellie is not a learned model: its "trained" variant is a setting tuned on training data only.
+  - Grid: `otsu_thresh_intensity` in {False, True} × `min_radius_um` in {0.15, 0.25, 0.35}.
+  - 60 seeded training images per source; the setting with the best mean clDice is chosen.
+  - As for the trained models, one setting per training pool is applied everywhere.
+  - Pixel size is the per-dataset calibration and is not tuned.
+  - (Corrected before any tuned variant was scored: an earlier draft said "per dataset".)
 - Benchmark results on a variant's own training domain are marked in-domain in every table.
