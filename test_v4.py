@@ -780,5 +780,91 @@ def test_predictive_roundtrip_cycle():
     _predictive_roundtrip(positions, [(0, 1), (1, 2), (2, 3), (3, 0), (2, 4), (4, 5)])
 
 
+# ---------------------------------------------------------------------------
+# v7 structure layer and T14 baseline formats on synthetic edge cases
+def _edge_case_masks():
+    """name -> binary mask. Each exercises one decomposition corner case."""
+    Z = lambda: np.zeros((64, 64), np.uint8)
+    cases = {'empty': Z(), 'single_pixel': Z()}
+    cases['single_pixel'][30, 30] = 1
+    m = Z(); cv2.circle(m, (32, 32), 15, 1, 2); cases['ring'] = m
+    m = Z(); cv2.line(m, (5, 32), (58, 32), 1, 2); cv2.line(m, (32, 5), (32, 58), 1, 2); cases['cross'] = m
+    m = Z(); cv2.line(m, (10, 20), (50, 20), 1, 2); cv2.line(m, (10, 44), (50, 44), 1, 2)
+    cv2.line(m, (30, 20), (30, 44), 1, 2); cases['H_adjacent_junctions'] = m
+    m = Z(); cv2.circle(m, (20, 20), 4, 1, 1); cv2.line(m, (24, 20), (55, 50), 1, 2); cases['small_loop_tail'] = m
+    m = Z(); cv2.line(m, (5, 5), (58, 58), 1, 2); cv2.line(m, (5, 58), (58, 5), 1, 2)
+    cv2.line(m, (32, 5), (32, 58), 1, 2); cases['three_line_star'] = m
+    m = Z()
+    for k in range(6):
+        cv2.line(m, (4 + 10 * k, 5), (4 + 10 * k, 12), 1, 1)
+    cases['many_fragments'] = m
+    return cases
+
+
+def _exp():
+    import sys as _s
+    _s.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'experiments'))
+    import downstream_morphometry as dm
+    import lossless_baselines as lb
+    return dm, lb
+
+
+def test_v7_structure_edge_cases_match_skan():
+    """Decoded v7 structure layer has skan's counts on every edge case."""
+    dm, lb = _exp()
+    from nanograph_v4 import graph_branch as gb
+    for name, m in _edge_case_masks().items():
+        ref = dm.descriptors_at(lb.mask_table(m), 0.0, 'degree')[0]
+        st = gb.decode_structure(gb.encode_structure(lb.v7_structure(m, 0.75)))
+        d = dm.descriptors_at(dm.graph_arm_table(*gb.structure_to_arrays(st, True)), 0.0, 'degree')[0]
+        for k in ('n_components', 'n_branches', 'n_junctions', 'cycle_rank'):
+            assert d[k] == ref[k] or (d[k] != d[k] and ref[k] != ref[k]), (name, k, d[k], ref[k])
+
+
+def test_skel_chain_roundtrip_edge_cases():
+    """Chain code decodes to the identical skeleton (hence skan's decomposition)."""
+    dm, lb = _exp()
+    for name, m in _edge_case_masks().items():
+        sk, rad = lb.dec_chain(lb.enc_chain(m))
+        assert np.array_equal(sk, lb.skeleton_of(m)), name
+        r0 = lb.dist_of(m)[sk]
+        assert np.all(np.abs(rad[sk] - np.clip(np.round(r0 * 4), 0, 255) / 4) < 1e-6), name
+
+
+def test_swc_roundtrip_edge_cases():
+    """SWC with duplicated cycle-closing nodes reproduces the v7 graph's counts;
+    the number of duplicates equals the graph's cycle rank."""
+    dm, lb = _exp()
+    from nanograph_v4 import graph_branch as gb
+    for name, m in _edge_case_masks().items():
+        st = lb.v7_structure(m, 0.75)
+        swc, ndup = lb.swc_from_structure(st)
+        pos, rad, edges = lb.read_swc(swc)
+        p0, r0, e0, _ = gb.structure_to_arrays(st)
+        assert len(pos) == len(p0) and len(edges) == len(e0), name
+        d0 = dm.descriptors_at(dm.graph_arm_table(p0, r0, e0), 0.0, 'degree')[0]
+        d1 = dm.descriptors_at(dm.graph_arm_table(pos, rad, edges), 0.0, 'degree')[0]
+        for k in ('n_components', 'n_branches', 'n_junctions', 'cycle_rank'):
+            assert d0[k] == d1[k] or (d0[k] != d0[k] and d1[k] != d1[k]), (name, k)
+        parent = list(range(len(p0)))
+
+        def find(i):
+            while parent[i] != i:
+                i = parent[i]
+            return i
+        for u, v in e0:
+            parent[find(u)] = find(v)
+        n_comp = len({find(i) for i in range(len(p0))})
+        assert ndup == len(e0) - len(p0) + n_comp, (name, ndup)     # independent cycles
+
+
+def test_lossless_mask_codecs_bit_exact():
+    dm, lb = _exp()
+    for name, m in _edge_case_masks().items():
+        assert np.array_equal(lb.dec_mask_zlib(lb.enc_mask_zlib(m), m.shape) > 0, m > 0), name
+        assert np.array_equal(lb.dec_pil(lb.enc_png(m), m.shape) > 0, m > 0), name
+        assert np.array_equal(lb.dec_pil(lb.enc_webp(m), m.shape) > 0, m > 0), name
+
+
 if __name__ == '__main__':
     main()
