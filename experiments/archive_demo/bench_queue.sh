@@ -14,6 +14,7 @@ say () { echo "### [$(date '+%F %T')] $*"; }
 
 # nnU-Net prediction with per-image GPU time -> <out_dir>/timing.csv
 nnpredict () {  # dataset_id in_dir tmp_out final_out label timing_csv
+  mkdir -p "$(dirname "$3")" "$3"
   local t0=$(date +%s.%N)
   CUDA_VISIBLE_DEVICES=$GPU $VN/nnUNetv2_predict -i "$2" -o "$3" -d "$1" -c 2d -f 0 -tr nnUNetTrainer_250epochs \
     -p nnUNetPlans_6G > "$3.log" 2>&1
