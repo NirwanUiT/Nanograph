@@ -2,7 +2,7 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
 ======================================================================
   Images processed: 66/66
   Failures: 0
-  Total time: 358.7s  (5.43s/image)
+  Total time: 328.9s  (4.98s/image)
 
   Metric                            Mean       Std       Min       Max    Median
   --------------------------------------------------------------------------
@@ -20,22 +20,22 @@ NANOGRAPH v5 — DATASET EVALUATION SUMMARY
   Topo Preservation               1.4458    0.7082    0.3291    3.5715    1.3009
   Full PSNR                      18.4618    2.1086   14.6064   24.4456   18.3187
   Full SSIM                       0.1126    0.0651    0.0312    0.4230    0.1024
-  Bytes                        6877.7879 5675.8849 1150.0000 27669.0000 5420.0000
-  Graph Components               13.1212    9.3233    1.0000   39.0000   10.5000
-  Graph Cycles                    4.2121    8.3021    0.0000   50.0000    0.0000
-  Graph Complexity                0.1958    0.2966    0.0000    1.2821    0.0000
-  Nodes                         481.5303  427.3917   52.0000 1942.0000  384.5000
-  Edges                         472.6212  426.1688   51.0000 1953.0000  374.0000
-  Total Edge Length             874.2051  962.3146   59.2426 4649.5819  585.6968
-  Mean Width (px)                 2.5800    0.0993    2.3687    2.8509    2.5686
-  Mean Curvature                  0.0436    0.0224    0.0045    0.1094    0.0373
-  Time (ms)                    4354.6090  981.1817 2926.4174 9511.2011 4171.5529
+  Bytes                        6746.0303 5561.9425 1068.0000 27174.0000 5282.0000
+  Graph Components               13.3182    9.5365    1.0000   40.0000   10.5000
+  Graph Cycles                    0.1061    0.3942    0.0000    2.0000    0.0000
+  Graph Complexity                0.0067    0.0248    0.0000    0.1250    0.0000
+  Nodes                         164.2727  174.0646   11.0000  862.0000  116.5000
+  Edges                         151.0606  165.5531   10.0000  822.0000  105.5000
+  Total Edge Length             868.7869  951.5360   59.2426 4571.9335  584.4483
+  Mean Width (px)                 2.4937    0.0851    2.2942    2.7443    2.4885
+  Mean Curvature                  0.0000    0.0000    0.0000    0.0000    0.0000
+  Time (ms)                    3937.0383  963.3168 2564.2831 10480.9597 3772.8294
 
   WINS vs byte-matched JPEG (66 images):
-    GT-IoU          : 31/66 wins (47%)  mean Δ=+0.0014
-    GT-FG-SSIM      : 11/66 wins (17%)  mean Δ=-0.0006
-    GT-FG-PSNR      : 9/66 wins (14%)  mean Δ=-1.1202
-    FG-SSIM         : 36/66 wins (55%)  mean Δ=+0.0007
+    GT-IoU          : 31/66 wins (47%)  mean Δ=+0.0013
+    GT-FG-SSIM      : 10/66 wins (15%)  mean Δ=-0.0006
+    GT-FG-PSNR      : 9/66 wins (14%)  mean Δ=-1.0930
+    FG-SSIM         : 35/66 wins (53%)  mean Δ=+0.0007
     IoU             : 31/66 wins (47%)  mean Δ=+0.0007
 
   SEGMENTATION FAILURES (seg_iou < 0.3): 2
