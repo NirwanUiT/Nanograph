@@ -1,1 +1,2 @@
 - nanograph_encode crashes on an empty mask: the payload is empty and decompress_nanograph raises IndexError (compress.py:466). Found 2026-09-25 by recon_bench; fix after paper-v3 (package frozen during the run).
+- graph_branch.extract_branches (and pixel_arm_table) crash in skan when a skeleton has pixels but no two adjacent ones (isolated dots only): 'index pointer size (0) should be (1)'. Hit by the perturbation study (heavy erosion). Guarded in seg_perturbation_ablation.py; fix in the package after paper-v3.

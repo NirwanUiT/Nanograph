@@ -54,7 +54,11 @@ def graph_metrics(mask, img):
         import downstream_morphometry as dm
         m = (mask > 0).astype(np.uint8)
         sk = skeletonize(m > 0)
-        if sk.sum() < 2:
+        # no two 8-adjacent skeleton pixels (only isolated dots): no branches.
+        # skan cannot build a path graph from it; the descriptors ignore
+        # degree-0 pixels anyway, so this is the empty structure
+        nb = cv2.filter2D(sk.astype(np.uint8), -1, np.ones((3, 3), np.float32), borderType=cv2.BORDER_CONSTANT)
+        if sk.sum() < 2 or not (sk & (nb > 1)).any():
             return None
         dt = cv2.distanceTransform(m, cv2.DIST_L2, cv2.DIST_MASK_PRECISE)
         st = gb.decode_structure(gb.encode_structure(gb.branch_structure(sk, dt)))
