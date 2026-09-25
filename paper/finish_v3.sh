@@ -12,7 +12,10 @@ python paper/make_figures.py --runs results/paper --out paper/figures
 OUT_PATH=paper/figures/pipeline_overview.png python experiments/render_pipeline_diagram.py
 python paper/make_fig_pipeline.py
 python experiments/render_paper_panels.py --out paper/figures
-python experiments/check_claims.py --runs results/paper --paper paper
+python experiments/check_claims.py --runs results/paper --paper paper || echo "check_claims reported problems"
+python paper/make_supplement.py --runs results/paper --out paper
+python paper/check_directions.py --numbers paper/numbers.tex --tex paper/nanograph_main.tex \
+  --out results/paper/DIRECTIONS.md || echo "direction checks: some FAIL, see results/paper/DIRECTIONS.md"
 echo "TBD macros used by the manuscript:"
 python - <<'PY'
 import re
