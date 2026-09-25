@@ -36,7 +36,7 @@ from train_unet import combined_loss, evaluate  # noqa: E402
 from train_unet_topo import skeleton_recall  # noqa: E402
 from nanograph_v4.unet_seg import UNet  # noqa: E402
 
-REAL = '/mnt/nas1/nba055-2/idea_1/real_mito'
+REAL = os.environ.get('REAL_ROOT', '/mnt/nas1/nba055-2/idea_1/real_mito')   # data root with manifest.csv
 NMI = '/mnt/nas1/nba055-2/idea_1/nmi_data'
 HELDOUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                        'results', 'paper', 'heldout_organelle.txt')
