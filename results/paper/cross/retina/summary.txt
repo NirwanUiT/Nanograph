@@ -1,36 +1,33 @@
 NANOGRAPH v5 — DATASET EVALUATION SUMMARY
 ======================================================================
-  Images processed: 24/25
-  Failures: 1
-  Total time: 103.8s  (4.33s/image)
+  Images processed: 25/25
+  Failures: 0
+  Total time: 368.5s  (14.74s/image)
 
   Metric                            Mean       Std       Min       Max    Median
   --------------------------------------------------------------------------
-  FG-SSIM                         0.9954    0.0040    0.9836    0.9990    0.9963
-  FG-PSNR                        33.9605    1.3793   32.1892   37.7997   33.4097
-  IoU (recon)                     0.3841    0.2432    0.0087    0.9345    0.3643
-  Topology Q                      0.8499    0.1178    0.5926    0.9970    0.8963
-  Full PSNR                      28.1554    2.4681   23.2963   32.6709   28.1859
-  Full SSIM                       0.8118    0.0823    0.5801    0.9200    0.8221
-  Bytes                        7956.2917 3441.9445 3198.0000 15693.0000 7728.5000
-  Graph Components               12.5833   13.4936    2.0000   56.0000    8.0000
-  Graph Cycles                    2.6250    2.6897    0.0000   10.0000    2.0000
-  Graph Complexity                0.3526    0.5774    0.0000    2.0000    0.1161
-  Nodes                         251.2917  168.8208   57.0000  703.0000  217.0000
-  Edges                         241.3333  158.2302   53.0000  661.0000  213.5000
-  Total Edge Length            1257.6970  751.6427  312.9655 3109.3191 1152.7392
-  Mean Width (px)                 4.5880    1.8504    2.6286   11.6719    4.0965
+  FG-SSIM                         0.9954    0.0039    0.9836    0.9990    0.9963
+  FG-PSNR                        33.8888    1.4021   32.0867   37.7997   33.3948
+  IoU (recon)                     0.3753    0.2420    0.0087    0.9345    0.3619
+  Topology Q                      0.8559    0.1191    0.5926    1.0000    0.9003
+  Full PSNR                      28.0061    2.5310   23.2963   32.6709   27.8799
+  Full SSIM                       0.8124    0.0807    0.5800    0.9200    0.8274
+  Bytes                        13098.3200 25421.1425 3198.0000 136538.0000 7977.0000
+  Graph Components               12.1600   13.3826    2.0000   56.0000    8.0000
+  Graph Cycles                   10.0400   36.4214    0.0000  188.0000    2.0000
+  Graph Complexity                4.0985   18.3598    0.0000   94.0000    0.1250
+  Nodes                         454.0400 1006.7209   57.0000 5319.0000  246.0000
+  Edges                         451.9200 1043.0272   53.0000 5505.0000  242.0000
+  Total Edge Length            2334.5041 5326.0056  312.9655 28175.8750 1249.1535
+  Mean Width (px)                 4.5507    1.8221    2.6286   11.6719    3.9899
   Mean Curvature                  0.0000    0.0000    0.0000    0.0000    0.0000
-  Time (ms)                    3499.1178 2435.1021 1405.8931 13609.1180 2958.1115
+  Time (ms)                    13693.8095 44855.1105 1657.0408 233022.6617 4254.1964
 
-  WINS vs byte-matched JPEG (24 images):
-    GT-IoU          : 0/24 wins (0%)  mean Δ=+0.0000
-    GT-FG-SSIM      : 0/24 wins (0%)  mean Δ=+0.0000
-    GT-FG-PSNR      : 0/24 wins (0%)  mean Δ=+0.0000
-    FG-SSIM         : 0/24 wins (0%)  mean Δ=-0.0043
-    IoU             : 22/24 wins (92%)  mean Δ=+0.2485
-
-  FAILURES (1):
-    - retina_green_full: CUDA out of memory. Tried to allocate 248.00 MiB. GPU 0 has a total capacty of 79.25 GiB of which 143.31 MiB is free. Process 266647 has 77.69 GiB memory in use. Including non-PyTorch memory, this process has 1.40 GiB memory in use. Of the allocated memory 734.51 MiB is allocated by PyTorch, and 197.49 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+  WINS vs byte-matched JPEG (25 images):
+    GT-IoU          : 0/25 wins (0%)  mean Δ=+0.0000
+    GT-FG-SSIM      : 0/25 wins (0%)  mean Δ=+0.0000
+    GT-FG-PSNR      : 0/25 wins (0%)  mean Δ=+0.0000
+    FG-SSIM         : 0/25 wins (0%)  mean Δ=-0.0042
+    IoU             : 23/25 wins (92%)  mean Δ=+0.2423
 
   No segmentation failures (all seg_iou >= 0.3)

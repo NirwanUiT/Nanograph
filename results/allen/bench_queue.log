@@ -1,0 +1,293 @@
+### [2026-09-25 05:17:12] waiting for the bake-off
+### [2026-09-25 09:07:14] allen_ft on the real tiles (CPU)
+allen_ft 279 tiles, median s/tile 0.2611188779119402
+### [2026-09-25 09:08:30] nnU-Net (Allen) on the real tiles (GPU 1)
+experiments/archive_demo/bench_queue.sh: line 18: /mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out501_real/UIT.log: No such file or directory
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 103, in <module>
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 104, in <lambda>
+    a.stage, lambda: export(a.pred_in, a.pred_out))()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 54, in export
+    for p in os.listdir(src):
+             ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out501_real/UIT'
+experiments/archive_demo/bench_queue.sh: line 18: /mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out501_real/CBMI.log: No such file or directory
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 103, in <module>
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 104, in <lambda>
+    a.stage, lambda: export(a.pred_in, a.pred_out))()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 54, in export
+    for p in os.listdir(src):
+             ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out501_real/CBMI'
+experiments/archive_demo/bench_queue.sh: line 18: /mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out501_real/MITO.log: No such file or directory
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 103, in <module>
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 104, in <lambda>
+    a.stage, lambda: export(a.pred_in, a.pred_out))()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 54, in export
+    for p in os.listdir(src):
+             ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out501_real/MITO'
+experiments/archive_demo/bench_queue.sh: line 18: /mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out501_real/HUMAN.log: No such file or directory
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 103, in <module>
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 104, in <lambda>
+    a.stage, lambda: export(a.pred_in, a.pred_out))()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 54, in export
+    for p in os.listdir(src):
+             ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out501_real/HUMAN'
+### [2026-09-25 09:08:32] nnU-Net (real) train (GPU 1)
+### [2026-09-25 11:09:14] nnU-Net (real) predict
+experiments/archive_demo/bench_queue.sh: line 18: /mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out502_real/UIT.log: No such file or directory
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 103, in <module>
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 104, in <lambda>
+    a.stage, lambda: export(a.pred_in, a.pred_out))()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 54, in export
+    for p in os.listdir(src):
+             ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out502_real/UIT'
+experiments/archive_demo/bench_queue.sh: line 18: /mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out502_real/CBMI.log: No such file or directory
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 103, in <module>
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 104, in <lambda>
+    a.stage, lambda: export(a.pred_in, a.pred_out))()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 54, in export
+    for p in os.listdir(src):
+             ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out502_real/CBMI'
+experiments/archive_demo/bench_queue.sh: line 18: /mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out502_real/MITO.log: No such file or directory
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 103, in <module>
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 104, in <lambda>
+    a.stage, lambda: export(a.pred_in, a.pred_out))()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 54, in export
+    for p in os.listdir(src):
+             ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out502_real/MITO'
+experiments/archive_demo/bench_queue.sh: line 18: /mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out502_real/HUMAN.log: No such file or directory
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 103, in <module>
+    {'data': data, 'split': split, 'data_real': data_real, 'split_real': split_real}.get(
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 104, in <lambda>
+    a.stage, lambda: export(a.pred_in, a.pred_out))()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/archive_demo/allen_nnunet_prep.py", line 54, in export
+    for p in os.listdir(src):
+             ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/archive_demo/nnunet/out502_real/HUMAN'
+300 predictions -> /mnt/nas1/nba055-2/idea_1/archive_demo/allen/preds/nnunet_real
+### [2026-09-25 11:10:42] evaluate benchmarks 1-4
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:822: RuntimeWarning: Mean of empty slice.
+  bias, sd = d.mean(), d.std(ddof=1)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:206: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:163: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:198: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:823: RuntimeWarning: Mean of empty slice.
+  ym = y.mean()
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:826: RuntimeWarning: Mean of empty slice.
+  'n': len(x), 'ref_mean': ym, 'arm_mean': x.mean(),
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:814: RuntimeWarning: Mean of empty slice.
+  mx, my = x.mean(), y.mean()
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: Degrees of freedom <= 0 for slice
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:822: RuntimeWarning: Mean of empty slice.
+  bias, sd = d.mean(), d.std(ddof=1)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:206: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:163: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:198: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:823: RuntimeWarning: Mean of empty slice.
+  ym = y.mean()
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:826: RuntimeWarning: Mean of empty slice.
+  'n': len(x), 'ref_mean': ym, 'arm_mean': x.mean(),
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:814: RuntimeWarning: Mean of empty slice.
+  mx, my = x.mean(), y.mean()
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: Degrees of freedom <= 0 for slice
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:822: RuntimeWarning: Mean of empty slice.
+  bias, sd = d.mean(), d.std(ddof=1)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:206: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:163: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:198: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:823: RuntimeWarning: Mean of empty slice.
+  ym = y.mean()
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:826: RuntimeWarning: Mean of empty slice.
+  'n': len(x), 'ref_mean': ym, 'arm_mean': x.mean(),
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:814: RuntimeWarning: Mean of empty slice.
+  mx, my = x.mean(), y.mean()
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: Degrees of freedom <= 0 for slice
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:822: RuntimeWarning: Mean of empty slice.
+  bias, sd = d.mean(), d.std(ddof=1)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:206: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:163: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:198: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:823: RuntimeWarning: Mean of empty slice.
+  ym = y.mean()
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:826: RuntimeWarning: Mean of empty slice.
+  'n': len(x), 'ref_mean': ym, 'arm_mean': x.mean(),
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:814: RuntimeWarning: Mean of empty slice.
+  mx, my = x.mean(), y.mean()
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: Degrees of freedom <= 0 for slice
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:822: RuntimeWarning: Mean of empty slice.
+  bias, sd = d.mean(), d.std(ddof=1)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:206: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:163: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:198: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:823: RuntimeWarning: Mean of empty slice.
+  ym = y.mean()
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:826: RuntimeWarning: Mean of empty slice.
+  'n': len(x), 'ref_mean': ym, 'arm_mean': x.mean(),
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:814: RuntimeWarning: Mean of empty slice.
+  mx, my = x.mean(), y.mean()
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: Degrees of freedom <= 0 for slice
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:822: RuntimeWarning: Mean of empty slice.
+  bias, sd = d.mean(), d.std(ddof=1)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:206: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:163: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:198: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:823: RuntimeWarning: Mean of empty slice.
+  ym = y.mean()
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:826: RuntimeWarning: Mean of empty slice.
+  'n': len(x), 'ref_mean': ym, 'arm_mean': x.mean(),
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:814: RuntimeWarning: Mean of empty slice.
+  mx, my = x.mean(), y.mean()
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: Degrees of freedom <= 0 for slice
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:822: RuntimeWarning: Mean of empty slice.
+  bias, sd = d.mean(), d.std(ddof=1)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:206: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:163: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:198: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:823: RuntimeWarning: Mean of empty slice.
+  ym = y.mean()
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:826: RuntimeWarning: Mean of empty slice.
+  'n': len(x), 'ref_mean': ym, 'arm_mean': x.mean(),
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:814: RuntimeWarning: Mean of empty slice.
+  mx, my = x.mean(), y.mean()
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: Degrees of freedom <= 0 for slice
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:822: RuntimeWarning: Mean of empty slice.
+  bias, sd = d.mean(), d.std(ddof=1)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:206: RuntimeWarning: Degrees of freedom <= 0 for slice
+  ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:163: RuntimeWarning: invalid value encountered in divide
+  arrmean = um.true_divide(arrmean, div, out=arrmean,
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/_methods.py:198: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:823: RuntimeWarning: Mean of empty slice.
+  ym = y.mean()
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:826: RuntimeWarning: Mean of empty slice.
+  'n': len(x), 'ref_mean': ym, 'arm_mean': x.mean(),
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:814: RuntimeWarning: Mean of empty slice.
+  mx, my = x.mean(), y.mean()
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/numpy/core/fromnumeric.py:3504: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: Degrees of freedom <= 0 for slice
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+dataset              CBMI  HUMAN   MITO    UIT
+method                                        
+allen_ft            0.915  0.771  0.271  0.788
+microsam_zs         0.836  0.456  0.060  0.639
+nellie              0.873  0.670  0.294  0.867
+nellie_tuned_allen  0.871  0.684  0.281  0.865
+nellie_tuned_real   0.873  0.670  0.294  0.867
+nnunet                NaN    NaN    NaN    NaN
+nnunet_real           NaN    NaN    NaN    NaN
+real_mito           0.819  0.679  0.507  0.922
+unet_sim            0.863  0.601  0.311  0.867
+### [2026-09-25 11:11:00] evaluate benchmark 5
+# Default segmenter: selection (SELECTION_RULE.md applied mechanically)
+
+**Status: PROVISIONAL**
+
+- nellie_tuned_real: tuning kept the default setting, so it is the same segmenter as nellie (merged)
+- benchmark 6 (blinded preference): not run yet
+- candidates not evaluated yet: microsam_real, microsam_ft
+
+## clDice per benchmark (* = in-domain for that candidate)
+
+| method | CBMI | HUMAN | MITO | UIT | ALLEN | mean rank | s/tile |
+|---|---|---|---|---|---|---|---|
+| nellie | 0.873 (#2) | 0.670 (#4) | 0.294 (#3) | 0.867 (#2) | 0.875 (#3) | 2.80 | 0.08 |
+| allen_ft | 0.915 (#1) | 0.771 (#1) | 0.271 (#5) | 0.788 (#5) | 0.906* (#2) | 2.80 | 0.26 |
+| nellie_tuned_allen | 0.871 (#3) | 0.684 (#3) | 0.281 (#4) | 0.865 (#3) | 0.876* (#4) | 3.40 | 0.08 |
+| real_mito | 0.819* (#6) | 0.679 (#2) | 0.507* (#1) | 0.922* (#1) | 0.752 (#8) | 3.60 | 0.28 |
+| unet_sim | 0.863 (#4) | 0.601 (#5) | 0.311 (#2) | 0.867 (#4) | 0.853 (#5) | 4.00 | 0.26 |
+| microsam_zs | 0.836 (#5) | 0.456 (#6) | 0.060 (#6) | 0.639 (#6) | 0.774 (#7) | 6.00 | 16.41 |
+| nnunet | nan (#8) | nan (#8) | nan (#8) | nan (#8) | 0.910* (#1) | 6.60 | 0.00 |
+| nnunet_real | nan* (#8) | nan (#8) | nan* (#8) | nan* (#8) | 0.820 (#6) | 7.60 | 0.00 |
+
+Order: mean rank, then seconds per tile (SELECTION_RULE.md tie-break).
+
+Leader: **nellie** (mean rank 2.80) - provisional
+### [2026-09-25 11:12:07] BENCH_DONE

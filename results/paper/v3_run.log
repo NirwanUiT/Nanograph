@@ -3805,3 +3805,677 @@ Aggregate plots saved: results/paper/real/real-mito/HUMAN/aggregate_plots.png
 
 Done. All results in results/paper/real/real-mito/HUMAN/
 === [04:04:15] mito/sted
+Found 345 images in /mnt/nas1/nba055-2/idea_1/public_mito/sted_prep/images
+Masks directory: (none)
+Output: results/paper/mito/sted
+Sample visualizations: 4
+Sample indices: [12, 57, 140, 327]
+
+Nanograph v5 — 127 params
+======================================================================
+
+[1/345] d1_d0001_p0004_t0000  (0.0 img/s, ETA 0m)
+
+[13/345] d1_d0001_p0018_t0000  (0.0 img/s, ETA 137m)  ** SAMPLE **
+Image: (600, 600), type=dense (FG=23.2%, n_cc=20, mean_fg_int=0.57)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 111 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          19.6%   0.4411       4ms
+Frangi         0.2%   0.4234     717ms
+Meijering     27.9%   0.4718     638ms
+Learned       23.5% 1000000000.0000      27ms <<<
+
+Selected: Learned
+Nanograph: 6726 points (EP=146, JN=1650, S=4930)
+Background grid: 16×16 (4 ms)
+Graph (branch): 2800 nodes, 2948 edges, 24 components
+FG residual: 31,377 bytes (144 ms)
+
+============================================================
+  RESULT (v5): 6926 pts, 72,290 bytes
+  vs raw pixels: 5x  vs PNG: 3.9x
+  PSNR=22.15  SSIM=0.4033  FG-PSNR=22.87  FG-SSIM=0.9729
+  Graph topology: 24 components, 172 cycles, 543 junctions, 270 endpoints
+  Segmentation: β₀=24, β₁=178
+  Structures: 24 -- {'ring': 12, 'curved': 1, 'branched': 8, 'punctate': 3}
+  Total time: 23375 ms
+============================================================
+  Sample saved: results/paper/mito/sted/samples/d1_d0001_p0018_t0000.png
+  Bytes: 72,290  |  FG-SSIM: 0.9729  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.9999
+
+[51/345] d1_d0001_p0066_t0000  (0.0 img/s, ETA 114m)
+
+[58/345] d2_d0002_p0000_t0000  (0.0 img/s, ETA 111m)  ** SAMPLE **
+Image: (600, 600), type=dense (FG=13.5%, n_cc=6, mean_fg_int=0.58)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 112 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          10.9%   0.5001       4ms
+Frangi         0.6%   0.4364     723ms
+Meijering      9.4%   0.5161     635ms
+Learned       12.9% 1000000000.0000      24ms <<<
+
+Selected: Learned
+Nanograph: 3849 points (EP=72, JN=950, S=2827)
+Background grid: 16×16 (4 ms)
+Graph (branch): 1524 nodes, 1627 edges, 17 components
+FG residual: 16,590 bytes (96 ms)
+
+============================================================
+  RESULT (v5): 4049 pts, 40,742 bytes
+  vs raw pixels: 9x  vs PNG: 6.7x
+  PSNR=24.60  SSIM=0.3936  FG-PSNR=23.43  FG-SSIM=0.9827
+  Graph topology: 17 components, 120 cycles, 316 junctions, 125 endpoints
+  Segmentation: β₀=17, β₁=124
+  Structures: 17 -- {'ring': 3, 'branched': 8, 'punctate': 2, 'curved': 2, 'linear': 2}
+  Total time: 22294 ms
+============================================================
+  Sample saved: results/paper/mito/sted/samples/d2_d0002_p0000_t0000.png
+  Bytes: 40,742  |  FG-SSIM: 0.9827  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.9994
+
+[101/345] d2_d0002_p0054_t0000  (0.0 img/s, ETA 95m)
+
+[141/345] d2_d0002_p0109_t0000  (0.0 img/s, ETA 79m)  ** SAMPLE **
+Image: (600, 600), type=dense (FG=14.6%, n_cc=9, mean_fg_int=0.60)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 111 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          11.0%   0.4723       4ms
+Frangi         0.0%   0.0000     717ms
+Meijering     11.5%   0.4932     632ms
+Learned       12.8% 1000000000.0000      26ms <<<
+
+Selected: Learned
+Nanograph: 4082 points (EP=49, JN=1137, S=2896)
+Background grid: 16×16 (4 ms)
+Graph (branch): 1569 nodes, 1713 edges, 11 components
+FG residual: 17,105 bytes (86 ms)
+
+============================================================
+  RESULT (v5): 4282 pts, 42,670 bytes
+  vs raw pixels: 8x  vs PNG: 6.4x
+  PSNR=24.79  SSIM=0.4398  FG-PSNR=23.21  FG-SSIM=0.9861
+  Graph topology: 11 components, 155 cycles, 359 junctions, 84 endpoints
+  Segmentation: β₀=11, β₁=160
+  Structures: 11 -- {'ring': 7, 'branched': 4}
+  Total time: 21863 ms
+============================================================
+  Sample saved: results/paper/mito/sted/samples/d2_d0002_p0109_t0000.png
+  Bytes: 42,670  |  FG-SSIM: 0.9861  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 1.0000
+
+[151/345] d2_d0002_p0132_t0000  (0.0 img/s, ETA 75m)
+
+[201/345] d2_d0002_p0201_t0000  (0.0 img/s, ETA 56m)
+
+[251/345] d2_d0002_p0284_t0000  (0.0 img/s, ETA 37m)
+
+[301/345] d2_d0002_p0344_t0000  (0.0 img/s, ETA 18m)
+
+[328/345] d2_d0002_p0379_t0000  (0.0 img/s, ETA 7m)  ** SAMPLE **
+Image: (600, 600), type=dense (FG=33.9%, n_cc=9, mean_fg_int=0.61)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 110 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          23.2%   0.4586       4ms
+Frangi         0.0%   0.0000     712ms
+Meijering     22.0%   0.4886     626ms
+Learned       28.7% 1000000000.0000      20ms <<<
+
+Selected: Learned
+Nanograph: 8092 points (EP=89, JN=2090, S=5913)
+Background grid: 16×16 (4 ms)
+Graph (branch): 3231 nodes, 3510 edges, 14 components
+FG residual: 33,560 bytes (160 ms)
+
+============================================================
+  RESULT (v5): 8292 pts, 81,429 bytes
+  vs raw pixels: 4x  vs PNG: 3.5x
+  PSNR=23.08  SSIM=0.5337  FG-PSNR=24.08  FG-SSIM=0.9678
+  Graph topology: 14 components, 293 cycles, 686 junctions, 157 endpoints
+  Segmentation: β₀=14, β₁=301
+  Structures: 14 -- {'ring': 12, 'linear': 1, 'punctate': 1}
+  Total time: 23285 ms
+============================================================
+  Sample saved: results/paper/mito/sted/samples/d2_d0002_p0379_t0000.png
+  Bytes: 81,429  |  FG-SSIM: 0.9678  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 1.0000
+
+CSV saved: results/paper/mito/sted/metrics.csv
+TXT saved: results/paper/mito/sted/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 345/345
+  Failures: 0
+  Total time: 8351.1s  (24.21s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  FG-SSIM                         0.9802    0.0065    0.9603    0.9948    0.9807
+  FG-PSNR                        22.9853    1.1504   20.5260   26.7488   22.8006
+  IoU (recon)                     0.6497    0.1392    0.0378    0.8982    0.6776
+  Topology Q                      0.9991    0.0029    0.9776    1.0000    1.0000
+  Full PSNR                      23.5667    1.4473   17.0998   27.0068   23.5166
+  Full SSIM                       0.4050    0.0952    0.0800    0.6665    0.4070
+  Bytes                        52403.0058 13778.5486 12898.0000 90036.0000 52679.0000
+  Graph Components               14.3304    6.1917    2.0000   41.0000   14.0000
+  Graph Cycles                  176.9391   61.1850   43.0000  374.0000  169.0000
+  Graph Complexity               15.0623    9.6344    3.1935   61.2000   12.8000
+  Nodes                        1954.5942  581.5286  474.0000 3710.0000 1921.0000
+  Edges                        2117.2029  635.9190  515.0000 4065.0000 2087.0000
+  Total Edge Length            9406.5571 2840.0615 2248.6337 18081.9236 9242.2669
+  Mean Width (px)                 3.8921    0.1977    3.3541    4.5078    3.8917
+  Mean Curvature                  0.0000    0.0000    0.0000    0.0000    0.0000
+  Time (ms)                    23222.7052 3051.2806 15825.4926 34811.8377 22679.7771
+
+  WINS vs byte-matched JPEG (345 images):
+    GT-IoU          : 0/345 wins (0%)  mean Δ=+0.0000
+    GT-FG-SSIM      : 0/345 wins (0%)  mean Δ=+0.0000
+    GT-FG-PSNR      : 0/345 wins (0%)  mean Δ=+0.0000
+    FG-SSIM         : 53/345 wins (15%)  mean Δ=-0.0057
+    IoU             : 322/345 wins (93%)  mean Δ=+0.0397
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/mito/sted/summary.txt
+Aggregate plots saved: results/paper/mito/sted/aggregate_plots.png
+
+Done. All results in results/paper/mito/sted/
+=== [06:23:28] downstream
+[1/726] 7252 ok
+[51/726] 7301 ok
+[101/726] 7352 ok
+[151/726] 7404 ok
+[201/726] 7457 ok
+[251/726] 7508 ok
+[301/726] 7559 ok
+[351/726] 7610 ok
+[401/726] 7665 ok
+[451/726] 7716 ok
+[501/726] 7768 ok
+[551/726] 7819 ok
+[601/726] 7870 ok
+[651/726] 7921 ok
+[701/726] 7973 ok
+[1/726] 7249 0s
+[51/726] 7301 28s
+[101/726] 7353 57s
+[151/726] 7405 85s
+[201/726] 7457 112s
+[251/726] 7507 141s
+[301/726] 7559 169s
+[351/726] 7612 196s
+[401/726] 7664 224s
+[451/726] 7716 252s
+[501/726] 7768 280s
+[551/726] 7818 308s
+[601/726] 7870 335s
+[651/726] 7922 362s
+[701/726] 7974 391s
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py", line 990, in <module>
+    main()
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py", line 985, in main
+    stage_stats(args)
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py", line 888, in stage_stats
+    st = [s for s in stems if s in wide[arm].index]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py", line 888, in <listcomp>
+    st = [s for s in stems if s in wide[arm].index]
+                                   ~~~~^^^^^
+KeyError: 'GRAPH'
+=== [06:34:01] ablation_bg_residual
+726 images
+[1/726] 7249 FG-PSNR 12.53->27.47 bytes 1000->1625
+[51/726] 7301 FG-PSNR 13.22->28.23 bytes 1206->1810
+[101/726] 7353 FG-PSNR 11.76->28.16 bytes 1636->2559
+[151/726] 7405 FG-PSNR 10.78->27.34 bytes 981->1637
+[201/726] 7457 FG-PSNR 12.24->27.82 bytes 1244->1990
+[251/726] 7507 FG-PSNR 13.92->28.72 bytes 1272->1985
+[301/726] 7559 FG-PSNR 10.83->27.14 bytes 1398->2254
+[351/726] 7612 FG-PSNR 9.95->27.34 bytes 1352->2215
+[401/726] 7664 FG-PSNR 14.07->28.89 bytes 1488->2282
+[451/726] 7716 FG-PSNR 11.90->28.06 bytes 1277->1959
+[501/726] 7768 FG-PSNR 12.79->28.06 bytes 1600->2564
+[551/726] 7818 FG-PSNR 12.07->27.95 bytes 1353->2200
+[601/726] 7870 FG-PSNR 12.43->28.41 bytes 1301->2069
+[651/726] 7922 FG-PSNR 12.41->27.97 bytes 1229->1954
+[701/726] 7974 FG-PSNR 12.77->28.56 bytes 1586->2376
+wrote results/paper/ablation_bg_residual.csv (726 rows)
+fg_psnr    with      28.09±    0.56  without      12.17±    1.27  delta    +15.92±   0.87
+full_psnr  with      30.76±    0.62  without      14.14±    0.95  delta    +16.62±   0.64
+bytes      with    2193.80±  307.78  without    1393.67±  193.15  delta   +800.13± 127.72
+=== [07:01:56] seg_perturbation_ablation
+726 images
+[1/726] 7249 base b0=3 b1=1 segIoU=0.362
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/seg_perturbation_ablation.py", line 169, in <module>
+    main()
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/seg_perturbation_ablation.py", line 150, in main
+    gm = graph_metrics(dm, img)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/seg_perturbation_ablation.py", line 60, in graph_metrics
+    st = gb.decode_structure(gb.encode_structure(gb.branch_structure(sk, dt)))
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/nanograph_v4/graph_branch.py", line 193, in branch_structure
+    vertices, branches = extract_branches(skel, eps=eps, max_seg=max_seg)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/nanograph_v4/graph_branch.py", line 86, in extract_branches
+    S = skan.Skeleton(skel)
+        ^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/skan/csr.py", line 652, in __init__
+    self.paths = _build_skeleton_path_graph(self.nbgraph)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/skan/csr.py", line 442, in _build_skeleton_path_graph
+    paths = sparse.csr_matrix(
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/sparse/_compressed.py", line 106, in __init__
+    self.check_format(full_check=False)
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/sparse/_compressed.py", line 169, in check_format
+    raise ValueError("index pointer size ({}) should be ({})"
+ValueError: index pointer size (0) should be (1)
+=== [07:02:06] heldout
+wrote /mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/results/paper/heldout_organelle.txt (108 stems of 726)
+=== [07:02:07] sim_truth
+TRUE per image: tubes 6.06, components 4.54, branches 12.67, junctions 4.19, cycle rank 0.98; pipeline Seg-IoU 0.854
+
+== L = 0
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                -18.490                   -24.363                  -16.327                  51.798               10.010                31.194               19.847           0.419      0.221     0.622
+    SEG      NaN                -18.601                   -29.480                  -21.334                  67.790              -34.121               -40.372              -57.252           0.302      0.239     0.593
+ GRAPH7 2236.176                -18.601                   -29.455                  -21.326                  67.659              -34.121               -40.372              -57.252           0.302      0.239     0.593
+GRAPH7p      NaN                -18.601                   -29.480                  -21.174                  67.942              -34.121               -40.372              -57.252           0.302      0.239     0.593
+ GRAPH6 2247.453                -18.989                   -33.102                  -25.769                  65.197              -47.527               -62.747              -61.323           0.210      0.249     0.593
+   JPEG 2169.121                 85.508                     1.981                   18.968                  64.819               54.181                40.192              -11.450          -0.019      0.208     0.496
+
+== L = 5
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                -18.490                   -26.648                  -19.840                  52.954              -19.969               -11.536               19.847           0.480      0.306     0.640
+    SEG      NaN                -18.601                   -29.717                  -22.108                  67.612              -36.051               -46.001              -57.252           0.332      0.273     0.603
+ GRAPH7 2236.176                -18.601                   -29.701                  -22.104                  67.495              -36.051               -46.001              -57.252           0.332      0.273     0.603
+GRAPH7p      NaN                -18.601                   -29.717                  -22.072                  67.507              -36.051               -46.001              -57.252           0.332      0.273     0.603
+ GRAPH6 2247.453                -18.989                   -32.731                  -25.356                  65.177              -40.656               -56.051              -61.323           0.289      0.280     0.601
+   JPEG 2169.121                 85.508                     0.518                   16.075                  64.811               41.532                15.145              -11.450          -0.022      0.250     0.503
+
+== L = auto
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                -18.490                   -27.100                  -16.006                  52.931              -23.821               -17.466               19.847           0.431      0.278     0.626
+    SEG      NaN                -18.989                   -30.176                  -21.032                  67.522              -40.469               -52.055              -57.252           0.288      0.249     0.591
+ GRAPH7 2236.176                -18.989                   -30.162                  -21.025                  67.419              -40.469               -52.055              -57.252           0.287      0.248     0.591
+GRAPH7p      NaN                -18.989                   -30.316                  -20.872                  67.145              -41.391               -53.493              -57.252           0.272      0.250     0.590
+ GRAPH6 2247.453                -19.156                   -33.156                  -25.484                  65.036              -44.922               -61.507              -61.323           0.251      0.241     0.589
+   JPEG 2169.121                 56.413                    -1.583                   19.424                  65.048               20.268                 1.438              -12.214          -0.018      0.222     0.503
+   L      descriptor    arm  mdape_calibrated  closer_than_jpeg  jpeg_closer     p
+   5    n_components GRAPH7            12.483             217.0        180.0 0.000
+   5    n_components   JPEG            12.648               NaN          NaN   NaN
+   5    n_components    REF            12.758             218.0        179.0 0.000
+   5 total_length_px GRAPH7            10.802             255.0        142.0 0.000
+   5 total_length_px   JPEG            14.589               NaN          NaN   NaN
+   5 total_length_px    REF            10.613             261.0        136.0 0.000
+   5   mean_width_px GRAPH7            13.139             181.0        216.0 0.389
+   5   mean_width_px   JPEG            13.554               NaN          NaN   NaN
+   5   mean_width_px    REF            10.718             242.0        155.0 0.000
+   5      n_branches GRAPH7            27.011             241.0        156.0 0.000
+   5      n_branches   JPEG            30.119               NaN          NaN   NaN
+   5      n_branches    REF            27.027             240.0        157.0 0.000
+   5     n_junctions GRAPH7            41.572             224.0        173.0 0.000
+   5     n_junctions   JPEG            47.626               NaN          NaN   NaN
+   5     n_junctions    REF            38.636             236.0        161.0 0.000
+   5      cycle_rank GRAPH7            36.378             203.0        194.0 0.417
+   5      cycle_rank   JPEG            44.467               NaN          NaN   NaN
+   5      cycle_rank    REF            42.075             183.0        214.0 0.720
+auto    n_components GRAPH7            12.025             213.0        184.0 0.000
+auto    n_components   JPEG            12.682               NaN          NaN   NaN
+auto    n_components    REF            12.758             218.0        179.0 0.000
+auto total_length_px GRAPH7            11.095             255.0        142.0 0.000
+auto total_length_px   JPEG            14.567               NaN          NaN   NaN
+auto total_length_px    REF            10.578             262.0        135.0 0.000
+auto   mean_width_px GRAPH7            13.223             188.0        209.0 0.704
+auto   mean_width_px   JPEG            13.566               NaN          NaN   NaN
+auto   mean_width_px    REF            10.747             240.0        157.0 0.000
+auto      n_branches GRAPH7            27.534             230.0        167.0 0.000
+auto      n_branches   JPEG            31.301               NaN          NaN   NaN
+auto      n_branches    REF            27.980             228.0        169.0 0.000
+auto     n_junctions GRAPH7            41.385             231.0        166.0 0.000
+auto     n_junctions   JPEG            45.791               NaN          NaN   NaN
+auto     n_junctions    REF            39.054             230.0        167.0 0.000
+auto      cycle_rank GRAPH7            36.378             202.0        195.0 0.497
+auto      cycle_rank   JPEG            44.463               NaN          NaN   NaN
+auto      cycle_rank    REF            42.075             183.0        214.0 0.774
+=== [07:04:27] clip_truth
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/downstream_morphometry.py:815: RuntimeWarning: invalid value encountered in scalar divide
+  return 2 * np.mean((x - mx) * (y - my)) / (x.var() + y.var() + (mx - my) ** 2)
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3428: UserWarning: Sample size too small for normal approximation.
+  warnings.warn("Sample size too small for normal approximation.")
+TRUE per image: tubes 4.00, components 4.00, branches 4.27, junctions 0.15, cycle rank 0.08; pipeline Seg-IoU 0.750
+
+== L = 0
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                 87.329                     4.696                   25.389                   6.312               92.949               154.545              -50.000          -0.004      0.603     0.420
+    SEG      NaN                 57.877                    -9.750                   13.969                  21.600               72.756               254.545              -66.667          -0.041      0.479     0.465
+ GRAPH7 3842.712                 57.877                    -9.726                   13.885                  21.409               72.756               254.545              -66.667          -0.041      0.479     0.465
+GRAPH7p      NaN                 57.877                    -9.750                   15.796                  24.750               72.756               254.545              -66.667          -0.041      0.479     0.465
+ GRAPH6 3767.671                 35.274                   -12.919                    7.060                  21.224               33.013                -9.091             -100.000          -0.048      0.767     0.514
+   JPEG 3803.260                 58.562                    -9.988                   13.986                  21.837               75.962               290.909              -83.333          -0.027      0.452     0.470
+
+== L = 5
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                 87.329                     4.514                   24.682                   6.258               88.629                50.000              -50.000          -0.008      0.822     0.413
+    SEG      NaN                 57.877                    -9.964                   12.676                  21.453               62.207               116.667              -66.667          -0.011      0.767     0.467
+ GRAPH7 3842.712                 57.877                    -9.947                   12.610                  21.270               62.207               116.667              -66.667          -0.011      0.767     0.467
+GRAPH7p      NaN                 57.877                    -9.964                   14.154                  24.449               62.207               116.667              -66.667          -0.011      0.767     0.467
+ GRAPH6 3767.671                 35.274                   -12.825                    7.175                  21.225               38.796                66.667             -100.000          -0.024      0.795     0.509
+   JPEG 3803.260                 58.562                   -10.274                   12.562                  21.679               63.211               116.667              -83.333          -0.012      0.767     0.473
+
+== L = auto
+    arm    bytes  n_components_bias_pct  total_length_px_bias_pct  length_endcorr_bias_pct  mean_width_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  cycle_rank_bias_pct  n_branches_ccc  junc_f1_3  end_f1_3
+    REF      NaN                  0.000                     2.457                   25.525                   7.014                1.003                   0.0                -50.0          -0.058      0.836     0.603
+    SEG      NaN                  9.247                   -14.877                   14.092                  21.711                6.689                -100.0               -100.0          -0.065      0.890     0.493
+ GRAPH7 3842.712                  9.589                   -14.823                   14.008                  21.585                7.023                -100.0               -100.0          -0.068      0.890     0.494
+GRAPH7p      NaN                  6.164                   -15.042                   15.921                  24.315                3.679                -100.0               -100.0          -0.087      0.890     0.501
+ GRAPH6 3767.671                  7.534                   -16.164                    7.175                  21.349                5.017                -100.0               -100.0          -0.094      0.890     0.509
+   JPEG 3803.260                 10.616                   -14.940                   14.109                  21.915                8.027                -100.0               -100.0          -0.079      0.890     0.509
+   L      descriptor    arm  mdape_calibrated  closer_than_jpeg  jpeg_closer     p
+   5    n_components GRAPH7             0.000               0.0         45.0 0.000
+   5    n_components   JPEG             0.000               NaN          NaN   NaN
+   5    n_components    REF             0.000               0.0         73.0 0.000
+   5 total_length_px GRAPH7             2.363              42.0         31.0 0.130
+   5 total_length_px   JPEG             2.623               NaN          NaN   NaN
+   5 total_length_px    REF             1.657              40.0         33.0 0.072
+   5   mean_width_px GRAPH7             0.077              45.0         28.0 0.103
+   5   mean_width_px   JPEG             0.076               NaN          NaN   NaN
+   5   mean_width_px    REF             0.067              34.0         39.0 0.634
+   5      n_branches GRAPH7             1.854              36.0         37.0 0.960
+   5      n_branches   JPEG             1.797               NaN          NaN   NaN
+   5      n_branches    REF             3.200              29.0         44.0 0.056
+   5     n_junctions GRAPH7            93.282              37.0         36.0 0.008
+   5     n_junctions   JPEG            93.455               NaN          NaN   NaN
+   5     n_junctions    REF            94.118              58.0         15.0 0.001
+   5      cycle_rank GRAPH7            94.118               4.0         33.0 0.000
+   5      cycle_rank   JPEG            94.286               NaN          NaN   NaN
+   5      cycle_rank    REF            94.444              35.0         38.0 0.001
+auto    n_components GRAPH7             0.000              36.0         25.0 0.000
+auto    n_components   JPEG             0.000               NaN          NaN   NaN
+auto    n_components    REF             0.000              37.0         36.0 0.006
+auto total_length_px GRAPH7             2.443              43.0         30.0 0.131
+auto total_length_px   JPEG             2.430               NaN          NaN   NaN
+auto total_length_px    REF             2.063              44.0         29.0 0.174
+auto   mean_width_px GRAPH7             0.075              39.0         34.0 0.536
+auto   mean_width_px   JPEG             0.075               NaN          NaN   NaN
+auto   mean_width_px    REF             0.066              33.0         40.0 0.623
+auto      n_branches GRAPH7             1.487              47.0         26.0 0.004
+auto      n_branches   JPEG             1.421               NaN          NaN   NaN
+auto      n_branches    REF             3.667              35.0         38.0 0.114
+auto     n_junctions GRAPH7            94.444               0.0          0.0   NaN
+auto     n_junctions   JPEG            94.444               NaN          NaN   NaN
+auto     n_junctions    REF            94.286               8.0         65.0 0.000
+auto      cycle_rank GRAPH7            94.444               0.0          0.0   NaN
+auto      cycle_rank   JPEG            94.444               NaN          NaN   NaN
+auto      cycle_rank    REF            94.444               2.0         34.0 0.000
+=== [07:05:33] real_downstream
+/home/idl-nba055/anaconda3/lib/python3.11/site-packages/scipy/stats/_morestats.py:3414: UserWarning: Exact p-value calculation does not work if there are zeros. Switching to normal approximation.
+  warnings.warn("Exact p-value calculation does not work if there are "
+
+== L = auto
+dataset    arm   n    bytes  structure_bytes  n_components_bias_pct  total_length_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  n_branches_ccc  total_length_px_ccc  junc_f1
+   CBMI GRAPH7  68 6536.706          563.603                -28.497                    -7.267              -34.487               -41.633           0.268                0.593    0.309
+   CBMI    SEG  68      NaN          563.603                -28.693                    -7.372              -34.518               -41.534           0.274                0.594    0.310
+   CBMI   JPEG  68 6421.838          563.603                -26.078                    -3.566              -29.923               -35.657           0.354                0.686    0.337
+  HUMAN GRAPH7  33 4962.909          460.818                -11.373                    15.907               -9.970               -12.264           0.813                0.870    0.233
+  HUMAN    SEG  33      NaN          460.818                -11.373                    15.867               -9.768               -12.028           0.813                0.870    0.232
+  HUMAN   JPEG  33 4875.061          460.818                -10.588                    16.548               -7.855                -9.434           0.820                0.877    0.250
+   MITO GRAPH7 129 3865.829          376.721                 -4.177                   -33.492              -40.924               -65.370           0.375                0.457    0.155
+   MITO    SEG 129      NaN          376.721                 -4.051                   -33.472              -40.673               -65.065           0.374                0.457    0.155
+   MITO   JPEG 129 3804.543          376.721                 12.532                   -24.525              -30.931               -59.878           0.372                0.483    0.136
+    UIT GRAPH7  43 6427.442          560.651                 -4.762                    -7.714              -13.583               -17.599           0.940                0.981    0.568
+    UIT    SEG  43      NaN          560.651                 -4.762                    -7.769              -13.583               -17.599           0.939                0.981    0.566
+    UIT   JPEG  43 6314.814          560.651                 -4.113                    -8.369              -12.937               -17.434           0.934                0.976    0.533
+dataset n_components_vs_jpeg total_length_px_vs_jpeg mean_width_px_vs_jpeg n_branches_vs_jpeg n_junctions_vs_jpeg cycle_rank_vs_jpeg
+   CBMI      16/26 p=7.3e-02         27/41 p=6.7e-02       24/44 p=3.8e-03    17/41 p=3.4e-04     12/34 p=1.9e-03    18/18 p=9.6e-01
+  HUMAN      11/10 p=4.4e-01         16/17 p=9.7e-01        9/24 p=1.1e-02    10/13 p=2.3e-01      9/14 p=4.1e-01      5/7 p=3.9e-01
+   MITO      57/47 p=2.1e-01         52/77 p=1.3e-02       53/75 p=7.3e-03    54/63 p=5.6e-01     43/43 p=8.0e-01    25/16 p=2.5e-01
+    UIT       13/9 p=1.3e-01         23/20 p=3.3e-01       20/23 p=1.0e-01    16/22 p=9.8e-01     12/16 p=6.1e-01     10/7 p=6.5e-01
+
+== L = 5
+dataset    arm   n    bytes  structure_bytes  n_components_bias_pct  total_length_px_bias_pct  n_branches_bias_pct  n_junctions_bias_pct  n_branches_ccc  total_length_px_ccc  junc_f1
+   CBMI GRAPH7  68 6536.706          563.603                -30.155                    -6.429              -28.453               -30.249           0.325                0.596    0.333
+   CBMI    SEG  68      NaN          563.603                -30.155                    -6.486              -28.453               -30.249           0.325                0.595    0.333
+   CBMI   JPEG  68 6421.838          563.603                -28.130                    -3.026              -25.519               -26.368           0.396                0.686    0.355
+  HUMAN GRAPH7  33 4962.909          460.818                  2.083                    19.164                5.413                 1.831           0.836                0.863    0.248
+  HUMAN    SEG  33      NaN          460.818                  2.083                    19.075                5.413                 1.831           0.836                0.864    0.248
+  HUMAN   JPEG  33 4875.061          460.818                  0.000                    19.846                6.363                 4.348           0.863                0.875    0.268
+   MITO GRAPH7 129 3865.829          376.721                  6.555                   -31.574              -32.881               -59.660           0.447                0.472    0.165
+   MITO    SEG 129      NaN          376.721                  6.555                   -31.622              -32.881               -59.660           0.447                0.472    0.165
+   MITO   JPEG 129 3804.543          376.721                 23.831                   -22.651              -22.690               -54.185           0.438                0.497    0.141
+    UIT GRAPH7  43 6427.442          560.651                -12.521                    -7.441              -13.270               -14.347           0.935                0.982    0.584
+    UIT    SEG  43      NaN          560.651                -12.521                    -7.497              -13.270               -14.347           0.935                0.982    0.584
+    UIT   JPEG  43 6314.814          560.651                -11.203                    -8.212              -13.163               -15.199           0.921                0.976    0.548
+dataset n_components_vs_jpeg total_length_px_vs_jpeg mean_width_px_vs_jpeg n_branches_vs_jpeg n_junctions_vs_jpeg cycle_rank_vs_jpeg
+   CBMI      19/25 p=2.1e-01         28/40 p=4.2e-02       22/46 p=3.2e-04    26/35 p=3.3e-02     16/29 p=1.8e-02    19/18 p=8.7e-01
+  HUMAN      12/11 p=7.2e-01         15/18 p=5.2e-01        7/26 p=1.4e-03    11/15 p=3.4e-01     10/13 p=6.4e-01      5/7 p=3.9e-01
+   MITO      67/47 p=7.3e-03         51/78 p=2.8e-02       43/86 p=2.6e-04    62/58 p=3.9e-01     45/44 p=8.4e-01    23/21 p=7.3e-01
+    UIT      14/10 p=1.3e-01         27/16 p=2.8e-02       18/25 p=2.4e-02    18/19 p=4.3e-01     15/13 p=3.9e-01      9/8 p=8.4e-01
+=== [07:07:04] real_segmenters
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/home/idl-nba055/anaconda3/lib/python3.11/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/eval_real.py", line 41, in _eval_model
+    m = load_unet(ck, device='cpu')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/nanograph_v4/unet_seg.py", line 87, in load_unet
+    sd = torch.load(ckpt_path, map_location=device)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/serialization.py", line 986, in load
+    with _open_file_like(f, 'rb') as opened_file:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/serialization.py", line 435, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/serialization.py", line 416, in __init__
+    super().__init__(open(name, mode))
+                     ^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/results/v7/unet/unet_clean_base.pt'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/eval_real.py", line 112, in <module>
+    main()
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/eval_real.py", line 82, in main
+    rows = [r for rs in pool.imap_unordered(_eval_model, list(models.items())) for r in rs]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/eval_real.py", line 82, in <listcomp>
+    rows = [r for rs in pool.imap_unordered(_eval_model, list(models.items())) for r in rs]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/multiprocessing/pool.py", line 873, in next
+    raise value
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/results/v7/unet/unet_clean_base.pt'
+experiments/run_paper_v3.sh: line 20: results/paper/real/segmenters/commit.txt: No such file or directory
+=== [07:07:06] ALL PAPER-V3 RUNS DONE
+=== CPU re-run of cross/retina (CUDA OOM in the first pass)
+=== [07:07:54] cross/retina
+Found 25 images in /mnt/nas1/nba055-2/idea_1/datasets/retina/images
+Masks directory: (none)
+Output: results/paper/cross/retina
+Sample visualizations: 4
+Sample indices: [0, 3, 20, 23]
+
+Nanograph v5 — 127 params
+======================================================================
+
+[1/25] retina_green_full  (0.0 img/s, ETA 0m)  ** SAMPLE **
+Polarity: dark-on-light detected -> image inverted
+Image: (1411, 1411), type=dense (FG=11.0%, n_cc=8, mean_fg_int=0.75)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 566 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           5.6%   0.3475      56ms
+Frangi         0.0%   0.0000    4239ms
+Meijering      3.2%   0.3280    3726ms
+Learned       10.1%   0.4580    2297ms <<<
+
+Selected: Learned
+Nanograph: 15746 points (EP=135, JN=1993, S=13618)
+Background grid: 16×16 (11 ms)
+Graph (branch): 5319 nodes, 5505 edges, 2 components
+FG residual: 57,970 bytes (563 ms)
+
+============================================================
+  RESULT (v5): 15946 pts, 136,538 bytes
+  vs raw pixels: 15x  vs PNG: 4.0x
+  PSNR=24.36  SSIM=0.8274  FG-PSNR=32.09  FG-SSIM=0.9967
+  Graph topology: 2 components, 188 cycles, 557 junctions, 315 endpoints
+  Segmentation: β₀=2, β₁=282
+  Structures: 2 -- {'ring': 1, 'branched': 1}
+  Total time: 233023 ms
+============================================================
+  Sample saved: results/paper/cross/retina/samples/retina_green_full.png
+  Bytes: 136,538  |  FG-SSIM: 0.9967  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 1.0000
+
+[4/25] retina_tile_002  (0.0 img/s, ETA 32m)  ** SAMPLE **
+Polarity: dark-on-light detected -> image inverted
+Image: (256, 256), type=dense (FG=17.5%, n_cc=7, mean_fg_int=0.98)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 19 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           6.2%   0.3973       1ms
+Frangi         0.2%   0.3457     141ms
+Meijering      4.6%   0.4265     124ms <<<
+Learned       14.7%   0.4099     994ms
+
+Selected: Meijering
+Nanograph: 288 points (EP=7, JN=6, S=275)
+Background grid: 16×16 (3 ms)
+Graph (branch): 63 nodes, 58 edges, 5 components
+FG residual: 925 bytes (13 ms)
+
+============================================================
+  RESULT (v5): 488 pts, 3,394 bytes
+  vs raw pixels: 19x  vs PNG: 5.9x
+  PSNR=28.51  SSIM=0.8628  FG-PSNR=33.08  FG-SSIM=0.9985
+  Graph topology: 5 components, 0 cycles, 2 junctions, 12 endpoints
+  Segmentation: β₀=5, β₁=0
+  Structures: 5 -- {'punctate': 3, 'linear': 1, 'branched': 1}
+  Total time: 3022 ms
+============================================================
+  Sample saved: results/paper/cross/retina/samples/retina_tile_002.png
+  Bytes: 3,394  |  FG-SSIM: 0.9985  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.7197
+
+[21/25] retina_tile_019  (0.1 img/s, ETA 1m)  ** SAMPLE **
+Image: (256, 256), type=sparse (FG=8.7%, n_cc=18, mean_fg_int=0.43)
+  bg_kernel=50, spacing=3, width_cap=30.0
+Preprocessing: 22 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu          22.7%   0.4976       1ms <<<
+Frangi         0.0%   0.0000     124ms
+Meijering      8.3%   0.4610     107ms
+Learned        7.3%   0.4869     290ms
+
+Selected: Otsu
+Nanograph: 539 points (EP=11, JN=44, S=484)
+Background grid: 16×16 (3 ms)
+Graph (branch): 145 nodes, 146 edges, 3 components
+FG residual: 1,781 bytes (13 ms)
+
+============================================================
+  RESULT (v5): 689 pts, 5,537 bytes
+  vs raw pixels: 12x  vs PNG: 1.9x
+  PSNR=32.67  SSIM=0.9200  FG-PSNR=37.80  FG-SSIM=0.9872
+  Graph topology: 3 components, 4 cycles, 15 junctions, 13 endpoints
+  Segmentation: β₀=3, β₁=4
+  Structures: 3 -- {'punctate': 1, 'linear': 1, 'ring': 1}
+  Total time: 6086 ms
+============================================================
+  Sample saved: results/paper/cross/retina/samples/retina_tile_019.png
+  Bytes: 5,537  |  FG-SSIM: 0.9872  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.9937
+
+[24/25] retina_tile_022  (0.1 img/s, ETA 1m)  ** SAMPLE **
+Polarity: dark-on-light detected -> image inverted
+Image: (256, 256), type=dense (FG=16.2%, n_cc=43, mean_fg_int=0.77)
+  bg_kernel=25, spacing=2, width_cap=15.0
+Preprocessing: 19 ms
+Method          FG%    Score     Time
+---------------------------------------------
+Otsu           7.6%   0.4738       1ms
+Frangi         0.0%   0.0000     135ms
+Meijering      4.4%   0.4993     118ms <<<
+Learned       14.2%   0.4369     206ms
+
+Selected: Meijering
+Nanograph: 275 points (EP=9, JN=1, S=265)
+Background grid: 16×16 (3 ms)
+Graph (branch): 69 nodes, 64 edges, 5 components
+FG residual: 914 bytes (15 ms)
+
+============================================================
+  RESULT (v5): 475 pts, 3,315 bytes
+  vs raw pixels: 20x  vs PNG: 6.4x
+  PSNR=29.98  SSIM=0.8729  FG-PSNR=33.42  FG-SSIM=0.9981
+  Graph topology: 5 components, 0 cycles, 1 junctions, 11 endpoints
+  Segmentation: β₀=5, β₁=0
+  Structures: 5 -- {'punctate': 4, 'branched': 1}
+  Total time: 1657 ms
+============================================================
+  Sample saved: results/paper/cross/retina/samples/retina_tile_022.png
+  Bytes: 3,315  |  FG-SSIM: 0.9981  |  GT-IoU: 0.0000  |  Seg-F1: 0.0000  |  Topo-Q: 0.6988
+
+CSV saved: results/paper/cross/retina/metrics.csv
+TXT saved: results/paper/cross/retina/metrics.txt
+
+NANOGRAPH v5 — DATASET EVALUATION SUMMARY
+======================================================================
+  Images processed: 25/25
+  Failures: 0
+  Total time: 368.5s  (14.74s/image)
+
+  Metric                            Mean       Std       Min       Max    Median
+  --------------------------------------------------------------------------
+  FG-SSIM                         0.9954    0.0039    0.9836    0.9990    0.9963
+  FG-PSNR                        33.8888    1.4021   32.0867   37.7997   33.3948
+  IoU (recon)                     0.3753    0.2420    0.0087    0.9345    0.3619
+  Topology Q                      0.8559    0.1191    0.5926    1.0000    0.9003
+  Full PSNR                      28.0061    2.5310   23.2963   32.6709   27.8799
+  Full SSIM                       0.8124    0.0807    0.5800    0.9200    0.8274
+  Bytes                        13098.3200 25421.1425 3198.0000 136538.0000 7977.0000
+  Graph Components               12.1600   13.3826    2.0000   56.0000    8.0000
+  Graph Cycles                   10.0400   36.4214    0.0000  188.0000    2.0000
+  Graph Complexity                4.0985   18.3598    0.0000   94.0000    0.1250
+  Nodes                         454.0400 1006.7209   57.0000 5319.0000  246.0000
+  Edges                         451.9200 1043.0272   53.0000 5505.0000  242.0000
+  Total Edge Length            2334.5041 5326.0056  312.9655 28175.8750 1249.1535
+  Mean Width (px)                 4.5507    1.8221    2.6286   11.6719    3.9899
+  Mean Curvature                  0.0000    0.0000    0.0000    0.0000    0.0000
+  Time (ms)                    13693.8095 44855.1105 1657.0408 233022.6617 4254.1964
+
+  WINS vs byte-matched JPEG (25 images):
+    GT-IoU          : 0/25 wins (0%)  mean Δ=+0.0000
+    GT-FG-SSIM      : 0/25 wins (0%)  mean Δ=+0.0000
+    GT-FG-PSNR      : 0/25 wins (0%)  mean Δ=+0.0000
+    FG-SSIM         : 0/25 wins (0%)  mean Δ=-0.0042
+    IoU             : 23/25 wins (92%)  mean Δ=+0.2423
+
+  No segmentation failures (all seg_iou >= 0.3)
+
+Summary saved: results/paper/cross/retina/summary.txt
+Aggregate plots saved: results/paper/cross/retina/aggregate_plots.png
+
+Done. All results in results/paper/cross/retina/

@@ -1,0 +1,10 @@
+20 images: {'STARE': 20, 'DRIVE': 0}
+  stare         train= 16 val=  4
+  drive         train= 16 val=  4
+  microtubules  train= 53 val= 13
+  epfl          train=128 val= 33
+dataset  arm subset  n   iou  n_branches_ccc  n_junctions_ccc  total_length_px_ccc  mean_width_px_ccc  junc_f1_3  end_f1_3
+  STARE OBS2    all 20 0.589           0.249            0.259                0.290              0.538      0.502     0.129
+  STARE OBS2    val  4 0.566           0.128            0.140                0.197              0.364      0.445     0.112
+  STARE PIPE    all 20 0.664           0.723            0.710                0.866              0.129      0.576     0.190
+  STARE PIPE    val  4 0.656           0.808            0.780                0.863             -0.176      0.522     0.176

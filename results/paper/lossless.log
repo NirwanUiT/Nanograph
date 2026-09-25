@@ -1,0 +1,47 @@
+bilevel codec: jbig2
+  dataset             format   n  bytes_mean  ratio_v7_over_format  ratio_ci_lo  ratio_ci_hi  decode_descr_ms_median
+     CBMI         mask_jbig2  68     621.265                 1.191        1.130        1.253                  12.529
+     CBMI           mask_png  68    1371.441                 0.539        0.498        0.581                   9.778
+     CBMI mask_webp_lossless  68    1001.235                 0.739        0.690        0.791                  10.548
+     CBMI          mask_zlib  68    1166.603                 0.634        0.593        0.681                   9.595
+     CBMI         skel_chain  68    1025.176                 0.721        0.699        0.746                   8.777
+     CBMI                swc  68    5716.721                 0.129        0.128        0.131                   2.933
+     CBMI             swc_gz  68    2283.529                 0.324        0.318        0.330                   2.971
+     CBMI    v7_struct_e0.75  68     739.618                 1.000        1.000        1.000                   4.388
+     CBMI       v7_struct_e3  68     661.412                 1.118        1.112        1.125                   3.777
+    HUMAN         mask_jbig2  33     406.212                 1.069        0.977        1.152                   9.971
+    HUMAN           mask_png  33     755.727                 0.575        0.534        0.613                   7.060
+    HUMAN mask_webp_lossless  33     530.303                 0.819        0.771        0.859                   7.648
+    HUMAN          mask_zlib  33     610.939                 0.711        0.671        0.748                   6.974
+    HUMAN         skel_chain  33     624.061                 0.696        0.677        0.713                   5.585
+    HUMAN                swc  33    3375.697                 0.129        0.125        0.134                   1.780
+    HUMAN             swc_gz  33    1373.606                 0.316        0.309        0.324                   1.840
+    HUMAN    v7_struct_e0.75  33     434.212                 1.000        1.000        1.000                   2.604
+    HUMAN       v7_struct_e3  33     386.242                 1.124        1.113        1.134                   2.215
+     MITO         mask_jbig2 133     463.812                 1.235        1.180        1.289                  10.209
+     MITO           mask_png 133     777.233                 0.737        0.708        0.764                   7.844
+     MITO mask_webp_lossless 133     531.985                 1.077        1.042        1.109                   8.619
+     MITO          mask_zlib 133     611.519                 0.937        0.907        0.963                   7.539
+     MITO         skel_chain 133     800.338                 0.716        0.709        0.723                   6.648
+     MITO                swc 133    4161.023                 0.138        0.136        0.140                   2.245
+     MITO             swc_gz 133    1705.158                 0.336        0.332        0.340                   2.353
+     MITO    v7_struct_e0.75 133     572.970                 1.000        1.000        1.000                   3.275
+     MITO       v7_struct_e3 133     510.173                 1.123        1.118        1.128                   2.878
+ORGANELLE         mask_jbig2 726     268.565                 0.717        0.710        0.724                   6.955
+ORGANELLE           mask_png 726     515.934                 0.373        0.369        0.377                   4.828
+ORGANELLE mask_webp_lossless 726     328.972                 0.585        0.579        0.590                   5.549
+ORGANELLE          mask_zlib 726     380.689                 0.506        0.501        0.510                   4.613
+ORGANELLE         skel_chain 726     288.204                 0.668        0.665        0.671                   3.669
+ORGANELLE                swc 726    1321.773                 0.146        0.145        0.146                   0.854
+ORGANELLE             swc_gz 726     597.045                 0.322        0.321        0.324                   0.869
+ORGANELLE    v7_struct_e0.75 726     192.501                 1.000        1.000        1.000                   1.259
+ORGANELLE       v7_struct_e3 726     173.802                 1.108        1.106        1.110                   1.117
+      UIT         mask_jbig2  45     534.089                 1.114        1.065        1.155                  12.006
+      UIT           mask_png  45    1257.022                 0.473        0.458        0.487                   9.883
+      UIT mask_webp_lossless  45     912.800                 0.652        0.635        0.669                  10.666
+      UIT          mask_zlib  45    1070.356                 0.556        0.543        0.570                   9.842
+      UIT         skel_chain  45     964.022                 0.617        0.608        0.626                   8.301
+      UIT                swc  45    4690.289                 0.127        0.125        0.130                   2.613
+      UIT             swc_gz  45    1943.578                 0.306        0.302        0.311                   2.601
+      UIT    v7_struct_e0.75  45     594.978                 1.000        1.000        1.000                   3.767
+      UIT       v7_struct_e3  45     526.511                 1.130        1.123        1.136                   3.393

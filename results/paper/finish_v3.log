@@ -1,0 +1,102 @@
+
+UIT: structure layer 539 B | n_branches bias -14% CCC 0.94 | n_junctions bias -18% CCC 0.92 | total_length_px bias -8% CCC 0.98
+  JPEG q1     1228 B | n_branches bias -26% CCC 0.73 | n_junctions bias -39% CCC 0.60 | total_length_px bias -38% CCC 0.64
+  JPEG q5     1382 B | n_branches bias -10% CCC 0.88 | n_junctions bias -13% CCC 0.82 | total_length_px bias -14% CCC 0.90
+  JPEG q10    1656 B | n_branches bias +1% CCC 0.89 | n_junctions bias -7% CCC 0.88 | total_length_px bias -0% CCC 0.94
+  JPEG q20    2234 B | n_branches bias -9% CCC 0.92 | n_junctions bias -18% CCC 0.88 | total_length_px bias -6% CCC 0.97
+
+CBMI: structure layer 564 B | n_branches bias -34% CCC 0.27 | n_junctions bias -42% CCC 0.13 | total_length_px bias -7% CCC 0.59
+  JPEG q1     1304 B | n_branches bias -46% CCC -0.09 | n_junctions bias -52% CCC -0.14 | total_length_px bias -37% CCC 0.00
+  JPEG q5     1535 B | n_branches bias -39% CCC -0.02 | n_junctions bias -49% CCC -0.06 | total_length_px bias -21% CCC 0.11
+  JPEG q10    1951 B | n_branches bias -38% CCC 0.15 | n_junctions bias -50% CCC 0.04 | total_length_px bias -14% CCC 0.39
+  JPEG q20    2869 B | n_branches bias -35% CCC 0.32 | n_junctions bias -43% CCC 0.17 | total_length_px bias -8% CCC 0.64
+
+MITO: structure layer 367 B | n_branches bias -41% CCC 0.39 | n_junctions bias -65% CCC 0.17 | total_length_px bias -34% CCC 0.48
+  JPEG q1     1226 B | n_branches bias -39% CCC 0.19 | n_junctions bias -59% CCC 0.15 | total_length_px bias -44% CCC 0.20
+  JPEG q5     1388 B | n_branches bias -21% CCC 0.42 | n_junctions bias -43% CCC 0.27 | total_length_px bias -25% CCC 0.46
+  JPEG q10    1724 B | n_branches bias -16% CCC 0.47 | n_junctions bias -43% CCC 0.27 | total_length_px bias -12% CCC 0.55
+  JPEG q20    2304 B | n_branches bias -24% CCC 0.38 | n_junctions bias -53% CCC 0.18 | total_length_px bias -18% CCC 0.48
+
+HUMAN: structure layer 461 B | n_branches bias -10% CCC 0.81 | n_junctions bias -12% CCC 0.74 | total_length_px bias +16% CCC 0.87
+  JPEG q1     1175 B | n_branches bias -49% CCC 0.35 | n_junctions bias -61% CCC 0.25 | total_length_px bias -43% CCC 0.51
+  JPEG q5     1269 B | n_branches bias -34% CCC 0.47 | n_junctions bias -37% CCC 0.36 | total_length_px bias -26% CCC 0.62
+  JPEG q10    1455 B | n_branches bias -23% CCC 0.65 | n_junctions bias -24% CCC 0.58 | total_length_px bias -5% CCC 0.85
+  JPEG q20    1805 B | n_branches bias -11% CCC 0.78 | n_junctions bias -11% CCC 0.73 | total_length_px bias +9% CCC 0.88
+wrote paper/numbers.tex (801 macros) and tables/
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/paper/make_figures.py:184: UserWarning: All values for SymLogScale are below linthresh, making it effectively linear. You likely should lower the value of linthresh. 
+  a.axvline(op, ls=':', color=GREY)
+/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/paper/make_figures.py:184: UserWarning: All values for SymLogScale are below linthresh, making it effectively linear. You likely should lower the value of linthresh. 
+  a.axvline(op, ls=':', color=GREY)
+wrote fig_codec_rd.png
+wrote fig_seg_bottleneck.png
+wrote fig_topology.png
+wrote cross_dataset_comparison.png
+wrote fig_modality_scaling.png
+wrote fig_prior_positioning.png
+wrote fig_seg_perturb.png
+wrote fig_downstream.png
+wrote fig_layers.png
+wrote fig_truth.png
+wrote fig_clip.png
+wrote fig_real.png
+wrote fig_lossless.png
+saved: paper/figures/pipeline_overview.png
+sidecar: paper/figures/pipeline_overview.json
+7378: seg=Learned segIoU=0.902 pts=264 bytes=2083 ratio=31x PSNR=30.9
+wrote paper/figures/fig_pipeline.png
+saved: paper/figures/fig_ood_failure.png
+sidecar: paper/figures/fig_ood_failure.json
+slice036: seg=Otsu segIoU=0.002 pts=8722 bytes=131239 ratio=6x PSNR=23.1
+wrote paper/figures/fig_qualitative_organelle.png  (organelle 7378: segIoU=0.902 pts=264 bytes=2083)
+  Temporal clip: 1_1.png segmenter=Otsu nodes=76 bytes=4130
+  STED TOM20: d1_d0001_p0004_t0000.png segmenter=Meijering nodes=1511 bytes=63264
+  MITO (MIP tile): M2_019_y256x256.png segmenter=Frangi nodes=8 bytes=972
+wrote paper/figures/fig_mito_generalisation.png
+| # | verdict | evidence |
+|---|---|---|
+| 1 | **HOLDS** | Seg-IoU 0.870 (D) vs 0.366 (C); payload 2194 B (D) vs 2871 B (C) |
+| 2 | **HOLDS** | cycles 0.34 vs 0.44; width 2.97 vs 5.18 |
+| 3 | **FAILS** | GT-IoU vs JPEG wins 389/716, p = 0.02; held-out wins 54.3 % |
+| 4 | **FAILS** | classical GT-IoU vs JPEG wins 42/696, p = 3.2\times10^{-142} |
+| 5 | **HOLDS** | GT-FG-PSNR 27.30 (NG) vs 27.89 (JPEG) |
+| 6 | **HOLDS** | JPEG Betti 0.101; beta0 9.33 vs 4.41; beta1 4.00 vs 0.32 |
+| 7 | **HOLDS** | max JPEG Betti excl. clip 0.176 (DRIVE); clip 0.788 |
+| 8 | **HOLDS** | BRR 0.0335 (band 0.0274-0.0456); FewerX 23.5, RicherX 21.5 |
+| 9 | **HOLDS** | org_replace held-out Seg-IoU 0.886 |
+| 10 | **HOLDS** | max |as_is - oracle| 0.009 |
+| 11 | **FAILS** | dilate 1 px: beta0 changed 10.2 %, width +nan %; boundary noise 1 px: beta0 changed 9.6 %, median |dbeta1| 39; baseline Seg-IoU median 0.890 |
+| 12 | **HOLDS** | no-JPEG microtubules 31/66, EPFL 1/10; STARE JPEG GT-FG-PSNR 42.9 vs 28.7 |
+| 13 | **FAILS** | clip Seg-IoU learned-replace 0.696 vs default 0.750 |
+| 14 | **HOLDS** | bg grid + residual improve FG-PSNR on 726/726 |
+wrote tables/supp_downstream_L.tex (0 TBD cells)
+wrote tables/supp_truth_L.tex (0 TBD cells)
+wrote tables/supp_builder.tex (0 TBD cells)
+wrote tables/supp_real.tex (0 TBD cells)
+# Direction checks
+
+numbers: `paper/numbers.tex` (commit f623678)
+
+| check | status | claim | manuscript lines |
+|---|---|---|---|
+| `layer-size` | **PASS** | structure layer smaller than the lossless mask (abstract, layers section) | 89, 215 |
+| `layer-topology` | **PASS** | stored components match the mask on >= 99 % and cycles on >= 90 % of images | 227, 229, 1174 |
+| `ds-every` | **ERROR (KeyError)** | stored graph closer to the reference than JPEG on every descriptor (tab:downstream) | 453, 454, 455, 456, 457, 458 |
+| `ds-components` | **PASS** | JPEG route fragments components more than the stored graph | 425, 426, 428, 453 |
+| `ds-wasserstein` | **PASS** | branch-length distribution closer to the reference than JPEG | 430 |
+| `cost` | **PASS** | query cost: structure layer < mask re-analysis < JPEG route | 90, 431, 432 |
+| `gtiou-parity` | **PASS** | GT-IoU at parity with JPEG (95 % CI of the mean difference contains 0) | 959 |
+| `gtiou-classical` | **PASS** | with the classical cascade JPEG is ahead on GT-IoU | - |
+| `truth-jpeg-length` | **PASS** | JPEG length bias smaller than the graph's, but its concordance lower | 492, 493, 496 |
+| `truth-width` | **PASS** | every route overstates width, the simulator mask included | 491, 492 |
+| `truth-calibrated-ref` | **FAIL** | after calibration the graph is as close to truth as the simulator mask (within 2 points) | 500, 501, 502 |
+| `truth-calibrated-jpeg` | **PASS** | after calibration the graph is closer to truth than JPEG on components, length, branches, junctions | 500, 501, 502 |
+| `clip-rule` | **PASS** | the one-diameter rule reduces the clip's component overcount | 510, 511 |
+| `real-seg` | **PASS** | real training raises in-pipeline Seg-IoU on all four datasets | 542, 543, 548, 549 |
+| `real-human` | **PASS** | on EP-UiT-Human real training shrinks the branch bias and raises its CCC | 552, 553 |
+| `real-q1` | **PASS** | the smallest JPEG is markedly worse than the structure layer (UiT, Human) | 566, 567 |
+| `real-q20` | **PASS** | JPEG q20 reaches the structure layer on CBMI and MITO but falls short on UiT and Human | 566, 567, 571 |
+| `lossless-smallest` | **FAIL** | T14: the structure layer is smaller than the best lossless alternative (per dataset) | - |
+direction checks: some FAIL, see results/paper/DIRECTIONS.md
+TBD macros used by the manuscript:
+0 []
+FINISH_EXIT 0

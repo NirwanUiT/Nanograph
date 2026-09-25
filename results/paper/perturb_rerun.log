@@ -1,0 +1,33 @@
+=== [07:05:06] seg_perturbation_ablation
+726 images
+[1/726] 7249 base b0=3 b1=1 segIoU=0.362
+[26/726] 7275 base b0=5 b1=0 segIoU=0.904
+[51/726] 7301 base b0=4 b1=0 segIoU=0.875
+[76/726] 7327 base b0=4 b1=0 segIoU=0.888
+[101/726] 7353 base b0=5 b1=1 segIoU=0.894
+[126/726] 7379 base b0=5 b1=0 segIoU=0.883
+[151/726] 7405 base b0=4 b1=0 segIoU=0.958
+[176/726] 7431 base b0=5 b1=0 segIoU=0.850
+[201/726] 7457 base b0=4 b1=0 segIoU=0.887
+[226/726] 7482 base b0=5 b1=0 segIoU=0.849
+[251/726] 7507 base b0=4 b1=0 segIoU=0.927
+[276/726] 7532 base b0=5 b1=0 segIoU=0.879
+[301/726] 7559 base b0=4 b1=1 segIoU=0.906
+[326/726] 7586 base b0=4 b1=0 segIoU=0.895
+[351/726] 7612 base b0=5 b1=0 segIoU=0.869
+[376/726] 7639 base b0=4 b1=0 segIoU=0.936
+[401/726] 7664 base b0=4 b1=0 segIoU=0.910
+[426/726] 7691 base b0=4 b1=0 segIoU=0.882
+[451/726] 7716 base b0=4 b1=1 segIoU=0.887
+[476/726] 7741 base b0=5 b1=0 segIoU=0.879
+[501/726] 7768 base b0=4 b1=1 segIoU=0.929
+[526/726] 7793 base b0=5 b1=0 segIoU=0.915
+[551/726] 7818 base b0=4 b1=0 segIoU=0.870
+[576/726] 7844 base b0=4 b1=0 segIoU=0.888
+[601/726] 7870 base b0=4 b1=0 segIoU=0.879
+[626/726] 7896 base b0=5 b1=0 segIoU=0.878
+[651/726] 7922 base b0=4 b1=1 segIoU=0.921
+[676/726] 7947 base b0=4 b1=0 segIoU=0.893
+[701/726] 7974 base b0=5 b1=1 segIoU=0.871
+[726/726] 7999 base b0=4 b1=0 segIoU=0.895
+wrote results/paper/seg_perturbation_ablation.csv (13794 rows)

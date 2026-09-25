@@ -1,0 +1,33 @@
+### [2026-09-25 07:17:26] all inputs fresh; building
+finish_v3 exit 1
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/nn/modules/conv.py", line 460, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/idl-nba055/anaconda3/lib/python3.11/site-packages/torch/nn/modules/conv.py", line 456, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 96.00 MiB. GPU 0 has a total capacty of 79.25 GiB of which 45.75 MiB is free. Process 266647 has 77.69 GiB memory in use. Process 1438676 has 1.04 GiB memory in use. Including non-PyTorch memory, this process has 460.00 MiB memory in use. Of the allocated memory 32.65 MiB is allocated by PyTorch, and 11.35 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+wrote paper/figures/fig_qualitative_organelle.png  (organelle 7378: segIoU=0.902 pts=264 bytes=2083)
+  Temporal clip: 1_1.png segmenter=Otsu nodes=76 bytes=4130
+  STED TOM20: d1_d0001_p0004_t0000.png segmenter=Meijering nodes=1511 bytes=63264
+  MITO (MIP tile): M2_019_y256x256.png segmenter=Frangi nodes=8 bytes=972
+wrote paper/figures/fig_mito_generalisation.png
+Traceback (most recent call last):
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/render_paper_panels.py", line 220, in <module>
+    main()
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/render_paper_panels.py", line 216, in main
+    ood_failure(os.path.join(args.out, "fig_ood_failure.png"), args.em_slice)
+  File "/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/render_paper_panels.py", line 203, in ood_failure
+    subprocess.run([sys.executable, os.path.join(HERE, "render_pipeline_diagram.py")],
+  File "/home/idl-nba055/anaconda3/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/idl-nba055/anaconda3/bin/python', '/mnt/nas1/nba055-2/idea_1/Nanograph/Nanograph/experiments/render_pipeline_diagram.py']' returned non-zero exit status 1.
+FINISH_AFTER_FIXES_DONE

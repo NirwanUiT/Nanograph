@@ -1,0 +1,196 @@
+    junction_def     L       descriptor    arm    n       ccc      mdape   bias_pct    wilcoxon_p  wins_graph  wins_jpeg
+0            t10     0     n_components  GRAPH  716  0.805525   0.000000  -1.424590  2.047840e-43       261.0       16.0
+1            t10     0     n_components   JPEG  716 -0.008262   0.000000  68.008671  2.047840e-43       261.0       16.0
+2            t10     0     n_components    PRE  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+3            t10     0     n_components    SEG  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+6            t10     0  total_length_px  GRAPH  716  0.828375   4.944928  -6.085330  6.100478e-07       369.0      347.0
+7            t10     0  total_length_px   JPEG  716 -0.030872   5.108719  21.631059  6.100478e-07       369.0      347.0
+8            t10     0  total_length_px    PRE  716  0.827767   4.980026  -6.139405           NaN         NaN        NaN
+9            t10     0  total_length_px    SEG  716  0.827737   4.980026  -6.141514           NaN         NaN        NaN
+12           t10     0    mean_width_px  GRAPH  716  0.806609   4.055048   5.030811  6.835045e-11       427.0      283.0
+13           t10     0    mean_width_px   JPEG  710  0.786508   4.796357   4.994995  6.835045e-11       427.0      283.0
+14           t10     0    mean_width_px    PRE  716  0.805284   4.183905   5.090100           NaN         NaN        NaN
+15           t10     0    mean_width_px    SEG  716  0.804311   4.201793   5.146917           NaN         NaN        NaN
+18           t10     0       n_branches  GRAPH  716  0.468485  28.571429 -27.722356  3.522907e-03       273.0      286.0
+19           t10     0       n_branches   JPEG  716 -0.015968  28.571429  34.810459  3.522907e-03       273.0      286.0
+20           t10     0       n_branches    PRE  716  0.468485  28.571429 -27.722356           NaN         NaN        NaN
+21           t10     0       n_branches    SEG  716  0.468485  28.571429 -27.722356           NaN         NaN        NaN
+24           t10     0      n_junctions  GRAPH  716  0.510035  50.000000 -39.627329  1.345870e-01       234.0      259.0
+25           t10     0      n_junctions   JPEG  716  0.033658  41.428571  19.068323  1.345870e-01       234.0      259.0
+26           t10     0      n_junctions    PRE  716  0.510035  50.000000 -39.627329           NaN         NaN        NaN
+27           t10     0      n_junctions    SEG  716  0.510035  50.000000 -39.627329           NaN         NaN        NaN
+30           t10     0       cycle_rank  GRAPH  716  0.511041  50.000000 -36.895674  7.674673e-11       146.0       55.0
+31           t10     0       cycle_rank   JPEG  716  0.237158  50.000000  15.521628  7.674673e-11       146.0       55.0
+32           t10     0       cycle_rank    PRE  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+33           t10     0       cycle_rank    SEG  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+36        degree     0     n_components  GRAPH  716  0.805525   0.000000  -1.424590  2.047840e-43       261.0       16.0
+37        degree     0     n_components   JPEG  716 -0.008262   0.000000  68.008671  2.047840e-43       261.0       16.0
+38        degree     0     n_components    PRE  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+39        degree     0     n_components    SEG  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+42        degree     0  total_length_px  GRAPH  716  0.828375   4.944928  -6.085330  6.100478e-07       369.0      347.0
+43        degree     0  total_length_px   JPEG  716 -0.030872   5.108719  21.631059  6.100478e-07       369.0      347.0
+44        degree     0  total_length_px    PRE  716  0.827767   4.980026  -6.139405           NaN         NaN        NaN
+45        degree     0  total_length_px    SEG  716  0.827737   4.980026  -6.141514           NaN         NaN        NaN
+48        degree     0    mean_width_px  GRAPH  716  0.806609   4.055048   5.030811  6.835045e-11       427.0      283.0
+49        degree     0    mean_width_px   JPEG  710  0.786508   4.796357   4.994995  6.835045e-11       427.0      283.0
+50        degree     0    mean_width_px    PRE  716  0.805284   4.183905   5.090100           NaN         NaN        NaN
+51        degree     0    mean_width_px    SEG  716  0.804311   4.201793   5.146917           NaN         NaN        NaN
+54        degree     0       n_branches  GRAPH  716  0.468485  28.571429 -27.722356  3.522907e-03       273.0      286.0
+55        degree     0       n_branches   JPEG  716 -0.015968  28.571429  34.810459  3.522907e-03       273.0      286.0
+56        degree     0       n_branches    PRE  716  0.468485  28.571429 -27.722356           NaN         NaN        NaN
+57        degree     0       n_branches    SEG  716  0.468485  28.571429 -27.722356           NaN         NaN        NaN
+60        degree     0      n_junctions  GRAPH  716  0.510035  50.000000 -39.627329  1.345870e-01       234.0      259.0
+61        degree     0      n_junctions   JPEG  716  0.033658  41.428571  19.068323  1.345870e-01       234.0      259.0
+62        degree     0      n_junctions    PRE  716  0.510035  50.000000 -39.627329           NaN         NaN        NaN
+63        degree     0      n_junctions    SEG  716  0.510035  50.000000 -39.627329           NaN         NaN        NaN
+66        degree     0       cycle_rank  GRAPH  716  0.511041  50.000000 -36.895674  7.674673e-11       146.0       55.0
+67        degree     0       cycle_rank   JPEG  716  0.237158  50.000000  15.521628  7.674673e-11       146.0       55.0
+68        degree     0       cycle_rank    PRE  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+69        degree     0       cycle_rank    SEG  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+72        degree     2     n_components  GRAPH  716  0.805525   0.000000  -1.424590  2.047840e-43       261.0       16.0
+73        degree     2     n_components   JPEG  716 -0.008262   0.000000  68.008671  2.047840e-43       261.0       16.0
+74        degree     2     n_components    PRE  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+75        degree     2     n_components    SEG  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+78        degree     2  total_length_px  GRAPH  716  0.831526   4.456841  -5.770373  4.864717e-09       381.0      335.0
+79        degree     2  total_length_px   JPEG  716 -0.031004   5.046705  21.951358  4.864717e-09       381.0      335.0
+80        degree     2  total_length_px    PRE  716  0.830989   4.525761  -5.821294           NaN         NaN        NaN
+81        degree     2  total_length_px    SEG  716  0.830964   4.525761  -5.823412           NaN         NaN        NaN
+84        degree     2    mean_width_px  GRAPH  716  0.809539   4.008106   4.905248  2.204704e-11       427.0      283.0
+85        degree     2    mean_width_px   JPEG  710  0.789484   4.763429   4.882164  2.204704e-11       427.0      283.0
+86        degree     2    mean_width_px    PRE  716  0.808209   3.997918   4.965008           NaN         NaN        NaN
+87        degree     2    mean_width_px    SEG  716  0.807176   4.048768   5.022546           NaN         NaN        NaN
+90        degree     2       n_branches  GRAPH  716  0.568165  22.222222 -20.603193  8.615711e-12       311.0      230.0
+91        degree     2       n_branches   JPEG  716 -0.018630  25.000000  46.564163  8.615711e-12       311.0      230.0
+92        degree     2       n_branches    PRE  716  0.568165  22.222222 -20.603193           NaN         NaN        NaN
+93        degree     2       n_branches    SEG  716  0.568165  22.222222 -20.603193           NaN         NaN        NaN
+96        degree     2      n_junctions  GRAPH  716  0.593941  40.000000 -31.546089  5.541433e-08       263.0      204.0
+97        degree     2      n_junctions   JPEG  716  0.031844  40.000000  33.235402  5.541433e-08       263.0      204.0
+98        degree     2      n_junctions    PRE  716  0.593941  40.000000 -31.546089           NaN         NaN        NaN
+99        degree     2      n_junctions    SEG  716  0.593941  40.000000 -31.546089           NaN         NaN        NaN
+102       degree     2       cycle_rank  GRAPH  716  0.511041  50.000000 -36.895674  7.674673e-11       146.0       55.0
+103       degree     2       cycle_rank   JPEG  716  0.237158  50.000000  15.521628  7.674673e-11       146.0       55.0
+104       degree     2       cycle_rank    PRE  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+105       degree     2       cycle_rank    SEG  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+108       degree     5     n_components  GRAPH  716  0.805525   0.000000  -1.424590  2.047840e-43       261.0       16.0
+109       degree     5     n_components   JPEG  716 -0.008262   0.000000  68.008671  2.047840e-43       261.0       16.0
+110       degree     5     n_components    PRE  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+111       degree     5     n_components    SEG  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+114       degree     5  total_length_px  GRAPH  716  0.854641   3.056207  -3.969497  1.975752e-27       447.0      269.0
+115       degree     5  total_length_px   JPEG  716 -0.027945   4.841663  22.931640  1.975752e-27       447.0      269.0
+116       degree     5  total_length_px    PRE  716  0.854388   3.047028  -4.009287           NaN         NaN        NaN
+117       degree     5  total_length_px    SEG  716  0.854459   3.047028  -4.008461           NaN         NaN        NaN
+120       degree     5    mean_width_px  GRAPH  716  0.827515   3.489649   4.297260  1.390214e-14       444.0      266.0
+121       degree     5    mean_width_px   JPEG  710  0.804352   4.578359   4.387961  1.390214e-14       444.0      266.0
+122       degree     5    mean_width_px    PRE  716  0.826285   3.551893   4.356099           NaN         NaN        NaN
+123       degree     5    mean_width_px    SEG  716  0.825463   3.696162   4.412760           NaN         NaN        NaN
+126       degree     5       n_branches  GRAPH  716  0.746346  12.500000 -10.249610  2.239653e-29       341.0      141.0
+127       degree     5       n_branches   JPEG  716 -0.016047  23.076923  56.068643  2.239653e-29       341.0      141.0
+128       degree     5       n_branches    PRE  716  0.746346  12.500000 -10.249610           NaN         NaN        NaN
+129       degree     5       n_branches    SEG  716  0.747295  12.500000 -10.218409           NaN         NaN        NaN
+132       degree     5      n_junctions  GRAPH  716  0.731118  33.333333 -20.126147  2.478895e-13       248.0      136.0
+133       degree     5      n_junctions   JPEG  716  0.081839  33.333333  40.481651  2.478895e-13       248.0      136.0
+134       degree     5      n_junctions    PRE  716  0.731118  33.333333 -20.126147           NaN         NaN        NaN
+135       degree     5      n_junctions    SEG  716  0.732184  33.333333 -20.068807           NaN         NaN        NaN
+138       degree     5       cycle_rank  GRAPH  716  0.511041  50.000000 -36.895674  7.674673e-11       146.0       55.0
+139       degree     5       cycle_rank   JPEG  716  0.237158  50.000000  15.521628  7.674673e-11       146.0       55.0
+140       degree     5       cycle_rank    PRE  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+141       degree     5       cycle_rank    SEG  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+144       degree    10     n_components  GRAPH  716  0.805525   0.000000  -1.424590  2.047840e-43       261.0       16.0
+145       degree    10     n_components   JPEG  716 -0.008262   0.000000  68.008671  2.047840e-43       261.0       16.0
+146       degree    10     n_components    PRE  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+147       degree    10     n_components    SEG  716  0.805525   0.000000  -1.424590           NaN         NaN        NaN
+150       degree    10  total_length_px  GRAPH  716  0.857768   3.206556  -3.835199  1.428794e-19       439.0      277.0
+151       degree    10  total_length_px   JPEG  716 -0.023696   4.330018  20.097197  1.428794e-19       439.0      277.0
+152       degree    10  total_length_px    PRE  716  0.857599   3.190027  -3.860105           NaN         NaN        NaN
+153       degree    10  total_length_px    SEG  716  0.857562   3.190027  -3.861443           NaN         NaN        NaN
+156       degree    10    mean_width_px  GRAPH  716  0.835091   3.273698   3.979865  1.644319e-19       459.0      251.0
+157       degree    10    mean_width_px   JPEG  710  0.806804   4.458978   4.538891  1.644319e-19       459.0      251.0
+158       degree    10    mean_width_px    PRE  716  0.833884   3.330846   4.040579           NaN         NaN        NaN
+159       degree    10    mean_width_px    SEG  716  0.832814   3.400069   4.118533           NaN         NaN        NaN
+162       degree    10       n_branches  GRAPH  716  0.721355   9.090909 -11.131320  1.391088e-24       307.0      128.0
+163       degree    10       n_branches   JPEG  716 -0.015586  20.000000  46.744271  1.391088e-24       307.0      128.0
+164       degree    10       n_branches    PRE  716  0.723553   9.090909 -11.058567           NaN         NaN        NaN
+165       degree    10       n_branches    SEG  716  0.723553   9.090909 -11.058567           NaN         NaN        NaN
+168       degree    10      n_junctions  GRAPH  716  0.696538  33.333333 -26.117103  2.302524e-06       189.0      120.0
+169       degree    10      n_junctions   JPEG  716  0.170388  33.333333  15.562404  2.302524e-06       189.0      120.0
+170       degree    10      n_junctions    PRE  716  0.698104  33.333333 -25.963020           NaN         NaN        NaN
+171       degree    10      n_junctions    SEG  716  0.698104  33.333333 -25.963020           NaN         NaN        NaN
+174       degree    10       cycle_rank  GRAPH  716  0.511041  50.000000 -36.895674  7.674673e-11       146.0       55.0
+175       degree    10       cycle_rank   JPEG  716  0.237158  50.000000  15.521628  7.674673e-11       146.0       55.0
+176       degree    10       cycle_rank    PRE  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+177       degree    10       cycle_rank    SEG  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+180       degree  auto     n_components  GRAPH  716  0.748868   0.000000  -1.982038  1.407123e-39       239.0       17.0
+181       degree  auto     n_components   JPEG  716 -0.008605   0.000000  48.652834  1.407123e-39       239.0       17.0
+182       degree  auto     n_components    PRE  716  0.750445   0.000000  -2.013007           NaN         NaN        NaN
+183       degree  auto     n_components    SEG  716  0.750445   0.000000  -2.013007           NaN         NaN        NaN
+186       degree  auto  total_length_px  GRAPH  716  0.853830   3.041549  -3.974125  8.729682e-25       450.0      266.0
+187       degree  auto  total_length_px   JPEG  716 -0.022123   4.671789  21.119884  8.729682e-25       450.0      266.0
+188       degree  auto  total_length_px    PRE  716  0.852956   3.034587  -4.022030           NaN         NaN        NaN
+189       degree  auto  total_length_px    SEG  716  0.852925   3.034587  -4.033670           NaN         NaN        NaN
+192       degree  auto    mean_width_px  GRAPH  716  0.796624   3.419562   4.284740  1.754664e-17       455.0      253.0
+193       degree  auto    mean_width_px   JPEG  708  0.804586   4.492239   4.523023  1.754664e-17       455.0      253.0
+194       degree  auto    mean_width_px    PRE  716  0.794045   3.486446   4.347690           NaN         NaN        NaN
+195       degree  auto    mean_width_px    SEG  716  0.791897   3.552685   4.408183           NaN         NaN        NaN
+198       degree  auto       n_branches  GRAPH  716  0.751370  11.111111 -10.915834  6.619823e-23       327.0      140.0
+199       degree  auto       n_branches   JPEG  716 -0.005026  20.000000  42.615285  6.619823e-23       327.0      140.0
+200       degree  auto       n_branches    PRE  716  0.749086  11.111111 -10.996453           NaN         NaN        NaN
+201       degree  auto       n_branches    SEG  716  0.748941  11.111111 -11.093196           NaN         NaN        NaN
+204       degree  auto      n_junctions  GRAPH  716  0.735917  33.333333 -21.619976  1.831715e-10       232.0      137.0
+205       degree  auto      n_junctions   JPEG  716  0.093807  33.333333  33.130329  1.831715e-10       232.0      137.0
+206       degree  auto      n_junctions    PRE  716  0.735315  33.333333 -21.741778           NaN         NaN        NaN
+207       degree  auto      n_junctions    SEG  716  0.735589  33.333333 -21.924482           NaN         NaN        NaN
+210       degree  auto       cycle_rank  GRAPH  716  0.511041  50.000000 -36.895674  3.613082e-10       142.0       55.0
+211       degree  auto       cycle_rank   JPEG  716  0.245243  50.000000  13.486005  3.613082e-10       142.0       55.0
+212       degree  auto       cycle_rank    PRE  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+213       degree  auto       cycle_rank    SEG  716  0.511041  50.000000 -36.895674           NaN         NaN        NaN
+216          t10     0   branch_lengths  GRAPH  716       NaN        NaN        NaN           NaN         NaN        NaN
+217          t10     0   branch_lengths   JPEG  710       NaN        NaN        NaN           NaN         NaN        NaN
+218          t10     0   branch_lengths    PRE  716       NaN        NaN        NaN           NaN         NaN        NaN
+219          t10     0   branch_lengths    SEG  716       NaN        NaN        NaN           NaN         NaN        NaN
+220       degree     0   branch_lengths  GRAPH  716       NaN        NaN        NaN           NaN         NaN        NaN
+221       degree     0   branch_lengths   JPEG  710       NaN        NaN        NaN           NaN         NaN        NaN
+222       degree     0   branch_lengths    PRE  716       NaN        NaN        NaN           NaN         NaN        NaN
+223       degree     0   branch_lengths    SEG  716       NaN        NaN        NaN           NaN         NaN        NaN
+224       degree     2   branch_lengths  GRAPH  716       NaN        NaN        NaN           NaN         NaN        NaN
+225       degree     2   branch_lengths   JPEG  710       NaN        NaN        NaN           NaN         NaN        NaN
+226       degree     2   branch_lengths    PRE  716       NaN        NaN        NaN           NaN         NaN        NaN
+227       degree     2   branch_lengths    SEG  716       NaN        NaN        NaN           NaN         NaN        NaN
+228       degree     5   branch_lengths  GRAPH  716       NaN        NaN        NaN           NaN         NaN        NaN
+229       degree     5   branch_lengths   JPEG  710       NaN        NaN        NaN           NaN         NaN        NaN
+230       degree     5   branch_lengths    PRE  716       NaN        NaN        NaN           NaN         NaN        NaN
+231       degree     5   branch_lengths    SEG  716       NaN        NaN        NaN           NaN         NaN        NaN
+232       degree    10   branch_lengths  GRAPH  716       NaN        NaN        NaN           NaN         NaN        NaN
+233       degree    10   branch_lengths   JPEG  710       NaN        NaN        NaN           NaN         NaN        NaN
+234       degree    10   branch_lengths    PRE  716       NaN        NaN        NaN           NaN         NaN        NaN
+235       degree    10   branch_lengths    SEG  716       NaN        NaN        NaN           NaN         NaN        NaN
+236       degree  auto   branch_lengths  GRAPH  716       NaN        NaN        NaN           NaN         NaN        NaN
+237       degree  auto   branch_lengths   JPEG  708       NaN        NaN        NaN           NaN         NaN        NaN
+238       degree  auto   branch_lengths    PRE  716       NaN        NaN        NaN           NaN         NaN        NaN
+239       degree  auto   branch_lengths    SEG  716       NaN        NaN        NaN           NaN         NaN        NaN
+n_images                                                                         726
+n_common                                                                         716
+payload_bytes_mean                                                       2193.798898
+payload_bytes_median                                                          2216.0
+jpeg_bytes_mean                                                          2142.990223
+jpeg_bytes_median                                                             2144.5
+raw_bytes_mean                                                               65536.0
+raw_bytes_median                                                             65536.0
+png_bytes_mean                                                          45371.683196
+png_bytes_median                                                             45398.0
+ref_s_median                                                                0.004922
+graph_s_median                                                              0.001273
+jpeg_s_median                                                               0.265982
+ref_skeleton_skan_s_median                                                  0.003428
+ref_descriptors_s_median                                                     0.00142
+graph_decode_graph_s_median                                                 0.000707
+graph_descriptors_s_median                                                  0.000554
+jpeg_decode_s_median                                                        0.000165
+jpeg_segment_s_median                                                       0.260127
+jpeg_skeleton_skan_s_median                                                 0.003679
+jpeg_descriptors_s_median                                                   0.001551
+ratio_jpeg_over_graph                                                     208.996796
+ratio_ref_over_graph                                                        3.867354
+ratio_jpeg_nosegment_over_graph                                             4.342312
+cpu                                         Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+python                                                                        3.11.3
+threads                            OMP/MKL/OPENBLAS_NUM_THREADS=1, torch.set_num_...
