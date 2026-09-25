@@ -1,0 +1,1 @@
+- nanograph_encode crashes on an empty mask: the payload is empty and decompress_nanograph raises IndexError (compress.py:466). Found 2026-09-25 by recon_bench; fix after paper-v3 (package frozen during the run).
