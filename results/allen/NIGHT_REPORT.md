@@ -46,6 +46,18 @@
 - `archive_demo/allen/showcase/fig_compare_v2.png`: 6 cells, one per cell-cycle stage.
   - Columns: image, Allen, and each candidate's mask against Allen, with its stored structure-layer centreline.
 
+## Paper-v3: caught and fixed during the night
+- **The downstream statistics step crashed inside the paper run**, and the old v2 (v6-builder) summary files were left in place. The numbers would have been silently stale.
+  - Cause (my mistake): adding the one-diameter setting `'auto'` made the `L` column text, so the numeric filters matched nothing.
+  - Fixed (string comparison) and re-run from the v3 per-image data; provenance is in `results/paper/downstream/PROVENANCE.txt`.
+- **Fresh v7 results confirm the paper's claims:**
+  - The structure layer is closer to the reference than the JPEG route on all six descriptors, every p < 1e-9. Components: 239 vs 17 images; CCC 0.749 vs −0.009.
+  - Query cost: 1.27 ms, against 4.92 ms for mask re-analysis (3.9×) and 266 ms for the JPEG route (209×).
+  - Nuance for the text: mean width. The graph is closer on 455 vs 253 images, but JPEG's CCC is marginally higher (0.805 vs 0.797).
+- **Safeguard:** `finish_v3.sh` now refuses to build numbers from any output older than the run start.
+- **Ordering fix:** the watcher built numbers before the T14 lossless run. A new tmux job (`final-numbers`) rebuilds numbers, figures, supplement and direction checks after T14 and T15-A finish.
+- STED finished (345/345 frames), and the GPU encode had no out-of-memory errors.
+
 ## Needs you
 1. **Benchmark 6 (blinded preference):** 60 panels, each with 4 unlabelled masks (Allen + the top 3).
    - Built as soon as the top 3 are final: `python experiments/archive_demo/preference_pack.py --top a,b,c`.
