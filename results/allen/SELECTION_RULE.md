@@ -52,3 +52,20 @@ Every model is entered untrained or zero-shot, and trained or fine-tuned. All va
   - Pixel size is the per-dataset calibration and is not tuned.
   - (Corrected before any tuned variant was scored: an earlier draft said "per dataset".)
 - Benchmark results on a variant's own training domain are marked in-domain in every table.
+
+## Addendum: benchmark 6 design (2026-09-25, before benchmarks 1–5 were complete)
+- 60 Allen held-out cells: seed 0, excluding the 6 showcase cells.
+- Per cell: the slab image plus 4 unlabelled masks in random order. The masks are Allen's segmentation and the top 3 candidates by mean rank on benchmarks 1–5.
+- The rater picks the best mask (and may mark "no clear winner").
+- Score = fraction of cells on which the candidate was picked (no-clear-winner cells are split equally).
+- Candidates not shown rank below the shown ones, in their benchmark 1–5 order.
+- Two raters where possible; their picks are pooled.
+
+## Reference-free reconstruction check (reported, not a ranking vote)
+- Suggested by the author: the best mask should give the best Nanograph reconstruction.
+- Tested on the real sets, where expert masks exist (`recon_bench.py`); kept as a reported check.
+- Pilot, 2026-09-25 (20 tiles per dataset, 5–6 candidates):
+  - Fidelity tracked expert clDice on UiT-Rat and CBMI.
+  - It did not on MITO or EP-UiT-Human (Spearman −0.05 to −0.68).
+  - The expert mask was never the best-reconstructing mask.
+  - So reconstruction fidelity is not a valid proxy for mask correctness here.
