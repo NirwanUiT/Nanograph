@@ -881,7 +881,7 @@ def stage_stats(args):
     comps = [(a, r) for a, r in COMPARISONS if a in set(df.arm)]
     rows = []
     for jd, L in SETTINGS:
-        sel = df[(df.junction_def == jd) & (df.L == L)]
+        sel = df[(df.junction_def == jd) & (df.L.astype(str) == str(L))]   # L is 'auto' or a number
         wide = {a: g.set_index('stem') for a, g in sel.groupby('arm')}
         for desc in DESCRIPTORS:
             for arm, ref in comps:
